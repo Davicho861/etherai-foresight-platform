@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { CheckCircle, Circle, Loader2 } from 'lucide-react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
@@ -111,7 +110,6 @@ const missionsByLevel = {
 };
 
 const DemoPage: React.FC = () => {
-  console.log('DemoPage render');
   const [selectedMission, setSelectedMission] = useState<string | null>(null);
   const [missionId, setMissionId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -135,9 +133,22 @@ const DemoPage: React.FC = () => {
     setFinalReport(null);
     setIsStreaming(true);
 
+    // Determine API base in a robust way:
+    // 1) import.meta.env (Vite), 2) globalThis.VITE_API_BASE_URL (runtime injection),
+    // 3) default to localhost:4000
+    const viteEnv = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
+    const runtimeGlobal = (globalThis as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
+    const resolvedBase = viteEnv || runtimeGlobal || 'http://localhost:4000';
+
+    // normalize: remove trailing slash if present
+    const base = resolvedBase.endsWith('/') ? resolvedBase.slice(0, -1) : resolvedBase;
+
+    // Always use absolute URL to prevent requests being routed to the frontend dev server
+    const url = `${base}/api/agent/start-mission`;
+
     // Misiones reales: usar API
     try {
-      const response = await fetch('/api/agent/start-mission', {
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: mission.description }),
@@ -153,7 +164,20 @@ const DemoPage: React.FC = () => {
 
   useEffect(() => {
     if (missionId) {
-      const eventSource = new EventSource(`/api/agent/mission/${missionId}/stream`);
+      // Determine API base in a robust way:
+      // 1) import.meta.env (Vite), 2) globalThis.VITE_API_BASE_URL (runtime injection),
+      // 3) default to localhost:4000
+      const viteEnv = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
+      const runtimeGlobal = (globalThis as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
+      const resolvedBase = viteEnv || runtimeGlobal || 'http://localhost:4000';
+
+      // normalize: remove trailing slash if present
+      const base = resolvedBase.endsWith('/') ? resolvedBase.slice(0, -1) : resolvedBase;
+
+      // Always use absolute URL to prevent requests being routed to the frontend dev server
+      const streamUrl = `${base}/api/agent/mission/${missionId}/stream`;
+
+      const eventSource = new EventSource(streamUrl);
       eventSourceRef.current = eventSource;
 
       eventSource.onmessage = (event) => {
@@ -198,7 +222,10 @@ const DemoPage: React.FC = () => {
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6 text-center">Manus AI - Centro de Mando</h1>
 
-        {/* Selector de Nivel de Acceso */}
+        {/* Streaming indicator and Selector de Nivel de Acceso */}
+        {isStreaming && (
+          <div className="text-center text-sm text-yellow-300 mb-2">Streaming en curso…</div>
+        )}
         <div className="mb-6 flex justify-center">
           <Select value={accessLevel} onValueChange={(value: 'public' | 'corporate' | 'state') => setAccessLevel(value)} data-testid="access-level-select">
             <SelectTrigger className="w-64 bg-gray-800 text-white border-gray-600">
@@ -214,37 +241,24 @@ const DemoPage: React.FC = () => {
 
         {/* Mapa Interactivo Global */}
         <div className="mb-6">
-          <ComposableMap projection="geoMercator" projectionConfig={{ scale: 120 }} className="w-full h-96">
-            <Geographies geography="https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json">
-              {({ geographies }) =>
-                geographies.map((geo) => {
-                  const hasMission = accessLevels[accessLevel].includes(geo.properties.ISO_A3);
-                  return (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      className={hasMission ? 'animate-pulse' : ''}
-                      fill={hasMission ? '#4ADE80' : '#2D3748'}
-                      stroke="#ffffff"
-                      strokeWidth={0.5}
-                      style={{
-                        default: { fill: hasMission ? '#4ADE80' : '#2D3748' },
-                        hover: { fill: hasMission ? '#22c55e' : '#4B5563' },
-                        pressed: { fill: hasMission ? '#16a34a' : '#374151' },
-                      }}
-                      onClick={() => {
-                        if (hasMission) {
-                          setSelectedCountry(geo.properties.ISO_A3);
-                          setIsPanelOpen(true);
-                        }
-                      }}
-                      data-country={geo.properties.ISO_A3}
-                    />
-                  );
-                })
-              }
-            </Geographies>
-          </ComposableMap>
+          <div className="grid grid-cols-4 gap-4">
+            {Object.entries(countryData).filter(([code]) => accessLevels[accessLevel].includes(code)).map(([code, country]) => (
+              <Button
+                key={code}
+                onClick={() => {
+                  setSelectedCountry(code);
+                  setIsPanelOpen(true);
+                }}
+                className="p-4 bg-gray-800 text-white hover:bg-gray-700"
+                data-country={code}
+              >
+                <div className="text-center">
+                  <div className="text-2xl">{country.flag}</div>
+                  <div className="text-sm">{country.name}</div>
+                </div>
+              </Button>
+            ))}
+          </div>
         </div>
 
 
@@ -307,9 +321,10 @@ const DemoPage: React.FC = () => {
                 </CardContent>
               </Card>
             )}
-            <ScrollArea className="h-full">
-              {/* Plan de Tareas Visual */}
-              {tasks.length > 0 && (
+            <div className="task-stream">
+              <ScrollArea className="h-full">
+                {/* Plan de Tareas Visual */}
+                {tasks.length > 0 && (
                 <Card className="mb-6 bg-gray-800 text-white">
                   <CardHeader>
                     <CardTitle>Plan de Tareas</CardTitle>
@@ -389,7 +404,8 @@ const DemoPage: React.FC = () => {
                   </Card>
                 </div>
               )}
-            </ScrollArea>
+              </ScrollArea>
+            </div>
           </SheetContent>
         </Sheet>
       </div>

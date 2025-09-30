@@ -13,23 +13,29 @@ import EnhancedFAQSection from '../components/EnhancedFAQSection';
 import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
 import ComparisonSection from '../components/ComparisonSection';
+import CommandCenterLayout from '../components/CommandCenterLayout';
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
-  
+  const [hasToken, setHasToken] = useState(false);
+
   useEffect(() => {
+    // Check for token
+    const token = window.localStorage.getItem('praevisio_token');
+    setHasToken(!!token);
+
     // Simulate loading delay for animation
     const timer = setTimeout(() => {
       setLoading(false);
     }, 800);
-    
+
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const href = this.getAttribute('href');
         if (!href) return;
-        
+
         const target = document.querySelector(href);
         if (target) {
           window.scrollTo({
@@ -39,14 +45,14 @@ const Index = () => {
         }
       });
     });
-    
+
     // Update title and meta description
     document.title = 'Praevisio AI | Inteligencia Anticipatoria de Élite';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Praevisio AI: Plataforma de inteligencia anticipatoria con precisión del 90% para predecir crisis globales. IA híbrida (clásica + cuántica) para gobiernos, empresas y ONGs en Latinoamérica.');
     }
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -62,6 +68,12 @@ const Index = () => {
       </div>
     );
   }
+
+  // If user has token, show dashboard
+  if (hasToken) {
+    return <CommandCenterLayout />;
+  }
+
   // If user navigates directly to /module/colombia render that page
   if (typeof window !== 'undefined' && window.location && window.location.pathname.startsWith('/module/colombia')) {
     return <ModuleColombia />;

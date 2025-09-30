@@ -8,13 +8,11 @@ import NotFound from "./pages/NotFound";
 import ModuleColombia from "./pages/ModuleColombia";
 import PricingPage from "./pages/PricingPage";
 import DemoPage from "./pages/DemoPage";
-import CommandCenterLayout from "./components/CommandCenterLayout";
-import ProtectedRoute from "./components/ProtectedRoute";
+// ...existing imports
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  console.log('App render');
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

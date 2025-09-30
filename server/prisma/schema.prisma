@@ -2,9 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Use DATABASE_URL from environment for CI/Prod (Postgres). Fallbacks can be
+// configured locally if needed.
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Lead {

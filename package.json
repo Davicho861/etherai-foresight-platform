@@ -7,7 +7,8 @@
   "workspaces": ["server"],
   "scripts": {
     "dev": "vite",
-    "test:e2e:start-servers": "npx concurrently --kill-others-on-fail \"npm:dev --workspace=server\" \"npm:dev\"",
+  "test:e2e:start-servers": "docker-compose up -d --build",
+  "test:e2e:wait-for-seed": "./scripts/wait-for-services.sh",
     "playwright": "playwright test",
     "test": "jest --passWithNoTests",
     "build": "vite build",

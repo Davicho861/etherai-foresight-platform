@@ -5,18 +5,30 @@ WORKDIR /app
 ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
-# Copy sources and install
+# Install deps and build
 COPY package*.json ./
 COPY tsconfig*.json ./
+COPY vite.config.ts ./
+COPY postcss.config.js ./
+COPY tailwind.config.ts ./
 COPY public ./public
 COPY index.html ./
 COPY src ./src
 
-RUN npm ci
+RUN npm ci --no-audit --no-fund --prefer-offline
 RUN npm run build
 
-# Serve static files with nginx
-FROM nginx:stable-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Runtime: serve the built static files on port 3002
+ENV NODE_ENV=production
+COPY --from=builder /app/dist ./dist
+
+# Install a tiny static server
+RUN npm install -g serve@14.1.2 --no-audit --no-fund
+
+EXPOSE 3002
+
+# If NODE_ENV=development is passed, fall back to running Vite dev server
+CMD ["sh", "-c", "if [ \"${NODE_ENV:-production}\" = 'development' ]; then npx vite --host 0.0.0.0 --port 3002; else serve -s dist -l 3002; fi"]

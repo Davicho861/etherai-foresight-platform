@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:15-alpine
+    container_name: praevisio_db
+    environment:
+      POSTGRES_USER: praevisio
+      POSTGRES_PASSWORD: praevisio
+      POSTGRES_DB: praevisio
+    volumes:
+      - praevisio_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U praevisio -d praevisio"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
   backend:
     build:
       context: .
@@ -10,27 +25,48 @@ services:
       - '4000:4000'
     environment:
       PRAEVISIO_BEARER_TOKEN: ${PRAEVISIO_BEARER_TOKEN:-demo-token}
-      DATABASE_URL: file:./prisma/dev.db
-    volumes:
-      - ./server/dev.db:/app/app/prisma/dev.db
+      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
+      PORT: '4000'
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:4000/api/platform-status -H \"Authorization: Bearer ${PRAEVISIO_BEARER_TOKEN:-demo-token}\" || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 6
+      retries: 12
+
+  prisma-seed:
+    image: node:20-bullseye-slim
+    container_name: praevisio_prisma_seed
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "cd server && npm install --no-audit --no-fund --prefer-offline && npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma"
+    restart: 'no'
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        VITE_API_BASE_URL: 'http://backend:4000'
+        VITE_API_BASE_URL: 'http://localhost:4000'
     container_name: praevisio_frontend
     ports:
-      - '3000:80'
+      - '3002:3002'
     depends_on:
       backend:
         condition: service_healthy
+    environment:
+      VITE_API_BASE_URL: 'http://localhost:4000'
+
+volumes:
+  praevisio_db_data:
 
 networks:
   default:

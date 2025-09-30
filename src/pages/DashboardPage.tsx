@@ -1,29 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar';
 import ProgressRing from '../components/dashboard/ProgressRing';
-import PhaseProgress from '../components/dashboard/PhaseProgress';
-import ModuleCard from '../components/dashboard/ModuleCard';
-
-type KPIItem = { value: number; trend?: number; trendIsPositive?: boolean };
-type KPIs = {
-  criticalSignals: KPIItem;
-  predictiveHorizonDays: { value: number };
-  modelAccuracy: KPIItem;
-  analystsAssigned: { value: number };
-};
-
-type EventLifecycleItem = { name: string; progress: number; status: string };
-type AnalysisModule = { name: string; type: string; status: string; currentTask?: string; progress: number };
-type Insight = { id: string; confidence: number; title: string; description: string };
-
-type DashboardPayload = {
-  lastUpdated: string;
-  kpis: KPIs;
-  eventLifecycle: EventLifecycleItem[];
-  analysisModules: AnalysisModule[];
-  predictiveInsights: Insight[];
-};
-
 
 type PlatformStatus = {
   statusGeneral: string;
