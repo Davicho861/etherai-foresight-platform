@@ -57,13 +57,37 @@ services:
       args:
         VITE_API_BASE_URL: 'http://localhost:4000'
     container_name: praevisio_frontend
-    ports:
-      - '3002:3002'
     depends_on:
       backend:
         condition: service_healthy
     environment:
-      VITE_API_BASE_URL: 'http://localhost:4000'
+      VITE_API_BASE_URL: 'http://backend:4000'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: 'no'
+
+  e2e-tester:
+    image: node:20-bullseye-slim
+    container_name: praevisio_e2e_tester
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    environment:
+      # Ensure Playwright uses the internal Docker hostname for frontend
+      FRONTEND_URL: 'http://frontend:3002'
+    command: sh -c "cd /app && npm ci --no-audit --no-fund --prefer-offline && npx playwright test --config=playwright.config.ts"
+    networks:
+      - default
+    restart: 'no'
 
 volumes:
   praevisio_db_data:

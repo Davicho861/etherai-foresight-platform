@@ -27,6 +27,8 @@ COPY --from=builder /app/dist ./dist
 
 # Install a tiny static server
 RUN npm install -g serve@14.1.2 --no-audit --no-fund
+# Ensure curl is available for healthchecks
+RUN apk add --no-cache curl ca-certificates
 
 EXPOSE 3002
 
