@@ -23,10 +23,11 @@
 
 | Backlog | Por Hacer | En Progreso | En Revisión | Completado |
 |---|---|---|---|---|
-| [Low][Docs] Crear guía de contribución | [High][Backend] API /api/alerts - endpoints y docs | [High][Frontend] Dashboard - visualización de alertas | [Medium][QA] Tests E2E - Playwright para flujo de alertas | [High][Docs] Vision ejecutiva (C-Suite) |
-| [Medium][DevOps] Definir infra para staging | [High][DevOps] CI pipeline - lint/test/build | [High][Backend] Motor de agentes - orquestación (90%) | [High][Backend] PR para endpoints auditados | [High][Backend] Código base del motor de agentes |
-| [High][Security] Plan de gestión de secretos | [Medium][Data] Integración Open Meteo | [High][Data] Pipeline de ingest (90%) | [Medium][Frontend] PR dashboard accesibilidad | [Medium][Docs] Arquitectura (C4 mermaid) |
-| [High][Sales] Documentos comerciales para pilotos | [Low][UX] Mejoras UI | [Medium][Testing] Cobertura tests unitarios (50%) |  |  |
+| [Crear guía de contribución](https://github.com/Davicho861/etherai-foresight-platform/issues/1) | [API /api/alerts - endpoints y docs](https://github.com/Davicho861/etherai-foresight-platform/issues/2) | [Dashboard - visualización de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/3) | [Tests E2E - Playwright para flujo de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/4) | [Vision ejecutiva (C-Suite)](https://github.com/Davicho861/etherai-foresight-platform/issues/5) |
+| [Definir infra para staging](https://github.com/Davicho861/etherai-foresight-platform/issues/6) | [CI pipeline - lint/test/build](https://github.com/Davicho861/etherai-foresight-platform/issues/7) | [Motor de agentes - orquestación (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/8) | [PR para endpoints auditados](https://github.com/Davicho861/etherai-foresight-platform/issues/9) | [Código base del motor de agentes](https://github.com/Davicho861/etherai-foresight-platform/issues/10) |
+| [Plan de gestión de secretos](https://github.com/Davicho861/etherai-foresight-platform/issues/11) | [Integración Open Meteo](https://github.com/Davicho861/etherai-foresight-platform/issues/12) | [Pipeline de ingest (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/13) | [PR dashboard accesibilidad](https://github.com/Davicho861/etherai-foresight-platform/issues/14) | [Arquitectura (C4 mermaid)](https://github.com/Davicho861/etherai-foresight-platform/issues/15) |
+| [Documentos comerciales para pilotos](https://github.com/Davicho861/etherai-foresight-platform/issues/16) | [Mejoras UI](https://github.com/Davicho861/etherai-foresight-platform/issues/17) | [Cobertura tests unitarios (50%)](https://github.com/Davicho861/etherai-foresight-platform/issues/18) |  |  |
+
 
 ---
 
