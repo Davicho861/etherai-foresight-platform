@@ -1,0 +1,27 @@
+{
+  "tareas": [
+    {
+      "description": "analizando noticias reformas subsidios"
+    },
+    {
+      "description": "sentimiento negativo redes"
+    },
+    {
+      "description": "datos históricos protestas"
+    }
+  ],
+  "final_report": {
+    "summary": "Alerta de Inestabilidad Social en Bogotá (2025)",
+    "aiExplanation": "70% Aumento sentimiento negativo, 20% Análisis histórico Paro 2021, 10% Discursos líderes oposición",
+    "weights": {
+      "Aumento sentimiento negativo": 0.7,
+      "Análisis histórico Paro 2021": 0.2,
+      "Discursos líderes oposición": 0.1
+    },
+    "dataSources": [
+      "Noticias reformas subsidios",
+      "Redes sociales",
+      "Datos históricos protestas"
+    ]
+  }
+}

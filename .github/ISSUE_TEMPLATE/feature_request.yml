@@ -1,0 +1,44 @@
+name: "Feature request"
+about: "Proponer una nueva feature o mejora. Describe el valor de negocio y criterios de aceptación."
+title: "[FEAT] "
+labels: ["enhancement", "triage-needed"]
+assignees: []
+
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: "Resumen breve"
+      description: "Describe brevemente la idea"
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivación / Valor de negocio"
+      required: true
+  - type: textarea
+    id: user_stories
+    attributes:
+      label: "Historias de usuario"
+      description: "Ej: Como <rol>, quiero <qué> para <porqué>"
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Criterios de aceptación"
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Prioridad"
+      options:
+        - P0 - Critical
+        - P1 - High
+        - P2 - Medium
+        - P3 - Low
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notas técnicas / Dependencias"
+      required: false

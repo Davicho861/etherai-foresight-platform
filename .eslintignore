@@ -1,0 +1,7 @@
+node_modules/
+dist/
+server/dev.db
+server/prisma/
+public/
+test-results/
+**/*.min.js

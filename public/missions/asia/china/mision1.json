@@ -1,0 +1,27 @@
+{
+  "tareas": [
+    {
+      "description": "monitoreando movimientos militares en Mar de China Meridional"
+    },
+    {
+      "description": "análisis de declaraciones diplomáticas regionales"
+    },
+    {
+      "description": "datos históricos disputas territoriales"
+    }
+  ],
+  "final_report": {
+    "summary": "Análisis Predictivo de Tensiones Geopolíticas en el Mar de China Meridional (2025)",
+    "aiExplanation": "50% Escalada militar observada, 30% Retórica diplomática agresiva, 20% Patrones históricos confrontaciones",
+    "weights": {
+      "Escalada militar observada": 0.5,
+      "Retórica diplomática agresiva": 0.3,
+      "Patrones históricos confrontaciones": 0.2
+    },
+    "dataSources": [
+      "Movimientos militares Mar de China Meridional",
+      "Declaraciones diplomáticas regionales",
+      "Datos históricos disputas territoriales"
+    ]
+  }
+}

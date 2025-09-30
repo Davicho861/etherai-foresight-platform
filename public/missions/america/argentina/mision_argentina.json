@@ -1,0 +1,27 @@
+{
+  "tareas": [
+    {
+      "description": "analizando anuncios Banco Central"
+    },
+    {
+      "description": "evolución dólar blue"
+    },
+    {
+      "description": "comparación políticas hiperinflacionarias"
+    }
+  ],
+  "final_report": {
+    "summary": "Anticipación de Shock de Inflación (2025)",
+    "aiExplanation": "50% Correlación políticas 1989, 40% Brecha cambiaria >100%, 10% Caída reservas",
+    "weights": {
+      "Correlación políticas 1989": 0.5,
+      "Brecha cambiaria >100%": 0.4,
+      "Caída reservas": 0.1
+    },
+    "dataSources": [
+      "Anuncios Banco Central",
+      "Evolución dólar blue",
+      "Políticas hiperinflacionarias"
+    ]
+  }
+}

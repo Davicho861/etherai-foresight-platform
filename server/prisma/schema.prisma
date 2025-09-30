@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  sector    String?
+  message   String?
+  createdAt DateTime @default(now())
+}
+
+model ModuleData {
+  id        String   @id @default(cuid())
+  country   String
+  category  String
+  value     Float
+  label     String
+  timestamp DateTime @default(now())
+}

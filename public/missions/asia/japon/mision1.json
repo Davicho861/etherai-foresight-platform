@@ -1,0 +1,27 @@
+{
+  "tareas": [
+    {
+      "description": "monitoreando anuncios del Banco de Japón"
+    },
+    {
+      "description": "análisis de mercado forex yen"
+    },
+    {
+      "description": "datos históricos intervenciones cambiarias"
+    }
+  ],
+  "final_report": {
+    "summary": "Anticipación de Fluctuaciones del Yen por Políticas del Banco Central (2025)",
+    "aiExplanation": "60% Señales de tightening monetario, 30% Flujos capital extranjero, 10% Patrones históricos volatilidad",
+    "weights": {
+      "Señales de tightening monetario": 0.6,
+      "Flujos capital extranjero": 0.3,
+      "Patrones históricos volatilidad": 0.1
+    },
+    "dataSources": [
+      "Anuncios Banco de Japón",
+      "Análisis mercado forex yen",
+      "Datos históricos intervenciones cambiarias"
+    ]
+  }
+}

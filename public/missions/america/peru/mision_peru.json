@@ -1,0 +1,27 @@
+{
+  "tareas": [
+    {
+      "description": "monitoreando negociaciones sindicales"
+    },
+    {
+      "description": "noticias locales Arequipa/Moquegua"
+    },
+    {
+      "description": "datos históricos huelgas"
+    }
+  ],
+  "final_report": {
+    "summary": "Predicción de Disrupción en Cadena de Suministro de Cobre (2025)",
+    "aiExplanation": "60% Fracaso negociaciones, 30% Convocatorias huelga redes, 10% Datos históricos duración huelgas",
+    "weights": {
+      "Fracaso negociaciones": 0.6,
+      "Convocatorias huelga redes": 0.3,
+      "Datos históricos duración huelgas": 0.1
+    },
+    "dataSources": [
+      "Negociaciones sindicales",
+      "Noticias locales Arequipa/Moquegua",
+      "Datos históricos huelgas"
+    ]
+  }
+}

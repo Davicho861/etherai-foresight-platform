@@ -1,0 +1,52 @@
+name: "Bug report"
+about: "Reporta un bug con pasos reproducibles, impacto y logs"
+title: "[BUG] "
+labels: ["bug", "triage-needed"]
+assignees: []
+
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Pasos para reproducir"
+      description: "Lista los pasos necesarios para reproducir el problema"
+      placeholder: "1. Clonar repo\n2. npm ci\n3. ..."
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Comportamiento esperado"
+      description: "Qué esperabas que sucediera"
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Comportamiento actual"
+      description: "Qué ocurrió realmente"
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Entorno (OS / Node / Browser)"
+      placeholder: "Linux / Node 18 / Chrome 120"
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs relevantes / Stacktrace"
+      required: false
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Severidad"
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notas adicionales"
+      required: false

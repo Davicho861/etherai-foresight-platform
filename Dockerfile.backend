@@ -1,0 +1,22 @@
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copy package files and install deps
+COPY server/package*.json ./
+RUN npm ci
+
+# Copy source and generate Prisma client
+COPY server ./app
+WORKDIR /app/app
+RUN npx prisma generate --schema=./prisma/schema.prisma || true
+
+# Optional: build step if project has a build script (keeps compatibility)
+RUN npm run build --if-present || true
+
+# Final image
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/app ./
+EXPOSE 4000
+CMD ["node", "src/index.js"]
