@@ -13,12 +13,13 @@
   <meta property="og:title" content="Praevisio AI | Anticipa el Futuro, Actúa Hoy" />
   <meta property="og:description" content="Praevisio AI: Anticipa crisis y optimiza decisiones con nuestra plataforma de IA predictiva revolucionaria. 90% de precisión en predicciones críticas." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  <!-- Use local placeholder image for OG during tests to avoid external TLS issues -->
+  <meta property="og:image" content="/placeholder.svg" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@praevisio_ai" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  <meta name="twitter:image" content="/placeholder.svg" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +34,7 @@
     <div id="root"></div>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="http://localhost:3000/src/main.tsx"></script>
+    <!-- Use relative module path so tests and preview servers load the bundle correctly -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -32,7 +32,7 @@ app.use('/api/dashboard', bearerAuth, dashboardRouter);
 app.use('/api/platform-status', bearerAuth, platformStatusRouter);
 app.use('/api/agent', agentRouter);
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+const PORT = process.env.PORT ? Number(process.env.PORT) : 45000;
+const server = app.listen(PORT, () => {
   console.log(`Praevisio server running on http://localhost:${PORT}`);
 });

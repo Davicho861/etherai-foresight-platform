@@ -17,8 +17,10 @@ export default defineConfig(({ mode }) => ({
     }
   },
   optimizeDeps: {
-    noDiscovery: true,
-    include: []
+    // Ensure React and ReactDOM are pre-bundled so Vite serves ESM-compatible modules
+    // otherwise dev server may expose CJS files (like react-dom/client.js) that
+    // don't export named ESM bindings and break imports such as `createRoot`.
+    include: ['react', 'react-dom']
   },
   plugins: [
     react(),
