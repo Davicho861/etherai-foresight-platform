@@ -37,18 +37,18 @@ services:
       retries: 12
 
   prisma-seed:
-    image: node:20-bullseye-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: praevisio_prisma_seed
-    working_dir: /app
-    volumes:
-      - ./:/app:cached
+    # Do not mount the host workspace to avoid node_modules conflicts during npm install
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
     depends_on:
       db:
         condition: service_healthy
-    # Run seeds, then keep the container alive so docker-compose doesn't abort on exit
-    command: sh -c "cd server && npm install --no-audit --no-fund --prefer-offline && npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma && sleep infinity"
+    # Run migrations and seed using the built backend image, then sleep to keep the container alive
+    command: sh -c "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma && sleep infinity"
     restart: 'no'
 
   frontend:
