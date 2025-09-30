@@ -85,7 +85,8 @@ services:
     environment:
       # Ensure Playwright uses the internal Docker hostname for frontend
       FRONTEND_URL: 'http://frontend:3002'
-    command: sh -c "cd /app && npm ci --no-audit --no-fund --prefer-offline && npx playwright test --config=playwright.config.ts"
+    # Remove potentially conflicting node_modules from mounted host before installing
+    command: sh -c "cd /app && rm -rf server/node_modules || true && npm ci --no-audit --no-fund --prefer-offline && npx playwright test --config=playwright.config.ts"
     networks:
       - default
     restart: 'no'
