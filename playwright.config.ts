@@ -1,9 +1,4 @@
 import { defineConfig } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// ESM __dirname shim
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Ensure Playwright can start the full stack for local E2E runs and wait until the dashboard is reachable.
 export default defineConfig({
