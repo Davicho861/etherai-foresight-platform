@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import ProgressRing from '../components/dashboard/ProgressRing';
+import DashboardWidget from '../components/generated/DashboardWidget';
 
 type PlatformStatus = {
   statusGeneral: string;
@@ -67,6 +68,12 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ platformStatus, loadingSt
               </div>
             </div>
           </div>
+
+          <DashboardWidget
+            title="Métricas Adicionales"
+            value={analisisActivos + alertasCriticas}
+            description="Suma de análisis activos y alertas críticas"
+          />
 
           <div className="bg-etherblue-dark/60 border border-gray-700 rounded-lg p-6">
             <h3 className="text-sm text-gray-300">Estado de Componentes</h3>

@@ -69,6 +69,67 @@ See `PROMPT_MAESTRO.md` for the full "prompt maestro" that defines the product v
 
 Simply open [Lovable](https://lovable.dev/projects/73a63849-c2d2-404a-b7c3-709f33e7f86c) and click on Share -> Publish.
 
+## Despliegue rápido (Hyperion)
+
+Si quieres lanzar la plataforma a producción usando Docker, Railway y Vercel sigue estos pasos rápidos:
+
+1. Instala dependencias y CLIs necesarias: `railway`, `vercel`, `docker`, `jq`.
+2. Copia y edita las variables de entorno:
+
+	cp .env.template .env
+	# Rellena RAILWAY_TOKEN, VERCEL_TOKEN, OPENAI_API_KEY, DATABASE_URL y PRAEVISIO_BEARER_TOKEN
+
+3. Despliega el backend (interactivo con Railway):
+
+	./scripts/deploy_backend.sh
+
+	Revisa Railway dashboard y copia la URL pública del servicio (ej. praevisio-backend-prod.up.railway.app)
+
+4. Exporta la URL para uso en el despliegue del frontend:
+
+	export RAILWAY_BACKEND_URL=pr...railway.app
+
+5. Despliega el frontend en Vercel:
+
+	./scripts/deploy_frontend.sh
+
+6. Valida el despliegue (reemplaza con las URLs reales):
+
+	export RAILWAY_BACKEND_URL=pr...railway.app
+	export VERCEL_URL=https://your-vercel-app.vercel.app
+	./scripts/validate_deploy.sh
+
+Notas:
+
+
+## Ejecución 100% local (LLM local con Ollama)
+
+Si prefieres ejecutar todo de forma local sin depender de APIs externas (OpenAI, Vercel, Railway), puedes usar Ollama para ejecutar un LLM en tu máquina y validar la pila completa con el script `validate` añadido:
+
+- Instala Ollama siguiendo las instrucciones en https://ollama.ai
+- Descarga un modelo localmente (ejemplo):
+
+```
+ollama pull llama3
+```
+
+- Asegúrate de que Ollama esté corriendo y exponiendo su API en `http://localhost:11434`.
+- Puedes exportar variables en `.env` (ver `.env.template`) para apuntar a Ollama:
+
+```
+OLLAMA_URL=http://localhost:11434/api/generate
+OLLAMA_MODEL=llama3
+```
+
+- Para validar localmente (levantar Docker, esperar servicios y correr pruebas E2E):
+
+```
+npm run validate
+```
+
+Este flujo evita el uso de `OPENAI_API_KEY` y hará que el backend utilice el LLM local como respaldo.
+
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!

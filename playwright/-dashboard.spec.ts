@@ -1,0 +1,1 @@
+MOCK_RESPONSE: Escribe una prueba E2E de Playwright para la ruta /dashboard. Objetivo: Test e2e para la página del dashboard. Responde únicamente con el contenido del archivo de prueba.
