@@ -32,6 +32,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      prisma-seed:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:4000/api/platform-status -H \"Authorization: Bearer ${PRAEVISIO_BEARER_TOKEN:-demo-token}\" || exit 1"]
       interval: 10s
@@ -51,18 +53,18 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Run migrations and seed using the built backend image, then sleep to keep the container alive
-    command: sh -c "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma && sleep infinity"
+    # Run migrations and seed using the built backend image as a one-shot job.
+    # Important: do NOT keep the container sleeping; let it exit with 0 on success
+    # so other services can depend on its successful completion.
+    command: sh -c "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma"
     restart: 'no'
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-      args:
-        # Use internal Docker hostname so the built frontend points to the backend container
-        VITE_API_BASE_URL: 'http://backend:4000'
     container_name: praevisio_frontend
+    working_dir: /app
     ports:
       - '3002:3002'
     depends_on:
@@ -70,42 +72,39 @@ services:
         condition: service_healthy
     environment:
       VITE_API_BASE_URL: 'http://backend:4000'
+      NODE_ENV: development
+    volumes:
+      # Mount only the source files needed for hot-reload to avoid overwriting
+      # the rest of the image filesystem (including node_modules).
+      - ./src:/app/src:cached
+      - ./public:/app/public:cached
+      - ./index.html:/app/index.html:cached
+      - ./package.json:/app/package.json:cached
+      - ./package-lock.json:/app/package-lock.json:cached
+      - ./vite.config.ts:/app/vite.config.ts:cached
+      - ./tsconfig.json:/app/tsconfig.json:cached
+      # Keep node_modules isolated in a named volume populated from the image
+      - praevisio_frontend_node_modules:/app/node_modules
+    # On first start, if the named volume is empty, install dependencies into it.
+    # This guarantees /app/node_modules contains the project deps (including vite)
+    # while keeping dependencies isolated in a Docker volume thereafter.
+    command: ["sh", "-c", "if [ ! -d /app/node_modules/vite ]; then echo 'vite missing in volume — installing frontend deps...' && npm ci --no-audit --no-fund --prefer-offline && npm install --no-audit --no-fund vite@7.1.7 @vitejs/plugin-react-swc --no-save; fi && NODE_ENV=development vite --host 0.0.0.0 --port 3002"]
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 12
-      start_period: 30s
+      start_period: 10s
     restart: 'no'
 
-  e2e-tester:
-    image: node:20-bullseye-slim
-    container_name: praevisio_e2e_tester
-    # Run the container processes as root so the container can install packages
-    # into the named volume without permission errors. We intentionally use root
-    # here for the E2E runner to avoid EACCES on npm install; outputs are
-    # collected and adjusted by the orchestrator script.
-    user: root
-    working_dir: /app
-    volumes:
-      - ./:/app:cached
-      # Use a named docker volume for server/node_modules so the container can
-      # install and remove packages without colliding with the host bind mount.
-      - e2e_tester_node_modules:/app/server/node_modules
-    depends_on:
-      frontend:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
-    environment:
-      # Ensure Playwright uses the internal Docker hostname for frontend
-      FRONTEND_URL: 'http://frontend:3002'
-    # Remove potentially conflicting node_modules from mounted host before installing
-    # Install dependencies, install Playwright browsers (with required system deps), then run tests
-    command: >
-      sh -c "cd /app && rm -rf node_modules || true && rm -rf server/node_modules || true && npm ci --no-audit --no-fund --prefer-offline && npx playwright install --with-deps && export FRONTEND_URL='http://localhost:3002' && export API_BASE='http://localhost:4000' && export PRAEVISIO_BEARER_TOKEN='demo-token' && npx playwright test --config=playwright.config.ts"
-    network_mode: host
-    restart: 'no'
+  # NOTE: The e2e-tester service was removed from the primary docker-compose
+  # stack. Playwright E2E tests are executed by the `npm run validate` flow
+  # (scripts/validate_local.sh) which runs them from the host or an
+  # ephemeral container. Keeping the e2e-tester as a long-running service
+  # caused healthcheck complexity and prevented the compose stack from
+  # stabilizing as a "live" ecosystem. If you need a containerized runner,
+  # consider adding a separate compose file (e.g. docker-compose.test.yml)
+  # used only by CI or validation flows.
 
   ollama-mock:
     image: node:20-bullseye-slim
@@ -128,6 +127,7 @@ volumes:
   praevisio_db_data:
   backend_node_modules:
   e2e_tester_node_modules:
+  praevisio_frontend_node_modules:
 
 networks:
   default:

@@ -7,6 +7,10 @@
   "workspaces": ["server"],
   "scripts": {
     "dev": "vite",
+    "dev:live": "docker-compose up -d --build",
+    "logs:live": "docker-compose logs -f --tail=200",
+    "stop:live": "docker-compose down --volumes --remove-orphans",
+  "dev:container": "vite --host 0.0.0.0 --port 3002",
   "propose-plan": "node ./scripts/propose-plan.js --",
   "generate:component": "node ./scripts/generate-component.js",
   "generate:test:e2e": "node ./scripts/generate-e2e-test.js",
@@ -15,8 +19,8 @@
   "test:e2e:wait-for-seed": "./scripts/wait-for-services.sh",
     "playwright": "playwright test",
     "test": "jest --passWithNoTests",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+  "build": "npx vite build",
+  "build:dev": "npx vite build --mode development",
   "lint": "eslint \"src/**/*.{js,ts,tsx}\" \"server/**/*.{js,ts}\" \"scripts/**/*.{js,ts}\" \"playwright/**/*.{ts,js}\" --max-warnings=7",
     "preview": "vite preview"
   },
