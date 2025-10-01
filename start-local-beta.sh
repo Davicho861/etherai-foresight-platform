@@ -25,6 +25,8 @@ if ! command -v docker >/dev/null 2>&1; then
 fi
 
 echo "Building and starting containers..."
+export HOST_UID=$(id -u)
+export HOST_GID=$(id -g)
 docker-compose up -d --build
 
 echo "Waiting for backend health check..."

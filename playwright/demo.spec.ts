@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const _FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+void _FRONTEND_URL;
 
 test.describe('Demo E2E', () => {
   test('completes demo flow with Colombia State Mission', async ({ page }) => {

@@ -5,7 +5,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { CheckCircle, Circle, Loader2 } from 'lucide-react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 interface Task {
   id: string;

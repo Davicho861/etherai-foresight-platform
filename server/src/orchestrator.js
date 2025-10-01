@@ -1,4 +1,5 @@
 import { AgentExecutor } from 'langchain/agents';
+void AgentExecutor;
 import { PlannerAgent, DataAcquisitionAgent, SignalAnalysisAgent, RiskAssessmentAgent, ReportGenerationAgent } from './agents.js';
 import { publish } from './eventHub.js';
 

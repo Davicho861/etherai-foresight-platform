@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 const API_BASE = process.env.API_BASE || 'http://localhost:4000';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3002';
+const _FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3002';
+void _FRONTEND_URL;
 const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 test.describe('Dashboard E2E', () => {

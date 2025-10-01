@@ -5,6 +5,22 @@
 **Project**: Praevisio AI (demo)
 **URL**: https://lovable.dev/projects/73a63849-c2d2-404a-b7c3-709f33e7f86c
 
+🏛️ Filosofía de Desarrollo: Local-First
+
+Praevisio AI se adhiere a un principio de desarrollo Local-First. Esto garantiza la máxima agilidad, robustez y la capacidad de desarrollar y validar el sistema completo de forma autónoma, sin dependencias de servicios en la nube.
+
+El Sello de Calidad:
+
+Antes de que cualquier código sea considerado "listo", debe pasar la validación local completa. El único comando que certifica esta calidad es:
+
+Bash
+
+npm run validate
+
+Este orquestador levanta toda la infraestructura en contenedores Docker (Base de Datos, Backend, Frontend, LLM Mock), espera a que los servicios estén saludables y ejecuta la suite completa de pruebas End-to-End (E2E) con Playwright.
+
+Un npm run validate exitoso es el único estado aceptable antes de un git push.
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
