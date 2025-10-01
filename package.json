@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "dev:local": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
     "propose-plan": "node ./scripts/propose-plan.js --",
     "generate:component": "node ./scripts/generate-component.js",
     "generate:test:e2e": "node ./scripts/generate-e2e-test.js",

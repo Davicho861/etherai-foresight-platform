@@ -217,83 +217,104 @@ const DemoPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#1A1F2C] text-white">
-      <div className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6 text-center">Manus AI - Centro de Mando</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+      <div className="max-w-7xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Praevisio AI - Centro de Mando Predictivo</h1>
 
         {/* Streaming indicator and Selector de Nivel de Acceso */}
         {isStreaming && (
-          <div className="text-center text-sm text-yellow-300 mb-2">Streaming en curso…</div>
+          <div className="text-center text-sm text-cyan-400 mb-4 animate-pulse">Procesamiento predictivo en curso…</div>
         )}
-        <div className="mb-6 flex justify-center">
-          <Select value={accessLevel} onValueChange={(value: 'public' | 'corporate' | 'state') => setAccessLevel(value)} data-testid="access-level-select">
-            <SelectTrigger className="w-64 bg-gray-800 text-white border-gray-600">
-              <SelectValue placeholder="Seleccionar nivel de acceso" />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 text-white border-gray-600">
-              <SelectItem value="public">Acceso Público</SelectItem>
-              <SelectItem value="corporate">Acceso Corporativo</SelectItem>
-              <SelectItem value="state">Acceso Estado</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="mb-8 flex justify-center">
+          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-1">
+            <div className="flex space-x-1">
+              {[
+                { value: 'public', label: 'Público' },
+                { value: 'corporate', label: 'Corporativo' },
+                { value: 'state', label: 'Estado' }
+              ].map(level => (
+                <button
+                  key={level.value}
+                  onClick={() => setAccessLevel(level.value as 'public' | 'corporate' | 'state')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    accessLevel === level.value
+                      ? 'bg-cyan-600 text-white shadow-lg'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  }`}
+                  data-testid={`access-level-${level.value}`}
+                >
+                  {level.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Mapa Interactivo Global */}
-        <div className="mb-6">
-          <div className="grid grid-cols-4 gap-4">
-            {Object.entries(countryData).filter(([code]) => accessLevels[accessLevel].includes(code)).map(([code, country]) => (
-              <Button
-                key={code}
-                onClick={() => {
-                  setSelectedCountry(code);
-                  setIsPanelOpen(true);
-                }}
-                className="p-4 bg-gray-800 text-white hover:bg-gray-700"
-                data-country={code}
-              >
-                <div className="text-center">
-                  <div className="text-2xl">{country.flag}</div>
-                  <div className="text-sm">{country.name}</div>
-                </div>
-              </Button>
-            ))}
+        <div className="mb-8">
+          <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
+            <h2 className="text-xl font-semibold mb-4 text-center">Mapa Predictivo Global</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {Object.entries(countryData).filter(([code]) => accessLevels[accessLevel].includes(code)).map(([code, country]) => (
+                <Button
+                  key={code}
+                  onClick={() => {
+                    setSelectedCountry(code);
+                    setIsPanelOpen(true);
+                  }}
+                  className="p-3 bg-gray-700/50 hover:bg-cyan-600/50 border border-gray-600 hover:border-cyan-400 transition-all duration-200 rounded-lg"
+                  data-country={code}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-1">{country.flag}</div>
+                    <div className="text-xs font-medium">{country.name}</div>
+                    <div className="text-xs text-gray-400 mt-1">Estabilidad: {country.stability}/10</div>
+                  </div>
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
 
 
         <Sheet open={isPanelOpen} onOpenChange={setIsPanelOpen}>
-          <SheetContent side="right" className="bg-[#1A1F2C] text-white overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Panel de Briefing {accessLevel === 'public' ? 'Público' : accessLevel === 'corporate' ? 'Corporativo' : 'Estado'} - {selectedCountry}</SheetTitle>
+          <SheetContent side="right" className="bg-gradient-to-b from-gray-900 to-black text-white overflow-y-auto border-l border-gray-700">
+            <SheetHeader className="border-b border-gray-700 pb-4">
+              <SheetTitle className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                Panel de Inteligencia Predictiva
+              </SheetTitle>
+              <div className="text-sm text-gray-400 mt-2">
+                Nivel: {accessLevel === 'public' ? 'Público' : accessLevel === 'corporate' ? 'Corporativo' : 'Estado'} | País: {selectedCountry && countryData[selectedCountry as keyof typeof countryData]?.name}
+              </div>
             </SheetHeader>
-            <div className="mb-4 text-sm text-gray-300">
-              {accessLevel === 'public' && 'Misiones enfocadas en temas generales como cambio climático y estabilidad social.'}
-              {accessLevel === 'corporate' && 'Misiones enfocadas en riesgos de mercado, logística y cadena de suministro.'}
-              {accessLevel === 'state' && 'Misiones enfocadas en seguridad nacional, estabilidad geopolítica y crisis humanitarias.'}
+            <div className="mb-6 text-sm text-gray-300 bg-gray-800/50 p-3 rounded-lg">
+              {accessLevel === 'public' && 'Análisis predictivo enfocado en indicadores socioeconómicos y ambientales.'}
+              {accessLevel === 'corporate' && 'Evaluación de riesgos comerciales, cadenas de suministro y oportunidades de mercado.'}
+              {accessLevel === 'state' && 'Monitoreo de estabilidad geopolítica, seguridad nacional y respuesta a crisis.'}
             </div>
 
             {/* Información del País */}
             {selectedCountry && countryData[selectedCountry as keyof typeof countryData] && (
-              <Card className="mb-6 bg-gray-800 text-white">
+              <Card className="mb-6 bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <span className="text-2xl">{countryData[selectedCountry as keyof typeof countryData].flag}</span>
-                    <span>{countryData[selectedCountry as keyof typeof countryData].name}</span>
+                    <span className="text-lg">{countryData[selectedCountry as keyof typeof countryData].name}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{(countryData[selectedCountry as keyof typeof countryData].population / 1000000).toFixed(1)}M</div>
-                      <div className="text-sm text-gray-400">Población</div>
+                    <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                      <div className="text-xl font-bold text-cyan-400">{(countryData[selectedCountry as keyof typeof countryData].population / 1000000).toFixed(1)}M</div>
+                      <div className="text-xs text-gray-400">Población</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">${(countryData[selectedCountry as keyof typeof countryData].gdp / 1000).toFixed(0)}B</div>
-                      <div className="text-sm text-gray-400">PIB</div>
+                    <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                      <div className="text-xl font-bold text-green-400">${(countryData[selectedCountry as keyof typeof countryData].gdp / 1000).toFixed(0)}B</div>
+                      <div className="text-xs text-gray-400">PIB</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold">{countryData[selectedCountry as keyof typeof countryData].stability}/10</div>
-                      <div className="text-sm text-gray-400">Estabilidad</div>
+                    <div className="text-center p-3 bg-gray-700/30 rounded-lg">
+                      <div className="text-xl font-bold text-yellow-400">{countryData[selectedCountry as keyof typeof countryData].stability}/10</div>
+                      <div className="text-xs text-gray-400">Estabilidad</div>
                     </div>
                   </div>
                 </CardContent>
@@ -302,17 +323,17 @@ const DemoPage: React.FC = () => {
 
             {/* Lista de Misiones Disponibles */}
             {selectedCountry && missionsByLevel[accessLevel][selectedCountry as keyof typeof missionsByLevel[typeof accessLevel]] && (
-              <Card className="mb-6 bg-gray-800 text-white">
+              <Card className="mb-6 bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                 <CardHeader>
-                  <CardTitle>Misiones Disponibles</CardTitle>
+                  <CardTitle className="text-cyan-400">Misiones de Alto Impacto</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {Object.entries(missionsByLevel[accessLevel]).filter(([code]) => code === selectedCountry).map(([code, mission]) => (
-                      <Button key={code} onClick={() => startMission(mission)} variant="outline" className="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 border-gray-600 text-white">
+                      <Button key={code} onClick={() => startMission(mission)} variant="outline" className="w-full text-left p-4 bg-gray-700/50 hover:bg-cyan-600/30 border-gray-600 hover:border-cyan-400 text-white transition-all duration-200 rounded-lg">
                         <div>
-                          <div className="font-medium">{mission.title}</div>
-                          <div className="text-sm text-gray-400">{mission.description}</div>
+                          <div className="font-semibold text-cyan-300">{mission.title}</div>
+                          <div className="text-sm text-gray-300 mt-1">{mission.description}</div>
                         </div>
                       </Button>
                     ))}
@@ -323,25 +344,25 @@ const DemoPage: React.FC = () => {
             <div className="task-stream">
               <ScrollArea className="h-full">
                 {/* Plan de Tareas Visual */}
-                {tasks.length > 0 && (
-                <Card className="mb-6 bg-gray-800 text-white">
-                  <CardHeader>
-                    <CardTitle>Plan de Tareas</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {tasks.map((task) => (
-                        <div key={task.id} className="flex items-center space-x-3">
-                          {getTaskIcon(task.status)}
-                          <span className={task.status === 'completed' ? 'line-through text-gray-500' : ''}>
-                            {task.description}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                  {tasks.length > 0 && (
+                  <Card className="mb-6 bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
+                    <CardHeader>
+                      <CardTitle className="text-cyan-400">Plan de Tareas Predictivas</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {tasks.map((task) => (
+                          <div key={task.id} className="flex items-center space-x-3 p-2 rounded-lg bg-gray-700/30">
+                            {getTaskIcon(task.status)}
+                            <span className={`text-sm ${task.status === 'completed' ? 'line-through text-gray-500' : task.status === 'in_progress' ? 'text-cyan-300' : 'text-gray-300'}`}>
+                              {task.description}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
               {/* Controles de Usuario */}
               {selectedMission && (
@@ -358,45 +379,48 @@ const DemoPage: React.FC = () => {
               {/* Vista de Final Report */}
               {finalReport && (
                 <div className="space-y-6">
-                  <Card className="bg-gray-800 text-white">
+                  <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                     <CardHeader>
-                      <CardTitle>Resumen Ejecutivo</CardTitle>
+                      <CardTitle className="text-cyan-400">Resumen Ejecutivo Predictivo</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p>{finalReport.summary}</p>
+                      <p className="text-gray-300 leading-relaxed">{finalReport.summary}</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-gray-800 text-white">
+                  <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                     <CardHeader>
-                      <CardTitle>Explicación de la IA</CardTitle>
+                      <CardTitle className="text-cyan-400">Explicación de la IA</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p>{finalReport.aiExplanation}</p>
+                      <p className="text-gray-300 leading-relaxed">{finalReport.aiExplanation}</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-gray-800 text-white">
+                  <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                     <CardHeader>
-                      <CardTitle>Ponderaciones</CardTitle>
+                      <CardTitle className="text-cyan-400">Ponderaciones del Modelo</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
                         {Object.entries(finalReport.weights).map(([key, value]) => (
-                          <li key={key} className="flex justify-between">
-                            <span>{key}</span>
-                            <span>{(value * 100).toFixed(1)}%</span>
+                          <li key={key} className="flex justify-between p-2 bg-gray-700/30 rounded">
+                            <span className="text-gray-300">{key}</span>
+                            <span className="font-bold text-cyan-400">{(value * 100).toFixed(1)}%</span>
                           </li>
                         ))}
                       </ul>
                     </CardContent>
                   </Card>
-                  <Card className="bg-gray-800 text-white">
+                  <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 text-white">
                     <CardHeader>
-                      <CardTitle>Fuentes de Datos</CardTitle>
+                      <CardTitle className="text-cyan-400">Fuentes de Datos Inteligentes</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="list-disc list-inside space-y-1">
+                      <ul className="space-y-2">
                         {finalReport.dataSources.map((source, index) => (
-                          <li key={index}>{source}</li>
+                          <li key={index} className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                            <span className="text-gray-300">{source}</span>
+                          </li>
                         ))}
                       </ul>
                     </CardContent>

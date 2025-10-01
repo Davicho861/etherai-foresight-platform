@@ -1,0 +1,1 @@
+MOCK_RESPONSE: Escribe una prueba E2E de Playwright para la ruta /pricing. Objetivo: Verificar que la página de precios muestra tres planes y que el plan 'Professional' está destacado y tiene un botón 'Contactar'..

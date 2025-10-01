@@ -1,5 +1,20 @@
 import React from 'react';
 
+const ModuleCard: React.FC<{ name: string; status: string; lastRun?: string }> = ({ name, status, lastRun }) => {
+  return (
+    <div className="p-3 bg-gray-800 rounded border border-gray-700">
+      <div className="flex items-center justify-between">
+        <div className="font-medium">{name}</div>
+        <div className={`text-sm ${status === 'running' ? 'text-amber-400' : status === 'ready' ? 'text-green-400' : 'text-gray-400'}`}>{status}</div>
+      </div>
+      {lastRun && <div className="text-xs text-gray-400">Última ejecución: {lastRun}</div>}
+    </div>
+  );
+};
+
+export default ModuleCard;
+import React from 'react';
+
 type Props = {
   name: string;
   type: string;

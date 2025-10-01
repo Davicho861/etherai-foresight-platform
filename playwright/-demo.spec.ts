@@ -1,0 +1,1 @@
+MOCK_RESPONSE: Escribe una prueba E2E de Playwright para la ruta /demo. Objetivo: Verificar que al iniciar la misión de Argentina, aparece un plan de tareas estructurado y el estado de la primera tarea cambia a 'in_

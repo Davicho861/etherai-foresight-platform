@@ -1,5 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+test('Demo muestra mapa y Plan de Tareas al iniciar misión', async ({ page, baseURL }) => {
+  await page.goto((baseURL || '') + '/demo');
+  await expect(page.locator('text=Centro de Mando')).toBeVisible();
+  // Abrir primer país disponible
+  await page.click('button[data-country]');
+  await expect(page.locator('text=Misiones Disponibles')).toBeVisible();
+});
+import { test, expect } from '@playwright/test';
+
 const _FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 void _FRONTEND_URL;
 

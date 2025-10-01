@@ -1,5 +1,13 @@
 import { test, expect } from '@playwright/test';
 
+test('Dashboard muestra KPIs y ProgressRing', async ({ page, baseURL }) => {
+  await page.goto(baseURL || '/dashboard');
+  await expect(page.locator('text=Centro de Mando')).toBeVisible();
+  await expect(page.locator('[data-testid="kpi-analisis"]')).toHaveText(/\d+/);
+  await expect(page.locator('text=Carga del Sistema')).toBeVisible();
+});
+import { test, expect } from '@playwright/test';
+
 const API_BASE = process.env.API_BASE || 'http://localhost:4000';
 const _FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3002';
 void _FRONTEND_URL;

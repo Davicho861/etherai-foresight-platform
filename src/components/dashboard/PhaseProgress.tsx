@@ -1,5 +1,30 @@
 import React from 'react';
 
+type Phase = { name: string; progress: number; status: string };
+
+const PhaseProgress: React.FC<{ phases: Phase[] }> = ({ phases }) => {
+  if (!phases || phases.length === 0) return <div className="text-sm text-gray-400">No hay fases activas</div>;
+
+  return (
+    <div className="space-y-3">
+      {phases.map((p) => (
+        <div key={p.name} className="">
+          <div className="flex justify-between mb-1">
+            <div className="font-medium">{p.name}</div>
+            <div className="text-sm text-gray-300">{p.progress}%</div>
+          </div>
+          <div className="w-full bg-gray-700 h-2 rounded overflow-hidden">
+            <div style={{ width: `${p.progress}%` }} className={`h-2 ${p.status === 'completed' ? 'bg-green-400' : p.status === 'in_progress' ? 'bg-amber-400' : 'bg-gray-500'}`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default PhaseProgress;
+import React from 'react';
+
 type Phase = {
   name: string;
   progress: number;

@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Check } from 'lucide-react';
 
 const PricingPage: React.FC = () => {
   console.log('PricingPage render');
@@ -28,22 +31,84 @@ const PricingPage: React.FC = () => {
   if (error) return <div className="p-8">Error cargando planes: {error}</div>;
   if (!plans.length) return <div className="p-8">Cargando planes...</div>;
 
+  // Get all unique features across plans
+  const allFeatures = Array.from(new Set(plans.flatMap(plan => plan.features)));
+
   return (
-    <div className="min-h-screen p-8 bg-etherblue-dark text-white">
-      <h2 className="text-3xl font-bold mb-6">Planes y Precios</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {plans.map(plan => (
-          <div key={plan.id} className={`p-6 rounded border ${plan.popular ? 'border-amber-400 shadow-lg' : 'border-gray-700'}`}>
-            {plan.popular && <div className="text-xs uppercase text-amber-400 mb-2">Más Popular</div>}
-            <h3 className="text-xl font-semibold">{plan.name}</h3>
-            <div className="text-2xl font-bold my-4">{plan.price}</div>
-            <p className="text-sm mb-4">{plan.description}</p>
-            <ul className="text-sm mb-4 list-disc list-inside">
-              {plan.features.map((f: string, i: number) => <li key={i}>{f}</li>)}
-            </ul>
-            <a href="#contact" className="inline-block bg-amber-500 text-black px-4 py-2 rounded">Solicitar Demo</a>
-          </div>
-        ))}
+    <div className="min-h-screen bg-[#0F1419] text-white py-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Planes y Precios</h1>
+          <p className="text-xl text-gray-300">Elija el plan perfecto para su organización</p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+            <thead>
+              <tr className="bg-gray-800">
+                <th className="px-6 py-4 text-left font-semibold">Características</th>
+                {plans.map(plan => (
+                  <th key={plan.id} className={`px-6 py-4 text-center font-semibold ${plan.popular ? 'bg-amber-600 text-black' : 'bg-gray-700'}`}>
+                    {plan.name}
+                    {plan.popular && <div className="text-xs font-normal mt-1">Más Popular</div>}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-gray-700">
+                <td className="px-6 py-4 font-medium">Precio</td>
+                {plans.map(plan => (
+                  <td key={plan.id} className={`px-6 py-4 text-center font-bold text-xl ${plan.popular ? 'bg-amber-600 text-black' : 'bg-gray-800'}`}>
+                    {plan.price}
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-t border-gray-700">
+                <td className="px-6 py-4 font-medium">Descripción</td>
+                {plans.map(plan => (
+                  <td key={plan.id} className={`px-6 py-4 text-center text-sm ${plan.popular ? 'bg-amber-600 text-black' : 'bg-gray-800'}`}>
+                    {plan.description}
+                  </td>
+                ))}
+              </tr>
+              {allFeatures.map((feature, index) => (
+                <tr key={index} className="border-t border-gray-700">
+                  <td className="px-6 py-4">{feature}</td>
+                  {plans.map(plan => (
+                    <td key={plan.id} className={`px-6 py-4 text-center ${plan.popular ? 'bg-amber-600 text-black' : 'bg-gray-800'}`}>
+                      {plan.features.includes(feature) ? (
+                        <Check className="w-5 h-5 mx-auto text-green-500" />
+                      ) : (
+                        <span className="text-gray-500">-</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr className="border-t border-gray-700">
+                <td className="px-6 py-4"></td>
+                {plans.map(plan => (
+                  <td key={plan.id} className={`px-6 py-4 text-center ${plan.popular ? 'bg-amber-600 text-black' : 'bg-gray-800'}`}>
+                    <Button
+                      className={`w-full ${plan.popular ? 'bg-black text-amber-400 hover:bg-gray-800' : 'bg-blue-600 hover:bg-blue-700'}`}
+                      onClick={() => window.location.href = '#contact'}
+                    >
+                      Solicitar Demo
+                    </Button>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-12 text-center">
+          <p className="text-gray-300 mb-4">¿Necesita una solución personalizada?</p>
+          <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-800">
+            Contactar Ventas
+          </Button>
+        </div>
       </div>
     </div>
   );

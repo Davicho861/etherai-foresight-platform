@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    command: npx nodemon --exec babel-node src/index.js
+    volumes:
+      - ./server:/app
+      - /app/server/node_modules
+    environment:
+      NODE_ENV: development
+
+  frontend:
+    command: npm run dev
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+
+  # Remove e2e-tester for faster development cycles
+  # e2e-tester service is excluded from this dev override
