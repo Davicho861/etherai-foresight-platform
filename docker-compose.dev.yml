@@ -1,21 +1,61 @@
 version: '3.8'
 
 services:
-  backend:
-    command: npx nodemon --exec babel-node src/index.js
+  db:
+    image: postgres:15-alpine
+    container_name: praevisio_db_dev
+    environment:
+      POSTGRES_USER: praevisio
+      POSTGRES_PASSWORD: praevisio
+      POSTGRES_DB: praevisio
     volumes:
-      - ./server:/app
+      - praevisio_db_data_dev:/var/lib/postgresql/data
+
+  backend:
+    image: node:20-bullseye-slim
+    container_name: praevisio_backend_dev
+    working_dir: /app/server
+    volumes:
+      - ./server:/app/server:cached
       - /app/server/node_modules
+    ports:
+      - '4000:4000'
     environment:
       NODE_ENV: development
+      PRAEVISIO_BEARER_TOKEN: ${PRAEVISIO_BEARER_TOKEN:-demo-token}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
+      PORT: '4000'
+      OLLAMA_URL: ${OLLAMA_URL:-'http://ollama-mock:11434/api/generate'}
+    command: sh -c "cd /app/server && npm install --no-audit --no-fund --prefer-offline || true && npx nodemon --watch src --exec node src/index.js"
+    depends_on:
+      - db
 
   frontend:
-    command: npm run dev
+    image: node:20-alpine
+    container_name: praevisio_frontend_dev
+    working_dir: /app
     volumes:
-      - ./:/app
+      - ./:/app:cached
       - /app/node_modules
+    ports:
+      - '3002:3002'
     environment:
       NODE_ENV: development
+      VITE_API_BASE_URL: 'http://host.docker.internal:4000'
+      CHOKIDAR_USEPOLLING: 'true'
+    command: sh -c "cd /app && npm ci --no-audit --no-fund --prefer-offline || true && npx vite --host 0.0.0.0 --port 3002"
+    depends_on:
+      - backend
 
-  # Remove e2e-tester for faster development cycles
-  # e2e-tester service is excluded from this dev override
+  ollama-mock:
+    image: node:20-bullseye-slim
+    container_name: praevisio_ollama_mock_dev
+    working_dir: /app
+    volumes:
+      - ./:/app:cached
+    command: sh -c "node ./scripts/mock_ollama.js"
+    ports:
+      - '11434:11434'
+
+volumes:
+  praevisio_db_data_dev:

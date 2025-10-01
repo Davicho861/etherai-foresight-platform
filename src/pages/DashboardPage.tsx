@@ -161,7 +161,7 @@ const DashboardPage: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Agentes y Módulos</h3>
             <div className="space-y-3">
               {agents && agents.map(a => (
-                <ModuleCard key={a.id} name={a.name} status={a.status} lastRun={a.lastRun} />
+                <ModuleCard key={a.id} name={a.name} type="Agente" status={a.status} currentTask={a.lastRun} progress={100} />
               ))}
             </div>
           </div>

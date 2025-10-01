@@ -12,6 +12,8 @@ import DemoPage from "./pages/DemoPage";
 
 const queryClient = new QueryClient();
 
+console.log('test linting error');
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -21,7 +23,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard...</div>} />
+            <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard - Hot reload test...</div>} />
             <Route path="/module/colombia" element={<ModuleColombia />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/demo" element={<DemoPage />} />

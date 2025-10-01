@@ -8,11 +8,13 @@
     "server"
   ],
   "scripts": {
-    "dev": "vite",
-    "dev:local": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+  "dev": "vite",
+  "dev:local": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+  "dev:live": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
     "propose-plan": "node ./scripts/propose-plan.js --",
     "generate:component": "node ./scripts/generate-component.js",
     "generate:test:e2e": "node ./scripts/generate-e2e-test.js",
+    "develop:auto": "node scripts/develop-feature.js",
     "validate": "bash ./scripts/validate_local.sh",
     "test:e2e:start-servers": "docker-compose up -d --build",
     "test:e2e:wait-for-seed": "./scripts/wait-for-services.sh",

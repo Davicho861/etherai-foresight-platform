@@ -1,1 +1,1 @@
-MOCK_RESPONSE: Escribe una prueba E2E de Playwright para la ruta /dashboard. Objetivo: Verificar que la tarjeta KPI 'Señales Críticas' es visible y muestra un número. Verificar que el anillo de progreso también es v
+MOCK_RESPONSE: Escribe una prueba E2E de Playwright para la ruta /dashboard. Objetivo: Crear un widget de 'Actividad Reciente' para el dashboard que liste las últimas 5 misiones ejecutadas. Responde únicamente con e

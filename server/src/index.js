@@ -36,5 +36,5 @@ app.use('/api/llm', bearerAuth, llmRouter);
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 45000;
 app.listen(PORT, () => {
-  console.log(`Praevisio server running on http://localhost:${PORT}`);
+  console.log(`Praevisio server running on http://localhost:${PORT} - Hot reload test`);
 });
