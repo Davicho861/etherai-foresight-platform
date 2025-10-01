@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import { ESLint } from 'eslint';
+// eslint-disable-next-line no-unused-vars
 import * as _ts from 'typescript';
 
 const __filename = fileURLToPath(import.meta.url);

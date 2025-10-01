@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { AgentExecutor } from 'langchain/agents';
 void AgentExecutor;
 import { PlannerAgent, DataAcquisitionAgent, SignalAnalysisAgent, RiskAssessmentAgent, ReportGenerationAgent } from './agents.js';

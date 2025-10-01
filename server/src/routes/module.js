@@ -1,4 +1,5 @@
 import express from 'express';
+// eslint-disable-next-line no-unused-vars
 import prisma from '../prisma.js';
 void prisma;
 
