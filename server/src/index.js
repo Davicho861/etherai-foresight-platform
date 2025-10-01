@@ -34,7 +34,13 @@ app.use('/api/platform-status', bearerAuth, platformStatusRouter);
 app.use('/api/agent', agentRouter);
 app.use('/api/llm', bearerAuth, llmRouter);
 
+// Development-only crash endpoint removed in final consolidation (Terminus):
+// The POST /__internal/crash endpoint used for Gaia auto-restart testing
+// has been intentionally removed to eliminate residual test tooling.
+// If you need to re-enable the test for future diagnostics, restore a
+// guarded implementation behind an explicit feature flag and strict auth.
+
 const PORT = process.env.PORT ? Number(process.env.PORT) : 45000;
 app.listen(PORT, () => {
-  console.log(`Praevisio server running on http://localhost:${PORT} - Hot reload test`);
+  console.log(`Praevisio server running on http://localhost:${PORT} - Hot reload test - ${new Date().toISOString()}`);
 });
