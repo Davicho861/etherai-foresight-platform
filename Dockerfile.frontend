@@ -1,36 +1,39 @@
-FROM node:20-alpine AS builder
+FROM node:20-bullseye-slim AS base
 WORKDIR /app
 
 # Allow injecting API base URL at build time
 ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
-# Install deps and build
+# Install dependencies at image build time so node_modules live inside the image/volume
+# Copy only package manifests to leverage Docker layer caching
 COPY package*.json ./
-COPY tsconfig*.json ./
-COPY vite.config.ts ./
-COPY postcss.config.js ./
-COPY tailwind.config.ts ./
-COPY public ./public
-COPY index.html ./
-COPY src ./src
+COPY package-lock.json* ./
 
+# Install production and dev deps exactly as in the host workflow
 RUN npm ci --no-audit --no-fund --prefer-offline
-RUN npm run build
 
-FROM node:20-alpine AS runner
-WORKDIR /app
+# Ensure vite and react plugin are available in the image so the dev server
+# can be started from the container without requiring global installs.
+RUN npm install --no-audit --no-fund vite@7.1.7 @vitejs/plugin-react-swc --prefer-offline
+# Also install vite globally to ensure the `vite` command is available
+RUN npm install -g vite@7.1.7 --no-audit --no-fund
 
-# Runtime: serve the built static files on port 3002
-ENV NODE_ENV=production
-COPY --from=builder /app/dist ./dist
-
-# Install a tiny static server
-RUN npm install -g http-server --no-audit --no-fund
-# Ensure curl is available for healthchecks
-RUN apk add --no-cache curl ca-certificates
+# Copy the rest of the source (this will be shadowed by the host bind mount in dev)
+COPY . /app
 
 EXPOSE 3002
 
-# If NODE_ENV=development is passed, fall back to running Vite dev server
-CMD ["sh", "-c", "if [ \"${NODE_ENV:-production}\" = 'development' ]; then npx vite --host 0.0.0.0 --port 3002; else npx http-server dist -p 3002 -a 0.0.0.0; fi"]
+# Declare node_modules as a volume so when a named volume is attached Docker
+# will initialize it with the node_modules produced at build time.
+VOLUME ["/app/node_modules"]
+
+# Persist a copy of the image-installed node_modules so a fresh named volume
+# can be bootstrapped at container start if it is empty. This avoids running
+# npm install during container startup while ensuring node_modules exist.
+RUN cp -a /app/node_modules /preinstalled_node_modules || true
+
+# Provide two execution modes:
+# - dev: run the vite dev server (expects source mounted). Use script `dev:container`.
+# - prod: serve the built static files from /app/dist
+CMD ["sh", "-c", "if [ ! -d /app/node_modules ] || [ -z \"$(ls -A /app/node_modules 2>/dev/null)\" ]; then echo 'Initializing /app/node_modules from image...' && cp -a /preinstalled_node_modules/. /app/node_modules || true; fi; if [ \"${NODE_ENV:-production}\" = 'development' ]; then vite --host 0.0.0.0 --port 3002; else npx http-server dist -p 3002 -a 0.0.0.0; fi"]

@@ -37,6 +37,35 @@ npm i
 npm run dev
 ```
 
+## Quickstart: Live development (Docker)
+
+Si quieres un entorno reproducible que ejecute frontend, backend, base de datos y un mock LLM dentro de Docker, usa el siguiente flujo. Está diseñado para que el "stack vivo" mantenga servicios en estado healthy y deje las pruebas E2E como una acción explícita.
+
+1. (Sólo la primera vez) Preparar volúmenes y permisos:
+
+```sh
+./scripts/bootstrap.sh
+```
+
+2. Iniciar el ecosistema vivo:
+
+```sh
+npm run dev:live
+# Equivalente a: docker-compose up -d --build
+```
+
+Notas:
+- `prisma-seed` se ejecuta como job de una sola ejecución durante el arranque (migra y seed) y sale con código 0 en éxito, permitiendo que `backend` dependa de su finalización.
+- El runner E2E no está corriendo permanentemente en el compose principal; ejecuta las pruebas con `npm run validate` (desde el host o en un contenedor efímero).
+
+3. Ejecutar validaciones (E2E + unit + linters):
+
+```sh
+npm run validate
+```
+
+`npm run validate` levantará los servicios necesarios y ejecutará Playwright desde el host (preferido) o en un contenedor temporal si no hay `npx`.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

@@ -65,32 +65,36 @@ if [ "${SKIP_BUILD:-0}" = "1" ]; then
   echo "SKIP_BUILD=1 set, skipping Docker build/wait steps and running Playwright only"
 fi
 
-echo "Waiting for e2e-tester container to finish and collecting results..."
+echo "Running Playwright E2E tests from the host (or in an ephemeral container)..."
 
-# Wait up to TIMEOUT seconds for the e2e-tester container to finish
-TIMEOUT=${E2E_TIMEOUT:-600}
-elapsed=0
-while /bin/true; do
-  running=$(docker inspect -f '{{.State.Running}}' praevisio_e2e_tester 2>/dev/null || echo "false")
-  if [ "$running" != "true" ]; then
-    break
+# Prefer running Playwright from host using npx if available. This keeps the
+# live docker-compose stack focused on runtime services without embedding the
+# test runner as a long-lived service.
+if command -v npx >/dev/null 2>&1; then
+  echo "Running: npx playwright test"
+  # Ensure Playwright browsers are installed; this is idempotent.
+  npx playwright install --with-deps
+  # Run Playwright using the workspace config. We forward any PLAYWRIGHT_* env
+  # variables already set by the user.
+  npx playwright test --config=playwright.config.ts --reporter=list
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "Playwright tests failed with exit code $EXIT_CODE" >&2
+    exit $EXIT_CODE
   fi
-  sleep 1
-  elapsed=$((elapsed+1))
-  if [ "$elapsed" -ge "$TIMEOUT" ]; then
-    echo "Timeout waiting for e2e-tester to finish" >&2
-    docker logs praevisio_e2e_tester --tail 200 || true
-    exit 1
+else
+  echo "npx not found. Falling back to running Playwright inside an ephemeral container."
+  # Run Playwright inside a temporary container that mounts the workspace.
+  docker run --rm -it \
+    -v "$PWD":/app:cached \
+    -w /app \
+    node:20-bullseye-slim \
+    sh -c "npm ci --no-audit --no-fund --prefer-offline || true && npx playwright install --with-deps && npx playwright test --config=playwright.config.ts --reporter=list"
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "Playwright tests (container) failed with exit code $EXIT_CODE" >&2
+    exit $EXIT_CODE
   fi
-done
-
-EXIT_CODE=$(docker inspect -f '{{.State.ExitCode}}' praevisio_e2e_tester 2>/dev/null || echo 1)
-echo "--- e2e-tester logs (tail 400) ---"
-docker logs praevisio_e2e_tester --tail 400 || true
-
-if [ "$EXIT_CODE" -ne 0 ]; then
-  echo "E2E tests failed with exit code $EXIT_CODE" >&2
-  exit $EXIT_CODE
 fi
 
 echo "Local validation completed."
