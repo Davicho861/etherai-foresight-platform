@@ -8,31 +8,42 @@ set -euo pipefail
 
 echo "Starting local validation: building containers and running E2E tests..."
 
-# Start a lightweight mock Ollama API so the backend has a local LLM endpoint during tests
-# Only start the mock if the port is free. If something is already listening (local or docker), reuse it.
-if ss -ltnp | grep -q ":11434"; then
-  echo "Port 11434 already in use — assuming an Ollama service is available"
-  MOCK_PID=""
-else
-  echo "Starting mock Ollama on http://localhost:11434"
-  node ./scripts/mock_ollama.js &
-  MOCK_PID=$!
+# Export host UID/GID so docker-compose can pass them to containers (prevents root-owned artifacts)
+export HOST_UID=$(id -u)
+export HOST_GID=$(id -g)
 
-  # wait for mock to be ready
-  for i in {1..20}; do
-    if curl -sS http://localhost:11434/ >/dev/null 2>&1; then
-      echo "Mock Ollama is ready"
-      break
+# By default we use the dockerized ollama-mock service. If you explicitly want
+# to run a host-level mock (for local debugging), set USE_HOST_OLLAMA=1 in the
+# environment before running this script.
+MOCK_PID=""
+if [ "${USE_HOST_OLLAMA:-0}" = "1" ]; then
+  # Only start a host mock if requested. If something is already listening, reuse it.
+  if ss -ltnp | grep -q ":11434"; then
+    echo "Port 11434 already in use — assuming an Ollama service is available"
+    MOCK_PID=""
+  else
+    echo "Starting mock Ollama on http://localhost:11434"
+    node ./scripts/mock_ollama.js &
+    MOCK_PID=$!
+
+    # wait for mock to be ready
+    for i in {1..20}; do
+      if curl -sS http://localhost:11434/ >/dev/null 2>&1; then
+        echo "Mock Ollama is ready"
+        break
+      fi
+      sleep 0.5
+    done
+    if ! curl -sS http://localhost:11434/ >/dev/null 2>&1; then
+      echo "Mock Ollama did not start in time" >&2
+      if [ -n "${MOCK_PID:-}" ]; then
+        kill $MOCK_PID || true
+      fi
+      exit 1
     fi
-    sleep 0.5
-  done
-  if ! curl -sS http://localhost:11434/ >/dev/null 2>&1; then
-    echo "Mock Ollama did not start in time" >&2
-    if [ -n "${MOCK_PID:-}" ]; then
-      kill $MOCK_PID || true
-    fi
-    exit 1
   fi
+else
+  echo "Using dockerized ollama-mock (not starting host mock). Set USE_HOST_OLLAMA=1 to override."
 fi
 
 docker-compose up -d --build

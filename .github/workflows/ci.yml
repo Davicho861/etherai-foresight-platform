@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  issues: write
+
 jobs:
   lint_and_test_unit:
     runs-on: ubuntu-latest
@@ -59,7 +62,10 @@ jobs:
         env:
           NODE_ENV: test
           PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
-        run: npx playwright test --config=playwright.config.ts --reporter=list
+        run: npx playwright test --config=playwright.config.ts --reporter=json --output=test-results
+      - name: Detect flaky tests
+        if: always()
+        run: node scripts/detect-flaky-tests.js
       - name: Tear down
         if: always()
         run: docker compose down --volumes || true

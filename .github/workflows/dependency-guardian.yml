@@ -1,0 +1,98 @@
+name: Dependency Guardian
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Cada lunes a las 00:00 UTC
+  workflow_dispatch:  # Permitir ejecución manual
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: write
+
+jobs:
+  audit-and-fix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        id: audit
+        run: |
+          npm audit --audit-level=high --json > audit-results.json || true
+          echo "audit_exit_code=$?" >> $GITHUB_OUTPUT
+
+      - name: Check for high/critical vulnerabilities
+        id: check-vulns
+        run: |
+          if [ -f audit-results.json ]; then
+            high_critical=$(jq '.metadata.vulnerabilities | (.high // 0) + (.critical // 0)' audit-results.json)
+            echo "high_critical_count=$high_critical" >> $GITHUB_OUTPUT
+            if [ "$high_critical" -gt 0 ]; then
+              echo "vulnerabilities_found=true" >> $GITHUB_OUTPUT
+              echo "## Vulnerabilidades encontradas (High/Critical):" > issue-body.md
+              jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "high" or .value.severity == "critical") | "- **\(.key)**: \(.value.title) (Severity: \(.value.severity))"' audit-results.json >> issue-body.md
+            else
+              echo "vulnerabilities_found=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "vulnerabilities_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Issue if vulnerabilities found
+        if: steps.check-vulns.outputs.vulnerabilities_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const issueBody = fs.readFileSync('issue-body.md', 'utf8');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Vulnerabilidades de seguridad detectadas en dependencias',
+              body: issueBody,
+              assignees: [context.actor]
+            });
+
+      - name: Attempt npm audit fix
+        id: audit-fix
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          npm audit fix
+          if git diff --quiet; then
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+            git add .
+            git commit -m "Fix security vulnerabilities via npm audit fix"
+          fi
+
+      - name: Run tests
+        id: tests
+        run: |
+          if npm test; then
+            echo "tests_passed=true" >> $GITHUB_OUTPUT
+          else
+            echo "tests_passed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request if fix successful
+        if: steps.audit-fix.outputs.changes_made == 'true' && steps.tests.outputs.tests_passed == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'Fix: Security vulnerabilities in dependencies'
+          body: 'This PR fixes security vulnerabilities detected by npm audit. Tests have passed.'
+          branch: dependency-fix-${{ github.run_id }}
+          base: main

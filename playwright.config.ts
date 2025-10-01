@@ -4,6 +4,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './playwright',
   timeout: 120_000,
+  retries: 2,
   // Run tests deterministically in CI: single worker to avoid service contention
   workers: 1,
   use: {
