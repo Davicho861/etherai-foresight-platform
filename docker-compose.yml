@@ -81,9 +81,16 @@ services:
   e2e-tester:
     image: node:20-bullseye-slim
     container_name: praevisio_e2e_tester
+    # Run the container processes as root so the container can install packages
+    # into the named volume without permission errors. We intentionally use root
+    # here for the E2E runner to avoid EACCES on npm install; outputs are
+    # collected and adjusted by the orchestrator script.
+    user: root
     working_dir: /app
     volumes:
       - ./:/app:cached
+      # Use a named docker volume for server/node_modules so the container can
+      # install and remove packages without colliding with the host bind mount.
       - e2e_tester_node_modules:/app/server/node_modules
     depends_on:
       frontend:
@@ -96,7 +103,7 @@ services:
     # Remove potentially conflicting node_modules from mounted host before installing
     # Install dependencies, install Playwright browsers (with required system deps), then run tests
     command: >
-      sh -c "cd /app && rm -rf server/node_modules || true && npm ci --no-audit --no-fund --prefer-offline && npx playwright install --with-deps && export FRONTEND_URL='http://localhost:3002' && export API_BASE='http://localhost:4000' && export PRAEVISIO_BEARER_TOKEN='demo-token' && npx playwright test --config=playwright.config.ts"
+      sh -c "cd /app && rm -rf node_modules || true && rm -rf server/node_modules || true && npm ci --no-audit --no-fund --prefer-offline && npx playwright install --with-deps && export FRONTEND_URL='http://localhost:3002' && export API_BASE='http://localhost:4000' && export PRAEVISIO_BEARER_TOKEN='demo-token' && npx playwright test --config=playwright.config.ts"
     network_mode: host
     restart: 'no'
 
