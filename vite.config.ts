@@ -9,6 +9,8 @@ export default defineConfig(({ mode }) => ({
     // Bind to all interfaces so the dev server is reachable from other containers
     host: '0.0.0.0',
     port: 3000,
+    // Allow requests that use service hostnames from within Docker networks
+    allowedHosts: ['frontend', 'localhost', '127.0.0.1', '0.0.0.0', 'host.docker.internal'],
     proxy: {
       '/api': {
         // Allow the proxy target to be configured via VITE_API_BASE_URL (set by docker-compose)
