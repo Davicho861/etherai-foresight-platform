@@ -91,6 +91,9 @@ else
     --network "$NETWORK_NAME" \
     -v "$PWD":/app \
     -w /app \
+    -e FRONTEND_URL=http://frontend:3002 \
+    -e API_BASE=http://backend:4000 \
+    -e PRAEVISIO_BEARER_TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token} \
     mcr.microsoft.com/playwright:v1.55.1-jammy \
     bash -lc "npm ci --include=dev --no-audit --no-fund || npm install --legacy-peer-deps --no-audit --no-fund; npx playwright test" || (echo "Playwright tests (container) failed" >&2; exit 1)
 fi
