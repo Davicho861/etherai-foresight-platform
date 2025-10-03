@@ -51,71 +51,67 @@
       - main [ref=e74]:
         - generic [ref=e75]:
           - generic [ref=e78]:
-            - link "P Praevisio AI Test" [ref=e80] [cursor=pointer]:
+            - link "P Praevisio AI" [ref=e80] [cursor=pointer]:
               - /url: "#"
               - generic [ref=e81] [cursor=pointer]: P
               - generic [ref=e82] [cursor=pointer]: Praevisio AI
-              - generic [ref=e83] [cursor=pointer]: Test
-            - navigation [ref=e84]:
-              - link "Inicio" [ref=e85] [cursor=pointer]:
+            - navigation [ref=e83]:
+              - link "Inicio" [ref=e84] [cursor=pointer]:
                 - /url: "#hero"
-              - link "Dashboard" [ref=e86] [cursor=pointer]:
+              - link "Dashboard" [ref=e85] [cursor=pointer]:
                 - /url: /dashboard
-              - link "Precios" [ref=e87] [cursor=pointer]:
+              - link "Precios" [ref=e86] [cursor=pointer]:
                 - /url: /pricing
-              - link "Módulo LATAM" [ref=e88] [cursor=pointer]:
+              - link "Módulo LATAM" [ref=e87] [cursor=pointer]:
                 - /url: /module/colombia
-              - link "Qué Hacemos" [ref=e89] [cursor=pointer]:
+              - link "Qué Hacemos" [ref=e88] [cursor=pointer]:
                 - /url: "#features"
-              - link "Soluciones" [ref=e90] [cursor=pointer]:
+              - link "Soluciones" [ref=e89] [cursor=pointer]:
                 - /url: "#solutions"
-              - link "Cómo Funciona" [ref=e91] [cursor=pointer]:
+              - link "Cómo Funciona" [ref=e90] [cursor=pointer]:
                 - /url: "#how-it-works"
-              - link "Casos de Éxito" [ref=e92] [cursor=pointer]:
+              - link "Casos de Éxito" [ref=e91] [cursor=pointer]:
                 - /url: "#credibility"
-              - button "Ver Demo" [ref=e93] [cursor=pointer]
-          - main [ref=e94]:
-            - generic [ref=e95]:
-              - heading "Centro de Mando Praevisio AI - Certificado por Aion" [level=1] [ref=e96]
-              - generic [ref=e98]: OPERACIONAL
-            - generic [ref=e100]:
-              - generic [ref=e101]:
-                - generic [ref=e102]:
-                  - img [ref=e104]:
-                    - generic [ref=e109]:
-                      - generic [ref=e110]: Carga del Sistema
-                      - generic [ref=e111]: 45.5%
-                  - generic [ref=e113]:
-                    - generic [ref=e114]:
-                      - generic [ref=e115]: Análisis Activos
-                      - generic [ref=e116]: "8"
-                    - generic [ref=e117]:
-                      - generic [ref=e118]: Alertas Críticas
-                      - generic [ref=e119]: "3"
-                    - generic [ref=e120]:
-                      - generic [ref=e121]: Base de Datos
-                      - generic [ref=e122]: ONLINE (32 conexiones)
-                - img [ref=e124]:
-                  - generic [ref=e128]: GeoMap (mock)
-              - generic [ref=e129]:
-                - heading "Métricas Adicionales" [level=4] [ref=e130]
-                - generic [ref=e131]: "11"
-                - generic [ref=e132]: Métrica acumulada del sistema
-              - generic [ref=e133]:
-                - heading "Estado de Componentes" [level=3] [ref=e134]
-                - list [ref=e135]:
-                  - listitem [ref=e136]:
+              - button "Ver Demo" [ref=e92] [cursor=pointer]
+          - main [ref=e93]:
+            - generic [ref=e94]:
+              - heading "Centro de Mando Praevisio AI" [level=1] [ref=e95]
+              - generic [ref=e97]: OPERACIONAL
+            - generic [ref=e98]:
+              - generic [ref=e100]:
+                - img [ref=e102]:
+                  - generic [ref=e107]:
+                    - generic [ref=e108]: Carga del Sistema
+                    - generic [ref=e109]: 45.5%
+                - generic [ref=e111]:
+                  - generic [ref=e112]:
+                    - generic [ref=e113]: Análisis Activos
+                    - generic [ref=e114]: "8"
+                  - generic [ref=e115]:
+                    - generic [ref=e116]: Alertas Críticas
+                    - generic [ref=e117]: "3"
+                  - generic [ref=e118]:
+                    - generic [ref=e119]: Base de Datos
+                    - generic [ref=e120]: ONLINE (32 conexiones)
+              - generic [ref=e121]:
+                - heading "Métricas Adicionales" [level=4] [ref=e122]
+                - generic [ref=e123]: "11"
+                - generic [ref=e124]: Suma de análisis activos y alertas críticas
+              - generic [ref=e125]:
+                - heading "Estado de Componentes" [level=3] [ref=e126]
+                - list [ref=e127]:
+                  - listitem [ref=e128]:
                     - text: "API Principal:"
-                    - generic [ref=e137]: ONLINE
-                    - generic [ref=e138]: 75 ms
-                  - listitem [ref=e139]:
+                    - generic [ref=e129]: ONLINE
+                    - generic [ref=e130]: 75 ms
+                  - listitem [ref=e131]:
                     - text: "Motor IA:"
-                    - generic [ref=e140]: ACTIVO
-                    - generic [ref=e141]: 5 modelos
-                  - listitem [ref=e142]:
+                    - generic [ref=e132]: ACTIVO
+                    - generic [ref=e133]: 5 modelos
+                  - listitem [ref=e134]:
                     - text: "Pipeline Datos:"
-                    - generic [ref=e143]: DEGRADADO
-                    - generic [ref=e144]: Hace 2 horas
+                    - generic [ref=e135]: DEGRADADO
+                    - generic [ref=e136]: Hace 2 horas
   - generic:
     - generic: Praevisio Demo
     - generic: Demo Subtitle

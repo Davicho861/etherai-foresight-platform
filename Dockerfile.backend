@@ -7,20 +7,8 @@ COPY server ./app
 WORKDIR /app/app
 
 # Copy package files and install deps inside /app/app so node_modules are colocated
-# Copy server package files. If the repo uses a root lockfile (workspaces),
-# prefer that lockfile by copying it into the server folder inside the image
-# so that `npm ci` has a lockfile to consume.
 COPY server/package*.json ./
-# If a root package-lock.json was provided in the build context, copy it into
-# the server app folder as package-lock.json so npm ci works with workspaces.
-# This COPY will simply be a no-op if no root package-lock.json is present.
-COPY package-lock.json ./package-lock.json
-# Try clean install from lockfile; if lockfile is incompatible, fall back to a
-# best-effort `npm install --legacy-peer-deps` to allow the image build to
-# proceed. This keeps deterministic installs when possible but avoids hard
-# failures in heterogeneous workspace setups.
-RUN if [ -f package-lock.json ]; then echo "Using root package-lock.json for server npm ci"; fi \
- && (npm ci --include=dev --no-audit --no-fund || (echo "npm ci failed, falling back to npm install" && npm install --legacy-peer-deps --no-audit --no-fund))
+RUN npm ci
 
 # Generate Prisma client against the schema (will use DATABASE_URL in CI)
 RUN npx prisma generate --schema=./prisma/schema.prisma || true

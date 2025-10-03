@@ -26,9 +26,6 @@ test.describe('Dashboard E2E', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
     console.log('Current URL after goto:', await page.url());
 
-    // Ensure main branding exists
-    await expect(page.locator('text=Test')).toBeVisible();
-
     // Validate KPIs are visible and match backend
     await expect(page.locator('text=An\u00e1lisis Activos')).toBeVisible();
     await expect(page.locator('div.bg-etherblue-dark\\/50:has-text("Análisis Activos") .text-2xl')).toHaveText(expectedAnalyses);

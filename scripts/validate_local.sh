@@ -67,35 +67,34 @@ fi
 
 echo "Running Playwright E2E tests from the host (or in an ephemeral container)..."
 
-echo "Running Playwright E2E tests inside containerized runner to avoid host permissions issues..."
-
-# Use the docker-compose service `e2e-tester` as the canonical isolated runner.
-# This service installs Playwright and runs the tests inside the container.
-if docker-compose run --rm e2e-tester; then
+# Prefer running Playwright from host using npx if available. This keeps the
+# live docker-compose stack focused on runtime services without embedding the
+# test runner as a long-lived service.
+if command -v npx >/dev/null 2>&1; then
+  echo "Running: npx playwright test"
+  # Ensure Playwright browsers are installed; this is idempotent.
+  npx playwright install --with-deps
+  # Run Playwright using the workspace config. We forward any PLAYWRIGHT_* env
+  # variables already set by the user.
+  npx playwright test --config=playwright.config.ts --reporter=list
+  EXIT_CODE=$?
+  if [ $EXIT_CODE -ne 0 ]; then
+    echo "Playwright tests failed with exit code $EXIT_CODE" >&2
+    exit $EXIT_CODE
+  fi
+else
+  echo "npx not found. Falling back to running Playwright inside an ephemeral container."
+  # Run Playwright inside a temporary container that mounts the workspace.
+  docker run --rm -it \
+    -v "$PWD":/app:cached \
+    -w /app \
+    node:20-bullseye-slim \
+    sh -c "npm ci --no-audit --no-fund --prefer-offline || true && npx playwright install --with-deps && npx playwright test --config=playwright.config.ts --reporter=list"
   EXIT_CODE=$?
   if [ $EXIT_CODE -ne 0 ]; then
     echo "Playwright tests (container) failed with exit code $EXIT_CODE" >&2
     exit $EXIT_CODE
   fi
-else
-  # If the e2e-tester service is not defined, run Playwright inside an
-  # ephemeral official Playwright container attached to the same docker
-  # network used by docker-compose so service hostnames (e.g. `backend`)
-  # resolve correctly. This avoids host/network DNS problems.
-  echo "e2e-tester service missing — running Playwright in an ephemeral Playwright container"
-  # Ensure the compose network name is available; default declared in docker-compose.yml
-  NETWORK_NAME=${COMPOSE_PROJECT_NAME:-$(basename "$PWD")}_praevisio_network
-  # Fallback to explicit network name used in compose file
-  NETWORK_NAME="praevisio_network"
-  docker run --rm \
-    --network "$NETWORK_NAME" \
-    -v "$PWD":/app \
-    -w /app \
-    -e FRONTEND_URL=http://frontend:3002 \
-    -e API_BASE=http://backend:4000 \
-    -e PRAEVISIO_BEARER_TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token} \
-    mcr.microsoft.com/playwright:v1.55.1-jammy \
-    bash -lc "npm ci --include=dev --no-audit --no-fund || npm install --legacy-peer-deps --no-audit --no-fund; npx playwright test" || (echo "Playwright tests (container) failed" >&2; exit 1)
 fi
 
 echo "Local validation completed."

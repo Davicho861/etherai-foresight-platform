@@ -1,7 +1,12 @@
 # Page snapshot
 
 ```yaml
-- generic [active]:
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "Notifications alt+T"
+    - generic [ref=e3]: Cargando dashboard...
   - generic:
     - generic: Praevisio Demo
     - generic: Demo Subtitle
