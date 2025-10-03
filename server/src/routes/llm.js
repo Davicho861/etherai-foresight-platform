@@ -1,5 +1,5 @@
 import express from 'express';
-import { getLLM } from '../agents.js';
+import { getLLM, PrometeoAgent } from '../agents.js';
 
 const router = express.Router();
 
@@ -44,6 +44,47 @@ router.post('/generate-test', async (req, res) => {
     return res.json({ test: out });
   } catch (err) {
     console.error('LLM generate-test error', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/llm/plan-and-code
+router.post('/plan-and-code', async (req, res) => {
+  try {
+    const { description } = req.body || {};
+    if (!description) return res.status(400).json({ error: 'description is required' });
+    const llm = getLLM();
+    const prompt = `Como Prometeo, el Forjador de Pruebas, genera código funcional y pruebas simultáneamente para la siguiente funcionalidad:
+
+Descripción: ${description}
+
+Instrucciones:
+1. Crea código funcional completo (componente, función, etc.)
+2. Genera pruebas unitarias exhaustivas usando Jest
+3. Asegura que código y pruebas sean inseparables
+
+Devuelve un JSON válido con la estructura:
+{
+  "files": [
+    {
+      "path": "ruta/relativa/al/archivo.ext",
+      "content": "contenido completo del archivo"
+    },
+    ...
+  ]
+}
+
+Incluye al menos un archivo de código y uno de pruebas.`;
+    const out = await (llm.call ? llm.call(prompt) : (await llm.generate(prompt)).generations[0][0].text);
+    let result;
+    try {
+      result = JSON.parse(out);
+    } catch (parseErr) {
+      return res.status(500).json({ error: 'Invalid JSON response from LLM', raw: out });
+    }
+    return res.json(result);
+  } catch (err) {
+    console.error('LLM plan-and-code error', err);
     return res.status(500).json({ error: err.message });
   }
 });

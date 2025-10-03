@@ -123,11 +123,52 @@ services:
       start_period: 5s
     restart: 'no'
 
+  # ChromaDB for Conciencia Colectiva 3.0 (Vector Database)
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: praevisio_chromadb
+    ports:
+      - '8000:8000'
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/v1/heartbeat || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: 'no'
+
+  # Neo4j for Archivo Akáshico and Lóbulo Causal (Graph Database)
+  neo4j:
+    image: neo4j:5.20
+    container_name: praevisio_neo4j
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/praevisio
+      - NEO4J_PLUGINS=["graph-data-science"]
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p praevisio 'MATCH () RETURN count(*) limit 1;' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 12
+    restart: 'no'
+
 volumes:
   praevisio_db_data:
   backend_node_modules:
   e2e_tester_node_modules:
   praevisio_frontend_node_modules:
+  chromadb_data:
+  neo4j_data:
+  neo4j_logs:
 
 networks:
   default:

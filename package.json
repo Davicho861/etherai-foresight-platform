@@ -22,7 +22,8 @@
   "build": "npx vite build",
   "build:dev": "npx vite build --mode development",
   "lint": "eslint \"src/**/*.{js,ts,tsx}\" \"server/**/*.{js,ts}\" \"scripts/**/*.{js,ts}\" \"playwright/**/*.{ts,js}\" --max-warnings=7",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "develop:auto": "node ./scripts/develop-auto.js --"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

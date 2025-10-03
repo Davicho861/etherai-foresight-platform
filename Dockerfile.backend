@@ -8,7 +8,7 @@ WORKDIR /app/app
 
 # Copy package files and install deps inside /app/app so node_modules are colocated
 COPY server/package*.json ./
-RUN npm ci
+RUN npm install
 
 # Generate Prisma client against the schema (will use DATABASE_URL in CI)
 RUN npx prisma generate --schema=./prisma/schema.prisma || true

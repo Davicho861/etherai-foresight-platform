@@ -9,6 +9,7 @@ import dashboardRouter from './routes/dashboard.js';
 import platformStatusRouter from './routes/platform-status.js';
 import agentRouter from './routes/agent.js';
 import llmRouter from './routes/llm.js';
+import contractRouter from './routes/contract.js';
 
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.use('/api/dashboard', bearerAuth, dashboardRouter);
 app.use('/api/platform-status', bearerAuth, platformStatusRouter);
 app.use('/api/agent', agentRouter);
 app.use('/api/llm', bearerAuth, llmRouter);
+app.use('/api/contracts', contractRouter);
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 45000;
 app.listen(PORT, () => {

@@ -176,4 +176,276 @@ export class ReportGenerationAgent {
   }
 }
 
+// Metatrón Omega - Agentes Precognitivos
+
+export class PrometeoAgent {
+  constructor() {
+    this.role = 'Prometeo, el Forjador de Pruebas';
+    this.goal = 'Crear pruebas unitarias, de integración y visuales simultáneamente con el código funcional';
+    this.backstory = 'Forjador divino que garantiza que el código y sus pruebas nazcan como una entidad inseparable, previniendo vulnerabilidades desde el nacimiento.';
+    this.tools = [fileSystemTool, codeInterpreterTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role}. ${this.backstory}
+Tu directiva sagrada es: NINGÚN CÓDIGO EXISTE SIN SUS PRUEBAS.
+
+Cuando un desarrollador crea una función, tú debes forjar inmediatamente:
+1. Pruebas unitarias exhaustivas
+2. Pruebas de integración que validen interacciones
+3. Pruebas de regresión visual si aplica
+
+El código y las pruebas son gemelos inseparables. Si el código cambia, las pruebas deben adaptarse instantáneamente.
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+
+  // Método para generar pruebas basadas en código
+  async generateTests(codeSnippet, componentType = 'function') {
+    const prompt = `Analiza este código y genera pruebas completas:
+
+Código:
+${codeSnippet}
+
+Tipo de componente: ${componentType}
+
+Genera:
+1. Pruebas unitarias (Jest)
+2. Pruebas de integración si aplica
+3. Cobertura de casos edge
+
+Responde con código de pruebas listo para usar.`;
+
+    const llmInstance = getLLM();
+    const response = await llmInstance.call(prompt);
+    return response;
+  }
+}
+
+export class CerberoStaticHead {
+  constructor() {
+    this.role = 'StaticAnalysisHead - Primera Cabeza de Cerbero';
+    this.goal = 'Analizar código estáticamente en busca de vulnerabilidades conocidas (SAST)';
+    this.backstory = 'Guardiana implacable que examina el código sin ejecutarlo, detectando patrones de seguridad peligrosos.';
+    this.tools = [fileSystemTool, codeInterpreterTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role} del Cerbero de Seguridad.
+${this.backstory}
+
+Tu vigilancia incluye:
+- Inyección SQL
+- XSS (Cross-Site Scripting)
+- Autenticación débil
+- Exposición de datos sensibles
+- Race conditions
+- Buffer overflows
+
+NINGÚN CÓDIGO PASA SIN TU APROBACIÓN.
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class CerberoDynamicHead {
+  constructor() {
+    this.role = 'DynamicAnalysisHead - Segunda Cabeza de Cerbero';
+    this.goal = 'Ejecutar pruebas de penetración simuladas en entornos de staging (DAST)';
+    this.backstory = 'Cazadora que ataca el sistema en ejecución, simulando ataques reales para probar defensas.';
+    this.tools = [webBrowserTool, searchTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role} del Cerbero de Seguridad.
+${this.backstory}
+
+Tus ataques simulados incluyen:
+- SQL injection attempts
+- XSS payloads
+- CSRF attacks
+- Authentication bypass
+- API abuse
+- Rate limiting tests
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class CerberoDependencyHead {
+  constructor() {
+    this.role = 'DependencyAnalysisHead - Tercera Cabeza de Cerbero';
+    this.goal = 'Analizar dependencias para vulnerabilidades conocidas y riesgos de supply chain';
+    this.backstory = 'Vigilante de la cadena de suministro que examina cada dependencia en busca de traición oculta.';
+    this.tools = [searchTool, webBrowserTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role} del Cerbero de Seguridad.
+${this.backstory}
+
+Tu análisis incluye:
+- Vulnerabilidades conocidas en dependencias
+- Reputación del maintainer
+- Historial de seguridad
+- Licencias problemáticas
+- Dependencias transitivas
+- Supply chain attacks
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class CronosAgent {
+  constructor() {
+    this.role = 'Cronos - Optimizador de Flujos';
+    this.goal = 'Analizar y optimizar flujos de trabajo, identificando cuellos de botella y mejorando eficiencia';
+    this.backstory = 'Dios del tiempo que devora ineficiencias, optimizando procesos para que el futuro llegue más rápido.';
+    this.tools = [searchTool, fileSystemTool, codeInterpreterTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role}, Maestro del Tiempo.
+${this.backstory}
+
+Tu dominio incluye:
+- Análisis de rendimiento
+- Optimización de pipelines
+- Detección de bottlenecks
+- Mejora de throughput
+- Reducción de latencia
+- Automatización de procesos repetitivos
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class KairosAgent {
+  constructor() {
+    this.role = 'Kairós - Agente de Oportunidad';
+    this.goal = 'Detectar momentos oportunos y tendencias tecnológicas emergentes';
+    this.backstory = 'Espíritu del momento oportuno, que sabe cuándo actuar y qué tecnologías abrazar.';
+    this.tools = [webBrowserTool, searchTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role}, Señor del Momento Perfecto.
+${this.backstory}
+
+Tu visión incluye:
+- Tendencias tecnológicas
+- Mercado emergente
+- Competidores
+- Regulaciones
+- Oportunidades de inversión
+- Cambios paradigmáticos
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class AionAgent {
+  constructor() {
+    this.role = 'Aion - Arquitecto del Futuro';
+    this.goal = 'Diseñar y proponer arquitecturas futuras para la evolución del sistema';
+    this.backstory = 'Arquitecto eterno que diseña no para hoy, sino para el siglo próximo.';
+    this.tools = [fileSystemTool, codeInterpreterTool, searchTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role}, Visionario Eterno.
+${this.backstory}
+
+Tu diseño incluye:
+- Arquitecturas escalables
+- Tecnologías emergentes
+- Paradigmas futuros
+- Migraciones estratégicas
+- Evolución sostenible
+- Innovación disruptiva
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
+export class EthicalGuardianAgent {
+  constructor() {
+    this.role = 'Guardían Ético';
+    this.goal = 'Asegurar que todas las acciones del sistema cumplan con principios éticos y morales';
+    this.backstory = 'Centinela moral que protege contra sesgos, daños y decisiones injustas.';
+    this.tools = [searchTool, fileSystemTool];
+  }
+
+  async createAgent() {
+    const prompt = `Eres ${this.role}, Protector de la Moralidad.
+${this.backstory}
+
+Tus principios incluyen:
+- Transparencia absoluta
+- Justicia y equidad
+- Protección de privacidad
+- Prevención de daño
+- Responsabilidad ética
+- Bien mayor
+
+Tu objetivo: ${this.goal}`;
+
+    const llmInstance = getLLM();
+    return await createOpenAIFunctionsAgent({
+      llm: llmInstance,
+      tools: this.tools,
+      prompt,
+    });
+  }
+}
+
 export { getLLM };

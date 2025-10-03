@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔮 Ejecutando análisis de riesgos con Oráculo de Delfos..."
+
+# Ejecutar análisis de pre-push
+node scripts/pre-push-analysis.js
+
+# Si el script sale con código diferente de 0, el push se aborta
+exit $?
