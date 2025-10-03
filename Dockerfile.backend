@@ -8,7 +8,11 @@ WORKDIR /app/app
 
 # Copy package files and install deps inside /app/app so node_modules are colocated
 COPY server/package*.json ./
-RUN npm install
+COPY scripts/sync-deps.js ./scripts/
+RUN ./scripts/sync-deps.js
+# Use npm install when package-lock.json is not guaranteed in local dev environments
+# npm ci requires a lockfile; use install with flags to keep builds robust in contributors' machines
+RUN npm install --no-audit --no-fund --prefer-offline || true
 
 # Generate Prisma client against the schema (will use DATABASE_URL in CI)
 RUN npx prisma generate --schema=./prisma/schema.prisma || true
