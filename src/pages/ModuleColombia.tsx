@@ -6,22 +6,8 @@ const ModuleColombia: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
-    const token = (globalThis?.VITE_PRAEVISIO_TOKEN || (import.meta.env as any)?.VITE_PRAEVISIO_TOKEN || 'demo-token');
-
-    // Determine API base in a robust way:
-    // 1) import.meta.env (Vite), 2) globalThis.VITE_API_BASE_URL (runtime injection),
-    // 3) default to localhost:4000
-    const viteEnv = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
-    const runtimeGlobal = (globalThis as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
-    const resolvedBase = viteEnv || runtimeGlobal || 'http://localhost:4000';
-
-    // normalize: remove trailing slash if present
-    const base = resolvedBase.endsWith('/') ? resolvedBase.slice(0, -1) : resolvedBase;
-
-    // Always use absolute URL to prevent requests being routed to the frontend dev server
-    const url = `${base}/api/module/colombia/overview`;
-
-    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+    const token = (globalThis?.VITE_PRAEVISIO_TOKEN || process.env.VITE_PRAEVISIO_TOKEN || 'demo-token');
+    fetch('/api/module/colombia/overview', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         if (!res.ok) throw new Error('fetch_error');
         return res.json();

@@ -49,21 +49,11 @@ const CommandCenterLayout: React.FC = () => {
       try {
         const token = (typeof window !== 'undefined' && window.localStorage.getItem('praevisio_token')) || 'demo-token';
         console.log('token:', token);
-
-        // Determine API base in a robust way:
-        // 1) import.meta.env (Vite), 2) globalThis.VITE_API_BASE_URL (runtime injection),
-        // 3) default to localhost:4000
-        const viteEnv = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
-        const runtimeGlobal = (globalThis as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL;
-        const resolvedBase = viteEnv || runtimeGlobal || 'http://localhost:4000';
-
-        // normalize: remove trailing slash if present
-        const base = resolvedBase.endsWith('/') ? resolvedBase.slice(0, -1) : resolvedBase;
-
-        // Always use absolute URL to prevent requests being routed to the frontend dev server
-        const url = `${base}/api/platform-status`;
+        // prefer VITE_API_BASE_URL if provided (useful for staging/production)
+        const base = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL || '';
+        const prefix = base.endsWith('/') || base === '' ? base.slice(0, -0) : base;
+        const url = prefix ? `${prefix}/api/platform-status` : '/api/platform-status';
         console.log('fetching:', url);
-
         const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
         console.log('res.ok:', res.ok, 'status:', res.status);
         if (!res.ok) throw new Error('fetch_error');
