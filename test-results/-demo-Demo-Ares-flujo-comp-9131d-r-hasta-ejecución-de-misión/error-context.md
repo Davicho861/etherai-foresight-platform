@@ -1,0 +1,91 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "Notifications alt+T"
+    - generic [ref=e3]:
+      - complementary [ref=e4]:
+        - generic [ref=e5]:
+          - heading "Panel de Control" [level=2] [ref=e6]
+          - paragraph [ref=e7]: "Navega por pa\x00edses y niveles de acceso"
+        - generic [ref=e9]:
+          - button "P\u0000ublico" [ref=e10] [cursor=pointer]
+          - button "Corporativo" [ref=e11] [cursor=pointer]
+          - button "Estado" [ref=e12] [cursor=pointer]
+        - generic [ref=e13]:
+          - button "🇦🇷 Argentina 45.1M \u0000B Estabilidad 6.2/10" [ref=e14] [cursor=pointer]:
+            - generic [ref=e15] [cursor=pointer]:
+              - generic [ref=e16] [cursor=pointer]: 🇦🇷
+              - generic [ref=e17] [cursor=pointer]:
+                - generic [ref=e18] [cursor=pointer]: Argentina
+                - generic [ref=e19] [cursor=pointer]: "45.1M \x00B Estabilidad 6.2/10"
+          - button "🇨🇴 Colombia 50.9M \u0000B Estabilidad 6.8/10" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21] [cursor=pointer]:
+              - generic [ref=e22] [cursor=pointer]: 🇨🇴
+              - generic [ref=e23] [cursor=pointer]:
+                - generic [ref=e24] [cursor=pointer]: Colombia
+                - generic [ref=e25] [cursor=pointer]: "50.9M \x00B Estabilidad 6.8/10"
+          - button "🇵🇪 Perú 33.2M \u0000B Estabilidad 6/10" [ref=e26] [cursor=pointer]:
+            - generic [ref=e27] [cursor=pointer]:
+              - generic [ref=e28] [cursor=pointer]: 🇵🇪
+              - generic [ref=e29] [cursor=pointer]:
+                - generic [ref=e30] [cursor=pointer]: Perú
+                - generic [ref=e31] [cursor=pointer]: "33.2M \x00B Estabilidad 6/10"
+      - main [ref=e32]:
+        - generic [ref=e33]:
+          - heading "Praevisio AI - Centro de Mando (Ares) — Versión completa (archivada)" [level=1] [ref=e34]
+          - heading "Manus AI - Centro de Mando" [level=2] [ref=e35]
+          - generic [ref=e36]:
+            - generic [ref=e37]: Nivel de acceso
+            - combobox "Nivel de acceso" [ref=e39]:
+              - option "Acceso Público" [selected]
+              - option "Acceso Corporativo"
+              - option "Acceso Estado"
+            - button "Acceso Estado" [ref=e40] [cursor=pointer]
+          - generic [ref=e41]:
+            - generic [ref=e42]:
+              - main [ref=e43]:
+                - generic [ref=e44]:
+                  - heading "🇨🇴 Colombia" [level=2] [ref=e45]:
+                    - generic [ref=e46]: 🇨🇴
+                    - generic [ref=e47]: Colombia
+                  - generic [ref=e48]: "Población: 50.9M • PIB: $320B • Estabilidad: 6.8/10"
+                - generic [ref=e52]:
+                  - generic [ref=e53]:
+                    - generic [ref=e54]: Inestabilidad Social
+                    - generic [ref=e55]: Evaluar estabilidad social en Colombia
+                  - button "Iniciar" [ref=e57] [cursor=pointer]
+              - generic [ref=e58]:
+                - heading "Galería de Misiones" [level=3] [ref=e59]
+                - generic [ref=e60]:
+                  - generic [ref=e62]:
+                    - generic [ref=e63]:
+                      - generic [ref=e64]: Cambio Climático
+                      - generic [ref=e65]: Argentina
+                      - generic [ref=e66]: Analizar impactos del cambio climático en Argentina
+                    - button "Ver Replay" [ref=e68] [cursor=pointer]
+                  - generic [ref=e70]:
+                    - generic [ref=e71]:
+                      - generic [ref=e72]: Inestabilidad Social
+                      - generic [ref=e73]: Colombia
+                      - generic [ref=e74]: Evaluar estabilidad social en Colombia
+                    - button "Ver Replay" [ref=e76] [cursor=pointer]
+            - complementary [ref=e77]:
+              - generic [ref=e78]:
+                - heading "Mission Control" [level=3] [ref=e80]
+                - generic [ref=e82]:
+                  - text: "Estado de la misión:"
+                  - generic [ref=e83]: Inactiva
+  - generic:
+    - generic: Praevisio Demo
+    - generic: Demo Subtitle
+    - generic: Cargando dashboard...
+    - generic: Mapa cargado
+    - generic: Colombia
+    - generic: Cargando planes...
+    - generic: Planes
+    - generic: Dashboard
+```

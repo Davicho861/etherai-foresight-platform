@@ -1,0 +1,4 @@
+[
+  { "id": "basic", "name": "Basic", "price": "$0", "description": "Prueba", "features": [] },
+  { "id": "elite", "name": "Elite", "price": "$999", "description": "Enterprise", "features": ["Soporte"] }
+]

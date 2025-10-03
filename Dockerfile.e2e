@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/playwright:v1.55.1-jammy
+
+# Minimal E2E runner image based on Playwright official image
+WORKDIR /app
+
+# Copy package metadata and install only project deps (including dev deps like @playwright/test)
+COPY package.json package-lock.json ./
+
+# Use npm ci to install exact dependency tree including devDependencies
+RUN npm ci --include=dev --no-audit --no-fund
+
+# Copy rest of the project
+COPY . .
+
+# Ensure test-results directory exists and is writable by the non-root user in the base image
+RUN mkdir -p /app/test-results \
+ && chown -R pwuser:pwuser /app/test-results /app || true
+
+# Ensure tests run as non-root user provided by the base image
+USER pwuser
+
+# Default command will be overridden by docker-compose/run, keep entrypoint simple
+ENTRYPOINT ["npx", "playwright", "test"]
