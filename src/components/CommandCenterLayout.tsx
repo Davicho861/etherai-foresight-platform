@@ -74,7 +74,7 @@ const CommandCenterLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <aside className={`flex flex-col ${collapsed ? 'w-16' : 'w-64'} bg-etherblue-dark/80 text-white border-r border-gray-800 transition-all`}>
+      <aside className={`flex flex-col ${collapsed ? 'w-16' : 'w-64'} bg-etherblue-dark/80 text-white border-r border-gray-800 transition-all`} data-testid="sidebar-nav">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-white/10 rounded">
@@ -82,7 +82,7 @@ const CommandCenterLayout: React.FC = () => {
             </div>
             {!collapsed && <div className="font-bold">Praevisio AI</div>}
           </div>
-          <button aria-label="collapse" onClick={() => setCollapsed(s => !s)} className="p-2 rounded hover:bg-white/5">
+          <button aria-label="collapse" onClick={() => setCollapsed(s => !s)} className="p-2 rounded hover:bg-white/5" data-testid="sidebar-collapse-btn">
             {/* simple menu icon */}
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
@@ -90,7 +90,7 @@ const CommandCenterLayout: React.FC = () => {
 
         {/* Estado General */}
         {!collapsed && (
-          <div className="px-4 pb-2">
+          <div className="px-4 pb-2" data-testid="platform-status">
             <div className="flex items-center space-x-2">
               <span className="font-bold text-lg">{platformStatus ? platformStatus.statusGeneral : 'Cargando...'}</span>
               {platformStatus && <StatusDot status={platformStatus.statusGeneral === 'OPERACIONAL' ? 'ONLINE' : 'OFFLINE'} />}
@@ -99,22 +99,22 @@ const CommandCenterLayout: React.FC = () => {
         )}
 
         <nav className="flex-1 p-2 space-y-1">
-          <NavItem to="/dashboard" icon={<LayoutDashboard />} label="Visión General" collapsed={collapsed} status={platformStatus?.componentes?.apiPrincipal?.status} />
-          <NavItem to="#" icon={<Activity />} label="Análisis de Señales" collapsed={collapsed} status={platformStatus?.componentes?.pipelineDeDatos?.status} />
-          <NavItem to="#" icon={<Brain />} label="Modelos Predictivos" collapsed={collapsed} status={platformStatus?.componentes?.motorPredictivoIA?.status} />
-          <NavItem to="#" icon={<Lightbulb />} label="Generador de Escenarios" collapsed={collapsed} />
-          <NavItem to="#" icon={<AlertCircle />} label="Reportes y Alertas" collapsed={collapsed} />
-          <NavItem to="#" icon={<Settings />} label="Configuración" collapsed={collapsed} />
+          <NavItem to="/dashboard" icon={<LayoutDashboard />} label="Visión General" collapsed={collapsed} status={platformStatus?.componentes?.apiPrincipal?.status} data-testid="nav-vision-general" />
+          <NavItem to="#" icon={<Activity />} label="Análisis de Señales" collapsed={collapsed} status={platformStatus?.componentes?.pipelineDeDatos?.status} data-testid="nav-analisis-de-senales" />
+          <NavItem to="#" icon={<Brain />} label="Modelos Predictivos" collapsed={collapsed} status={platformStatus?.componentes?.motorPredictivoIA?.status} data-testid="nav-modelos-predictivos" />
+          <NavItem to="#" icon={<Lightbulb />} label="Generador de Escenarios" collapsed={collapsed} data-testid="nav-generador-de-escenarios" />
+          <NavItem to="#" icon={<AlertCircle />} label="Reportes y Alertas" collapsed={collapsed} data-testid="nav-reportes-y-alertas" />
+          <NavItem to="#" icon={<Settings />} label="Configuración" collapsed={collapsed} data-testid="nav-configuracion" />
         </nav>
 
-        <div className="p-4">
+        <div className="p-4" data-testid="user-profile">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">A</div>
               {!collapsed && <div className="text-sm">Nombre de Analista<br/><span className="text-xs text-gray-300">Estratega de Riesgos</span></div>}
             </div>
             {!collapsed && (
-              <button onClick={() => setDark(d => !d)} className="p-2 rounded hover:bg-white/5">
+              <button onClick={() => setDark(d => !d)} className="p-2 rounded hover:bg-white/5" data-testid="theme-toggle-btn">
                 {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
             )}
