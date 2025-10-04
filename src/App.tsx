@@ -8,7 +8,8 @@ import NotFound from "./pages/NotFound";
 import ModuleColombia from "./pages/ModuleColombia";
 import PricingPage from "./pages/PricingPage";
 import DemoPage from "./pages/DemoPage";
-import MetatronPanel from "./components/MetatronPanel";
+import CommandCenterLayout from "./components/CommandCenterLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 

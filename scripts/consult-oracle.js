@@ -8,7 +8,7 @@ if (args.length === 0) {
 }
 const prompt = args.join(' ');
 
-const API = process.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API = process.env.VITE_API_BASE_URL || 'http://localhost:4000';
 (async ()=>{
   try {
     const resp = await fetch(API + '/api/oracle/consult', {

@@ -6,7 +6,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 class OllamaLLM {
   constructor(opts = {}) {
     this.model = opts.model || process.env.OLLAMA_MODEL || 'llama3';
-    this.url = opts.url || process.env.OLLAMA_URL || 'http://host.docker.internal:11434/api/generate';
+    this.url = opts.url || process.env.OLLAMA_URL || 'http://ollama-mock:11434/api/generate';
   }
 
   async _callOllama(prompt) {

@@ -15,7 +15,7 @@ async function cleanDocker() {
     console.log('[docker-janitor] Starting Docker cleanup...');
 
     // Execute docker system prune -f to remove unused containers, networks, and images
-    execSync('docker system prune -f --volumes', { encoding: 'utf8', stdio: 'inherit' });
+    const result = execSync('docker system prune -f --volumes', { encoding: 'utf8', stdio: 'inherit' });
 
     console.log('[docker-janitor] Docker cleanup completed successfully.');
     return true;

@@ -11,6 +11,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { getChromaClient } from '../server/src/database.js';
 
 function textToEmbedding(text, dims = 8) {
   // Lightweight deterministic embedding fallback for local usage.
@@ -60,7 +61,7 @@ async function populateFailurePatterns() {
       try {
         const resp = await fetch(`${this.url}/api/v1/heartbeat`, { method: 'GET' });
         return resp.ok;
-      } catch {
+      } catch (e) {
         return false;
       }
     },
@@ -71,7 +72,7 @@ async function populateFailurePatterns() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name }),
         }).catch(() => {});
-      } catch {
+      } catch (e) {
         // ignore
       }
     }

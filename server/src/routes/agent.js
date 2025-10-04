@@ -49,7 +49,7 @@ router.post('/start-tyche-mission', async (req, res) => {
     orchestrator.startMission(missionId, missionContract, (log) => {
       const conns = activeStreams.get(missionId) || [];
       conns.forEach((c) => {
-        try { c.write(`data: ${JSON.stringify(log)}\n\n`); } catch { /* ignore */ }
+        try { c.write(`data: ${JSON.stringify(log)}\n\n`); } catch (e) { /* ignore */ }
       });
     });
     return res.json({ missionId });

@@ -8,7 +8,7 @@ interface CIMetrics {
 }
 
 const CIMetricsWidget: React.FC = () => {
-  const [metrics] = useState<CIMetrics>({
+  const [metrics, setMetrics] = useState<CIMetrics>({
     buildTime: 12.5,
     testCoverage: 85.3,
     failedBuilds: 2,

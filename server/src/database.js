@@ -27,7 +27,7 @@ function getChromaClient() {
         try {
           const resp = await fetch(`${this.url}/api/v1/heartbeat`, { method: 'GET' });
           return resp.ok;
-        } catch {
+        } catch (e) {
           return false;
         }
       },
@@ -40,7 +40,7 @@ function getChromaClient() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name }),
           }).catch(() => {});
-        } catch {
+        } catch (e) {
           // ignore
         }
       },
@@ -52,9 +52,9 @@ function getChromaClient() {
         try {
           const alive = await this.isAlive();
           if (!alive) throw new Error('Chroma unreachable');
-  
+
           await this.ensureCollection(col);
-  
+
           // Try the common Chroma REST shape: /api/collections/{name}/points
           const body = {
             ids: [id],
@@ -67,10 +67,9 @@ function getChromaClient() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
           });
-        } catch (error) {
+        } catch (err) {
           // Fallback: write to a simple in-memory map so system continues to operate.
           // For durability, consider writing to disk or a proper Chroma client.
-          console.warn('Chroma upsert failed:', error.message);
           if (!global.__praevisio_chroma_fallback) global.__praevisio_chroma_fallback = {};
           if (!global.__praevisio_chroma_fallback[col]) global.__praevisio_chroma_fallback[col] = [];
           global.__praevisio_chroma_fallback[col].push({ id, missionId, log, embedding, ts: Date.now() });
@@ -89,7 +88,7 @@ function getChromaClient() {
           if (!resp.ok) return [];
           const data = await resp.json();
           return data;
-        } catch {
+        } catch (e) {
           if (global.__praevisio_chroma_fallback && global.__praevisio_chroma_fallback['missions_logs']) {
             return global.__praevisio_chroma_fallback['missions_logs'].slice(-topK);
           }

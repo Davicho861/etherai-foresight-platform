@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     if (!exists) return res.json({ source: 'local', items: [] });
     const txt = await fs.readFile(p, 'utf8');
     const lines = txt.split('\n').filter(Boolean);
-    const items = lines.map(l => { try { return JSON.parse(l); } catch { return { raw: l }; } });
+    const items = lines.map(l => { try { return JSON.parse(l); } catch (e) { return { raw: l }; } });
     return res.json({ source: 'local', items });
   } catch (e) {
     console.error('consciousness route error', e);
