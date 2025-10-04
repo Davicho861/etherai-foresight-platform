@@ -18,11 +18,14 @@ test.describe('Consciousness Health Widget E2E', () => {
     // Validate the widget is visible
     await expect(page.locator('text=Salud de la Conciencia')).toBeVisible();
 
-    // Validate the lessons learned count is displayed (simulated as 42)
-    await expect(page.locator('text=42')).toBeVisible();
+    // Validate the lessons learned count is displayed (now from real ChromaDB data)
+    // Wait for loading to complete and check for a number
+    await page.waitForSelector('[data-testid="lessons-count"]', { timeout: 10000 });
+    const countText = await page.locator('[data-testid="lessons-count"]').textContent();
+    expect(parseInt(countText || '0')).toBeGreaterThanOrEqual(0);
 
     // Validate the description text
-    await expect(page.locator('text=Lecciones aprendidas por el Oráculo')).toBeVisible();
+    await expect(page.locator('text=Lecciones aprendidas por el Oráculo desde ChromaDB')).toBeVisible();
 
     // Validate the status badge
     await expect(page.locator('text=Conciencia Activa')).toBeVisible();
