@@ -19,4 +19,5 @@ export default defineConfig({
   },
   // Intentionally not using webServer here: we will start dev servers manually in CI/local
   // to keep deterministic control over ports and startup sequence.
+  reporter: 'line',
 });

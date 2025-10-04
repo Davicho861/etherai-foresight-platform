@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import ProgressRing from '../components/dashboard/ProgressRing';
 import DashboardWidget from '../components/generated/DashboardWidget';
+import CIMetricsWidget from '../components/dashboard/CIMetricsWidget';
 
 type PlatformStatus = {
   statusGeneral: string;
@@ -84,6 +85,8 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ platformStatus, loadingSt
             </ul>
           </div>
         </div>
+
+        <CIMetricsWidget />
       </main>
     </div>
   );

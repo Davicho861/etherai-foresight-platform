@@ -6,9 +6,12 @@ WORKDIR /app
 COPY server ./app
 WORKDIR /app/app
 
-# Copy package files and install deps inside /app/app so node_modules are colocated
+# Copy unified package files and install deps inside /app/app so node_modules are colocated
+COPY package-lock.json ./
 COPY server/package*.json ./
-RUN npm install
+# Use npm ci with legacy peer deps handling to ensure reproducible builds
+# from the lockfile generated with --legacy-peer-deps.
+RUN npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline || true
 
 # Generate Prisma client against the schema (will use DATABASE_URL in CI)
 RUN npx prisma generate --schema=./prisma/schema.prisma || true

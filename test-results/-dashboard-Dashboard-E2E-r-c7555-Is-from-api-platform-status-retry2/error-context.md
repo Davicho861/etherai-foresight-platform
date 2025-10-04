@@ -1,57 +1,48 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
-  - generic [ref=e2]:
-    - region "Notifications (F8)":
-      - list
-    - generic [ref=e3]:
-      - complementary [ref=e4]:
-        - generic [ref=e5]:
-          - generic [ref=e6]:
-            - img [ref=e8]
-            - generic [ref=e11]: Praevisio AI
-          - button "collapse" [ref=e12] [cursor=pointer]:
-            - img [ref=e13] [cursor=pointer]
-        - generic [ref=e17]: Cargando...
-        - navigation [ref=e18]:
-          - link "Visión General" [ref=e19] [cursor=pointer]:
-            - /url: /dashboard
-            - img [ref=e21] [cursor=pointer]
-            - generic [ref=e26] [cursor=pointer]: Visión General
-          - link "Análisis de Señales" [ref=e27] [cursor=pointer]:
-            - /url: /
-            - img [ref=e29] [cursor=pointer]
-            - generic [ref=e31] [cursor=pointer]: Análisis de Señales
-          - link "Modelos Predictivos" [ref=e32] [cursor=pointer]:
-            - /url: /
-            - img [ref=e34] [cursor=pointer]
-            - generic [ref=e44] [cursor=pointer]: Modelos Predictivos
-          - link "Generador de Escenarios" [ref=e45] [cursor=pointer]:
-            - /url: /
-            - img [ref=e47] [cursor=pointer]
-            - generic [ref=e49] [cursor=pointer]: Generador de Escenarios
-          - link "Reportes y Alertas" [ref=e50] [cursor=pointer]:
-            - /url: /
-            - img [ref=e52] [cursor=pointer]
-            - generic [ref=e54] [cursor=pointer]: Reportes y Alertas
-          - link "Configuración" [ref=e55] [cursor=pointer]:
-            - /url: /
-            - img [ref=e57] [cursor=pointer]
-            - generic [ref=e60] [cursor=pointer]: Configuración
-        - generic [ref=e62]:
-          - generic [ref=e63]:
-            - generic [ref=e64]: A
-            - generic [ref=e65]:
-              - text: Nombre de Analista
-              - generic [ref=e66]: Estratega de Riesgos
-          - button [ref=e67] [cursor=pointer]:
-            - img [ref=e68] [cursor=pointer]
-      - main [ref=e70]:
-        - generic [ref=e71]: No hay datos
-  - generic [ref=e72]:
-    - generic [ref=e73]: Test
-    - generic [ref=e74]: Manus AI - Centro de Mando
-    - generic [ref=e75]: Cargando planes...
-    - generic [ref=e76]: Cargando datos del módulo para Colombia
+- generic [active]:
+  - generic [ref=e1]:
+    - generic [ref=e2]: Test
+    - generic [ref=e3]: Manus AI - Centro de Mando
+    - generic [ref=e4]: Cargando planes...
+    - generic [ref=e5]: Cargando datos del módulo para Colombia
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: "[plugin:vite:css]"
+      - generic [ref=e11]: "[postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration."
+    - generic [ref=e12]: /app/src/index.css:undefined:null
+    - generic [ref=e13]:
+      - text: at We (
+      - generic [ref=e14] [cursor=pointer]: /app/node_modules/tailwindcss/dist/lib.js:37:1635
+      - text: ) at LazyResult.runOnRoot (
+      - generic [ref=e15] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:361:16
+      - text: ) at LazyResult.runAsync (
+      - generic [ref=e16] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:290:26
+      - text: ) at async runPostCSS (
+      - generic [ref=e17] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32132:19
+      - text: ) at async compilePostCSS (
+      - generic [ref=e18] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32116:6
+      - text: ) at async compileCSS (
+      - generic [ref=e19] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32046:26
+      - text: ) at async TransformPluginContext.handler (
+      - generic [ref=e20] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:31579:54
+      - text: ) at async EnvironmentPluginContainer.transform (
+      - generic [ref=e21] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:30984:14
+      - text: ) at async loadAndTransform (
+      - generic [ref=e22] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:26116:26
+      - text: ) at async viteTransformMiddleware (
+      - generic [ref=e23] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:27187:20
+      - text: )
+    - generic [ref=e24]:
+      - text: Click outside, press
+      - generic [ref=e25]: Esc
+      - text: key, or fix the code to dismiss.
+      - text: You can also disable this overlay by setting
+      - code [ref=e26]: server.hmr.overlay
+      - text: to
+      - code [ref=e27]: "false"
+      - text: in
+      - code [ref=e28]: vite.config.ts
+      - text: .
 ```
