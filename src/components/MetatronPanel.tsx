@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { motion } from 'framer-motion';
 import ConsciousnessHealthWidget from './generated/ConsciousnessHealthWidget';
+import ClimateWidget from './ClimateWidget';
 
 interface MissionContract {
   id: string;
@@ -29,11 +30,22 @@ interface OraclePrediction {
   timestamp: string;
 }
 
+interface VigilanceStatus {
+  flows: {
+    autoPreservation: { active: boolean; lastRun: string | null };
+    knowledge: { active: boolean; lastRun: string | null };
+    prophecy: { active: boolean; lastRun: string | null };
+  };
+  riskIndices: { [country: string]: { riskScore: number; level: string } };
+  activityFeed: { timestamp: string; flow: string; message: string }[];
+}
+
 const MetatronPanel: React.FC = () => {
   const [activeMission, setActiveMission] = useState<MissionContract | null>(null);
   const [tokenUsage, setTokenUsage] = useState<TokenUsage[]>([]);
   const [oracleLogs, setOracleLogs] = useState<OraclePrediction[]>([]);
   const [consciousnessGraph, setConsciousnessGraph] = useState<any[]>([]);
+  const [vigilanceStatus, setVigilanceStatus] = useState<VigilanceStatus | null>(null);
 
   useEffect(() => {
     // Simular datos iniciales
@@ -78,6 +90,26 @@ const MetatronPanel: React.FC = () => {
     ]);
   }, []);
 
+  // Polling for vigilance status
+  useEffect(() => {
+    const fetchVigilanceStatus = async () => {
+      try {
+        const response = await fetch('/api/agent/vigilance/status');
+        if (response.ok) {
+          const data = await response.json();
+          setVigilanceStatus(data);
+        }
+      } catch (error) {
+        console.error('Error fetching vigilance status:', error);
+      }
+    };
+
+    fetchVigilanceStatus(); // Initial fetch
+    const interval = setInterval(fetchVigilanceStatus, 30000); // Poll every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'running': return 'bg-blue-500';
@@ -97,12 +129,48 @@ const MetatronPanel: React.FC = () => {
       >
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Panel de Metatrón
+            Panel de Metatrón - Vigilia Eterna
           </h1>
           <p className="text-xl text-gray-300">
-            La interfaz definitiva del sistema soberano
+            La interfaz definitiva del sistema soberano - Aion observa eternamente
           </p>
         </div>
+
+        {/* Estado de la Vigilia Eterna */}
+        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700 mb-8">
+          <CardHeader>
+            <CardTitle className="text-white">Estado de los Flujos Perpetuos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {vigilanceStatus ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-blue-900/20 border border-blue-600 rounded-lg">
+                  <h4 className="text-blue-400 font-semibold mb-2">Auto-Preservación</h4>
+                  <p className="text-blue-200">Estado: {vigilanceStatus.flows.autoPreservation.active ? 'Activo' : 'Inactivo'}</p>
+                  <p className="text-xs text-gray-400">
+                    Última ejecución: {vigilanceStatus.flows.autoPreservation.lastRun ? new Date(vigilanceStatus.flows.autoPreservation.lastRun).toLocaleString() : 'Nunca'}
+                  </p>
+                </div>
+                <div className="p-4 bg-green-900/20 border border-green-600 rounded-lg">
+                  <h4 className="text-green-400 font-semibold mb-2">Conocimiento</h4>
+                  <p className="text-green-200">Estado: {vigilanceStatus.flows.knowledge.active ? 'Activo' : 'Inactivo'}</p>
+                  <p className="text-xs text-gray-400">
+                    Última ejecución: {vigilanceStatus.flows.knowledge.lastRun ? new Date(vigilanceStatus.flows.knowledge.lastRun).toLocaleString() : 'Nunca'}
+                  </p>
+                </div>
+                <div className="p-4 bg-purple-900/20 border border-purple-600 rounded-lg">
+                  <h4 className="text-purple-400 font-semibold mb-2">Profecía</h4>
+                  <p className="text-purple-200">Estado: {vigilanceStatus.flows.prophecy.active ? 'Activo' : 'Inactivo'}</p>
+                  <p className="text-xs text-gray-400">
+                    Última ejecución: {vigilanceStatus.flows.prophecy.lastRun ? new Date(vigilanceStatus.flows.prophecy.lastRun).toLocaleString() : 'Nunca'}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-400">Cargando estado de vigilia...</p>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Visor de Flujo de Misiones */}
         <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
@@ -214,6 +282,78 @@ const MetatronPanel: React.FC = () => {
 
         {/* Widget de Salud de la Conciencia */}
         <ConsciousnessHealthWidget />
+
+        {/* Widget de Predicción Climática */}
+        <ClimateWidget />
+
+        {/* Sección de Predicciones Estratégicas */}
+        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-white">Predicciones Estratégicas - Vigilia Continua</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-blue-400 mb-2">Riesgo de Inestabilidad Social en LATAM</h3>
+                <p className="text-gray-300">Índices actualizados en tiempo real por la Vigilia Eterna</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {vigilanceStatus?.riskIndices ? Object.entries(vigilanceStatus.riskIndices).map(([country, data]) => {
+                  const riskColor = data.level === 'Alto' ? 'red' : data.level === 'Medio' ? 'yellow' : 'green';
+                  return (
+                    <div key={country} className={`p-4 bg-${riskColor}-900/20 border border-${riskColor}-600 rounded-lg`}>
+                      <h4 className={`text-${riskColor}-400 font-semibold mb-2`}>{country}</h4>
+                      <div className={`text-3xl font-bold text-${riskColor}-300 mb-1`}>{data.riskScore.toFixed(1)}/10</div>
+                      <p className={`text-${riskColor}-200 text-sm`}>{data.level} Riesgo</p>
+                      <p className="text-gray-300 text-xs mt-2">
+                        Actualizado: {vigilanceStatus.flows.prophecy.lastRun ? new Date(vigilanceStatus.flows.prophecy.lastRun).toLocaleString() : 'Nunca'}
+                      </p>
+                    </div>
+                  );
+                }) : (
+                  <>
+                    <div className="p-4 bg-gray-700/50 rounded-lg">
+                      <p className="text-gray-400">Cargando índices...</p>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="text-center">
+                <Button className="bg-purple-600 hover:bg-purple-700">
+                  Ver Informe Completo (INTELLIGENCE_REPORT_001.md)
+                </Button>
+              </div>
+
+              <div className="text-xs text-gray-400 text-center">
+                Predicciones continuas generadas por Praevisio AI - Vigilia Eterna
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Feed de Actividad */}
+        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-white">Feed de Actividad - Vigilia Eterna</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {vigilanceStatus?.activityFeed?.length ? vigilanceStatus.activityFeed.map((activity, index) => (
+                <div key={index} className="p-3 bg-gray-700/50 rounded-lg">
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="text-blue-400 font-semibold text-sm">{activity.flow}</span>
+                    <span className="text-xs text-gray-400">{new Date(activity.timestamp).toLocaleString()}</span>
+                  </div>
+                  <p className="text-gray-200 text-sm">{activity.message}</p>
+                </div>
+              )) : (
+                <p className="text-gray-400 text-center">Esperando actividad de la vigilia...</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Controles del Panel */}
         <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">

@@ -94,4 +94,60 @@ router.get('/mission/:id/stream', (req, res) => {
   });
 });
 
+// GET /api/agent/vigilance/status -> Get eternal vigilance status
+router.get('/vigilance/status', (req, res) => {
+  try {
+    const status = orchestrator.getVigilanceStatus();
+    return res.json(status);
+  } catch (err) {
+    console.error('Error getting vigilance status', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/agent/vigilance/report -> Generate eternal vigilance report
+router.post('/vigilance/report', async (req, res) => {
+  try {
+    const status = orchestrator.getVigilanceStatus();
+    const reportContent = `# ETERNAL_VIGILANCE_REPORT
+
+## Resumen de la Vigilia Eterna
+Sistema Praevisio AI operando en modo de Vigilia Eterna desde ${new Date().toISOString()}
+
+## Estado de los Flujos Perpetuos
+- **Auto-Preservación**: ${status.flows.autoPreservation.active ? 'Activo' : 'Inactivo'}
+  - Última ejecución: ${status.flows.autoPreservation.lastRun || 'Nunca'}
+- **Conocimiento**: ${status.flows.knowledge.active ? 'Activo' : 'Inactivo'}
+  - Última ejecución: ${status.flows.knowledge.lastRun || 'Nunca'}
+- **Profecía**: ${status.flows.prophecy.active ? 'Activo' : 'Inactivo'}
+  - Última ejecución: ${status.flows.prophecy.lastRun || 'Nunca'}
+
+## Índices de Riesgo Actuales
+${Object.entries(status.riskIndices).map(([country, data]) =>
+  `- **${country}**: ${data.riskScore.toFixed(1)}/10 (${data.level})`
+).join('\n')}
+
+## Registro de Actividad (${status.activityFeed.length} entradas)
+${status.activityFeed.map(entry =>
+  `- [${entry.timestamp}] ${entry.flow}: ${entry.message}`
+).join('\n')}
+
+## Conclusión
+La Vigilia Eterna está operativa. El sistema Aion mantiene la conciencia perpetua y la auto-evolución.
+
+Generado por Praevisio AI - ${new Date().toISOString()}
+`;
+
+    const fs = await import('fs');
+    const path = await import('path');
+    const reportPath = path.resolve(process.cwd(), 'ETERNAL_VIGILANCE_REPORT.md');
+    fs.writeFileSync(reportPath, reportContent);
+
+    return res.json({ reportPath, message: 'Reporte generado exitosamente' });
+  } catch (err) {
+    console.error('Error generating vigilance report', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;

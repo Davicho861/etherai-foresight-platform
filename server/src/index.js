@@ -12,6 +12,7 @@ import llmRouter from './routes/llm.js';
 import oracleRouter from './routes/oracle.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
+import climateRouter from './routes/climate.js';
 
 const app = express();
 app.use(cors());
@@ -39,6 +40,7 @@ app.use('/api/llm', bearerAuth, llmRouter);
 app.use('/api/oracle', oracleRouter);
 app.use('/api/consciousness', bearerAuth, consciousnessRouter);
 app.use('/api/sacrifice', sacrificeRouter);
+app.use('/api/climate', climateRouter);
 
 // Force restart
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
