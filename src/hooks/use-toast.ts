@@ -127,11 +127,11 @@ export const reducer = (state: State, action: Action): State => {
 }
 
 // listeners are callbacks subscribed by components; the parameter is used by callers.
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable no-unused-vars */
 const listeners: Array<(state: State) => void> = []
 /* eslint-enable no-unused-vars */
-/* eslint-enable @typescript-eslint/no-unused-vars */
+ 
 
 let memoryState: State = { toasts: [] }
 

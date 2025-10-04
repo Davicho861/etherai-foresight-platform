@@ -8,11 +8,12 @@ import NotFound from "./pages/NotFound";
 import ModuleColombia from "./pages/ModuleColombia";
 import PricingPage from "./pages/PricingPage";
 import DemoPage from "./pages/DemoPage";
-// ...existing imports
+import MetatronPanel from "./components/MetatronPanel";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  console.log('App render');
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/module/colombia" element={<ModuleColombia />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/demo" element={<DemoPage />} />
+            <Route path="/metatron-panel" element={<MetatronPanel />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

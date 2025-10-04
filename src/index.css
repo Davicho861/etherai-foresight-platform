@@ -1,4 +1,6 @@
 
+@reference "tailwindcss/theme";
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -40,11 +42,13 @@
 
 @layer base {
   * {
-    @apply border-border;
+    /* @apply border-border; */
   }
 
   body {
-    @apply bg-etherblue-dark text-foreground font-inter;
+    background-color: #1A1F2C;
+    color: hsl(210 40% 98%);
+    font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
   }
   

@@ -1,5 +1,9 @@
 # Praevisio AI — Demo Landing & Prototype
 
+## ⚡ Manifiesto Local First
+
+Lee el [Manifiesto Local First](00_LOCAL_FIRST_MANIFESTO.md) - la ley inmutable que rige nuestro dominio y garantiza la soberanía local absoluta.
+
 ## Project info
 
 **Project**: Praevisio AI (demo)

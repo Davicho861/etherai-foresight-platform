@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* eslint-disable no-unused-vars */
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"

@@ -9,5 +9,6 @@ test('pricing page and request demo flow (smoke)', async ({ page }) => {
   // Fill contact form if present (scroll to contact)
   await page.goto('/#contact');
   // Basic check: contact section exists
+  // Basic check: contact section exists
   await expect(page.locator('#contact')).toBeVisible();
 });

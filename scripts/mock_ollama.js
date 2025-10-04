@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
       try {
         const j = JSON.parse(body || '{}');
         prompt = j.prompt || j.input || j.messages || '';
-      } catch (e) {
+      } catch {
         prompt = body;
       }
       const out = { results: [{ content: `MOCK_RESPONSE: ${String(prompt).slice(0,200)}` }] };

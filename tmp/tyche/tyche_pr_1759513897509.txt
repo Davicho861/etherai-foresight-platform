@@ -1,0 +1,5 @@
+Tyche suggested fix:
+{
+  "flaky": true,
+  "suggestion": "Se detectaron 5 eventos similares. Revisar dependencias e identificar flakes."
+}

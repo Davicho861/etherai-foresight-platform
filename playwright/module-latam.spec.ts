@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, no-undef */
+/* eslint-disable no-unused-vars */
 import { test, expect } from '@playwright/test';
 
 test('module latam colombia renders data with bearer token', async ({ page, request }) => {
