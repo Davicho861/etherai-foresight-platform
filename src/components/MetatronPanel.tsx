@@ -325,7 +325,7 @@ const MetatronPanel: React.FC = () => {
                     {causalSubgraph.relationships.map((rel, index) => (
                       <div key={index} className="p-3 bg-blue-900/20 border border-blue-600 rounded-lg">
                         <span className="text-blue-400 font-semibold">{rel.from}</span>
-                        <span className="text-blue-200 mx-2">-{rel.type}-></span>
+                        <span className="text-blue-200 mx-2">-{rel.type}-{'>'}</span>
                         <span className="text-blue-400 font-semibold">{rel.to}</span>
                       </div>
                     ))}
