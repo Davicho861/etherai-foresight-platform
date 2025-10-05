@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import ProgressRing from '../components/dashboard/ProgressRing';
 import DashboardWidget from '../components/generated/DashboardWidget';
 import CIMetricsWidget from '../components/dashboard/CIMetricsWidget';
+import ClimateWidget from '../components/ClimateWidget';
 
 type PlatformStatus = {
   statusGeneral: string;
@@ -87,6 +88,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ platformStatus, loadingSt
         </div>
 
         <CIMetricsWidget />
+
+        <div className="mt-8">
+          <ClimateWidget />
+        </div>
       </main>
     </div>
   );

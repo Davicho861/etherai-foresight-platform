@@ -40,22 +40,40 @@ interface VigilanceStatus {
   activityFeed: { timestamp: string; flow: string; message: string }[];
 }
 
+interface CausalNode {
+  id: string;
+  type: string;
+  properties: any;
+}
+
+interface CausalRelationship {
+  from: string;
+  to: string;
+  type: string;
+}
+
+interface CausalSubgraph {
+  nodes: CausalNode[];
+  relationships: CausalRelationship[];
+}
+
 const MetatronPanel: React.FC = () => {
   const [activeMission, setActiveMission] = useState<MissionContract | null>(null);
   const [tokenUsage, setTokenUsage] = useState<TokenUsage[]>([]);
   const [oracleLogs, setOracleLogs] = useState<OraclePrediction[]>([]);
   const [consciousnessGraph, setConsciousnessGraph] = useState<any[]>([]);
   const [vigilanceStatus, setVigilanceStatus] = useState<VigilanceStatus | null>(null);
+  const [causalSubgraph, setCausalSubgraph] = useState<CausalSubgraph | null>(null);
 
   useEffect(() => {
     // Simular datos iniciales
     setActiveMission({
-      id: 'genesis-omega',
-      title: 'Misión Génesis Omega',
-      description: 'Principio de Auto-Suficiencia: Diseñar e implementar un nuevo Agente Guardián Tyche',
-      status: 'running',
-      crew: 'PlanningCrew',
-      progress: 45
+      id: 'open-meteo-expansion',
+      title: 'Misión Expansiva: Integración Open Meteo',
+      description: 'Integrar API de Open Meteo para enriquecer dashboard con datos climáticos en tiempo real, mejorando capacidad predictiva',
+      status: 'completed',
+      crew: 'DevelopmentCrew',
+      progress: 100
     });
 
     setTokenUsage([
@@ -88,6 +106,28 @@ const MetatronPanel: React.FC = () => {
       { id: 'quality', label: 'QualityCrew', connections: ['deployment'] },
       { id: 'deployment', label: 'DeploymentCrew', connections: [] }
     ]);
+
+    // Simular subgrafo causal de la misión génesis
+    setCausalSubgraph({
+      nodes: [
+        { id: 'genesis-mission', type: 'Mission', properties: { title: 'Misión Génesis Omega', status: 'completed' } },
+        { id: 'ethics-approval', type: 'Decision', properties: { approved: true, reason: 'Alinea con principios éticos' } },
+        { id: 'oracle-prediction', type: 'Prediction', properties: { risk: 'low', suggestion: 'Proceder' } },
+        { id: 'planning-plan', type: 'Plan', properties: { steps: ['API', 'Tests', 'Deploy'] } },
+        { id: 'development-code', type: 'Code', properties: { lines: 150 } },
+        { id: 'quality-tests', type: 'Test', properties: { passed: true } },
+        { id: 'consensus-commit', type: 'Consensus', properties: { approved: true } }
+      ],
+      relationships: [
+        { from: 'genesis-mission', to: 'ethics-approval', type: 'REQUIRES' },
+        { from: 'genesis-mission', to: 'oracle-prediction', type: 'CONSULTS' },
+        { from: 'ethics-approval', to: 'planning-plan', type: 'ENABLES' },
+        { from: 'planning-plan', to: 'development-code', type: 'PRODUCES' },
+        { from: 'development-code', to: 'quality-tests', type: 'VALIDATES' },
+        { from: 'quality-tests', to: 'consensus-commit', type: 'REQUIRES' },
+        { from: 'consensus-commit', to: 'genesis-mission', type: 'COMPLETES' }
+      ]
+    });
   }, []);
 
   // Polling for vigilance status
@@ -251,6 +291,52 @@ const MetatronPanel: React.FC = () => {
             </div>
             <p className="text-gray-400 text-sm mt-4">
               Nota: Implementación completa requiere react-flow y conexión Neo4j
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Explorador del Tejido Causal */}
+        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-white">Explorador del Tejido Causal - IA Explicable Profunda</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {causalSubgraph ? (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Nodos del Grafo Causal</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {causalSubgraph.nodes.map((node) => (
+                      <div key={node.id} className="p-4 bg-purple-900/20 border border-purple-600 rounded-lg">
+                        <h4 className="text-purple-400 font-semibold">{node.id}</h4>
+                        <p className="text-purple-200 text-sm">Tipo: {node.type}</p>
+                        <div className="text-xs text-gray-300 mt-2">
+                          {Object.entries(node.properties).map(([key, value]) => (
+                            <div key={key}>{key}: {JSON.stringify(value)}</div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Relaciones Causales</h3>
+                  <div className="space-y-2">
+                    {causalSubgraph.relationships.map((rel, index) => (
+                      <div key={index} className="p-3 bg-blue-900/20 border border-blue-600 rounded-lg">
+                        <span className="text-blue-400 font-semibold">{rel.from}</span>
+                        <span className="text-blue-200 mx-2">-{rel.type}-></span>
+                        <span className="text-blue-400 font-semibold">{rel.to}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-400">Cargando subgrafo causal...</p>
+            )}
+            <p className="text-gray-400 text-sm mt-4">
+              Este explorador muestra el grafo completo de decisiones, acciones y consecuencias de cualquier misión, proporcionando explicabilidad causal profunda.
             </p>
           </CardContent>
         </Card>
