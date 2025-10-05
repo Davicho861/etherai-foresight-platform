@@ -1,3 +1,12 @@
-MOCK_RESPONSE: Genera un componente React TSX llamado CronosWidget que haga lo siguiente:
-Widget para mostrar el estado de Cronos en el dashboard
-Responde únicamente con el contenido del archivo .tsx.
+import React from 'react';
+
+const CronosWidget: React.FC = () => {
+  return (
+    <div className="p-4 bg-white rounded-lg shadow">
+      <h3 className="text-lg font-semibold">Cronos Status</h3>
+      <p>Widget for displaying Cronos state in the dashboard.</p>
+    </div>
+  );
+};
+
+export default CronosWidget;

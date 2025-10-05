@@ -33,7 +33,7 @@ class MetatronOrchestrator {
         if (this.chromaClient && this.chromaClient.upsertLog) {
           this.chromaClient.upsertLog(missionId, task).catch(() => {});
         }
-      } catch (e) { /* ignore persistence errors */ }
+      } catch { /* ignore persistence errors */ }
       // Persist to Neo4j (best-effort): create a Mission node and a Log node
       try {
         if (this.neo4jDriver) {
@@ -50,7 +50,7 @@ class MetatronOrchestrator {
           // Ensure we catch async errors from the driver so they don't become unhandled
           session.run(q, params).catch(() => { /* ignore runtime errors */ }).finally(() => session.close());
         }
-      } catch (e) { /* ignore neo4j errors */ }
+      } catch { /* ignore neo4j errors */ }
     };
 
     try {
@@ -78,8 +78,17 @@ class MetatronOrchestrator {
       log({ taskId: 'quality-crew', description: 'Verificación de calidad completada.', status: 'completed' });
 
       log({ taskId: 'deployment-crew', description: 'La Crew de Despliegue está desplegando la solución...', status: 'in_progress' });
-      const deploymentResult = await this.crews.deployment.run({ qualityResult });
+      await this.crews.deployment.run({ qualityResult });
       log({ taskId: 'deployment-crew', description: 'Despliegue completado.', status: 'completed' });
+
+      // Protocolo de Consenso de Git Distribuido
+      log({ taskId: 'consensus-agent', description: 'Agente de Consenso validando cambios antes del commit...', status: 'in_progress' });
+      const consensusAgent = new MetatronAgent('ConsensusAgent');
+      const consensusResult = await consensusAgent.run({ changes: ['deployment_changes'] }); // Simular cambios
+      if (!consensusResult.canCommit) {
+        throw new Error(`Consenso no alcanzado: ${consensusResult.message}`);
+      }
+      log({ taskId: 'consensus-agent', description: 'Consenso alcanzado. Commit atómico creado.', status: 'completed' });
 
       // Special flow: if this is the genesis Tyche mission, create the Tyche agent and run it
       if (missionContract && missionContract.id === 'genesis-tyche') {

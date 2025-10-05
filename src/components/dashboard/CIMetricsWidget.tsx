@@ -8,12 +8,12 @@ interface CIMetrics {
 }
 
 const CIMetricsWidget: React.FC = () => {
-  const [metrics, setMetrics] = useState<CIMetrics>({
+  const metrics = useState<CIMetrics>({
     buildTime: 12.5,
     testCoverage: 85.3,
     failedBuilds: 2,
     lastBuildStatus: 'SUCCESS'
-  });
+  })[0];
 
   const [oracleLog, setOracleLog] = useState<string>('');
 

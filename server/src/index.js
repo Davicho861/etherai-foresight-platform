@@ -9,8 +9,6 @@ import dashboardRouter from './routes/dashboard.js';
 import platformStatusRouter from './routes/platform-status.js';
 import agentRouter from './routes/agent.js';
 import llmRouter from './routes/llm.js';
-import oracleTestRouter from './routes/oracle-test.js';
-import chronicler from './agents/chronicler.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
 import climateRouter from './routes/climate.js';

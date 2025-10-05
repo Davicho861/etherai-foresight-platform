@@ -24,13 +24,13 @@ export function publish(missionId, event) {
   const s = subscribers.get(missionId);
   if (s) {
     for (const cb of s) {
-      try { cb(event); } catch (e) { /* ignore subscriber errors */ }
+      try { cb(event); } catch { /* ignore subscriber errors */ }
     }
   }
 
   // Notify global subscribers
   for (const cb of globalSubscribers) {
-    try { cb({ missionId, ...event }); } catch (e) { /* ignore */ }
+    try { cb({ missionId, ...event }); } catch { /* ignore */ }
   }
 }
 

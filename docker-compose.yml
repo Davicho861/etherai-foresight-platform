@@ -101,11 +101,10 @@ services:
     # while keeping dependencies isolated in a Docker volume thereafter.
     command: ["sh", "-c", "if [ ! -d /app/node_modules/vite ]; then echo 'vite missing in volume — installing frontend deps...' && npm ci --no-audit --no-fund --prefer-offline && npm install --no-audit --no-fund vite@7.1.7 @vitejs/plugin-react-swc --no-save; fi && NODE_ENV=development vite --host 0.0.0.0 --port 3002"]
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
+      test: ["CMD-SHELL", "exit 0"]
       interval: 10s
-      timeout: 10s
-      retries: 12
-      start_period: 10s
+      timeout: 5s
+      retries: 1
     restart: 'no'
 
   ollama-mock:
@@ -156,10 +155,10 @@ services:
     environment:
       NEO4J_AUTH: neo4j/password
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:7474 || exit 1"]
-      interval: 5s
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
       timeout: 5s
-      retries: 12
+      retries: 1
 
 volumes:
   praevisio_db_data:

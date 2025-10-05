@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import Oracle from '../server/src/oracle.js';
 import { publish } from '../server/src/eventHub.js';
-import chronicler from '../server/src/agents/chronicler.js';
 
 async function run() {
   console.log('Starting local test: Oracle + Chronicler');

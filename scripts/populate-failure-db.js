@@ -11,7 +11,8 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { getChromaClient } from '../server/src/database.js';
+// getChromaClient is not used in this local script; keep import commented for future use
+// import { getChromaClient } from '../server/src/database.js';
 
 function textToEmbedding(text, dims = 8) {
   // Lightweight deterministic embedding fallback for local usage.
@@ -61,7 +62,7 @@ async function populateFailurePatterns() {
       try {
         const resp = await fetch(`${this.url}/api/v1/heartbeat`, { method: 'GET' });
         return resp.ok;
-      } catch (e) {
+      } catch {
         return false;
       }
     },
@@ -72,7 +73,7 @@ async function populateFailurePatterns() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name }),
         }).catch(() => {});
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
@@ -119,8 +120,8 @@ async function populateFailurePatterns() {
         body: JSON.stringify(body),
       });
       console.log(`[populate-failure-db] Added runbook error: ${err.error}`);
-    } catch (e) {
-      console.warn(`[populate-failure-db] Failed to add runbook error: ${e.message}`);
+    } catch {
+      // ignore transient network errors when populating Chroma in local dev
     }
   }
 
@@ -168,8 +169,8 @@ async function populateFailurePatterns() {
         body: JSON.stringify(body),
       });
       console.log(`[populate-failure-db] Added conversation lesson: ${lesson.error}`);
-    } catch (e) {
-      console.warn(`[populate-failure-db] Failed to add conversation lesson: ${e.message}`);
+    } catch {
+      // ignore network/write errors in local mode
     }
   }
 

@@ -1,5 +1,4 @@
 import { orchestrator } from '../server/src/orchestrator.js';
-import fs from 'fs';
 
 (async () => {
   const missionId = 'local-tyche-test-' + Date.now();

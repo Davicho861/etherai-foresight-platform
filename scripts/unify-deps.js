@@ -27,7 +27,7 @@ async function findPackageJsons(dir, depth = 2, results = new Set()) {
   let entries;
   try {
     entries = await fs.readdir(dir, { withFileTypes: true });
-  } catch (e) {
+  } catch {
     return results;
   }
   for (const ent of entries) {
@@ -67,7 +67,7 @@ async function readJson(file) {
   try {
     const txt = await fs.readFile(file, 'utf8');
     return JSON.parse(txt);
-  } catch (e) {
+  } catch {
     return null;
   }
 }

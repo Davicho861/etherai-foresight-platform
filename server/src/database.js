@@ -27,7 +27,7 @@ function getChromaClient() {
         try {
           const resp = await fetch(`${this.url}/api/v1/heartbeat`, { method: 'GET' });
           return resp.ok;
-        } catch (e) {
+        } catch {
           return false;
         }
       },
@@ -40,7 +40,7 @@ function getChromaClient() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name }),
           }).catch(() => {});
-        } catch (e) {
+        } catch {
           // ignore
         }
       },
@@ -67,7 +67,7 @@ function getChromaClient() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
           });
-        } catch (err) {
+        } catch {
           // Fallback: write to a simple in-memory map so system continues to operate.
           // For durability, consider writing to disk or a proper Chroma client.
           if (!global.__praevisio_chroma_fallback) global.__praevisio_chroma_fallback = {};
@@ -88,7 +88,7 @@ function getChromaClient() {
           if (!resp.ok) return [];
           const data = await resp.json();
           return data;
-        } catch (e) {
+        } catch {
           if (global.__praevisio_chroma_fallback && global.__praevisio_chroma_fallback['missions_logs']) {
             return global.__praevisio_chroma_fallback['missions_logs'].slice(-topK);
           }
