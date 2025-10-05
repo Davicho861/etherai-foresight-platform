@@ -12,6 +12,7 @@ import llmRouter from './routes/llm.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
 import climateRouter from './routes/climate.js';
+import alertsRouter from './routes/alerts.js';
 
 const app = express();
 app.use(cors());
@@ -39,6 +40,7 @@ app.use('/api/llm', bearerAuth, llmRouter);
 app.use('/api/consciousness', bearerAuth, consciousnessRouter);
 app.use('/api/sacrifice', sacrificeRouter);
 app.use('/api/climate', climateRouter);
+app.use('/api/alerts', bearerAuth, alertsRouter);
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
 app.listen(PORT, () => {
