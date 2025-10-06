@@ -13,8 +13,8 @@ export default defineConfig(({ mode }) => ({
     allowedHosts: ['frontend', 'localhost', '127.0.0.1', '0.0.0.0', 'host.docker.internal'],
     proxy: {
       '/api': {
-        // Allow the proxy target to be configured via VITE_API_BASE_URL (set by docker-compose)
-        target: process.env.VITE_API_BASE_URL || 'http://backend:4000',
+        // Proxy API calls to the backend service within the Docker network
+        target: 'http://backend:4000',
         changeOrigin: true,
         secure: false
       }

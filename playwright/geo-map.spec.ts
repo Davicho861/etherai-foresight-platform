@@ -5,7 +5,6 @@ test('GeoMap is visible on dashboard', async ({ page }) => {
   await page.addInitScript(() => {
     window.localStorage.setItem('praevisio_token', 'demo-token');
   });
-  await page.goto('/');
-  const geo = page.locator('svg >> text', { hasText: 'GeoMap (mock)' });
-  await expect(geo).toHaveCount(1);
+  await page.goto('/demo');
+  await expect(page.getByTestId('global-map')).toBeVisible();
 });

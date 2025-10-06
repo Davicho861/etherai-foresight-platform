@@ -1,0 +1,23 @@
+{
+  "generated_at": "2025-10-05T16:05:33.822Z",
+  "artifacts": {
+    "audit": {
+      "error": "no_audit_output"
+    },
+    "lint": {
+      "count": 0
+    },
+    "tests": {
+      "result": "no_output"
+    }
+  },
+  "actions": [
+    {
+      "crew": "Hefesto",
+      "action": "ensure_lockfile",
+      "reason": "no_vulns_or_no_audit",
+      "details": {}
+    }
+  ],
+  "notes": "This protocol is advisory only. Human review and PRs required before applying changes."
+}

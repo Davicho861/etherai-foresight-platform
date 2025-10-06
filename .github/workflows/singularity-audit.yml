@@ -1,0 +1,54 @@
+name: Singularity Audit (safe)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit (save JSON)
+        run: |
+          mkdir -p artifacts
+          npm audit --json > artifacts/npm_audit.json || true
+
+      - name: Run lint (save output)
+        run: |
+          mkdir -p artifacts
+          npm run lint > artifacts/lint.txt 2>&1 || true
+
+      - name: Run tests (save output)
+        run: |
+          mkdir -p artifacts
+          npm test --silent > artifacts/tests.txt 2>&1 || true
+
+      - name: Save package-lock (if present)
+        run: |
+          if [ -f package-lock.json ]; then cp package-lock.json artifacts/ || true; fi
+
+      - name: Generate Protocolo de Singularidad
+        run: |
+          node ./tools/generate_protocolo.js artifacts || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: singularity-artifacts
+          path: artifacts
+
+      - name: Create PR with suggestions (dry-run)
+        run: |
+          echo "This workflow collects diagnostics and generates a protocolo JSON under artifacts/; it intentionally does NOT modify code automatically. Review artifacts and open a PR manually with suggested fixes."

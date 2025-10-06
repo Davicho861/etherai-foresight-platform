@@ -9,7 +9,6 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Dashboard de Colombia', async ({ page }) => {
     await page.goto('/demo');
-    await page.getByTestId('country-COL').click();
     await expect(page.getByTestId('country-card-COL')).toBeVisible();
     await page.screenshot({ path: 'dashboard-colombia-perfect.png' });
   });

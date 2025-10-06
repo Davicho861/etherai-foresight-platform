@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface ClimateData {
@@ -27,7 +27,7 @@ const ClimateWidget: React.FC = () => {
   const [lat, setLat] = useState(4.7110);
   const [lon, setLon] = useState(-74.0721);
 
-  const fetchCurrentWeather = async () => {
+  const fetchCurrentWeather = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/climate/current?lat=${lat}&lon=${lon}`);
@@ -39,9 +39,9 @@ const ClimateWidget: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [lat, lon]);
 
-  const fetchPrediction = async () => {
+  const fetchPrediction = useCallback(async () => {
     try {
       const response = await fetch(`/api/climate/predict?lat=${lat}&lon=${lon}&days=7`);
       if (!response.ok) throw new Error('Failed to fetch prediction');
@@ -50,12 +50,12 @@ const ClimateWidget: React.FC = () => {
     } catch (err) {
       console.error('Prediction fetch error:', err);
     }
-  };
+  }, [lat, lon]);
 
   useEffect(() => {
     fetchCurrentWeather();
     fetchPrediction();
-  }, [lat, lon]);
+  }, [fetchCurrentWeather, fetchPrediction]);
 
   const getWeatherIcon = (code: number) => {
     // Simplified weather code mapping

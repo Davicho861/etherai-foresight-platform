@@ -1,48 +1,122 @@
 # Page snapshot
 
 ```yaml
-- generic [active]:
-  - generic [ref=e1]:
-    - generic [ref=e2]: Test
-    - generic [ref=e3]: Manus AI - Centro de Mando
-    - generic [ref=e4]: Cargando planes...
-    - generic [ref=e5]: Cargando datos del módulo para Colombia
-  - generic [ref=e8]:
-    - generic [ref=e9]:
-      - generic [ref=e10]: "[plugin:vite:css]"
-      - generic [ref=e11]: "[postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration."
-    - generic [ref=e12]: /app/src/index.css:undefined:null
-    - generic [ref=e13]:
-      - text: at We (
-      - generic [ref=e14] [cursor=pointer]: /app/node_modules/tailwindcss/dist/lib.js:37:1635
-      - text: ) at LazyResult.runOnRoot (
-      - generic [ref=e15] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:361:16
-      - text: ) at LazyResult.runAsync (
-      - generic [ref=e16] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:290:26
-      - text: ) at async runPostCSS (
-      - generic [ref=e17] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32132:19
-      - text: ) at async compilePostCSS (
-      - generic [ref=e18] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32116:6
-      - text: ) at async compileCSS (
-      - generic [ref=e19] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32046:26
-      - text: ) at async TransformPluginContext.handler (
-      - generic [ref=e20] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:31579:54
-      - text: ) at async EnvironmentPluginContainer.transform (
-      - generic [ref=e21] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:30984:14
-      - text: ) at async loadAndTransform (
-      - generic [ref=e22] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:26116:26
-      - text: ) at async viteTransformMiddleware (
-      - generic [ref=e23] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:27187:20
-      - text: )
-    - generic [ref=e24]:
-      - text: Click outside, press
-      - generic [ref=e25]: Esc
-      - text: key, or fix the code to dismiss.
-      - text: You can also disable this overlay by setting
-      - code [ref=e26]: server.hmr.overlay
-      - text: to
-      - code [ref=e27]: "false"
-      - text: in
-      - code [ref=e28]: vite.config.ts
-      - text: .
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "Notifications alt+T"
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - heading "Praevisio AI" [level=2] [ref=e6]
+          - navigation [ref=e7]:
+            - button "Centro de Mando" [ref=e8]:
+              - img
+              - text: Centro de Mando
+            - button "Análisis Predictivo" [ref=e9]:
+              - img
+              - text: Análisis Predictivo
+            - button "Evaluación de Riesgos" [ref=e10]:
+              - img
+              - text: Evaluación de Riesgos
+            - button "Optimización Logística" [ref=e11]:
+              - img
+              - text: Optimización Logística
+        - generic [ref=e13]:
+          - heading "Estado del Sistema" [level=3] [ref=e15]
+          - generic [ref=e18]: Todos los sistemas operativos
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - heading "Praevisio AI - Centro de Mando" [level=1] [ref=e22]
+          - paragraph [ref=e23]: Inteligencia Predictiva de Élite para América Latina - 90% de Precisión
+        - generic [ref=e24]:
+          - generic [ref=e27]:
+            - generic [ref=e28]: 94%
+            - paragraph [ref=e29]: Precisión Promedio
+          - generic [ref=e32]:
+            - generic [ref=e33]: 176K
+            - paragraph [ref=e34]: Predicciones Diarias
+          - generic [ref=e37]:
+            - generic [ref=e38]: 23/7
+            - paragraph [ref=e39]: Monitoreo Continuo
+          - generic [ref=e42]:
+            - generic [ref=e43]: 5 Países
+            - paragraph [ref=e44]: Cobertura Regional
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - heading "Selección de País" [level=3] [ref=e48]
+            - generic [ref=e49]:
+              - combobox [ref=e50]:
+                - generic: Selecciona un país
+                - img [ref=e51]
+              - generic [ref=e53]:
+                - generic [ref=e54]:
+                  - generic [ref=e55]: "País Seleccionado:"
+                  - generic [ref=e56]: Colombia
+                - generic [ref=e57]:
+                  - generic [ref=e58]: "Nivel de Riesgo:"
+                  - generic [ref=e59]: Bajo
+                - generic [ref=e60]:
+                  - generic [ref=e61]: "Precisión de Predicción:"
+                  - generic [ref=e62]: 92%
+          - generic [ref=e63]:
+            - heading "Mapa Interactivo - América Latina" [level=3] [ref=e65]
+            - img [ref=e68]
+        - generic [ref=e247]:
+          - generic [ref=e248]:
+            - heading "Evolución de Precisión" [level=3] [ref=e250]
+            - application [ref=e254]:
+              - generic [ref=e259]:
+                - generic [ref=e262]: Ene
+                - generic [ref=e265]: Feb
+                - generic [ref=e268]: Mar
+                - generic [ref=e271]: Abr
+                - generic [ref=e274]: May
+                - generic [ref=e277]: Jun
+              - generic [ref=e279]:
+                - generic [ref=e282]: "0"
+                - generic [ref=e285]: "25"
+                - generic [ref=e288]: "50"
+                - generic [ref=e291]: "75"
+                - generic [ref=e294]: "100"
+          - generic [ref=e304]:
+            - heading "Volumen de Predicciones" [level=3] [ref=e306]
+            - application [ref=e310]:
+              - generic [ref=e315]:
+                - generic [ref=e318]: Ene
+                - generic [ref=e321]: Feb
+                - generic [ref=e324]: Mar
+                - generic [ref=e327]: Abr
+                - generic [ref=e330]: May
+                - generic [ref=e333]: Jun
+              - generic [ref=e335]:
+                - generic [ref=e338]: "0"
+                - generic [ref=e341]: "45"
+                - generic [ref=e344]: "90"
+                - generic [ref=e347]: "135"
+                - generic [ref=e350]: "180"
+        - generic [ref=e367]:
+          - generic [ref=e368]:
+            - heading "Galería de Misiones - Task Replay" [level=3] [ref=e369]
+            - paragraph [ref=e370]: Haz clic en una misión para ver el análisis predictivo en tiempo real
+          - generic [ref=e372]:
+            - generic [ref=e373] [cursor=pointer]:
+              - heading "Análisis de Mercado Colombia" [level=3] [ref=e375] [cursor=pointer]
+              - paragraph [ref=e377] [cursor=pointer]: Predicción de tendencias económicas
+            - generic [ref=e378] [cursor=pointer]:
+              - heading "Evaluación de Riesgos Perú" [level=3] [ref=e380] [cursor=pointer]
+              - paragraph [ref=e382] [cursor=pointer]: Análisis de estabilidad financiera
+            - generic [ref=e383] [cursor=pointer]:
+              - heading "Monitoreo de Deforestación Brasil" [level=3] [ref=e385] [cursor=pointer]
+              - paragraph [ref=e387] [cursor=pointer]: Protección ambiental predictiva
+            - generic [ref=e388] [cursor=pointer]:
+              - heading "Optimización Logística México" [level=3] [ref=e390] [cursor=pointer]
+              - paragraph [ref=e392] [cursor=pointer]: Eficiencia en cadena de suministro
+  - generic [ref=e393]:
+    - generic [ref=e394]: Test
+    - generic [ref=e395]: Manus AI - Centro de Mando
+    - generic [ref=e396]: Cargando planes...
+    - generic [ref=e397]: Cargando datos del módulo para Colombia
+  - generic [ref=e398]: "45"
 ```

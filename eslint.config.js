@@ -32,7 +32,7 @@ export default [
       // Many legacy files reference globals or have unused placeholders. Disable
       // these checks temporarily to allow the reforge process to continue.
       "no-undef": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
   // Server and scripts (Node environment)

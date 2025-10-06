@@ -66,8 +66,12 @@ docker-compose up -d --build
 ./scripts/wait-for-services.sh
 
 # Ensure test-results folder is writable to avoid permission issues from previous runs
+rm -rf test-results
 mkdir -p test-results
-chmod -R a+rw test-results || true
+# We need to make sure the directory is writable by the user that will run the tests inside the container
+chmod -R 777 test-results
+
+
 
 # Run Playwright tests using an ephemeral container with Playwright image (no sudo needed).
 if [ "${SKIP_BUILD:-0}" = "1" ]; then

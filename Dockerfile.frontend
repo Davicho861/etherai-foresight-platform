@@ -5,6 +5,9 @@ WORKDIR /app
 ARG VITE_API_BASE_URL
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies at image build time so node_modules live inside the image/volume
 # Copy unified package manifests to leverage Docker layer caching
 # Copy package manifests
@@ -12,13 +15,14 @@ COPY package*.json ./
 COPY package-lock.json ./
 
 # Install dependencies. Use npm ci for reproducible builds from lockfile.
-RUN npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline
+RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 10000 && npm config set fetch-retry-maxtimeout 60000
+RUN npm ci --legacy-peer-deps --no-audit --no-fund --verbose
 
 # Ensure vite and react plugin are available in the image so the dev server
 # can be started from the container without requiring global installs.
-RUN npm install --legacy-peer-deps --no-audit --no-fund vite@7.1.7 @vitejs/plugin-react-swc @tailwindcss/postcss --prefer-offline
+RUN npm install --legacy-peer-deps --no-audit --no-fund vite @vitejs/plugin-react-swc @tailwindcss/postcss --prefer-offline
 # Also install vite globally to ensure the `vite` command is available
-RUN npm install -g --legacy-peer-deps vite@7.1.7 --no-audit --no-fund
+RUN npm install -g --legacy-peer-deps vite --no-audit --no-fund
 
 # Copy the rest of the source (this will be shadowed by the host bind mount in dev)
 COPY . /app

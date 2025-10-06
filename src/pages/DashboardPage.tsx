@@ -4,6 +4,18 @@ import ProgressRing from '../components/dashboard/ProgressRing';
 import DashboardWidget from '../components/generated/DashboardWidget';
 import CIMetricsWidget from '../components/dashboard/CIMetricsWidget';
 import ClimateWidget from '../components/ClimateWidget';
+import ProphecyWidget from '../components/ProphecyWidget';
+// cargado dinámico del simulador para evitar romper el build server-side
+let getEternalState: (() => any) | null = null;
+try {
+   
+  // require is used so this import is ignored during SSR/static build
+   
+  const sim = require('../lib/eternalVigilanceSimulator');
+  getEternalState = sim.getCurrentState;
+} catch {
+  // no-op: si no existe en tiempo de build, lo dejamos null
+}
 
 type PlatformStatus = {
   statusGeneral: string;
@@ -89,9 +101,22 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ platformStatus, loadingSt
 
         <CIMetricsWidget />
 
+        {/* Resumen rápido de Metatrón */}
+        <div className="mt-6 bg-etherblue-dark/60 border border-gray-700 rounded-lg p-4 flex items-center justify-between">
+          <div>
+            <div className="text-sm text-gray-300">Metatrón - Vigilia Eterna</div>
+            <div className="text-lg font-bold">{getEternalState ? `${getEternalState().indices.globalRisk}% riesgo global` : 'Vigilia inactiva'}</div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <a href="/metatron-panel" className="bg-etherblue-600 hover:bg-etherblue-500 px-3 py-2 rounded">Abrir Metatrón</a>
+          </div>
+        </div>
+
         <div className="mt-8">
           <ClimateWidget />
         </div>
+
+        <ProphecyWidget />
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import express from 'express';
 import { nanoid } from 'nanoid';
-import * as orchestratorModule from '../orchestrator.js';
-const orchestrator = orchestratorModule.orchestrator || (orchestratorModule.default && orchestratorModule.default.orchestrator) || orchestratorModule;
+import * as kernelModule from '../orchestrator.js';
+const kernel = kernelModule.kernel || (kernelModule.default && kernelModule.default.kernel) || kernelModule;
 import { subscribe } from '../eventHub.js';
 
 const router = express.Router();
@@ -18,7 +18,7 @@ router.post('/start-mission', async (req, res) => {
     const missionId = nanoid();
 
     // Iniciar la misión de forma asíncrona; la orquestación emitirá logs mediante el callback
-    orchestrator.startMission(missionId, missionContract, (log) => {
+    kernel.startMission(missionId, missionContract, (log) => {
       const conns = activeStreams.get(missionId) || [];
       conns.forEach((c) => {
         try {
@@ -46,7 +46,7 @@ router.post('/start-tyche-mission', async (req, res) => {
       parameters: { target: 'tests', scope: 'repository' }
     };
     const missionId = nanoid();
-    orchestrator.startMission(missionId, missionContract, (log) => {
+    kernel.startMission(missionId, missionContract, (log) => {
       const conns = activeStreams.get(missionId) || [];
       conns.forEach((c) => {
         try { c.write(`data: ${JSON.stringify(log)}\n\n`); } catch { /* ignore */ }
@@ -74,7 +74,7 @@ router.get('/mission/:id/stream', (req, res) => {
   activeStreams.get(id).push(res);
 
   // Enviar logs ya existentes (si los hay)
-  const mission = orchestrator.getMissionLogs(id) || { logs: [], status: 'not_found' };
+  const mission = kernel.getMissionLogs(id) || { logs: [], status: 'not_found' };
   (mission.logs || []).forEach((l) => {
     try { res.write(`data: ${JSON.stringify(l)}\n\n`); } catch { /* ignore */ }
   });
@@ -97,7 +97,7 @@ router.get('/mission/:id/stream', (req, res) => {
 // GET /api/agent/vigilance/status -> Get eternal vigilance status
 router.get('/vigilance/status', (req, res) => {
   try {
-    const status = orchestrator.getVigilanceStatus();
+    const status = kernel.getVigilanceStatus();
     return res.json(status);
   } catch (err) {
     console.error('Error getting vigilance status', err);
@@ -108,7 +108,7 @@ router.get('/vigilance/status', (req, res) => {
 // POST /api/agent/vigilance/report -> Generate eternal vigilance report
 router.post('/vigilance/report', async (req, res) => {
   try {
-    const status = orchestrator.getVigilanceStatus();
+    const status = kernel.getVigilanceStatus();
     const reportContent = `# ETERNAL_VIGILANCE_REPORT
 
 ## Resumen de la Vigilia Eterna

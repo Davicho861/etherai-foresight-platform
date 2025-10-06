@@ -1,48 +1,199 @@
 # Page snapshot
 
 ```yaml
-- generic [active]:
-  - generic [ref=e1]:
-    - generic [ref=e2]: Test
-    - generic [ref=e3]: Manus AI - Centro de Mando
-    - generic [ref=e4]: Cargando planes...
-    - generic [ref=e5]: Cargando datos del módulo para Colombia
-  - generic [ref=e8]:
-    - generic [ref=e9]:
-      - generic [ref=e10]: "[plugin:vite:css]"
-      - generic [ref=e11]: "[postcss] It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin. The PostCSS plugin has moved to a separate package, so to continue using Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and update your PostCSS configuration."
-    - generic [ref=e12]: /app/src/index.css:undefined:null
-    - generic [ref=e13]:
-      - text: at We (
-      - generic [ref=e14] [cursor=pointer]: /app/node_modules/tailwindcss/dist/lib.js:37:1635
-      - text: ) at LazyResult.runOnRoot (
-      - generic [ref=e15] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:361:16
-      - text: ) at LazyResult.runAsync (
-      - generic [ref=e16] [cursor=pointer]: /usr/local/lib/node_modules/vite/node_modules/postcss/lib/lazy-result.js:290:26
-      - text: ) at async runPostCSS (
-      - generic [ref=e17] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32132:19
-      - text: ) at async compilePostCSS (
-      - generic [ref=e18] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32116:6
-      - text: ) at async compileCSS (
-      - generic [ref=e19] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:32046:26
-      - text: ) at async TransformPluginContext.handler (
-      - generic [ref=e20] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:31579:54
-      - text: ) at async EnvironmentPluginContainer.transform (
-      - generic [ref=e21] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:30984:14
-      - text: ) at async loadAndTransform (
-      - generic [ref=e22] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:26116:26
-      - text: ) at async viteTransformMiddleware (
-      - generic [ref=e23] [cursor=pointer]: file:///usr/local/lib/node_modules/vite/dist/node/chunks/dep-Bm2ujbhY.js:27187:20
-      - text: )
-    - generic [ref=e24]:
-      - text: Click outside, press
-      - generic [ref=e25]: Esc
-      - text: key, or fix the code to dismiss.
-      - text: You can also disable this overlay by setting
-      - code [ref=e26]: server.hmr.overlay
-      - text: to
-      - code [ref=e27]: "false"
-      - text: in
-      - code [ref=e28]: vite.config.ts
-      - text: .
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - region "Notifications (F8)":
+      - list
+    - region "Notifications alt+T"
+    - generic [ref=e3]:
+      - complementary [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - img [ref=e8]
+            - generic [ref=e11]: Praevisio AI
+          - button "collapse" [ref=e12]:
+            - img
+        - generic [ref=e16]: OPERACIONAL
+        - navigation [ref=e17]:
+          - link "Visión General" [ref=e18] [cursor=pointer]:
+            - /url: /dashboard
+            - img [ref=e20] [cursor=pointer]
+            - generic [ref=e25] [cursor=pointer]: Visión General
+          - link "Análisis de Señales" [ref=e26] [cursor=pointer]:
+            - /url: /
+            - img [ref=e28] [cursor=pointer]
+            - generic [ref=e30] [cursor=pointer]: Análisis de Señales
+          - link "Modelos Predictivos" [ref=e31] [cursor=pointer]:
+            - /url: /
+            - img [ref=e33] [cursor=pointer]
+            - generic [ref=e43] [cursor=pointer]: Modelos Predictivos
+          - link "Generador de Escenarios" [ref=e44] [cursor=pointer]:
+            - /url: /
+            - img [ref=e46] [cursor=pointer]
+            - generic [ref=e48] [cursor=pointer]: Generador de Escenarios
+          - link "Reportes y Alertas" [ref=e49] [cursor=pointer]:
+            - /url: /
+            - img [ref=e51] [cursor=pointer]
+            - generic [ref=e53] [cursor=pointer]: Reportes y Alertas
+          - link "Configuración" [ref=e54] [cursor=pointer]:
+            - /url: /
+            - img [ref=e56] [cursor=pointer]
+            - generic [ref=e59] [cursor=pointer]: Configuración
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e63]: A
+            - generic [ref=e64]:
+              - text: Nombre de Analista
+              - generic [ref=e65]: Estratega de Riesgos
+          - button [ref=e66]:
+            - img [ref=e67]
+      - main [ref=e69]:
+        - generic [ref=e70]:
+          - link "P Praevisio AI" [ref=e75] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=e76] [cursor=pointer]: P
+            - generic [ref=e77] [cursor=pointer]: Praevisio AI
+          - main [ref=e78]:
+            - generic [ref=e79]:
+              - heading "Centro de Mando Praevisio AI" [level=1] [ref=e80]
+              - generic [ref=e82]: OPERACIONAL
+            - generic [ref=e83]:
+              - generic [ref=e85]:
+                - img [ref=e87]:
+                  - generic [ref=e92]:
+                    - generic [ref=e93]: Carga del Sistema
+                    - generic [ref=e94]: 45.5%
+                - generic [ref=e96]:
+                  - generic [ref=e97]:
+                    - generic [ref=e98]: Análisis Activos
+                    - generic [ref=e99]: "8"
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: Alertas Críticas
+                    - generic [ref=e102]: "3"
+                  - generic [ref=e103]:
+                    - generic [ref=e104]: Base de Datos
+                    - generic [ref=e105]: ONLINE (32 conexiones)
+              - generic [ref=e106]:
+                - heading "Métricas Adicionales" [level=4] [ref=e107]
+                - generic [ref=e108]: "11"
+                - generic [ref=e109]: Suma de análisis activos y alertas críticas
+              - generic [ref=e110]:
+                - heading "Estado de Componentes" [level=3] [ref=e111]
+                - list [ref=e112]:
+                  - listitem [ref=e113]:
+                    - text: "API Principal:"
+                    - generic [ref=e114]: ONLINE
+                    - generic [ref=e115]: 75 ms
+                  - listitem [ref=e116]:
+                    - text: "Motor IA:"
+                    - generic [ref=e117]: ACTIVO
+                    - generic [ref=e118]: 5 modelos
+                  - listitem [ref=e119]:
+                    - text: "Pipeline Datos:"
+                    - generic [ref=e120]: DEGRADADO
+                    - generic [ref=e121]: Hace 2 horas
+            - generic [ref=e122]:
+              - heading "Métricas de CI/CD" [level=3] [ref=e123]
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - generic [ref=e126]: Tiempo de Build Promedio
+                  - generic [ref=e127]: 12.5 min
+                - generic [ref=e128]:
+                  - generic [ref=e129]: Cobertura de Tests
+                  - generic [ref=e130]: 85.3%
+                - generic [ref=e131]:
+                  - generic [ref=e132]: Builds Fallidos (última semana)
+                  - generic [ref=e133]: "2"
+                - generic [ref=e134]:
+                  - generic [ref=e135]: Último Build
+                  - generic [ref=e136]: SUCCESS
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: Metatrón - Vigilia Eterna
+                - generic [ref=e140]: Vigilia inactiva
+              - link "Abrir Metatrón" [ref=e142] [cursor=pointer]:
+                - /url: /metatron-panel
+            - generic [ref=e144]:
+              - heading "Predicción Climática LATAM - Open Meteo" [level=3] [ref=e146]
+              - generic [ref=e147]:
+                - generic [ref=e148]:
+                  - generic [ref=e149]: "Coordenadas:"
+                  - generic [ref=e150]:
+                    - spinbutton [ref=e151]: "4.711"
+                    - spinbutton [ref=e152]: "-74.0721"
+                    - button "Actualizar" [ref=e153]
+                - generic [ref=e154]:
+                  - heading "Clima Actual" [level=3] [ref=e155]
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: 🌤️
+                    - generic [ref=e158]:
+                      - generic [ref=e159]: 16.5°C
+                      - generic [ref=e160]: "Humedad: 72% | Viento: 9.4 km/h"
+                      - generic [ref=e161]: "Prob. Precipitación: 65%"
+                - generic [ref=e162]:
+                  - heading "Predicción 7 días" [level=3] [ref=e163]
+                  - generic [ref=e164]:
+                    - generic [ref=e165]:
+                      - generic [ref=e166]: lun
+                      - generic [ref=e167]: "6"
+                      - generic [ref=e168]: 🌤️
+                      - generic [ref=e169]: 17.8° / 13.1°
+                      - generic [ref=e170]: 15.7mm
+                    - generic [ref=e171]:
+                      - generic [ref=e172]: mar
+                      - generic [ref=e173]: "7"
+                      - generic [ref=e174]: 🌤️
+                      - generic [ref=e175]: 17.1° / 12.4°
+                      - generic [ref=e176]: 4mm
+                    - generic [ref=e177]:
+                      - generic [ref=e178]: mié
+                      - generic [ref=e179]: "8"
+                      - generic [ref=e180]: 🌤️
+                      - generic [ref=e181]: 17.6° / 12.8°
+                      - generic [ref=e182]: 5.9mm
+                    - generic [ref=e183]:
+                      - generic [ref=e184]: jue
+                      - generic [ref=e185]: "9"
+                      - generic [ref=e186]: 🌤️
+                      - generic [ref=e187]: 17.7° / 12.9°
+                      - generic [ref=e188]: 10.5mm
+                    - generic [ref=e189]:
+                      - generic [ref=e190]: vie
+                      - generic [ref=e191]: "10"
+                      - generic [ref=e192]: 🌤️
+                      - generic [ref=e193]: 16.8° / 12.9°
+                      - generic [ref=e194]: 9.3mm
+                    - generic [ref=e195]:
+                      - generic [ref=e196]: sáb
+                      - generic [ref=e197]: "11"
+                      - generic [ref=e198]: 🌤️
+                      - generic [ref=e199]: 16.4° / 12.5°
+                      - generic [ref=e200]: 16.8mm
+                    - generic [ref=e201]:
+                      - generic [ref=e202]: dom
+                      - generic [ref=e203]: "12"
+                      - generic [ref=e204]: 🌤️
+                      - generic [ref=e205]: 15.7° / 12.4°
+                      - generic [ref=e206]: 16.5mm
+            - generic [ref=e207]:
+              - 'heading "Primera Profecía Global: Riesgo de Inestabilidad Social en LATAM" [level=2] [ref=e208]'
+              - paragraph [ref=e209]: Análisis predictivo de riesgo de inestabilidad social en Colombia, Perú y Argentina para los próximos 6 meses.
+              - generic [ref=e210]:
+                - generic [ref=e211]:
+                  - heading "Colombia" [level=3] [ref=e212]
+                  - paragraph [ref=e213]: "Riesgo: 68%"
+                - generic [ref=e214]:
+                  - heading "Perú" [level=3] [ref=e215]
+                  - paragraph [ref=e216]: "Riesgo: 75%"
+                - generic [ref=e217]:
+                  - heading "Argentina" [level=3] [ref=e218]
+                  - paragraph [ref=e219]: "Riesgo: 82%"
+              - link "Ver Informe Completo" [ref=e220] [cursor=pointer]:
+                - /url: /INTELLIGENCE_REPORT_001.md
+  - generic [ref=e221]:
+    - generic [ref=e222]: Test
+    - generic [ref=e223]: Manus AI - Centro de Mando
+    - generic [ref=e224]: Cargando planes...
+    - generic [ref=e225]: Cargando datos del módulo para Colombia
 ```

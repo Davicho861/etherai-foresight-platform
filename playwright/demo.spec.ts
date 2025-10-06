@@ -1,11 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-
 test.describe('Demo E2E', () => {
   test('completes demo flow with Colombia State Mission using data-testid', async ({ page }) => {
     // 1. Navegar a '/demo'
-    await page.goto(`${FRONTEND_URL}/demo`);
+    await page.goto(`/demo`);
     await expect(page).toHaveURL('/demo');
 
     // Verificar que la página se cargue correctamente

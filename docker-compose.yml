@@ -11,61 +11,41 @@ services:
     volumes:
       - praevisio_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U praevisio -d praevisio"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
+       test: ["CMD-SHELL", "PGPASSWORD=praevisio pg_isready -U praevisio -d praevisio"]
+       interval: 5s
+       timeout: 5s
+       retries: 12
+    networks:
+      - praevisio_net
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
     container_name: praevisio_backend
-    user: "${HOST_UID}:${HOST_GID}"
+    user: "0:0"
     ports:
       - '4000:4000'
     environment:
       PRAEVISIO_BEARER_TOKEN: ${PRAEVISIO_BEARER_TOKEN:-demo-token}
       DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
       PORT: '4000'
-      # Point to the mock Ollama service in the Docker network
-      OLLAMA_URL: 'http://ollama-mock:11434/api/generate'
+      OLLAMA_URL: 'http://host.docker.internal:11434/api/generate'
     depends_on:
       db:
         condition: service_healthy
-      prisma-seed:
-        condition: service_completed_successfully
-      # Note: chromadb and neo4j removed from strict startup dependency to allow
-      # the backend to start even if their healthchecks are slow or missing
-      # curl/wget tools inside the images. These services are still required
-      # for full functionality but will be checked separately.
     healthcheck:
-      # Use the platform-status endpoint (the server exposes this path)
-      # Include Authorization header using the configured bearer token so the
-      # protected endpoint returns 200 during health checks.
-      test: ["CMD-SHELL", "curl -f -H \"Authorization: Bearer ${PRAEVISIO_BEARER_TOKEN:-demo-token}\" http://localhost:4000/api/platform-status || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/api/platform-status || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 12
-    volumes:
-      - backend_node_modules:/app/server/node_modules
+      start_period: 30s
+    networks:
+      - praevisio_net
 
-  prisma-seed:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: praevisio_prisma_seed
-    # Do not mount the host workspace to avoid node_modules conflicts during npm install
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
-    depends_on:
-      db:
-        condition: service_healthy
-    # Run migrations and seed using the built backend image as a one-shot job.
-    # Important: do NOT keep the container sleeping; let it exit with 0 on success
-    # so other services can depend on its successful completion.
-    command: sh -c "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma"
-    restart: 'no'
+  # El servicio prisma-seed ya no es necesario, el backend se encarga de ello.
+  # prisma-seed: ...
+
 
   frontend:
     build:
@@ -82,7 +62,6 @@ services:
       backend:
         condition: service_healthy
     environment:
-      VITE_API_BASE_URL: 'http://backend:4000'
       NODE_ENV: development
     volumes:
       # Mount only the source files needed for hot-reload to avoid overwriting
@@ -98,76 +77,34 @@ services:
       - praevisio_frontend_node_modules:/app/node_modules
     # On first start, if the named volume is empty, install dependencies into it.
     # This guarantees /app/node_modules contains the project deps (including vite)
-    # while keeping dependencies isolated in a Docker volume thereafter.
-    command: ["sh", "-c", "if [ ! -d /app/node_modules/vite ]; then echo 'vite missing in volume — installing frontend deps...' && npm ci --no-audit --no-fund --prefer-offline && npm install --no-audit --no-fund vite@7.1.7 @vitejs/plugin-react-swc --no-save; fi && NODE_ENV=development vite --host 0.0.0.0 --port 3002"]
     healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
+      test: ["CMD-SHELL", "curl -f http://0.0.0.0:3002 || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 1
-    restart: 'no'
+      retries: 12
+      start_period: 30s
+    networks:
+      - praevisio_net
 
-  ollama-mock:
-    image: node:20-bullseye-slim
-    container_name: praevisio_ollama_mock
-    user: "${HOST_UID}:${HOST_GID}"
-    working_dir: /app
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    container_name: praevisio_e2e
+    depends_on:
+      frontend:
+        condition: service_healthy
     volumes:
-      - ./:/app:cached
-    command: sh -c "node ./scripts/mock_ollama.js"
-    ports:
-      - '11434:11434'
-    # Temporarily relax healthcheck: the base image may not include curl, so
-    # use a no-op check to avoid blocking validation. Replace with a proper
-    # healthcheck if you add curl to the image.
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
-      start_period: 5s
-    restart: 'no'
-
-  chromadb:
-    image: chromadb/chroma:0.4.24
-    container_name: praevisio_chromadb
-    ports:
-      - "8000:8000"
-    volumes:
-      - praevisio_chroma_data:/chroma/chroma
-    # Relax chromadb healthcheck during local validation; the upstream image
-    # may not include curl or may respond differently. Mark healthy to allow
-    # the stack to proceed. For production, consider a stricter check.
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
-
-  neo4j:
-    image: neo4j:5.13
-    container_name: praevisio_neo4j
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-    volumes:
-      - praevisio_neo4j_data:/data
-    environment:
-      NEO4J_AUTH: neo4j/password
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 10s
-      timeout: 5s
-      retries: 1
+      - ./playwright.config.ts:/app/playwright.config.ts:cached
+      - ./tests/e2e:/app/tests/e2e:cached
+    networks:
+      - praevisio_net
 
 volumes:
   praevisio_db_data:
-  backend_node_modules:
-  e2e_tester_node_modules:
   praevisio_frontend_node_modules:
-  praevisio_chroma_data:
-  praevisio_neo4j_data:
+  backend_node_modules:
 
 networks:
-  default:
-    name: praevisio_network
+  praevisio_net:
+    driver: bridge

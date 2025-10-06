@@ -49,10 +49,7 @@ const CommandCenterLayout: React.FC = () => {
       try {
         const token = (typeof window !== 'undefined' && window.localStorage.getItem('praevisio_token')) || 'demo-token';
         console.log('token:', token);
-        // prefer VITE_API_BASE_URL if provided (useful for staging/production)
-        const base = (import.meta.env as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL || '';
-        const prefix = base.endsWith('/') || base === '' ? base.slice(0, -0) : base;
-        const url = prefix ? `${prefix}/api/platform-status` : '/api/platform-status';
+        const url = '/api/platform-status';
         console.log('fetching:', url);
         const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
         console.log('res.ok:', res.ok, 'status:', res.status);

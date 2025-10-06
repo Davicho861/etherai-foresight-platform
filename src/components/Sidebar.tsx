@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
     <div className="w-64 bg-gray-900 text-white h-full">
       <div className="p-6">
         <h2 className="text-xl font-bold mb-8">Praevisio AI</h2>
-        <nav className="space-y-2">
+        <nav className="space-y-2" data-testid="sidebar-nav">
           {menuItems.map((item, index) => (
             <Button
               key={index}

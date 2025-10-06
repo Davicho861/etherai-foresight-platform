@@ -30,6 +30,7 @@ const chartData = [
 const DemoPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
+  const [showBriefing, setShowBriefing] = useState(false);
 
   const getCountryColor = (countryCode: string) => {
     const country = countries.find(c => c.code === countryCode);
@@ -137,7 +138,7 @@ const DemoPage: React.FC = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="mt-6 space-y-4">
+                <div className="mt-6 space-y-4" data-testid={`country-card-${selectedCountry.code}`}>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">País Seleccionado:</span>
                     <span className="text-white font-semibold">{selectedCountry.name}</span>
@@ -164,7 +165,7 @@ const DemoPage: React.FC = () => {
                 <CardTitle className="text-white">Mapa Interactivo - América Latina</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64">
+                <div className="h-64" data-testid="global-map">
                   <ComposableMap
                     projection="geoMercator"
                     projectionConfig={{
@@ -189,6 +190,7 @@ const DemoPage: React.FC = () => {
                                 hover: { outline: 'none', fill: '#60A5FA' },
                                 pressed: { outline: 'none' },
                               }}
+                              data-testid={`country-${country?.code}`}
                               onMouseEnter={() => {
                                 const country = countries.find(c => c.code === geo.properties.ISO_A3);
                                 if (country) setHoveredCountry(country.name);
@@ -196,7 +198,10 @@ const DemoPage: React.FC = () => {
                               onMouseLeave={() => setHoveredCountry(null)}
                               onClick={() => {
                                 const country = countries.find(c => c.code === geo.properties.ISO_A3);
-                                if (country) setSelectedCountry(country);
+                                if (country) {
+                                  setSelectedCountry(country);
+                                  setShowBriefing(true);
+                                }
                               }}
                             />
                           );
@@ -213,6 +218,25 @@ const DemoPage: React.FC = () => {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* Briefing Panel */}
+          {showBriefing && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.4, duration: 0.5 }}
+            >
+              <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-white">Panel de Briefing - {selectedCountry.name}</CardTitle>
+                </CardHeader>
+                <CardContent data-testid="briefing-panel">
+                  <p className="text-gray-300">Riesgo: {selectedCountry.risk} - Precisión: {selectedCountry.prediction}%</p>
+                  <p className="text-gray-300">Información adicional del briefing...</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
 
           {/* Charts */}
           <motion.div
