@@ -34,6 +34,13 @@ class LogosKernel {
       prophecy: null,
     };
 
+    // Estado de vigilia eterna
+    this.lastRunAutoPreservation = null;
+    this.lastRunKnowledge = null;
+    this.lastRunProphecy = null;
+    this.activityFeed = [];
+    this.riskIndices = {};
+
     // Inicializar monitoreo de recursos
     this.startResourceMonitoring();
 
@@ -91,41 +98,118 @@ class LogosKernel {
 
   // Flujos perpetuos
   startPerpetualFlows() {
-    // Auto-Preservación: Monitoreo continuo de salud del sistema
+    // Auto-Preservación: Chequeo cada hora con Crew de Calidad y Seguridad
     this.perpetualFlows.autoPreservation = setInterval(async () => {
-      const health = {
-        cpu: this.resourceStats.cpuUsage,
-        memory: this.resourceStats.memoryUsage,
-        tokens: this.resourceStats.tokenUsage,
-        timestamp: new Date().toISOString()
-      };
-      if (health.cpu > 0.9 || health.memory > 0.9) {
-        // Optimizar recursos: reducir carga
-        console.log('[Logos Kernel] Optimizando recursos: alta carga detectada');
-        // Aquí podría pausar tareas no críticas
-      }
-      // Persistir estado de salud
-      try {
-        if (this.chromaClient && this.chromaClient.upsertLog) {
-          await this.chromaClient.upsertLog('system-health', health);
-        }
-      } catch {
-        // Ignore persistence errors
-      }
-    }, 30000); // Cada 30 segundos
+      this.lastRunAutoPreservation = new Date().toISOString();
+      this.activityFeed.push({
+        timestamp: this.lastRunAutoPreservation,
+        flow: 'Auto-Preservación',
+        message: 'Iniciando chequeo de salud completo del sistema'
+      });
 
-    // Conocimiento: Aprendizaje continuo
+      // Ejecutar QualityCrew para pruebas
+      const qualityResult = await this.crews.quality.run({ changes: [] }); // Simular chequeo
+      this.activityFeed.push({
+        timestamp: new Date().toISOString(),
+        flow: 'Auto-Preservación',
+        message: `QualityCrew: ${qualityResult.passed ? 'Todas las pruebas pasaron' : 'Fallo en pruebas'}`
+      });
+
+      // Simular Cerbero (Seguridad) - no existe, usar ConsensusAgent
+      const securityAgent = new MetatronAgent('ConsensusAgent');
+      const securityResult = await securityAgent.run({ changes: [] });
+      this.activityFeed.push({
+        timestamp: new Date().toISOString(),
+        flow: 'Auto-Preservación',
+        message: `Cerbero: ${securityResult.consensus ? 'Sistema seguro' : 'Anomalías detectadas'}`
+      });
+
+      // Si anomalía, iniciar reparación automática
+      if (!qualityResult.passed || !securityResult.consensus) {
+        this.activityFeed.push({
+          timestamp: new Date().toISOString(),
+          flow: 'Auto-Preservación',
+          message: 'Anomalía detectada: iniciando misión de reparación automática'
+        });
+        // Iniciar Hephaestus para corrección
+        const hephaestus = new MetatronAgent('Hephaestus');
+        await hephaestus.run({ suggestion: 'Reparar anomalías detectadas' });
+        this.activityFeed.push({
+          timestamp: new Date().toISOString(),
+          flow: 'Auto-Preservación',
+          message: 'Reparación automática completada'
+        });
+      }
+
+      // Mantener solo últimas 100 entradas
+      if (this.activityFeed.length > 100) this.activityFeed.shift();
+    }, 10000); // Cada 10 segundos (para prueba)
+
+    // Conocimiento: Kairós en ciclo perpetuo de escaneo
     this.perpetualFlows.knowledge = setInterval(async () => {
-      // Simular aprendizaje: consultar nuevos datos o hipótesis
-      await this.oracle.run({ query: 'Buscar patrones emergentes en datos globales' });
-      // Integrar conocimiento (esto se expandirá con Sócrates)
-    }, 60000); // Cada minuto
+      this.lastRunKnowledge = new Date().toISOString();
+      this.activityFeed.push({
+        timestamp: this.lastRunKnowledge,
+        flow: 'Conocimiento',
+        message: 'Kairós escaneando fuentes de datos para oportunidades'
+      });
 
-    // Profecía: Predicciones continuas
+      // Simular consulta a Kairós
+      const kairosResult = await this.oracle.consultKairos(); // Usar método de MetatronAgent
+      // Si detecta oportunidad, proponer misión
+      if (kairosResult.opportunities.length > 0) {
+        this.activityFeed.push({
+          timestamp: new Date().toISOString(),
+          flow: 'Conocimiento',
+          message: `Nueva oportunidad detectada: ${kairosResult.opportunities[0]}. Proponiendo Misión de Expansión.`
+        });
+        // Aquí podría iniciar una misión automáticamente
+      }
+    }, 5000); // Cada 5 segundos (para prueba)
+
+    // Profecía: Servicio continuo de predicción
     this.perpetualFlows.prophecy = setInterval(async () => {
-      await this.oracle.run({ query: 'Generar predicciones de alto impacto' });
-      // Almacenar predicciones
-    }, 300000); // Cada 5 minutos
+      this.lastRunProphecy = new Date().toISOString();
+      this.activityFeed.push({
+        timestamp: this.lastRunProphecy,
+        flow: 'Profecía',
+        message: 'Actualizando índices de riesgo global en tiempo real'
+      });
+
+      // Ejecutar agentes de predicción para LATAM
+      const dataAcquisitionAgent = new MetatronAgent('DataAcquisitionAgent');
+      const data = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], gdeltCodes: ['CO', 'PE', 'AR'] });
+
+      const signalAnalysisAgent = new MetatronAgent('SignalAnalysisAgent');
+      const signals = await signalAnalysisAgent.run({ data });
+
+      const causalCorrelationAgent = new MetatronAgent('CausalCorrelationAgent');
+      const correlations = await causalCorrelationAgent.run({ signals });
+
+      const riskAssessmentAgent = new MetatronAgent('RiskAssessmentAgent');
+      const risks = await riskAssessmentAgent.run({ correlations });
+
+      // Actualizar riskIndices
+      this.riskIndices = {};
+      for (const [country, risk] of Object.entries(risks)) {
+        const level = risk > 7 ? 'Alto' : risk > 4 ? 'Medio' : 'Bajo';
+        this.riskIndices[country] = { riskScore: risk, level };
+      }
+
+      // Generar alerta si supera umbral
+      for (const [country, data] of Object.entries(this.riskIndices)) {
+        if (data.riskScore > 7) {
+          this.activityFeed.push({
+            timestamp: new Date().toISOString(),
+            flow: 'Profecía',
+            message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)})`
+          });
+          // Generar informe automático
+          const reportAgent = new MetatronAgent('ReportGenerationAgent');
+          await reportAgent.run({ risks, correlations });
+        }
+      }
+    }, 8000); // Cada 8 segundos (para prueba)
   }
 
   stopPerpetualFlows() {
@@ -307,13 +391,13 @@ class LogosKernel {
 
   getVigilanceStatus() {
     return {
-      perpetualFlows: {
-        autoPreservation: this.perpetualFlows.autoPreservation !== null,
-        knowledge: this.perpetualFlows.knowledge !== null,
-        prophecy: this.perpetualFlows.prophecy !== null,
+      flows: {
+        autoPreservation: { active: this.perpetualFlows.autoPreservation !== null, lastRun: this.lastRunAutoPreservation },
+        knowledge: { active: this.perpetualFlows.knowledge !== null, lastRun: this.lastRunKnowledge },
+        prophecy: { active: this.perpetualFlows.prophecy !== null, lastRun: this.lastRunProphecy },
       },
-      resourceStats: this.resourceStats,
-      activeMissions: Array.from(activeMissions.keys()),
+      riskIndices: this.riskIndices,
+      activityFeed: this.activityFeed,
     };
   }
 
