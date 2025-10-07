@@ -22,10 +22,12 @@ jobs:
         run: |
           npm ci
           cd server && npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
       - name: Run lint
-        run: npm run lint --if-present || echo "No lint script"
+        run: npm run lint
       - name: Run unit tests
-        run: npm test || echo "Unit tests may be absent"
+        run: npm test
 
   e2e:
     needs: lint_and_test_unit
@@ -69,3 +71,20 @@ jobs:
       - name: Tear down
         if: always()
         run: docker compose down --volumes || true
+
+  sync_kanban:
+    needs: e2e
+    runs-on: ubuntu-latest
+    if: secrets.GITHUB_TOKEN
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci
+      - name: Sync Kanban to Issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync_kanban_to_issues.js
