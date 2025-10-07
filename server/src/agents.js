@@ -4,6 +4,7 @@ import QuantumEntanglementEngine from './oracle.js';
 import WorldBankIntegration from './integrations/WorldBankIntegration.js';
 import GdeltIntegration from './integrations/GdeltIntegration.js';
 import FMIIntegration from './integrations/FMIIntegration.js';
+import SatelliteIntegration from './integrations/SatelliteIntegration.js';
 import { fetchRecentTemperature } from './integrations/open-meteo.mock.js';
 
 class MetatronAgent {
@@ -47,8 +48,8 @@ class MetatronAgent {
   analyzeSystemCapabilities() {
     return {
       agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos'],
-      integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF'],
-      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia']
+      integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF', 'Satellite'],
+      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI']
     };
   }
 
@@ -217,6 +218,7 @@ class MetatronAgent {
         const worldBank = new WorldBankIntegration();
         const gdelt = new GdeltIntegration();
         const fmi = new FMIIntegration();
+        const satellite = new SatelliteIntegration();
         const endDate = new Date().toISOString().split('T')[0];
         const startDate = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 6 months ago
         const startYear = startDate.split('-')[0];
@@ -225,7 +227,11 @@ class MetatronAgent {
         for (let i = 0; i < countries.length; i++) {
           const country = countries[i];
           const gdeltCode = gdeltCodes ? gdeltCodes[i] : country;
-          let climateData, economicData, debtData, socialData;
+          let climateData, economicData, debtData, socialData, satelliteData;
+
+          // Coordinates for satellite data (approximate capitals)
+          const coords = { COL: [4.7110, -74.0721], PER: [-12.0464, -77.0428], ARG: [-34.6037, -58.3816] };
+          const [lat, lon] = coords[country] || [0, 0];
 
           try {
             // Fetch climate data from Open Meteo
@@ -270,7 +276,15 @@ class MetatronAgent {
             socialData = { eventCount: Math.floor(Math.random() * 10), events: [] };
           }
 
-          data[country] = { climate: climateData, economic: economicData, debt: debtData, social: socialData };
+          try {
+            // Fetch satellite NDVI data
+            satelliteData = await satellite.getNDVIData(lat, lon, startDate, endDate);
+          } catch (error) {
+            // Fallback to mock satellite data
+            satelliteData = { ndviData: [], isMock: true, note: 'Using mock satellite data' };
+          }
+
+          data[country] = { climate: climateData, economic: economicData, debt: debtData, social: socialData, satellite: satelliteData };
         }
         return data;
       }
@@ -391,6 +405,54 @@ Generado por Praevisio AI - ${new Date().toISOString()}
 `;
         fs.writeFileSync('INTELLIGENCE_REPORT_001.md', report);
         return { reportPath: 'INTELLIGENCE_REPORT_001.md', summary: 'Informe generado exitosamente.' };
+      }
+      case 'PeruAgent': {
+        // Agente especializado para análisis de Perú - Cadena de suministro de cobre
+        const fs = await import('fs');
+        const missionData = JSON.parse(fs.readFileSync('public/missions/america/peru/mision_peru.json', 'utf8'));
+
+        // Simular análisis de datos específicos de Perú
+        const analysis = {
+          unionNegotiations: {
+            status: 'En curso',
+            risk: 0.6,
+            details: 'Negociaciones salariales en minas de cobre con alta probabilidad de fracaso'
+          },
+          localNews: {
+            regions: ['Arequipa', 'Moquegua'],
+            events: Math.floor(Math.random() * 5) + 1,
+            risk: 0.3,
+            details: 'Aumento de protestas por condiciones laborales'
+          },
+          historicalStrikes: {
+            averageDuration: 45,
+            frequency: 'Cada 2 años',
+            risk: 0.1,
+            details: 'Patrón histórico de huelgas prolongadas'
+          }
+        };
+
+        const totalRisk = (analysis.unionNegotiations.risk * 0.6) +
+                         (analysis.localNews.risk * 0.3) +
+                         (analysis.historicalStrikes.risk * 0.1);
+
+        const report = `# PERU INTELLIGENCE REPORT - Predicción de Disrupción en Cadena de Suministro de Cobre (2025)
+
+## Resumen Ejecutivo
+Análisis predictivo de riesgo de disrupción en la cadena de suministro de cobre en Perú para 2025.
+
+## Análisis de Riesgos
+- **Negociaciones Sindicales**: ${analysis.unionNegotiations.details} (Riesgo: ${(analysis.unionNegotiations.risk * 100).toFixed(0)}%)
+- **Noticias Locales**: ${analysis.localNews.details} en ${analysis.localNews.regions.join(', ')} (Riesgo: ${(analysis.localNews.risk * 100).toFixed(0)}%)
+- **Datos Históricos**: ${analysis.historicalStrikes.details} (Riesgo: ${(analysis.historicalStrikes.risk * 100).toFixed(0)}%)
+
+## Probabilidad Total de Disrupción
+**${(totalRisk * 100).toFixed(0)}%**
+
+Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
+`;
+        fs.writeFileSync('PERU_INTELLIGENCE_REPORT.md', report);
+        return { reportPath: 'PERU_INTELLIGENCE_REPORT.md', totalRisk, analysis };
       }
       case 'DeploymentCrew': {
         return { status: 'Despliegue exitoso en el entorno de staging.' };
