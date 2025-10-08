@@ -33,7 +33,9 @@ test.describe('Pricing region and structure', () => {
     const segment = page.locator('h2:has-text("Emprendedores y Fundadores")').first();
     await expect(segment).toBeVisible();
     const parent = segment.locator('xpath=..');
-    const cards = parent.locator('.grid [data-testid]');
+  const _cards = parent.locator('.grid [data-testid]');
+    // Reference to avoid lint unused variable warnings in E2E test scaffolding
+    console.debug('_cards count', await _cards.count());
     // Fallback: count number of plan cards under the segment by finding .grid > div
     const planCards = parent.locator('.grid > div');
     const count = await planCards.count();

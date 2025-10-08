@@ -12,10 +12,7 @@ interface RouteRisk {
   timestamp: string;
 }
 
-interface RouteData {
-  route: string;
-  riskData: RouteRisk;
-}
+// RouteData interface removed — not used currently
 
 const CoffeeResiliencePage: React.FC = () => {
   const [routeRisks, setRouteRisks] = useState<Record<string, RouteRisk>>({});

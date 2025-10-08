@@ -40,7 +40,7 @@ const PricingPage: React.FC = () => {
       const region = (params.get('region') || navigator.language || 'en').toLowerCase();
       if (region.includes('es-mx') || region.includes('mx') || region.includes('mex')) return 0.85; // cheaper in MX demo
       if (region.includes('co') || region.includes('es-co') || region.includes('col')) return 0.95; // slightly cheaper in CO
-    } catch (e) {}
+      } catch (e) { console.debug('eriModifier parsing error:', e?.message || e); }
     return 1;
   }
 

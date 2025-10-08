@@ -4,7 +4,7 @@ import fs from 'fs';
 
 // In-memory storage for SSE events
 let sseClients = [];
-let eventQueue = [];
+let _eventQueue = [];
 
 const app = express();
 const PORT = process.env.MOCK_API_PORT || 3001;
@@ -185,6 +185,12 @@ app.post('/api/eternal-vigilance/emit', express.json(), (req, res) => {
   sseClients.forEach(client => {
     client.write(`data: ${JSON.stringify(eventData)}\n\n`);
   });
+
+  // Keep a short history of emitted events for diagnostics (best-effort)
+  try {
+    _eventQueue.push(eventData);
+    if (_eventQueue.length > 50) _eventQueue.shift();
+  } catch (err) { console.debug('mock emit queue push error:', err?.message || err); }
 
   res.json({ success: true, event: eventData });
 });

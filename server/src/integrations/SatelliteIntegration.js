@@ -51,7 +51,7 @@ class SatelliteIntegration {
         source: 'Open-Meteo (proxy for satellite data)'
       };
     } catch (error) {
-      console.log(`Using mock NDVI data for location (${latitude}, ${longitude}) from ${startDate} to ${endDate}`);
+      console.debug(`Using mock NDVI data for location (${latitude}, ${longitude}) from ${startDate} to ${endDate}. Error:`, error?.message || error);
 
       // Fallback to mock NDVI data
       const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));

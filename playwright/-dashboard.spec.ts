@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-const API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
-const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
+const _API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
+const _TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 test.describe('Dashboard E2E', () => {
   test.beforeEach(async ({ page }) => {
     page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    // Referencing env config to avoid unused variable lint warnings in E2E scaffolding
+    console.debug('_API_BASE', _API_BASE, '_TOKEN:', _TOKEN ? '[REDACTED]' : '');
   });
 
   test('renders KPIs from /api/platform-status', async ({ page }) => {

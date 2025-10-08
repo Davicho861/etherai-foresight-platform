@@ -8,8 +8,8 @@ let eternalVigilanceService = null;
 (async () => {
   try {
     eternalVigilanceService = (await import('./eternalVigilanceService.js')).default;
-  } catch (e) {
-    console.error('Error importing eternal vigilance service:', e);
+  } catch (error) {
+    console.error('Error importing eternal vigilance service:', error?.message || error);
   }
 })();
 
@@ -60,7 +60,7 @@ class LogosKernel {
       this.neo4jDriver = await getNeo4jDriver();
       console.log('LogosKernel: Neo4j driver initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Neo4j driver in LogosKernel:', error);
+      console.error('Failed to initialize Neo4j driver in LogosKernel:', error?.message || error);
     }
 
     // Inicializar monitoreo de recursos
@@ -260,7 +260,8 @@ class LogosKernel {
           }
         }
       } catch (error) {
-        // Silenciar errores de integraciones para evitar ruido en logs
+        // Log and fallback to avoid noisy stack traces in production
+        console.debug('Profecía flow error:', error?.message || error);
         console.log('Profecía: Usando datos de fallback debido a error en integraciones externas');
         this.publishToVigilance(`Profecía: Actualización completada con datos de fallback`);
       }
@@ -392,6 +393,7 @@ class LogosKernel {
           dataResult = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], period: { start: new Date().toISOString().split('T')[0], end: new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] } });
           log({ taskId: 'data-acquisition', description: 'Datos recopilados exitosamente.', status: 'completed' });
         } catch (error) {
+          console.debug('DataAcquisitionAgent.run error:', error?.message || error);
           // Fallback to mock data if acquisition fails
           dataResult = {
             COL: { climate: { temperature: 25, precipitation: 50 }, economic: { inflation: 5, unemployment: 10 }, debt: { country: 'COL', period: { startYear: '2024', endYear: '2025' }, debtData: [{ year: '2024', value: 55 }, { year: '2025', value: 57 }], isMock: true }, social: { eventCount: 3, events: [] } },

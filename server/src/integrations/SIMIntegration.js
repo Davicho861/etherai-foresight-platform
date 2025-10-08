@@ -40,7 +40,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock food price data for ${product} in ${region}`);
+      console.debug(`SIMIntegration.getFoodPrices error for ${product} in ${region}:`, error?.message || error);
 
       // Mock food prices based on typical Peruvian market prices
       const mockPrices = {
@@ -101,7 +101,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock price history for ${product} in ${region}`);
+      console.debug(`SIMIntegration.getPriceHistory error for ${product} in ${region}:`, error?.message || error);
 
       // Generate mock historical data
       const historyData = [];
@@ -149,7 +149,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock volatility data for ${product} in ${region}`);
+      console.debug(`SIMIntegration.getVolatilityIndex error for ${product} in ${region}:`, error?.message || error);
 
       // Mock volatility based on product type
       const volatilities = {
