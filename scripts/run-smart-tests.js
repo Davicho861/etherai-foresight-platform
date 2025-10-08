@@ -4,20 +4,8 @@
 // - Fallback to heuristic if backend unavailable
 import { execSync } from 'child_process';
 
-let changed = process.argv.slice(2);
-if (changed.length === 0) {
-  try {
-    // Get changed files from last commit
-    const gitDiff = execSync('git diff --name-only HEAD~1 HEAD', { encoding: 'utf-8' });
-    changed = gitDiff.trim().split('\n').filter(f => f.length > 0);
-    console.log('[Athena] Detected changed files from git:', changed);
-  } catch (err) {
-    console.log('[Athena] No changed files provided and git diff failed, running minimal smoke test suite');
-    changed = [];
-  }
-} else {
-  console.log('[Athena] Running smart tests for provided changed files:', changed);
-}
+const changed = process.argv.slice(2);
+console.log('[Athena] Running smart tests for changed files:', changed);
 
 async function predictTests(changedFiles) {
   try {

@@ -7,7 +7,6 @@ import FMIIntegration from './integrations/FMIIntegration.js';
 import SatelliteIntegration from './integrations/SatelliteIntegration.js';
 import CryptoIntegration from './integrations/CryptoIntegration.js';
 import { fetchRecentTemperature } from './integrations/open-meteo.mock.js';
-import eternalVigilanceService from './eternalVigilanceService.js';
 
 class MetatronAgent {
   constructor(name) {
@@ -19,14 +18,6 @@ class MetatronAgent {
     this.neo4jDriver = null; // Will be initialized lazily
     this.meq = new QuantumEntanglementEngine();
     this.cryptoIntegration = new CryptoIntegration();
-    // Initialize integration monitoring metrics
-    this.integrationMetrics = {
-      IMF: { checks: 0, consecutiveFailures: 0, lastStatus: 'unknown', lastCheck: null },
-      GDELT: { checks: 0, consecutiveFailures: 0, lastStatus: 'unknown', lastCheck: null },
-      WorldBank: { checks: 0, consecutiveFailures: 0, lastStatus: 'unknown', lastCheck: null },
-      Satellite: { checks: 0, consecutiveFailures: 0, lastStatus: 'unknown', lastCheck: null },
-      Crypto: { checks: 0, consecutiveFailures: 0, lastStatus: 'unknown', lastCheck: null }
-    };
   }
 
   runUnitTests(changes) {
@@ -58,9 +49,9 @@ class MetatronAgent {
 
   analyzeSystemCapabilities() {
     return {
-      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos', 'CryptoVolatilityAgent', 'CommunityResilienceAgent', 'IntegrationMonitorAgent'],
+      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos', 'CryptoVolatilityAgent', 'CommunityResilienceAgent'],
       integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF', 'Satellite', 'Crypto'],
-      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI', 'Análisis de volatilidad cripto', 'Análisis de resiliencia comunitaria', 'Monitoreo de integraciones externas']
+      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI', 'Análisis de volatilidad cripto', 'Análisis de resiliencia comunitaria']
     };
   }
 
@@ -539,149 +530,6 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
           globalResilienceAssessment,
           timestamp: new Date().toISOString()
         };
-      }
-      case 'CoffeeSupplyChainAgent': {
-        const { routes = ['Manizales -> Buenaventura', 'Pereira -> Cartagena'] } = input;
-        const routeRisks = {};
-
-        for (const route of routes) {
-          // Parse route to get locations (simplified: assume format "Origin -> Destination")
-          const [origin, destination] = route.split(' -> ').map(loc => loc.trim());
-
-          // Map locations to coordinates (approximate for Colombia)
-          const locationCoords = {
-            'Manizales': [5.0703, -75.5138],
-            'Pereira': [4.8133, -75.6961],
-            'Armenia': [4.5339, -75.6811],
-            'Buenaventura': [3.8801, -77.0312],
-            'Cartagena': [10.3997, -75.5144]
-          };
-
-          const originCoords = locationCoords[origin] || [4.711, -74.072]; // Bogotá as default
-          const destCoords = locationCoords[destination] || [4.711, -74.072];
-
-          // 1. Análisis Geofísico: Riesgo sísmico en la ruta
-          let seismicRisk = 0;
-          try {
-            // Use USGS API or mock data for seismic risk
-            // For Colombia, Andean region has higher seismic activity
-            const isAndean = ['Manizales', 'Pereira', 'Armenia'].includes(origin) || ['Manizales', 'Pereira', 'Armenia'].includes(destination);
-            seismicRisk = isAndean ? Math.random() * 0.4 + 0.3 : Math.random() * 0.2; // 30-70% for Andean, 0-20% for coastal
-          } catch (error) {
-            seismicRisk = Math.random() * 0.3;
-          }
-
-          // 2. Análisis Social: Riesgo de bloqueos/protestas
-          let socialRisk = 0;
-          try {
-            const communityAgent = new MetatronAgent('CommunityResilienceAgent');
-            const socialData = await communityAgent.run({ countries: ['COL'], days: 30 });
-            // Invert resilience score to get risk (higher resilience = lower risk)
-            const resilienceScore = socialData.resilienceAnalysis['COL'].resilienceScore / 100;
-            socialRisk = 1 - resilienceScore; // 0-1 scale
-          } catch (error) {
-            socialRisk = Math.random() * 0.5;
-          }
-
-          // 3. Análisis Climático: Riesgo de deslizamientos por lluvias
-          let climateRisk = 0;
-          try {
-            // Use Open Meteo for precipitation data
-            const originClimate = await this.fetchClimateData('COL');
-            const destClimate = await this.fetchClimateData('COL');
-            const avgPrecipitation = (originClimate.precipitation + destClimate.precipitation) / 2;
-            // Higher precipitation = higher risk of landslides
-            climateRisk = Math.min(avgPrecipitation / 200, 1); // Normalize to 0-1
-          } catch (error) {
-            climateRisk = Math.random() * 0.4;
-          }
-
-          // 4. Análisis Económico: Impacto de inflación en costos de transporte
-          let economicRisk = 0;
-          try {
-            const worldBank = new WorldBankIntegration();
-            const economicData = await worldBank.getKeyEconomicData('COL', '2024', '2025');
-            const inflation = economicData.inflation || 10; // Default 10%
-            economicRisk = Math.min(inflation / 20, 1); // Normalize inflation impact
-          } catch (error) {
-            economicRisk = Math.random() * 0.3;
-          }
-
-          // Fusión: Calcular Índice de Riesgo Logístico
-          const logisticRiskIndex = (seismicRisk * 0.25 + socialRisk * 0.35 + climateRisk * 0.25 + economicRisk * 0.15) * 100;
-
-          // Generar recomendaciones
-          const recommendations = [];
-          if (logisticRiskIndex > 75) {
-            recommendations.push('Ruta de alto riesgo: Considerar rutas alternativas o almacenamiento temporal');
-            recommendations.push('Implementar planes de contingencia inmediata');
-          } else if (logisticRiskIndex > 50) {
-            recommendations.push('Monitoreo continuo recomendado');
-            recommendations.push('Considerar seguros de cadena de suministro');
-          } else {
-            recommendations.push('Ruta estable: Proceder con operaciones normales');
-          }
-
-          if (socialRisk > 0.6) {
-            recommendations.push('Alto riesgo social: Monitorear protestas y bloqueos');
-          }
-          if (climateRisk > 0.5) {
-            recommendations.push('Riesgo climático alto: Prepararse para condiciones adversas');
-          }
-
-          routeRisks[route] = {
-            logisticRiskIndex: Math.round(logisticRiskIndex),
-            factors: {
-              seismic: Math.round(seismicRisk * 100),
-              social: Math.round(socialRisk * 100),
-              climate: Math.round(climateRisk * 100),
-              economic: Math.round(economicRisk * 100)
-            },
-            recommendations,
-            timestamp: new Date().toISOString()
-          };
-        }
-
-        return {
-          routeRisks,
-          summary: `Análisis completado para ${routes.length} rutas de cadena de suministro de café`,
-          timestamp: new Date().toISOString()
-        };
-      }
-      case 'IntegrationMonitorAgent': {
-        const results = {};
-        const apis = [
-          { name: 'IMF', integration: new FMIIntegration(), testMethod: 'getDebtData', testArgs: ['COL', '2024', '2025'] },
-          { name: 'GDELT', integration: new GdeltIntegration(), testMethod: 'getSocialEvents', testArgs: ['COL', '2024-01-01', '2024-01-31'] },
-          { name: 'WorldBank', integration: new WorldBankIntegration(), testMethod: 'getKeyEconomicData', testArgs: ['COL', '2024', '2025'] },
-          { name: 'Satellite', integration: new SatelliteIntegration(), testMethod: 'getNDVIData', testArgs: [4.711, -74.072, '2024-01-01', '2024-01-31'] },
-          { name: 'Crypto', integration: new CryptoIntegration(), testMethod: 'getCryptoData', testArgs: [['bitcoin']] }
-        ];
-
-        for (const api of apis) {
-          const metric = this.integrationMetrics[api.name];
-          metric.checks++;
-          metric.lastCheck = new Date().toISOString();
-
-          try {
-            await api.integration[api.testMethod](...api.testArgs);
-            metric.lastStatus = 'success';
-            metric.consecutiveFailures = 0;
-            results[api.name] = { status: 'success' };
-          } catch (error) {
-            metric.lastStatus = 'failure';
-            metric.consecutiveFailures++;
-            results[api.name] = { status: 'failure', error: error.message };
-
-            if (metric.consecutiveFailures >= 3) {
-              const alertMessage = `ALERTA: API ${api.name} ha fallado ${metric.consecutiveFailures} veces consecutivas. Último error: ${error.message}`;
-              eternalVigilanceService.emitEvent(alertMessage);
-              console.log(alertMessage);
-            }
-          }
-        }
-
-        return { results, metrics: this.integrationMetrics };
       }
       default: {
         return { result: 'Tarea completada.' };
