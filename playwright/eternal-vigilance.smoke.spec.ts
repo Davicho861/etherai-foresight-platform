@@ -44,7 +44,7 @@ test('eternal vigilance end-to-end smoke', async ({ page, request }) => {
 
   // Go to the page and wait for the app to be ready (SSE or main UI)
   await page.goto('/metatron-panel');
-  await waitForAppReady(page, { timeout: 20000 });
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
 
   // Emit a test event
   const emitResp = await request.post(`${backend}/api/eternal-vigilance/emit`, {

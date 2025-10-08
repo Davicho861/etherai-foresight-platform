@@ -4,13 +4,14 @@ import { waitForAppReady } from './test-utils';
 test.describe('Visual Demo Snapshots', () => {
   test('Snapshot Visual: Sidebar de la Demo', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     await expect(page.getByTestId('sidebar-nav')).toBeVisible();
     await page.screenshot({ path: 'sidebar-nav-perfect.png' });
   });
 
   test('Snapshot Visual: Dashboard General', async ({ page }) => {
   await page.goto('/demo');
-  await waitForAppReady(page, { timeout: 15000 });
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
   // Wait for the container of the KPIs to be visible
   await expect(page.locator('.grid.grid-cols-2.md\\:grid-cols-4.gap-6')).toBeVisible({ timeout: 10000 });
     // Verify that the dynamic KPIs show numbers
@@ -23,6 +24,7 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Dashboard de Argentina', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     // Esperar que los datos se carguen
     await page.waitForSelector('[data-testid="global-map"] svg', { timeout: 30000 });
     // Hacer clic en un país disponible (Argentina si existe)
@@ -36,6 +38,7 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Dashboard de Perú', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     // Esperar que los datos se carguen
     await page.waitForSelector('[data-testid="global-map"] svg', { timeout: 30000 });
     // Hacer clic en un país disponible (Perú si existe)
@@ -49,6 +52,7 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Mapa Global con Datos Dinámicos', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     await expect(page.getByTestId('global-map')).toBeVisible();
     // Verificar que el mapa tenga elementos coloreados (países)
     await page.waitForSelector('[data-testid="global-map"] svg path[fill]:not([fill="#DDD"])', { timeout: 30000 });
@@ -57,6 +61,7 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Panel de Briefing Dinámico', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     // Wait for the data to load
     await page.waitForSelector('[data-testid="global-map"] svg', { timeout: 30000 });
     // Click on the first available country
@@ -71,6 +76,7 @@ test.describe('Visual Demo Snapshots', () => {
 
   test('Snapshot Visual: Galería de Misiones Dinámicas', async ({ page }) => {
     await page.goto('/demo');
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     // Verificar que la galería de misiones contiene tarjetas
     await expect(page.locator('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4.gap-6')).toBeVisible();
     // Verificar que hay al menos una tarjeta de misión

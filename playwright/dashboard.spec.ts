@@ -24,7 +24,7 @@ test.describe('Dashboard E2E', () => {
 
   // Visit the frontend and wait for the app to be ready
   await page.goto('/', { waitUntil: 'networkidle' });
-  await waitForAppReady(page, { timeout: 20000 });
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
   console.log('Current URL after goto:', await page.url());
 
   // Wait for the main dashboard container to be visible (fallback)

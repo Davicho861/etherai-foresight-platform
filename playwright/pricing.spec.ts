@@ -3,7 +3,7 @@ import { waitForAppReady } from './test-utils';
 
 test('pricing page and request demo flow (smoke)', async ({ page }) => {
   await page.goto('/pricing');
-  await waitForAppReady(page, { timeout: 15000 });
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
   await expect(page.locator('text=Planes y Precios')).toBeVisible();
   // Wait for pricing data to load
   await page.waitForSelector('[data-testid="pricing-table"]', { timeout: 10000 });

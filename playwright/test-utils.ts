@@ -1,33 +1,9 @@
 import { Page } from '@playwright/test';
 
 export async function waitForAppReady(page: Page, options: { timeout?: number } = {}) {
-  const timeout = options.timeout ?? 20000;
-  // Wait for either the eventSourceReady flag or a main visible root container
-  try {
-    await page.waitForFunction(() => (window as any).eventSourceReady === true, { timeout: timeout / 2 });
-    return;
-  } catch {
-    // fallback: wait for a main container or header that indicates UI is rendered
-  }
-
-  const candidates = [
-    '[data-testid="dashboard-container"]',
-    'h1:has-text("Centro de Mando Praevisio AI")',
-    '[data-testid="pricing-table"]',
-    'body',
-  ];
-
-  for (const sel of candidates) {
-    try {
-      await page.waitForSelector(sel, { timeout });
-      return;
-    } catch {
-      // try next
-    }
-  }
-
-  // last resort: ensure the page finished navigation
-  await page.waitForLoadState('networkidle', { timeout });
+  const timeout = options.timeout ?? 60000;
+  // Wait for the explicit app ready signal
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout });
 }
 
 export async function safeLocatorTextOrTestId(page: Page, testId: string, text: string) {

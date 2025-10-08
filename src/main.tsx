@@ -28,7 +28,10 @@ function mountApp() {
 	}
 
 	createRoot(rootEl).render(<App />);
-	try { (window as any).__appReady = true; } catch { /* ignore in non-browser env */ }
+	try {
+		(window as any).__appReady = true;
+		document.body.setAttribute('data-app-ready', 'true');
+	} catch { /* ignore in non-browser env */ }
 }
 
 mountApp();
