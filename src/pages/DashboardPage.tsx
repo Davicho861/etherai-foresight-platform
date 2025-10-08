@@ -6,6 +6,7 @@ import CIMetricsWidget from '../components/dashboard/CIMetricsWidget';
 import ClimateWidget from '../components/ClimateWidget';
 import ProphecyWidget from '../components/ProphecyWidget';
 import IntelligenceReportWidget from '../components/IntelligenceReportWidget';
+import SeismicActivityWidget from '../components/dashboard/SeismicActivityWidget';
 // cargado dinámico del simulador para evitar romper el build server-side
 let getEternalState: (() => any) | null = null;
 try {
@@ -119,6 +120,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ platformStatus, loadingSt
 
 
         <ProphecyWidget />
+
+        <div className="mt-8">
+          <SeismicActivityWidget />
+        </div>
 
         <div className="mt-8">
           <IntelligenceReportWidget />

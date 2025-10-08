@@ -49,9 +49,9 @@ class MetatronAgent {
 
   analyzeSystemCapabilities() {
     return {
-      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos', 'CryptoVolatilityAgent'],
+      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos', 'CryptoVolatilityAgent', 'CommunityResilienceAgent'],
       integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF', 'Satellite', 'Crypto'],
-      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI', 'Análisis de volatilidad cripto']
+      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI', 'Análisis de volatilidad cripto', 'Análisis de resiliencia comunitaria']
     };
   }
 
@@ -491,6 +491,46 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
           timestamp: new Date().toISOString()
         };
       }
+      case 'CommunityResilienceAgent': {
+        const { countries = ['COL', 'PER', 'ARG'], days = 30 } = input;
+        const gdelt = new GdeltIntegration();
+        const resilienceAnalysis = {};
+
+        for (const country of countries) {
+          const endDate = new Date().toISOString().split('T')[0];
+          const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+          try {
+            const socialData = await gdelt.getSocialEvents(country, startDate, endDate);
+            const resilienceScore = this.calculateResilienceScore(socialData);
+            const recommendations = this.generateResilienceRecommendations(resilienceScore, socialData);
+
+            resilienceAnalysis[country] = {
+              socialEvents: socialData.eventCount,
+              resilienceScore: resilienceScore,
+              recommendations: recommendations,
+              period: { startDate, endDate }
+            };
+          } catch (error) {
+            // Fallback to mock data
+            resilienceAnalysis[country] = {
+              socialEvents: Math.floor(Math.random() * 20),
+              resilienceScore: Math.random() * 100,
+              recommendations: ['Fortalecer redes comunitarias', 'Implementar programas de apoyo social'],
+              period: { startDate, endDate },
+              isMock: true
+            };
+          }
+        }
+
+        const globalResilienceAssessment = this.generateGlobalResilienceAssessment(resilienceAnalysis);
+
+        return {
+          resilienceAnalysis,
+          globalResilienceAssessment,
+          timestamp: new Date().toISOString()
+        };
+      }
       default: {
         return { result: 'Tarea completada.' };
       }
@@ -608,6 +648,73 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
     const bullishCount = cryptos.filter(c => c.trend === 'bullish').length;
     if (bullishCount > cryptos.length / 2) {
       recommendations.push('Tendencia alcista general - considerar posiciones largas');
+    }
+
+    return recommendations;
+  }
+
+  calculateResilienceScore(socialData) {
+    // Simple score based on event count: lower events = higher resilience
+    const eventCount = socialData.eventCount || 0;
+    // Score from 0-100, higher is better resilience
+    return Math.max(0, 100 - eventCount * 5);
+  }
+
+  generateResilienceRecommendations(resilienceScore, socialData) {
+    const recommendations = [];
+
+    if (resilienceScore < 50) {
+      recommendations.push('Implementar programas de apoyo social inmediato');
+      recommendations.push('Fortalecer comunicación comunitaria');
+      recommendations.push('Desarrollar planes de contingencia para eventos sociales');
+    } else if (resilienceScore < 80) {
+      recommendations.push('Monitorear indicadores sociales regularmente');
+      recommendations.push('Promover educación y capacitación comunitaria');
+    } else {
+      recommendations.push('Mantener y expandir redes de apoyo existentes');
+      recommendations.push('Compartir mejores prácticas con otras comunidades');
+    }
+
+    if (socialData.eventCount > 10) {
+      recommendations.push('Activar protocolos de respuesta a crisis social');
+    }
+
+    return recommendations;
+  }
+
+  generateGlobalResilienceAssessment(resilienceAnalysis) {
+    const countries = Object.values(resilienceAnalysis);
+    const avgResilience = countries.reduce((sum, c) => sum + c.resilienceScore, 0) / countries.length;
+    const lowResilienceCount = countries.filter(c => c.resilienceScore < 50).length;
+
+    let assessment = 'Resiliencia comunitaria estable';
+    if (lowResilienceCount > countries.length / 2) {
+      assessment = 'Alto riesgo de vulnerabilidad comunitaria';
+    } else if (avgResilience < 70) {
+      assessment = 'Resiliencia moderada detectada';
+    }
+
+    return {
+      averageResilience: avgResilience,
+      lowResilienceCountries: lowResilienceCount,
+      assessment: assessment,
+      globalRecommendations: this.generateGlobalResilienceRecommendations(assessment, countries)
+    };
+  }
+
+  generateGlobalResilienceRecommendations(assessment, countries) {
+    const recommendations = [];
+
+    if (assessment.includes('Alto riesgo')) {
+      recommendations.push('Implementar programas regionales de fortalecimiento comunitario');
+      recommendations.push('Aumentar monitoreo de indicadores sociales');
+      recommendations.push('Coordinar con gobiernos locales para apoyo');
+    } else if (assessment.includes('moderada')) {
+      recommendations.push('Continuar con iniciativas de resiliencia existentes');
+      recommendations.push('Evaluar efectividad de programas actuales');
+    } else {
+      recommendations.push('Expandir modelos exitosos a otras regiones');
+      recommendations.push('Invertir en prevención y preparación');
     }
 
     return recommendations;

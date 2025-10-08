@@ -13,11 +13,15 @@ test.describe('Climate Widget E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the dashboard
+    // Visit the dashboard and wait for it to be idle
     await page.goto('/dashboard', { waitUntil: 'networkidle' });
 
-    // Check that the climate widget is visible
-    await expect(page.locator('text=Predicción Climática LATAM - Open Meteo')).toBeVisible();
+    // Wait for the climate widget container to be visible with a longer timeout
+    const climateWidgetLocator = page.locator('[data-testid="climate-widget"]');
+    await expect(climateWidgetLocator).toBeVisible({ timeout: 15000 });
+
+    // Check that the climate widget title is visible
+    await expect(climateWidgetLocator.locator('text=Predicción Climática LATAM - Open Meteo')).toBeVisible();
 
     // Check for current weather section
     await expect(page.locator('text=Clima Actual')).toBeVisible();

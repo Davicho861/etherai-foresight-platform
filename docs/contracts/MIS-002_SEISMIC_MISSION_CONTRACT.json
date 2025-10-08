@@ -1,0 +1,4 @@
+{
+  "id": "MIS-002",
+  "goal": "Integrar la API de datos sísmicos en tiempo real del USGS y desarrollar un nuevo 'Agente de Riesgo Geofísico' para monitorear y predecir la actividad sísmica global."
+}

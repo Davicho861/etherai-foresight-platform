@@ -13,11 +13,17 @@ import llmRouter from './routes/llm.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
 import climateRouter from './routes/climate.js';
+import gdeltRouter from './routes/gdelt.js';
 import alertsRouter from './routes/alerts.js';
 import eternalVigilanceRouter from './routes/eternalVigilance.js';
 import eternalVigilanceStreamRouter from './routes/eternalVigilanceStream.js';
 import eternalVigilanceTokenRouter from './routes/eternalVigilanceToken.js';
+import demoRouter from './routes/demo.js';
+import foodResilienceRouter from './routes/food-resilience.js';
+import globalRiskRouter from './routes/globalRiskRoutes.js';
+import seismicRouter from './routes/seismic.js';
 import sseTokenService from './sseTokenService.js';
+import { runProphecyCycle } from './services/predictionEngine.js';
 
 
 // Función principal para iniciar el servidor
@@ -61,17 +67,31 @@ async function main() {
   app.use('/api/consciousness', bearerAuth, consciousnessRouter);
   app.use('/api/sacrifice', sacrificeRouter);
   app.use('/api/climate', climateRouter);
+  app.use('/api/gdelt', gdeltRouter);
   app.use('/api/alerts', bearerAuth, alertsRouter);
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceRouter);
   // SSE stream (no auth for now)
   app.use('/api/eternal-vigilance', eternalVigilanceStreamRouter);
   // token issuance endpoint (protected)
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceTokenRouter);
+  app.use('/api/demo', demoRouter);
+  app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
+  app.use('/api/global-risk', bearerAuth, globalRiskRouter);
+  app.use('/api/seismic', bearerAuth, seismicRouter);
 
 
-  const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
-  app.listen(PORT, '0.0.0.0', () => {
+  const PORT = process.env.PORT ? Number(process.env.PORT) : 4001;
+  app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Praevisio server running on http://localhost:${PORT}`);
+    
+    // --- AION: ETERNAL VIGILANCE ACTIVATION ---
+    console.log('[Aion] Awakening... Initiating the Perpetual Prophecy Flow.');
+    // Wait a moment for the server to be fully ready before starting the cycle.
+    setTimeout(async () => {
+      await runProphecyCycle();
+      console.log('[Aion] First prophecy cycle complete. The Eternal Vigilance has begun.');
+    }, 2000);
+    // -----------------------------------------
   });
 }
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const API_BASE = process.env.API_BASE || 'http://localhost:4000';
+const API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
 const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 test.describe('Dashboard E2E', () => {
@@ -21,15 +21,19 @@ test.describe('Dashboard E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the frontend
+    // Visit the frontend and wait for network to be idle
     await page.goto('/', { waitUntil: 'networkidle' });
     console.log('Current URL after goto:', await page.url());
 
-    // Validate KPIs are visible and match backend
-    await expect(page.locator('text=An\u00e1lisis Activos')).toBeVisible();
-    await expect(page.locator('div.bg-etherblue-dark\\/50:has-text("Análisis Activos") .text-2xl')).toHaveText(expectedAnalyses);
+    // Wait for the main dashboard container to be visible
+    const dashboardLocator = page.locator('[data-testid="dashboard-container"]');
+    await expect(dashboardLocator).toBeVisible({ timeout: 15000 });
 
-    await expect(page.locator('text=Alertas Cr\u00edticas')).toBeVisible();
-    await expect(page.locator('div.bg-etherblue-dark\\/50:has-text("Alertas Críticas") .text-2xl')).toHaveText(expectedAlerts);
+    // Validate KPIs are visible and match backend
+    await expect(dashboardLocator.locator('text=Análisis Activos')).toBeVisible();
+    await expect(dashboardLocator.locator('div.bg-etherblue-dark\\/50:has-text("Análisis Activos") .text-2xl')).toHaveText(expectedAnalyses);
+
+    await expect(dashboardLocator.locator('text=Alertas Críticas')).toBeVisible();
+    await expect(dashboardLocator.locator('div.bg-etherblue-dark\\/50:has-text("Alertas Críticas") .text-2xl')).toHaveText(expectedAlerts);
   });
 });

@@ -6,7 +6,8 @@ let FlowsStatus: any = () => <div>FlowsStatus no disponible</div>;
 let MetatronPanelWidget: any = () => <div>MetatronPanelWidget no disponible</div>;
 let startSimulator: (() => void) | null = null;
 let stopSimulator: (() => void) | null = null;
-let subscribeEvents: ((_handler: (_message: string) => void) => void) | null = null;
+// eslint-disable-next-line no-unused-vars
+let subscribeEvents: ((_: (_: string) => void) => void) | null = null;
 let getCurrentState: (() => any) | null = null;
 let downloadReport: (() => void) | null = null;
 
@@ -64,7 +65,10 @@ const MetatronPanel: React.FC = () => {
         // Open EventSource without token in URL; cookie will be sent automatically
         const streamUrl = `/api/eternal-vigilance/stream`;
         es = new EventSource(streamUrl);
-        es.onopen = () => setSseConnected(true);
+        es.onopen = () => {
+          setSseConnected(true);
+          (window as any).eventSourceReady = true;
+        };
         es.onerror = () => setSseConnected(false);
         es.onmessage = (m) => {
           try {
@@ -73,7 +77,7 @@ const MetatronPanel: React.FC = () => {
             handler(`[SSE] ${evText}`);
             // update local state snapshot
             setState(parsed.state || getCurrentState?.());
-          } catch (_err) {
+          } catch {
             handler(`[SSE] ${m.data}`);
           }
         };
@@ -136,6 +140,7 @@ const MetatronPanel: React.FC = () => {
               handleDownload={handleDownload}
               sseConnected={sseConnected}
               events={events}
+              state={state}
             />
           </div>
           <div>

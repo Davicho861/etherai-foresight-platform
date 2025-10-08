@@ -8,33 +8,6 @@ interface TaskReplay {
   fullText: string;
 }
 
-const taskReplays: TaskReplay[] = [
-  {
-    id: '1',
-    title: 'Análisis de Mercado Colombia',
-    description: 'Predicción de tendencias económicas',
-    fullText: 'Iniciando análisis predictivo del mercado colombiano. Evaluando indicadores económicos clave: PIB, inflación y tasas de interés. Integrando datos de fuentes múltiples para generar pronósticos precisos con 90% de accuracy.'
-  },
-  {
-    id: '2',
-    title: 'Evaluación de Riesgos Perú',
-    description: 'Análisis de estabilidad financiera',
-    fullText: 'Ejecutando evaluación de riesgos financieros en proyectos peruanos. Analizando volatilidad del mercado, exposición crediticia y factores geopolíticos. Generando recomendaciones basadas en modelos predictivos avanzados.'
-  },
-  {
-    id: '3',
-    title: 'Monitoreo de Deforestación Brasil',
-    description: 'Protección ambiental predictiva',
-    fullText: 'Activando sistema de monitoreo predictivo para deforestación ilegal en la Amazonía. Utilizando datos satelitales, patrones históricos y algoritmos de machine learning para anticipar áreas de riesgo.'
-  },
-  {
-    id: '4',
-    title: 'Optimización Logística México',
-    description: 'Eficiencia en cadena de suministro',
-    fullText: 'Optimizando rutas logísticas en territorio mexicano. Analizando tráfico, condiciones climáticas y demanda de mercado para minimizar costos y maximizar eficiencia en la cadena de suministro.'
-  }
-];
-
 const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 50 }) => {
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,8 +26,39 @@ const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, spee
 };
 
 const MissionGallery: React.FC = () => {
+  const [taskReplays, setTaskReplays] = useState<TaskReplay[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedReplay, setSelectedReplay] = useState<TaskReplay | null>(null);
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const fetchMissionReplays = async () => {
+      try {
+        const response = await fetch('/api/demo/mission-replays');
+        if (!response.ok) {
+          throw new Error('Failed to fetch mission replays');
+        }
+        const data = await response.json();
+        setTaskReplays(data.taskReplays || []);
+      } catch (error) {
+        console.error('Error fetching mission replays:', error);
+        // Fallback to empty array
+        setTaskReplays([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMissionReplays();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center text-gray-400">
+        Cargando replays de misiones...
+      </div>
+    );
+  }
 
   const handleReplaySelect = (replay: TaskReplay) => {
     setSelectedReplay(replay);

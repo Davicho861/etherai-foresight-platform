@@ -8,6 +8,6 @@ module.exports = {
     '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
     '^.+\\.(png|jpg|jpeg|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
-  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/playwright/'],
-   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/playwright/', '/server/'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.frontend.js'],
 };

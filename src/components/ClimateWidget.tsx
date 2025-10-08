@@ -17,20 +17,32 @@ interface PredictionData {
   weathercode: number[];
 }
 
+interface City {
+  name: string;
+  lat: number;
+  lon: number;
+}
+
+const latamCities: City[] = [
+  { name: 'Bogotá', lat: 4.7110, lon: -74.0721 },
+  { name: 'Buenos Aires', lat: -34.6037, lon: -58.3816 },
+  { name: 'São Paulo', lat: -23.5505, lon: -46.6333 },
+  { name: 'Lima', lat: -12.0464, lon: -77.0428 },
+  { name: 'Ciudad de México', lat: 19.4326, lon: -99.1332 },
+  { name: 'Santiago', lat: -33.4489, lon: -70.6693 },
+];
+
 const ClimateWidget: React.FC = () => {
   const [currentData, setCurrentData] = useState<ClimateData | null>(null);
   const [predictionData, setPredictionData] = useState<PredictionData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Bogotá coordinates as default for LATAM
-  const [lat, setLat] = useState(4.7110);
-  const [lon, setLon] = useState(-74.0721);
+  const [selectedCity, setSelectedCity] = useState<City>(latamCities[0]);
 
   const fetchCurrentWeather = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/climate/current?lat=${lat}&lon=${lon}`);
+      const response = await fetch(`/api/climate/current?lat=${selectedCity.lat}&lon=${selectedCity.lon}`);
       if (!response.ok) throw new Error('Failed to fetch current weather');
       const data = await response.json();
       setCurrentData(data);
@@ -39,18 +51,18 @@ const ClimateWidget: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [lat, lon]);
+  }, [selectedCity]);
 
   const fetchPrediction = useCallback(async () => {
     try {
-      const response = await fetch(`/api/climate/predict?lat=${lat}&lon=${lon}&days=7`);
+      const response = await fetch(`/api/climate/predict?lat=${selectedCity.lat}&lon=${selectedCity.lon}&days=7`);
       if (!response.ok) throw new Error('Failed to fetch prediction');
       const data = await response.json();
       setPredictionData(data);
     } catch (err) {
       console.error('Prediction fetch error:', err);
     }
-  }, [lat, lon]);
+  }, [selectedCity]);
 
   useEffect(() => {
     fetchCurrentWeather();
@@ -67,6 +79,13 @@ const ClimateWidget: React.FC = () => {
     return '🌤️'; // Default
   };
 
+  const handleCityChange = (cityName: string) => {
+    const city = latamCities.find(c => c.name === cityName);
+    if (city) {
+      setSelectedCity(city);
+    }
+  };
+
   return (
     <Card className="w-full max-w-4xl">
       <CardHeader>
@@ -74,24 +93,19 @@ const ClimateWidget: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Coordenadas:</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              step="0.0001"
-              value={lat}
-              onChange={(e) => setLat(parseFloat(e.target.value))}
-              placeholder="Latitud"
-              className="border rounded px-2 py-1 w-24"
-            />
-            <input
-              type="number"
-              step="0.0001"
-              value={lon}
-              onChange={(e) => setLon(parseFloat(e.target.value))}
-              placeholder="Longitud"
-              className="border rounded px-2 py-1 w-24"
-            />
+          <label className="block text-sm font-medium mb-2">Ubicación:</label>
+          <div className="flex gap-2 items-center">
+            <select
+              value={selectedCity.name}
+              onChange={(e) => handleCityChange(e.target.value)}
+              className="border rounded px-2 py-1 bg-etherblue-dark text-white"
+            >
+              {latamCities.map(city => (
+                <option key={city.name} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
             <button
               onClick={() => {
                 fetchCurrentWeather();
@@ -113,7 +127,7 @@ const ClimateWidget: React.FC = () => {
 
         {currentData && (
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Clima Actual</h3>
+            <h3 className="text-lg font-semibold mb-2">Clima Actual en {selectedCity.name}</h3>
             <div className="flex items-center gap-4">
               <span className="text-4xl">{getWeatherIcon(currentData.weather_code)}</span>
               <div>

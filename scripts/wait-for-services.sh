@@ -4,7 +4,7 @@ set -euo pipefail
 echo "Waiting for services to be healthy..."
 
 # Services to wait for
-SERVICES=("db" "backend" "frontend")
+SERVICES=("db" "mock-api-server" "backend" "frontend")
 
 # Maximum wait time in seconds
 MAX_WAIT=300

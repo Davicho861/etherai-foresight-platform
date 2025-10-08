@@ -11,10 +11,31 @@ services:
     volumes:
       - praevisio_db_data:/var/lib/postgresql/data
     healthcheck:
-       test: ["CMD-SHELL", "PGPASSWORD=praevisio pg_isready -U praevisio -d praevisio"]
-       interval: 5s
-       timeout: 5s
-       retries: 12
+      test: ["CMD-SHELL", "PGPASSWORD=praevisio pg_isready -U praevisio -d praevisio"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - praevisio_net
+
+  neo4j:
+    image: neo4j:5.15
+    container_name: praevisio_neo4j
+    environment:
+      NEO4J_AUTH: neo4j/praevisio_password
+      NEO4J_PLUGINS: '["graph-data-science"]'
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "praevisio_password", "MATCH () RETURN count(*) limit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
     networks:
       - praevisio_net
 
@@ -23,14 +44,15 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     container_name: praevisio_backend
-    user: "0:0"
     ports:
       - '4000:4000'
     environment:
       PRAEVISIO_BEARER_TOKEN: ${PRAEVISIO_BEARER_TOKEN:-demo-token}
       DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
+      NEO4J_HOST: praevisio_neo4j
       PORT: '4000'
       OLLAMA_URL: 'http://host.docker.internal:11434/api/generate'
+      TEST_MODE: '${TEST_MODE:-false}'
     depends_on:
       db:
         condition: service_healthy
@@ -43,67 +65,68 @@ services:
     networks:
       - praevisio_net
 
-  # El servicio prisma-seed ya no es necesario, el backend se encarga de ello.
-  # prisma-seed: ...
-
-
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
     container_name: praevisio_frontend
-    # Ejecutar como root para evitar problemas de permisos en volúmenes montados
-    # (por ejemplo, Vite necesita escribir en /app/node_modules/.vite-temp).
-    user: "0:0"
-    working_dir: /app
     ports:
       - '3002:3002'
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     environment:
-      NODE_ENV: development
-    volumes:
-      # Mount only the source files needed for hot-reload to avoid overwriting
-      # the rest of the image filesystem (including node_modules).
-      - ./src:/app/src:cached
-      - ./public:/app/public:cached
-      - ./index.html:/app/index.html:cached
-      - ./package.json:/app/package.json:cached
-      - ./package-lock.json:/app/package-lock.json:cached
-      - ./vite.config.ts:/app/vite.config.ts:cached
-      - ./tsconfig.json:/app/tsconfig.json:cached
-      # Keep node_modules isolated in a named volume populated from the image
-      - praevisio_frontend_node_modules:/app/node_modules
-    # On first start, if the named volume is empty, install dependencies into it.
-    # This guarantees /app/node_modules contains the project deps (including vite)
+      - NODE_ENV=development
+    command: npm run dev:container
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://0.0.0.0:3002 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:3002/ || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 12
-      start_period: 30s
+      retries: 5
     networks:
       - praevisio_net
 
-  e2e:
-    build:
-      context: .
-      dockerfile: Dockerfile.e2e
+  e2e-tester:
+    image: mcr.microsoft.com/playwright:v1.56.0-jammy
     container_name: praevisio_e2e
     depends_on:
-      frontend:
-        condition: service_healthy
+      - frontend
+    environment:
+      # Point Playwright and tests to the compose service hostnames/ports
+      FRONTEND_URL: 'http://praevisio_frontend:3002'
+      API_BASE: 'http://praevisio_backend:4000'
+      TEST_MODE: '${TEST_MODE:-false}'
     volumes:
-      - ./playwright.config.ts:/app/playwright.config.ts:cached
-      - ./tests/e2e:/app/tests/e2e:cached
+      - .:/app
+    working_dir: /app
+    user: root
+    command: npx playwright test
+    networks:
+      - praevisio_net
+
+  mock-api-server:
+    build:
+      context: ./server/mocks/mock-api-server
+      dockerfile: Dockerfile
+    container_name: praevisio_mock_api
+    ports:
+      - '3001:3001'
+    environment:
+      MOCK_API_PORT: '3001'
+    volumes:
+      - ./server/mocks:/app/mocks:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
     networks:
       - praevisio_net
 
 volumes:
   praevisio_db_data:
-  praevisio_frontend_node_modules:
-  backend_node_modules:
+  neo4j_data:
+  neo4j_logs:
 
 networks:
   praevisio_net:

@@ -2,7 +2,9 @@ import fetch from 'node-fetch';
 
 class WorldBankIntegration {
   constructor() {
-    this.baseUrl = 'https://api.worldbank.org/v2';
+    this.baseUrl = process.env.TEST_MODE === 'true'
+      ? 'http://mock-api-server:3001/world-bank'
+      : 'https://api.worldbank.org/v2';
   }
 
   async getEconomicIndicators(country, indicators, startYear, endYear) {

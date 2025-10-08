@@ -16,6 +16,14 @@ else
   echo "Node.js not found. Skipping Oracle check." >&2
 fi
 
+# Smart Test Runner - Precision Validation
+if command -v npm >/dev/null 2>&1; then
+  echo "Running smart tests..."
+  npm run test:smart
+else
+  echo "npm not found. Skipping smart tests." >&2
+fi
+
 # Docker janitor cleanup
 if command -v node >/dev/null 2>&1; then
   node scripts/docker-janitor.js

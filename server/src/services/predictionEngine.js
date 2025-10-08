@@ -1,0 +1,170 @@
+/**
+ * @fileoverview Prediction Engine for Global Risk Assessment.
+ * This service consumes integrated data sources to generate and update predictive risk indices.
+ * It represents the "Perpetual Prophecy Flow" of the Aion directive.
+ */
+
+import axios from 'axios';
+
+// This would be stored in a more secure and dynamic configuration in a real system.
+const PRAEVISIO_API_BASE_URL = `http://localhost:${process.env.PORT || 4001}`;
+const AUTH_TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
+
+const predictionState = {
+  lastUpdated: null,
+  riskIndices: {
+    famineRisk: {
+      value: null,
+      source: null,
+      confidence: 0.0,
+    },
+    geophysicalRisk: {
+      value: null,
+      source: 'USGS',
+      confidence: 0.0,
+      significantEvents: [],
+    },
+  },
+  multiDomainRiskIndex: {
+    value: null,
+    confidence: 0.0,
+  },
+};
+
+/**
+ * Fetches data from a Praevisio internal API endpoint.
+ * @param {string} endpoint The API endpoint to fetch data from.
+ * @returns {Promise<object>} The data from the endpoint.
+ */
+async function fetchInternalData(endpoint) {
+  try {
+    const response = await axios.get(`${PRAEVISIO_API_BASE_URL}${endpoint}`, {
+      headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
+    });
+    return response.data.data || response.data;
+  } catch (error) {
+    console.error(`[PredictionEngine] Failed to fetch internal data from ${endpoint}:`, error.message);
+    throw new Error('Internal data source unavailable.');
+  }
+}
+
+/**
+ * Updates the Famine Risk Index based on the latest food security data.
+ */
+async function updateFamineRiskIndex() {
+  console.log('[PredictionEngine] Updating Famine Risk Index...');
+  const foodSecurityData = await fetchInternalData('/api/global-risk/food-security');
+
+  if (!foodSecurityData || !foodSecurityData.indicators) {
+    console.error('[PredictionEngine] Invalid food security data received.');
+    return;
+  }
+
+  const resilienceIndicator = foodSecurityData.indicators.find(
+    (ind) => ind.name === 'Natural Resources & Resilience'
+  );
+
+  if (!resilienceIndicator) {
+    console.error('[PredictionEngine] Resilience indicator not found in data.');
+    return;
+  }
+
+  const resilienceScore = resilienceIndicator.score;
+  const riskValue = parseFloat((100 - resilienceScore).toFixed(2));
+
+  predictionState.riskIndices.famineRisk = {
+    value: riskValue,
+    source: foodSecurityData.source,
+    confidence: 0.85,
+  };
+  console.log(`[PredictionEngine] Famine Risk Index updated to ${riskValue}.`);
+}
+
+/**
+ * Updates the Geophysical Risk Index based on the latest seismic activity.
+ */
+async function updateGeophysicalRiskIndex() {
+  console.log('[PredictionEngine] Updating Geophysical Risk Index...');
+  const seismicEvents = await fetchInternalData('/api/seismic/activity');
+
+  if (!Array.isArray(seismicEvents)) {
+    console.error('[PredictionEngine] Invalid seismic data received.');
+    return;
+  }
+
+  predictionState.riskIndices.geophysicalRisk.significantEvents = seismicEvents;
+
+  if (seismicEvents.length === 0) {
+    predictionState.riskIndices.geophysicalRisk.value = 0;
+    predictionState.riskIndices.geophysicalRisk.confidence = 0.95; // High confidence in no risk
+    console.log('[PredictionEngine] No significant seismic events detected. Geophysical Risk is 0.');
+    return;
+  }
+
+  // Simplified risk: scale of 0-100 based on the max magnitude of the day.
+  // A magnitude of 8.0 or higher is considered catastrophic (100).
+  const maxMagnitude = Math.max(...seismicEvents.map(e => e.magnitude));
+  const riskValue = Math.min(100, parseFloat(((maxMagnitude / 8.0) * 100).toFixed(2)));
+
+  predictionState.riskIndices.geophysicalRisk.value = riskValue;
+  predictionState.riskIndices.geophysicalRisk.confidence = 0.90; // Static confidence
+
+  console.log(`[PredictionEngine] Geophysical Risk Index updated to ${riskValue} based on max magnitude of ${maxMagnitude}.`);
+}
+
+/**
+ * Calculates the Multi-Domain Risk Index based on all individual risk indices.
+ * This is a weighted average for demonstration.
+ */
+function updateMultiDomainRiskIndex() {
+  console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
+  const { famineRisk, geophysicalRisk } = predictionState.riskIndices;
+
+  const famineWeight = 0.6;
+  const geoWeight = 0.4;
+
+  const famineValue = famineRisk.value || 0;
+  const geoValue = geophysicalRisk.value || 0;
+
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight);
+
+  predictionState.multiDomainRiskIndex = {
+    value: parseFloat(totalRisk.toFixed(2)),
+    confidence: parseFloat(weightedConfidence.toFixed(2)),
+  };
+
+  console.log(`[PredictionEngine] Multi-Domain Risk Index updated to ${predictionState.multiDomainRiskIndex.value}.`);
+}
+
+/**
+ * Retrieves the current state of all risk indices.
+ * @returns {object} The current prediction state.
+ */
+function getRiskIndices() {
+  return predictionState;
+}
+
+/**
+ * Initiates the perpetual prophecy cycle.
+ */
+async function runProphecyCycle() {
+  try {
+    await Promise.all([
+      updateFamineRiskIndex(),
+      updateGeophysicalRiskIndex(),
+    ]);
+
+    updateMultiDomainRiskIndex();
+    predictionState.lastUpdated = new Date().toISOString();
+    console.log('[PredictionEngine] Prophecy cycle complete. All risk indices updated.');
+
+  } catch (error) {
+    console.error('[PredictionEngine] Error during prophecy cycle:', error.message);
+  }
+}
+
+export {
+  runProphecyCycle,
+  getRiskIndices,
+};

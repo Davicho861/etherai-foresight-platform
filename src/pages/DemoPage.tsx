@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -10,30 +10,78 @@ import AnimatedMetric from '@/components/AnimatedMetrics';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-const countries = [
-  { name: 'Colombia', code: 'COL', risk: 'Bajo', prediction: 92 },
-  { name: 'Perú', code: 'PER', risk: 'Medio', prediction: 87 },
-  { name: 'Brasil', code: 'BRA', risk: 'Alto', prediction: 78 },
-  { name: 'México', code: 'MEX', risk: 'Medio', prediction: 85 },
-  { name: 'Argentina', code: 'ARG', risk: 'Bajo', prediction: 91 },
-];
+interface Country {
+  name: string;
+  code: string;
+  risk: string;
+  prediction: number;
+}
 
-const chartData = [
-  { month: 'Ene', accuracy: 85, predictions: 120 },
-  { month: 'Feb', accuracy: 87, predictions: 135 },
-  { month: 'Mar', accuracy: 89, predictions: 142 },
-  { month: 'Abr', accuracy: 91, predictions: 158 },
-  { month: 'May', accuracy: 93, predictions: 165 },
-  { month: 'Jun', accuracy: 95, predictions: 178 },
-];
+interface ChartData {
+  month: string;
+  accuracy: number;
+  predictions: number;
+}
+
+interface DemoData {
+  kpis: {
+    precisionPromedio: number;
+    prediccionesDiarias: number;
+    monitoreoContinuo: number;
+    coberturaRegional: number;
+  };
+  countries: Country[];
+  chartData: ChartData[];
+  lastUpdated: string;
+}
 
 const DemoPage: React.FC = () => {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [demoData, setDemoData] = useState<DemoData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [showBriefing, setShowBriefing] = useState(false);
 
+  useEffect(() => {
+    const fetchDemoData = async () => {
+      try {
+        const response = await fetch('/api/demo/full-state');
+        if (!response.ok) {
+          throw new Error('Failed to fetch demo data');
+        }
+        const data: DemoData = await response.json();
+        setDemoData(data);
+        setSelectedCountry(data.countries[0] || null);
+      } catch (err) {
+        console.error('Error fetching demo data:', err);
+        setError('Error al cargar datos de la demo');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDemoData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 items-center justify-center">
+        <div className="text-white text-xl">Cargando datos de la demo...</div>
+      </div>
+    );
+  }
+
+  if (error || !demoData) {
+    return (
+      <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 items-center justify-center">
+        <div className="text-white text-xl">{error || 'Error al cargar datos'}</div>
+      </div>
+    );
+  }
+
   const getCountryColor = (countryCode: string) => {
-    const country = countries.find(c => c.code === countryCode);
+    const country = demoData?.countries.find(c => c.code === countryCode);
     if (!country) return '#DDD';
     if (country.risk === 'Bajo') return '#10B981';
     if (country.risk === 'Medio') return '#F59E0B';
@@ -80,7 +128,7 @@ const DemoPage: React.FC = () => {
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <AnimatedMetric value={95} suffix="%" />
+                  <AnimatedMetric value={demoData.kpis.precisionPromedio} suffix="%" />
                   <p className="text-gray-400 mt-2">Precisión Promedio</p>
                 </div>
               </CardContent>
@@ -88,7 +136,7 @@ const DemoPage: React.FC = () => {
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <AnimatedMetric value={178} suffix="K" />
+                  <AnimatedMetric value={demoData.kpis.prediccionesDiarias} suffix="K" />
                   <p className="text-gray-400 mt-2">Predicciones Diarias</p>
                 </div>
               </CardContent>
@@ -96,7 +144,7 @@ const DemoPage: React.FC = () => {
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <AnimatedMetric value={24} suffix="/7" />
+                  <AnimatedMetric value={demoData.kpis.monitoreoContinuo} suffix="/7" />
                   <p className="text-gray-400 mt-2">Monitoreo Continuo</p>
                 </div>
               </CardContent>
@@ -104,7 +152,7 @@ const DemoPage: React.FC = () => {
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <AnimatedMetric value={6} suffix=" Países" />
+                  <AnimatedMetric value={demoData.kpis.coberturaRegional} suffix=" Países" />
                   <p className="text-gray-400 mt-2">Cobertura Regional</p>
                 </div>
               </CardContent>
@@ -124,39 +172,41 @@ const DemoPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <Select onValueChange={(value) => {
-                  const country = countries.find(c => c.name === value);
+                  const country = demoData.countries.find(c => c.name === value);
                   if (country) setSelectedCountry(country);
                 }}>
                   <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                     <SelectValue placeholder="Selecciona un país" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600">
-                    {countries.map((country) => (
+                    {demoData.countries.map((country) => (
                       <SelectItem key={country.code} value={country.name} className="text-white">
                         {country.name} - Riesgo: {country.risk} ({country.prediction}% precisión)
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <div className="mt-6 space-y-4" data-testid={`country-card-${selectedCountry.code}`}>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">País Seleccionado:</span>
-                    <span className="text-white font-semibold">{selectedCountry.name}</span>
+                {selectedCountry && (
+                  <div className="mt-6 space-y-4" data-testid={`country-card-${selectedCountry.code}`}>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">País Seleccionado:</span>
+                      <span className="text-white font-semibold">{selectedCountry.name}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Nivel de Riesgo:</span>
+                      <span className={`font-semibold ${
+                        selectedCountry.risk === 'Bajo' ? 'text-green-400' :
+                        selectedCountry.risk === 'Medio' ? 'text-yellow-400' : 'text-red-400'
+                      }`}>
+                        {selectedCountry.risk}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Precisión de Predicción:</span>
+                      <span className="text-blue-400 font-semibold">{selectedCountry.prediction}%</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Nivel de Riesgo:</span>
-                    <span className={`font-semibold ${
-                      selectedCountry.risk === 'Bajo' ? 'text-green-400' :
-                      selectedCountry.risk === 'Medio' ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
-                      {selectedCountry.risk}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Precisión de Predicción:</span>
-                    <span className="text-blue-400 font-semibold">{selectedCountry.prediction}%</span>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 
@@ -177,7 +227,7 @@ const DemoPage: React.FC = () => {
                     <Geographies geography={geoUrl}>
                       {({ geographies }) =>
                         geographies.map((geo) => {
-                          const country = countries.find(c => c.code === geo.properties.ISO_A3);
+                          const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
                           return (
                             <Geography
                               key={geo.rsmKey}
@@ -192,12 +242,12 @@ const DemoPage: React.FC = () => {
                               }}
                               data-testid={`country-${country?.code}`}
                               onMouseEnter={() => {
-                                const country = countries.find(c => c.code === geo.properties.ISO_A3);
+                                const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
                                 if (country) setHoveredCountry(country.name);
                               }}
                               onMouseLeave={() => setHoveredCountry(null)}
                               onClick={() => {
-                                const country = countries.find(c => c.code === geo.properties.ISO_A3);
+                                const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
                                 if (country) {
                                   setSelectedCountry(country);
                                   setShowBriefing(true);
@@ -220,7 +270,7 @@ const DemoPage: React.FC = () => {
           </motion.div>
 
           {/* Briefing Panel */}
-          {showBriefing && (
+          {showBriefing && selectedCountry && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -251,7 +301,7 @@ const DemoPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={chartData}>
+                  <LineChart data={demoData.chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                     <XAxis dataKey="month" stroke="#9CA3AF" />
                     <YAxis stroke="#9CA3AF" />
@@ -281,7 +331,7 @@ const DemoPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={chartData}>
+                  <BarChart data={demoData.chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                     <XAxis dataKey="month" stroke="#9CA3AF" />
                     <YAxis stroke="#9CA3AF" />

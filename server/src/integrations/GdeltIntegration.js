@@ -2,7 +2,9 @@ import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } fr
 
 class GdeltIntegration {
   constructor() {
-    this.baseUrl = 'https://api.gdeltproject.org/api/v2/doc/doc';
+    this.baseUrl = process.env.TEST_MODE === 'true'
+      ? 'http://mock-api-server:3001/gdelt' // internal mock server
+      : 'https://api.gdeltproject.org/api/v2/doc/doc';
     this.circuitBreaker = new CircuitBreaker(5, 600000); // 5 failures, 10 min recovery (GDELT rate limits are stricter)
   }
 

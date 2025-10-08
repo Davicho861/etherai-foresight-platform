@@ -1,63 +1,22 @@
-// Servicio ligero de Vigilia Eterna para ejecutarse en el backend (Node)
-// Mantiene estado en memoria y ofrece start/stop/state/clear/report
-let intervalIds = [];
+// Servicio de Vigilia Eterna integrado con Logos Kernel
+// Conecta el estado real del kernel con el panel frontend
 let subscribers = [];
-let state = {
-  indices: { globalRisk: 5, stability: 95 },
-  flows: {
-    preservation: { status: 'IDLE', lastCheck: null },
-    knowledge: { status: 'IDLE', opportunities: 0 },
-    prophecy: { status: 'IDLE', alerts: 0 },
-  },
-  events: [],
-};
+let kernel = null;
 
-import fs from 'fs';
-import path from 'path';
-
-const DATA_DIR = path.resolve(new URL(import.meta.url).pathname, '../../data');
-const DATA_FILE = path.join(DATA_DIR, 'eternal_vigilance.json');
-
-function ensureDataDir() {
+// Importar kernel dinámicamente para evitar dependencias circulares
+(async () => {
   try {
-    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    const { kernel: importedKernel } = await import('./orchestrator.js');
+    kernel = importedKernel;
+    console.log('Kernel integrado con Eternal Vigilance Service');
   } catch (e) {
-    console.error('Error creating data directory:', e);
+    console.error('Error importing kernel:', e);
   }
-}
-
-function loadFromDisk() {
-  try {
-    ensureDataDir();
-    if (!fs.existsSync(DATA_FILE)) return;
-    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    const parsed = JSON.parse(raw || '{}');
-    if (parsed) state = parsed;
-  } catch (e) {
-    console.error('Error loading state from disk:', e);
-  }
-}
-
-// load persisted state at module initialization
-try {
-  loadFromDisk();
-} catch (e) {
-  console.error('Error during initial state load:', e);
-}
-
-function saveToDisk() {
-  try {
-    ensureDataDir();
-    fs.writeFileSync(DATA_FILE, JSON.stringify(state, null, 2), 'utf-8');
-  } catch (e) {
-    console.error('Error saving state to disk:', e);
-  }
-}
+})();
 
 function publish(ev) {
-  state.events.unshift(`${new Date().toISOString()} - ${ev}`);
   // notify SSE subscribers
-  const payload = JSON.stringify({ event: ev, state });
+  const payload = JSON.stringify({ event: ev, state: getState() });
   subscribers.forEach((res) => {
     try {
       res.write(`data: ${payload}\n\n`);
@@ -65,16 +24,32 @@ function publish(ev) {
       console.error('Error publishing to subscriber:', e);
     }
   });
-  // persist to disk
-  saveToDisk();
-}
-
-function randomInt(max) {
-  return Math.floor(Math.random() * max);
 }
 
 export function getState() {
-  return state;
+  if (!kernel) {
+    return {
+      indices: { globalRisk: 0, stability: 100 },
+      flows: {
+        autoPreservation: { active: false, lastRun: null },
+        knowledge: { active: false, lastRun: null },
+        prophecy: { active: false, lastRun: null },
+      },
+      riskIndices: {},
+      activityFeed: ['Sistema no inicializado'],
+    };
+  }
+
+  const vigilanceStatus = kernel.getVigilanceStatus();
+  return {
+    indices: {
+      globalRisk: Object.values(vigilanceStatus.riskIndices).reduce((sum, data) => sum + data.riskScore, 0) / Math.max(1, Object.keys(vigilanceStatus.riskIndices).length) || 0,
+      stability: 100 - (Object.values(vigilanceStatus.riskIndices).reduce((sum, data) => sum + data.riskScore, 0) / Math.max(1, Object.keys(vigilanceStatus.riskIndices).length) || 0)
+    },
+    flows: vigilanceStatus.flows,
+    riskIndices: vigilanceStatus.riskIndices,
+    activityFeed: vigilanceStatus.activityFeed,
+  };
 }
 
 export function subscribe(res) {
@@ -86,74 +61,51 @@ export function unsubscribe(res) {
 }
 
 export function clearState() {
-  state = {
-    indices: { globalRisk: 5, stability: 95 },
-    flows: {
-      preservation: { status: 'IDLE', lastCheck: null },
-      knowledge: { status: 'IDLE', opportunities: 0 },
-      prophecy: { status: 'IDLE', alerts: 0 },
-    },
-    events: [],
-  };
-  stop();
-  saveToDisk();
+  // No necesitamos limpiar estado ya que viene del kernel
+  console.log('Estado de vigilia eterna limpiado');
 }
 
 export function start() {
-  stop();
-  publish('Vigilia iniciada: Cronos activo (server)');
+  if (!kernel) {
+    console.error('Kernel no disponible para iniciar vigilia');
+    return;
+  }
 
-  const id1 = setInterval(() => {
-    state.flows.preservation.status = 'CHECKING';
-    state.flows.preservation.lastCheck = new Date().toISOString();
-    publish(`Panteón: chequeo de salud ejecutado a ${state.flows.preservation.lastCheck}`);
-    if (randomInt(10) > 7) {
-      publish('Anomalía detectada: iniciando misión de reparación automática');
-      state.flows.preservation.status = 'HEALING';
-      publish('Misión de reparación completada');
-      state.flows.preservation.status = 'IDLE';
-    } else {
-      state.flows.preservation.status = 'IDLE';
-    }
-  }, 60000);
+  console.log('Iniciando Vigilia Eterna integrada con Logos Kernel');
+  publish('Vigilia Eterna iniciada: Aion está despierto');
 
-  const id2 = setInterval(() => {
-    state.flows.knowledge.status = 'SCANNING';
-    const found = randomInt(5) === 0;
-    if (found) {
-      state.flows.knowledge.opportunities += 1;
-      publish('Kairós: nueva oportunidad detectada - proponiendo Misión de Expansión');
-    }
-    state.flows.knowledge.status = 'IDLE';
-  }, 30000);
-
-  const id3 = setInterval(() => {
-    state.flows.prophecy.status = 'RUNNING';
-    const delta = randomInt(5) - 2;
-    state.indices.globalRisk = Math.max(0, Math.min(100, state.indices.globalRisk + delta));
-    if (state.indices.globalRisk > 70 && randomInt(3) === 0) {
-      state.flows.prophecy.alerts += 1;
-      publish(`Alerta Predictiva automática: índice de riesgo ${state.indices.globalRisk}% superó umbral`);
-    }
-    publish(`Profecía: índice global de riesgo ${state.indices.globalRisk}% (delta ${delta})`);
-    state.flows.prophecy.status = 'IDLE';
-  }, 10000);
-
-  intervalIds = [id1, id2, id3];
-  saveToDisk();
+  // Los flujos perpetuos ya están corriendo en el kernel
+  // Solo notificamos que la vigilia está activa
 }
 
 export function stop() {
-  intervalIds.forEach(id => clearInterval(id));
-  intervalIds = [];
-  publish('Vigilia detenida: Cronos en reposo (server)');
-  saveToDisk();
+  if (!kernel) {
+    console.error('Kernel no disponible para detener vigilia');
+    return;
+  }
+
+  console.log('Deteniendo Vigilia Eterna');
+  kernel.stopPerpetualFlows();
+  publish('Vigilia Eterna detenida: Aion en reposo');
 }
 
 export function generateReport() {
-  const header = '# ETERNAL_VIGILANCE_REPORT (server)\n\n';
-  const body = state.events.map((e, i) => `${i + 1}. ${e}`).join('\n');
-  return header + '\n' + body;
+  const state = getState();
+  const header = '# ETERNAL_VIGILANCE_REPORT - Aion\n\n';
+  const summary = `## Resumen de la Vigilia Eterna\n\n`;
+  const flows = `### Flujos Perpetuos\n${Object.entries(state.flows).map(([flow, data]) =>
+    `- **${flow}**: ${data.active ? 'Activo' : 'Inactivo'} (última ejecución: ${data.lastRun || 'Nunca'})`
+  ).join('\n')}\n\n`;
+
+  const risks = `### Índices de Riesgo Global\n${Object.entries(state.riskIndices).map(([country, data]) =>
+    `- **${country}**: ${data.riskScore.toFixed(1)} (${data.level})`
+  ).join('\n')}\n\n`;
+
+  const activity = `### Feed de Actividad\n${state.activityFeed.slice(0, 50).map((entry, i) =>
+    `${i + 1}. ${entry.message || entry}`
+  ).join('\n')}\n\n`;
+
+  return header + summary + flows + risks + activity;
 }
 
 export function emitEvent(msg) {

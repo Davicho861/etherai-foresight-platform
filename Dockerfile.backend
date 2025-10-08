@@ -1,41 +1,42 @@
-# Etapa 1: Constructor - Fortalecida con herramientas de compilación
+# Etapa builder
 FROM node:20-bullseye-slim AS builder
 WORKDIR /app
 
-# Instalar herramientas de compilación esenciales para dependencias nativas (como Prisma)
-RUN apt-get update && apt-get install -y python build-essential && rm -rf /var/lib/apt/lists/*
+# Copiar package*.json
+COPY server/package*.json ./
 
-# Copiar solo el package.json del servidor para generar un lockfile limpio.
-COPY server/package.json ./
+# Ejecutar npm install
+RUN npm install --legacy-peer-deps
 
-# Generar un package-lock.json y las dependencias exclusivamente para el servidor.
-RUN npm install --legacy-peer-deps --no-audit --no-fund
-
-# Ahora, copiar el resto del código fuente del servidor.
+# Copiar código fuente
 COPY server/ ./
 
-# Generar el cliente Prisma.
-RUN npx prisma generate --schema=./prisma/schema.prisma
+# Generar prisma
+RUN apt-get update && apt-get install -y --no-install-recommends python3 build-essential ca-certificates libssl-dev && rm -rf /var/lib/apt/lists/* \
+  && npx prisma generate --schema=./prisma/schema.prisma
 
-# --- Etapa 2: Imagen Final ---
+# Etapa runner
 FROM node:20-bullseye-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Instalar curl y postgresql-client para el healthcheck y espera de db.
-RUN apt-get update && apt-get install -y curl postgresql-client && rm -rf /var/lib/apt/lists/*
+# Instalar curl y postgresql-client
+RUN apt-get update && apt-get install -y --no-install-recommends curl postgresql-client ca-certificates libssl-dev && rm -rf /var/lib/apt/lists/*
 
-# Copiar los artefactos de la etapa de construcción (código y node_modules).
+# Copiar node_modules de producción
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copiar código fuente
 COPY --from=builder /app ./
 
-# Copiar el script de entrypoint
+# Copiar entrypoint y darle permisos de ejecución
 COPY server/entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 4000
 
-# Healthcheck para verificar que el servidor está respondiendo.
+# Healthcheck
 HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5 \
   CMD curl -f http://localhost:4000/api/platform-status || exit 1
 
-# Usar el entrypoint personalizado
 ENTRYPOINT ["./entrypoint.sh"]

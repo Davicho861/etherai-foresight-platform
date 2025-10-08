@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import ModuleColombia from "./pages/ModuleColombia";
 import PricingPage from "./pages/PricingPage";
 import DemoPage from "./pages/DemoPage";
+import FoodResiliencePage from "./pages/FoodResiliencePage";
 import MetatronPanel from "./components/MetatronPanel";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard...</div>} />
             <Route path="/module/colombia" element={<ModuleColombia />} />
+            <Route path="/food-resilience" element={<FoodResiliencePage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/metatron-panel" element={<MetatronPanel />} />

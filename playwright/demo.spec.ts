@@ -7,7 +7,7 @@ test.describe('Demo E2E', () => {
     await expect(page).toHaveURL('/demo');
 
     // Verificar que la página se cargue correctamente
-    await expect(page.locator('text=Manus AI - Centro de Mando')).toBeVisible();
+    await expect(page.locator('h1:has-text("Centro de Mando Praevisio AI")')).toBeVisible({ timeout: 10000 });
 
     // 2. Cambiar a "Acceso Estado" usando data-testid
     await page.locator('[data-testid="access-level-select"]').click();

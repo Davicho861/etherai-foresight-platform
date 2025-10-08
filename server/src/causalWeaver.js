@@ -3,8 +3,17 @@ import { publish } from './eventHub.js';
 
 class CausalWeaver {
   constructor() {
-    this.driver = getNeo4jDriver();
+    this.driver = null;
     this.subscriptions = new Map(); // nodeId -> Set of subscriber callbacks
+    this.initializeDriver();
+  }
+
+  async initializeDriver() {
+    try {
+      this.driver = await getNeo4jDriver();
+    } catch (error) {
+      console.error('Failed to initialize Neo4j driver in CausalWeaver:', error);
+    }
   }
 
   async createNode(nodeId, type, properties = {}) {

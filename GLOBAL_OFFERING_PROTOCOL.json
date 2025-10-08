@@ -1,0 +1,81 @@
+{
+  "protocolVersion": "2.0.0-QuantumLeap",
+  "currency": "USD",
+  "globalSettings": {
+    "quantumCreditPrice": 1.50,
+    "creditTiers": [
+      { "amount": 1000, "discount": 0.05, "tierId": "qc-bronze" },
+      { "amount": 5000, "discount": 0.10, "tierId": "qc-silver" },
+      { "amount": 20000, "discount": 0.15, "tierId": "qc-gold" },
+      { "amount": 100000, "discount": 0.22, "tierId": "qc-sovereign" }
+    ]
+  },
+  "segments": {
+    "smes": {
+      "name": "PYMES y Corporaciones",
+      "plans": []
+    },
+    "investors": {
+      "name": "Inversores y Fondos",
+      "plans": []
+    },
+    "entrepreneurs": {
+      "name": "Emprendedores y Fundadores",
+      "plans": [
+        {
+          "id": "ent-genesis-seed",
+          "name": "Genesis Seed",
+          "price": 999,
+          "billingCycle": "monthly",
+          "baseCredits": 500,
+          "features": [
+            { "id": "market-niche-identifier", "name": "Identificador de Nichos de Mercado Vírgenes", "explanationNodeId": "n4j-mni-11", "causalityJustification": "Analiza flujos de capital y patentes latentes para revelar mercados antes de que existan." },
+            { "id": "venture-viability-simulation", "name": "Simulación de Viabilidad de Emprendimiento", "explanationNodeId": "n4j-vvs-12", "causalityJustification": "Simula tu plan de negocio contra mil futuros económicos para encontrar puntos de fallo." }
+          ]
+        },
+        {
+          "id": "ent-market-dominator",
+          "name": "Market Dominator",
+          "price": 3500,
+          "billingCycle": "monthly",
+          "baseCredits": 2500,
+          "features": [
+            { "id": "market-niche-identifier", "name": "Identificador de Nichos de Mercado Vírgenes", "explanationNodeId": "n4j-mni-11", "causalityJustification": "Analiza flujos de capital y patentes latentes para revelar mercados antes de que existan." },
+            { "id": "venture-viability-simulation", "name": "Simulación de Viabilidad de Emprendimiento", "explanationNodeId": "n4j-vvs-12", "causalityJustification": "Simula tu plan de negocio contra mil futuros económicos para encontrar puntos de fallo." },
+            { "id": "disruptive-tech-forecasting", "name": "Oráculo de Tecnologías Disruptivas", "explanationNodeId": "n4j-dtf-13", "causalityJustification": "Predice qué tecnología emergente causará el próximo cambio de paradigma en tu sector." },
+            { "id": "autonomous-growth-agent", "name": "Agente de Crecimiento Autónomo 'Kratos'", "explanationNodeId": "n4j-aga-14", "causalityJustification": "Un agente de IA soberano que optimiza de forma autónoma tus campañas de marketing y estrategias de adquisición." }
+          ]
+        }
+      ]
+    },
+    "governments": {
+      "name": "Gobiernos y Entidades Soberanas",
+      "plans": [
+        {
+          "id": "gov-civic-oracle",
+          "name": "Civic Oracle",
+          "price": 15000,
+          "billingCycle": "monthly",
+          "baseCredits": 10000,
+          "features": [
+            { "id": "economic-stability-simulation", "name": "Simulación de Estabilidad Económica", "explanationNodeId": "n4j-ess-15", "causalityJustification": "Modela el impacto causal de políticas fiscales antes de su implementación." },
+            { "id": "social-unrest-predictor", "name": "Predictor Causal de Inestabilidad Social", "explanationNodeId": "n4j-sup-16", "causalityJustification": "Identifica las causas raíz del descontento social, no solo los síntomas." }
+          ]
+        },
+        {
+          "id": "gov-sovereign-shield",
+          "name": "Sovereign Shield",
+          "price": 50000,
+          "billingCycle": "monthly",
+          "baseCredits": 50000,
+          "features": [
+            { "id": "economic-stability-simulation", "name": "Simulación de Estabilidad Económica", "explanationNodeId": "n4j-ess-15", "causalityJustification": "Modela el impacto causal de políticas fiscales antes de su implementación." },
+            { "id": "social-unrest-predictor", "name": "Predictor Causal de Inestabilidad Social", "explanationNodeId": "n4j-sup-16", "causalityJustification": "Identifica las causas raíz del descontento social, no solo los síntomas." },
+            { "id": "infrastructural-resilience-analysis", "name": "Análisis de Resiliencia Infraestructural", "explanationNodeId": "n4j-ira-17", "causalityJustification": "Simula el impacto en cascada de fallos en infraestructuras críticas (energía, agua, comunicaciones)." },
+            { "id": "algorithmic-diplomacy-advisor", "name": "Asesor de Diplomacia Algorítmica 'Metis'", "explanationNodeId": "n4j-ada-18", "causalityJustification": "Modela las respuestas probables de otras naciones a acciones diplomáticas, optimizando para la paz y la estabilidad." }
+          ]
+        }
+      ]
+    }
+  }
+}

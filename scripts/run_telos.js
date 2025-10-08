@@ -1,4 +1,4 @@
-import { MetatronAgent } from '../server/src/agents.js';
+import MetatronAgent from '../server/src/agents.js';
 
 async function runTelos() {
   try {

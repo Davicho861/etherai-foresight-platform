@@ -11,12 +11,14 @@ test.describe('Consciousness Health Widget E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the Metatron Panel
+    // Visit the Metatron Panel and wait for network to be idle
     await page.goto('/metatron-panel', { waitUntil: 'networkidle' });
     console.log('Current URL after goto:', await page.url());
 
-    // Validate the widget is visible
-    await expect(page.locator('text=Salud de la Conciencia')).toBeVisible();
+    // Validate the widget is visible with a longer timeout
+    const widgetLocator = page.locator('[data-testid="consciousness-health-widget"]');
+    await expect(widgetLocator).toBeVisible({ timeout: 15000 });
+    await expect(widgetLocator.locator('text=Salud de la Conciencia')).toBeVisible();
 
     // Validate the lessons learned count is displayed (now from real ChromaDB data)
     // Wait for loading to complete and check for a number

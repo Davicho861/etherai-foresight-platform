@@ -1,13 +1,6 @@
-// Polyfills for Jest environment
-// Provide TextEncoder/TextDecoder for some node modules that expect Web APIs
-const { TextEncoder, TextDecoder } = require('util');
-if (typeof global.TextEncoder === 'undefined') global.TextEncoder = TextEncoder;
-if (typeof global.TextDecoder === 'undefined') global.TextDecoder = TextDecoder;
+require('@testing-library/jest-dom');
+require('jest-fetch-mock').enableMocks();
 
-// Minimal ResizeObserver polyfill for jsdom tests (some Radix components rely on it)
-class ResizeObserver {
-  constructor(cb) { this.cb = cb; }
-  observe() { /* no-op */ }
   unobserve() { /* no-op */ }
   disconnect() { /* no-op */ }
 }
@@ -32,3 +25,8 @@ try {
 } catch (e) {
   // devDependency might not be installed in some environments
 }
+
+import '@testing-library/jest-dom';
+import fetchMock from 'jest-fetch-mock';
+
+fetchMock.enableMocks();

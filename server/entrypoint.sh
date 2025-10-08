@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 echo "[ENTRYPOINT] Iniciando espera activa para la base de datos..."
@@ -7,12 +7,14 @@ echo "[ENTRYPOINT] Iniciando espera activa para la base de datos..."
 sleep 5
 
 # Espera hasta que la db esté lista (con límite de tiempo)
-for i in {1..30}; do
+i=1
+while [ "$i" -le 30 ]; do
   if PGPASSWORD=praevisio pg_isready -h db -p 5432 -U praevisio >/dev/null 2>&1; then
     echo "[ENTRYPOINT] Base de datos lista."
     break
   fi
   echo "[ENTRYPOINT] Base de datos no lista, intento $i/30, esperando..."
+  i=$((i+1))
   sleep 2
 done
 
@@ -22,10 +24,10 @@ if ! PGPASSWORD=praevisio pg_isready -h db -p 5432 -U praevisio >/dev/null 2>&1;
   exit 1
 fi
 
-echo "[ENTRYPOINT] Base de datos lista. Aplicando migraciones..."
+echo "[ENTRYPOINT] Base de datos lista. Aplicando esquema de Prisma..."
 
-# Aplicar migraciones de Prisma
-npx prisma migrate deploy --schema=./prisma/schema.prisma
+# Aplicar esquema de Prisma
+npx prisma db push --schema=./prisma/schema.prisma --accept-data-loss
 
 echo "[ENTRYPOINT] Migraciones aplicadas. Ejecutando seed..."
 

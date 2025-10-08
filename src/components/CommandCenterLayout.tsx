@@ -49,8 +49,9 @@ const CommandCenterLayout: React.FC = () => {
       try {
         const token = (typeof window !== 'undefined' && window.localStorage.getItem('praevisio_token')) || 'demo-token';
         console.log('token:', token);
-        const url = '/api/platform-status';
-        console.log('fetching:', url);
+        const isTestMode = import.meta.env.TEST_MODE === 'true';
+        const url = isTestMode ? 'http://localhost:3001/api/platform-status' : '/api/platform-status';
+        console.log('fetching:', url, 'testMode:', isTestMode);
         const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
         console.log('res.ok:', res.ok, 'status:', res.status);
         if (!res.ok) throw new Error('fetch_error');

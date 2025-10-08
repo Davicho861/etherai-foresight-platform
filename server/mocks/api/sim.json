@@ -1,0 +1,24 @@
+{
+  "precio_actual": 4.50,
+  "precio_minimo": 4.20,
+  "precio_maximo": 4.80,
+  "precio_promedio": 4.45,
+  "unidad": "PEN/kg",
+  "fecha": "2025-10-07",
+  "precios": [
+    {
+      "fecha": "2025-10-01",
+      "precio": 4.40
+    },
+    {
+      "fecha": "2025-10-02",
+      "precio": 4.45
+    },
+    {
+      "fecha": "2025-10-03",
+      "precio": 4.50
+    }
+  ],
+  "indice_volatilidad": 0.12,
+  "nivel_riesgo": "medium"
+}

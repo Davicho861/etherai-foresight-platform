@@ -26,6 +26,10 @@ echo "Starting local validation: building containers and running E2E tests..."
 export HOST_UID=$(id -u)
 export HOST_GID=$(id -g)
 
+# Activate Sovereign Simulation Mode by default for local validation
+export TEST_MODE=${TEST_MODE:-true}
+echo "TEST_MODE=${TEST_MODE}"
+
 # By default we use the dockerized ollama-mock service. If you explicitly want
 # to run a host-level mock (for local debugging), set USE_HOST_OLLAMA=1 in the
 # environment before running this script.
@@ -65,32 +69,24 @@ docker-compose up -d --build
 # reuse wait script
 ./scripts/wait-for-services.sh
 
-# Ensure test-results folder is writable to avoid permission issues from previous runs
-rm -rf test-results
-mkdir -p test-results
-# We need to make sure the directory is writable by the user that will run the tests inside the container
-chmod -R 777 test-results
-
-
-
-# Run Playwright tests using an ephemeral container with Playwright image (no sudo needed).
+# Run Playwright tests using an ephemeral container with Playwright image.
+# The container will also handle cleanup of the test-results directory.
 if [ "${SKIP_BUILD:-0}" = "1" ]; then
   echo "SKIP_BUILD=1 set, skipping Docker build/wait steps and running Playwright only"
 fi
 
 echo "Running Playwright E2E tests in an ephemeral container using Playwright image..."
 
-# Run Playwright inside a temporary container that mounts the workspace and node_modules.
-PLAYWRIGHT_IMAGE="mcr.microsoft.com/playwright:v1.55.1-jammy"
+# Run Playwright inside a temporary container that mounts the workspace.
+# The container itself will handle the cleanup of the test-results directory to avoid host permission issues.
+PLAYWRIGHT_IMAGE="mcr.microsoft.com/playwright:v1.56.0-jammy"
 
 docker run --rm \
   -v "$PWD":/app:cached \
-  -v "$PWD/node_modules":/app/node_modules:cached \
   -w /app \
   --network host \
-  -u "$HOST_UID:$HOST_GID" \
   $PLAYWRIGHT_IMAGE \
-  sh -c "npx playwright test --config=playwright.config.ts --reporter=list"
+  sh -c "rm -rf test-results && mkdir -p test-results && chmod -R 777 test-results && npx playwright test --config=playwright.config.ts --reporter=list --update-snapshots"
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
   echo "Playwright tests failed with exit code $EXIT_CODE" >&2

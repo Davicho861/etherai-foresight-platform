@@ -2,7 +2,9 @@ import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } fr
 
 class FMIIntegration {
   constructor() {
-    this.baseUrl = 'https://www.imf.org/external/datamapper/api/v1';
+    this.baseUrl = process.env.TEST_MODE === 'true'
+      ? 'http://mock-api-server:3001/fmi'
+      : 'https://www.imf.org/external/datamapper/api/v1';
     this.circuitBreaker = new CircuitBreaker(3, 60000); // 3 failures, 1 min recovery
   }
 

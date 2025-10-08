@@ -100,9 +100,42 @@ function getChromaClient() {
   return chromaClient;
 }
 
-function getNeo4jDriver() {
+async function getNeo4jDriver() {
   if (!neo4jDriver) {
-    neo4jDriver = neo4j.driver('bolt://neo4j:7687', neo4j.auth.basic(process.env.NEO4J_USER || 'neo4j', process.env.NEO4J_PASSWORD || 'password'));
+    const host = process.env.NEO4J_HOST || 'localhost';
+    const port = process.env.NEO4J_PORT || '7687';
+    const user = process.env.NEO4J_USER || 'neo4j';
+    const password = process.env.NEO4J_PASSWORD || 'praevisio_password';
+    const maxRetries = 5;
+    const retryDelay = 2000; // 2 seconds
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        neo4jDriver = neo4j.driver(`bolt://${host}:${port}`, neo4j.auth.basic(user, password), {
+          maxConnectionPoolSize: 10,
+          connectionTimeout: 30000,
+          maxTransactionRetryTime: 30000,
+        });
+
+        // Test the connection
+        const session = neo4jDriver.session();
+        await session.run('RETURN 1 as test');
+        await session.close();
+
+        console.log('Neo4j connection established successfully');
+        break;
+      } catch (error) {
+        console.warn(`Neo4j connection attempt ${attempt}/${maxRetries} failed:`, error.message);
+        if (neo4jDriver) {
+          await neo4jDriver.close();
+          neo4jDriver = null;
+        }
+        if (attempt === maxRetries) {
+          throw new Error(`Failed to connect to Neo4j after ${maxRetries} attempts: ${error.message}`);
+        }
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+      }
+    }
   }
   return neo4jDriver;
 }
