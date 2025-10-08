@@ -1,5 +1,11 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e2]: "Blocked request. This host (\"praevisio_frontend\") is not allowed. To allow this host, add \"praevisio_frontend\" to `server.allowedHosts` in vite.config.js."
+- generic [active]:
+  - generic [ref=e1]:
+    - generic [ref=e2]: Test
+    - generic [ref=e3]: Manus AI - Centro de Mando
+    - generic [ref=e4]: Cargando planes...
+    - generic [ref=e5]: Cargando datos del módulo para Colombia
+  - generic [ref=e6]: "0"
 ```

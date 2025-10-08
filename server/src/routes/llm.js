@@ -5,8 +5,6 @@ import { getNeo4jDriver } from '../database.js';
 
 const router = express.Router();
 
-import { getNeo4jDriver } from '../database.js';
-
 // POST /api/llm/predict-tests (enhanced with Neo4j causal analysis)
 router.post('/predict-tests', async (req, res) => {
   try {

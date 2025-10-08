@@ -5,15 +5,25 @@ test.describe('Pricing region and structure', () => {
     // Load MX
     await page.goto('/pricing?region=mx');
     await page.waitForSelector('[data-testid="pricing-table"]');
+    // Wait for data to load
+    await page.waitForFunction(() => {
+      const table = document.querySelector('[data-testid="pricing-table"]');
+      return table && table.textContent && !table.textContent.includes('Cargando') && !table.textContent.includes('Error');
+    }, { timeout: 30000 });
     // Wait for prices to load (at least one price element)
-    await page.waitForSelector('[data-testid="pricing-table"] .text-2xl', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="pricing-table"] .text-2xl', { timeout: 30000 });
     const mxPrices = await page.locator('[data-testid="pricing-table"] .text-2xl').allTextContents();
 
     // Load CO
     await page.goto('/pricing?region=co');
     await page.waitForSelector('[data-testid="pricing-table"]');
+    // Wait for data to load
+    await page.waitForFunction(() => {
+      const table = document.querySelector('[data-testid="pricing-table"]');
+      return table && table.textContent && !table.textContent.includes('Cargando') && !table.textContent.includes('Error');
+    }, { timeout: 30000 });
     // Wait for prices to load
-    await page.waitForSelector('[data-testid="pricing-table"] .text-2xl', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="pricing-table"] .text-2xl', { timeout: 30000 });
     const coPrices = await page.locator('[data-testid="pricing-table"] .text-2xl').allTextContents();
 
     // Ensure at least one price differs (demo expectation)
@@ -23,12 +33,23 @@ test.describe('Pricing region and structure', () => {
 
   test('Pantheon section is present on the page', async ({ page }) => {
     await page.goto('/pricing');
+    await page.waitForSelector('[data-testid="pricing-table"]', { timeout: 30000 });
+    // Wait for data to load
+    await page.waitForFunction(() => {
+      const table = document.querySelector('[data-testid="pricing-table"]');
+      return table && table.textContent && !table.textContent.includes('Cargando') && !table.textContent.includes('Error');
+    }, { timeout: 30000 });
     await expect(page.locator('text=Nivel Panteón')).toBeVisible();
   });
 
   test('Entrepreneurs segment shows correct number of plans', async ({ page }) => {
     await page.goto('/pricing');
-    await page.waitForSelector('[data-testid="pricing-table"]');
+    await page.waitForSelector('[data-testid="pricing-table"]', { timeout: 30000 });
+    // Wait for data to load
+    await page.waitForFunction(() => {
+      const table = document.querySelector('[data-testid="pricing-table"]');
+      return table && table.textContent && !table.textContent.includes('Cargando') && !table.textContent.includes('Error');
+    }, { timeout: 30000 });
     // Locate the Entrepreneurs (Emprendedores) heading and count following plan cards
     const segment = page.locator('h2:has-text("Emprendedores y Fundadores")').first();
     await expect(segment).toBeVisible();

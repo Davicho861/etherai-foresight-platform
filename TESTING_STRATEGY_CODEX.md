@@ -1,98 +1,105 @@
-# TESTING_STRATEGY_CODEX - Paradigma de Validación Precisa
+# TESTING STRATEGY CODEX: La Nueva Constitución de la Calidad del Software
 
-## Visión: La Lanza de Atenea
+## Visión General
+Este documento establece el nuevo paradigma de pruebas para Praevisio AI: **Validación Quirúrgica Predictiva**. Abandonamos la fuerza bruta por la precisión inteligente, guiada por IA y análisis causal.
 
-Un sistema de testing que no ataca a ciegas, sino que golpea el corazón del riesgo con precisión infalible. La fuerza bruta es para los bárbaros; la sabiduría es para los estrategas.
+## Principios Fundamentales
 
-## Nuevo Paradigma: Validación Quirúrgica e Inteligente
+### 1. Precisión sobre Fuerza Bruta
+- **Nunca más probaremos todo, todo el tiempo.**
+- Probaremos solo lo necesario, con una precisión del 100%.
+- Cada test ejecutado debe tener una justificación causal clara.
 
-### Principios Fundamentales
-- **Precisión sobre Fuerza Bruta**: No probamos todo, todo el tiempo. Probamos solo lo necesario, con una precisión del 100%.
-- **IA para Guiar la Validación**: Usamos la inteligencia del sistema no solo para escribir código, sino para decidir qué código probar.
-- **Agilidad Robusta**: El objetivo final es un sistema que permita avanzar a máxima velocidad, con la confianza de que un blindaje inteligente y selectivo protege cada paso.
+### 2. IA para Guiar la Validación
+- Usamos la inteligencia del sistema para decidir qué código probar, no solo para escribirlo.
+- El Smart Test Runner (Athena) analiza dependencias causales en tiempo real.
 
-### Arquitectura del Sistema
+### 3. Agilidad Robusta
+- El objetivo final es un sistema que permita avanzar a máxima velocidad.
+- Un blindaje inteligente y selectivo protege cada paso.
 
-#### 1. Atenea - La Estratega de la Validación
-- **Rol**: Coordinador principal del Smart Test Runner.
-- **Funciones**:
-  - Obtiene lista de archivos modificados desde `git diff --name-only HEAD~1 HEAD`.
-  - Consulta el endpoint `/api/llm/predict-tests` para predicción inteligente.
-  - Ejecuta únicamente los tests relevantes con Playwright.
-  - Fallback heurístico si el backend falla.
+## Arquitectura del Sistema de Pruebas
 
-#### 2. Oráculo Causal (Neo4j)
-- **Rol**: Cerebro predictivo del sistema.
-- **Funciones**:
-  - Mantiene el grafo causal de dependencias entre archivos.
-  - Analiza impactos en cascada de cambios.
-  - Determina tests relacionados mediante consultas Cypher.
-  - Proporciona análisis de 1-3 grados de separación.
+### Smart Test Runner (Athena)
+- **Ubicación**: `scripts/run-smart-tests.js`
+- **Función**: Ejecuta únicamente los tests relevantes basados en cambios de código.
+- **Inteligencia**: Usa Neo4j para análisis causal de dependencias.
 
-#### 3. Asclepio - El Sanador
-- **Rol**: Agente de auto-sanación (futuro).
-- **Funciones**:
-  - Aplica parches heurísticos a tests fallidos.
-  - Sugiere correcciones basadas en patrones históricos.
-  - Integra con el sistema de Issues para revisión humana.
+### Endpoint de Predicción
+- **Ruta**: `POST /api/llm/predict-tests`
+- **Función**: Recibe lista de archivos modificados y retorna tests sugeridos.
+- **Lógica**: Consulta grafo de dependencias en Neo4j para encontrar relaciones causales.
 
-#### 4. Hefesto - El Forjador
-- **Rol**: Generador de tests (futuro).
-- **Funciones**:
-  - Crea esqueletos de tests E2E a partir de diffs.
-  - Usa IA para generar casos de prueba relevantes.
+### Flujo de Validación
+1. **Pre-commit**: Análisis estático y linting.
+2. **Pre-push**: Smart Test Runner ejecuta tests relevantes.
+3. **CI/Release**: Suite completa (`npm run validate`) como sello de calidad.
 
-### Flujo de Operación
+## Niveles de Validación
 
-```mermaid
-graph TD
-    A[Git Commit] --> B[Pre-push Hook]
-    B --> C[Oracle Check - Probabilidad de Fallo]
-    C --> D{¿Riesgo Alto?}
-    D -->|Sí| E[Abort Push]
-    D -->|No| F[Smart Test Runner]
-    F --> G[Get Changed Files]
-    G --> H[POST /api/llm/predict-tests]
-    H --> I[Neo4j Causal Analysis]
-    I --> J[Predict Relevant Tests]
-    J --> K[Execute Only Predicted Tests]
-    K --> L{Feedback Ultra-Rápido}
-    L --> M[Push Allowed]
+### Nivel 1: Validación Continua (Pre-push)
+- Ejecutada automáticamente en cada push.
+- Usa Smart Test Runner.
+- Tiempo objetivo: < 30 segundos.
+- Cobertura: Solo código afectado causalmente.
+
+### Nivel 2: Validación de Release (CI)
+- Ejecutada en despliegues mayores.
+- Suite completa de E2E tests.
+- Tiempo: Variable, pero optimizada.
+- Comando: `npm run validate`
+
+### Nivel 3: Validación de Calidad Suprema
+- Auditorías manuales y análisis profundos.
+- Ejecutada trimestralmente o en hitos críticos.
+- Incluye pruebas de carga, seguridad y usabilidad.
+
+## Implementación Técnica
+
+### Comando Smart Test
+```bash
+npm run test:smart
+# Equivalente a: node scripts/run-smart-tests.js
 ```
 
-### Implementación Actual
+### Comando Validación Completa
+```bash
+npm run validate
+# Sello de Calidad de Release: ejecuta toda la suite completa
+```
 
-#### Scripts y Comandos
-- `npm run test:smart`: Ejecuta el Smart Test Runner.
-- `scripts/run-smart-tests.js`: Script principal de Atenea.
-- `.husky/pre-push`: Hook que ejecuta validación inteligente antes de push.
+### Hook de Git
+- `.husky/pre-push` ejecuta `npm run test:smart`
+- Garantiza que solo código validado llegue al repositorio remoto.
 
-#### Endpoint de IA
-- `POST /api/llm/predict-tests`: Recibe lista de archivos cambiados, retorna tests relevantes.
-- Integración con Neo4j para análisis causal.
-- Fallback heurístico basado en nombres de archivos.
+## Métricas de Éxito
 
-#### Métricas de Éxito
-- **Velocidad**: Reducción del 90% en tiempo de validación (de 17 tests a 2-3 relevantes).
-- **Precisión**: 100% de cobertura para cambios realizados.
-- **Fiabilidad**: Suite completa pasa al 100% antes de despliegues mayores.
+### Velocidad
+- Reducción del 80% en tiempo de validación para cambios típicos.
+- Feedback casi instantáneo para desarrolladores.
 
-### Evolución Futura
+### Precisión
+- 100% de cobertura causal en tests ejecutados.
+- Cero falsos negativos en detección de riesgos.
 
-#### Fase 2: Auto-Sanación
-- Asclepio activa automáticamente para corregir tests fallidos.
-- Integración con patrones de failure en Neo4j.
+### Eficiencia
+- Reducción del 90% en recursos computacionales para validación diaria.
+- Optimización automática basada en patrones de uso.
 
-#### Fase 3: Generación Autónoma
-- Hefesto crea tests automáticamente para nuevos features.
-- IA analiza código para identificar casos edge.
+## Gobernanza y Evolución
 
-#### Fase 4: Validación Predictiva
-- Sistema predice fallos antes de que ocurran.
-- Integración con métricas de calidad de código.
+### Responsabilidades
+- **Equipo de Desarrollo**: Mantener dependencias causales actualizadas en Neo4j.
+- **Equipo de QA**: Validar efectividad del Smart Test Runner.
+- **Arquitectos**: Evolucionar la lógica de predicción.
 
-### Comando de Validación Completa
-- `npm run validate`: Sello de calidad para releases (ejecuta suite completa).
-- Reservado para despliegues mayores y validaciones críticas.
+### Actualizaciones
+- El Codex se revisa trimestralmente.
+- Nuevas tecnologías de IA se integran automáticamente.
+- Métricas se monitorean continuamente para ajustes.
 
-Este codex es la constitución de la nueva era de testing inteligente. La precisión es poder; la fuerza bruta, ignorancia.
+## Conclusión
+
+Este Codex marca el fin de la era de la fuerza bruta en pruebas. Praevisio AI ahora opera con la sabiduría de Atenea: golpea el corazón del riesgo con precisión infalible, permitiendo velocidad sin sacrificar robustez.
+
+**La precisión es poder. La agilidad robusta es nuestro destino.**

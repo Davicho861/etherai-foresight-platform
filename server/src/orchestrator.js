@@ -430,6 +430,78 @@ class LogosKernel {
         log({ taskId: 'prophecy', description: 'Primera Profecía completada.', status: 'completed' });
       }
 
+      // Special flow: if this is the coffee conquest mission, execute the CoffeeSupplyChainAgent
+      if (missionContract && missionContract.id === 'conquest-001-colombia-coffee') {
+        log({ taskId: 'coffee-conquest-init', description: 'Iniciando Conquista del Eje Cafetero...', status: 'in_progress' });
+
+        // Coffee Supply Chain Agent
+        log({ taskId: 'coffee-supply-chain', description: 'CoffeeSupplyChainAgent analizando rutas logísticas...', status: 'in_progress' });
+        const coffeeAgent = new MetatronAgent('CoffeeSupplyChainAgent');
+        const coffeeResult = await coffeeAgent.run({ routes: ['Manizales -> Buenaventura', 'Pereira -> Cartagena', 'Armenia -> Buenaventura'] });
+        log({ taskId: 'coffee-supply-chain', description: 'Análisis de cadena de suministro de café completado.', status: 'completed' });
+
+        // Generate conquest report
+        log({ taskId: 'coffee-report-generation', description: 'Generando informe de conquista del café...', status: 'in_progress' });
+        const fs = await import('fs');
+        const coffeeReport = `# CONQUEST_REPORT_COFFEE_001.md
+
+## Informe de Conquista: Plataforma de Resiliencia de la Cadena de Suministro de Café
+
+### Fecha de Generación
+${new Date().toISOString()}
+
+### Misión Ejecutada
+- **ID:** conquest-001-colombia-coffee
+- **Objetivo:** Desarrollar y desplegar MVP de Plataforma de Resiliencia de la Cadena de Suministro de Café para Colombia
+- **Alcance:** PYMEs del Eje Cafetero y puertos de Buenaventura/Cartagena
+
+### Resultados del CoffeeSupplyChainAgent
+
+#### Rutas Analizadas
+${Object.entries(coffeeResult.routeRisks).map(([route, data]) => `
+**${route}**
+- Índice de Riesgo Logístico: ${data.logisticRiskIndex}%
+- Factores de Riesgo:
+  - Sísmico: ${data.factors.seismic}%
+  - Social: ${data.factors.social}%
+  - Climático: ${data.factors.climate}%
+  - Económico: ${data.factors.economic}%
+- Recomendaciones: ${data.recommendations.join(', ')}
+`).join('\n')}
+
+### Inteligencia Accionable
+- **Rutas de Alto Riesgo:** ${Object.entries(coffeeResult.routeRisks).filter(([_, data]) => data.logisticRiskIndex > 70).map(([route]) => route).join(', ') || 'Ninguna'}
+- **Rutas Estables:** ${Object.entries(coffeeResult.routeRisks).filter(([_, data]) => data.logisticRiskIndex < 40).map(([route]) => route).join(', ') || 'Ninguna'}
+
+### Modelo de Riesgo
+El Índice de Riesgo Logístico se calcula como:
+IRL = (RiesgoSísmico × 0.25) + (RiesgoSocial × 0.35) + (RiesgoClimático × 0.25) + (RiesgoEconómico × 0.15)
+
+Donde:
+- Riesgo Sísmico: Basado en ubicación geográfica (Andes = alto)
+- Riesgo Social: Derivado de resiliencia comunitaria (inverso)
+- Riesgo Climático: Basado en precipitación (Open Meteo)
+- Riesgo Económico: Basado en inflación (World Bank)
+
+### Próximos Pasos
+1. Desplegar dashboard en /coffee-resilience
+2. Integrar actualizaciones en tiempo real
+3. Expandir a otros commodities (cobre, litio, aguacate)
+4. Implementar alertas automáticas
+
+### Conquista Completada
+La primera ofensiva soberana ha sido exitosa. Praevisio AI ha demostrado capacidad para resolver problemas complejos del mundo real mediante fusión multi-dominio de inteligencia.
+
+Generado por CoffeeSupplyChainAgent - Praevisio AI
+`;
+        fs.writeFileSync('CONQUEST_REPORT_COFFEE_001.md', coffeeReport);
+        log({ taskId: 'coffee-report-generation', description: 'Informe de conquista generado exitosamente.', status: 'completed' });
+
+        // Update final report
+        finalReport.coffeeConquestReport = coffeeResult;
+        log({ taskId: 'coffee-conquest', description: 'Conquista del Eje Cafetero completada.', status: 'completed' });
+      }
+
       const finalReport = {
         summary: 'La misión se ha completado exitosamente.',
         aiExplanation: 'Todos los agentes y crews han completado sus tareas según el plan de ejecución.',
