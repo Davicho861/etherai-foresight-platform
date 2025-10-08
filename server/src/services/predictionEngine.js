@@ -55,29 +55,39 @@ async function updateFamineRiskIndex() {
   console.log('[PredictionEngine] Updating Famine Risk Index...');
   const foodSecurityData = await fetchInternalData('/api/global-risk/food-security');
 
-  if (!foodSecurityData || !foodSecurityData.indicators) {
+  if (!foodSecurityData || !foodSecurityData.data) {
     console.error('[PredictionEngine] Invalid food security data received.');
     return;
   }
 
-  const resilienceIndicator = foodSecurityData.indicators.find(
-    (ind) => ind.name === 'Natural Resources & Resilience'
-  );
-
-  if (!resilienceIndicator) {
-    console.error('[PredictionEngine] Resilience indicator not found in data.');
+  // Calculate risk based on prevalence of undernourishment
+  // Higher undernourishment = higher famine risk
+  const values = Object.values(foodSecurityData.data).filter(item => item.value !== null && !item.error).map(item => item.value);
+  if (values.length === 0) {
+    console.error('[PredictionEngine] No valid undernourishment data available.');
     return;
   }
 
-  const resilienceScore = resilienceIndicator.score;
-  const riskValue = parseFloat((100 - resilienceScore).toFixed(2));
+  const averageUndernourishment = values.reduce((sum, val) => sum + val, 0) / values.length;
+  // Risk scales with undernourishment: 0-10% = low risk (0-20), 10-20% = medium (20-50), >20% = high (50-100)
+  let riskValue;
+  if (averageUndernourishment <= 10) {
+    riskValue = (averageUndernourishment / 10) * 20;
+  } else if (averageUndernourishment <= 20) {
+    riskValue = 20 + ((averageUndernourishment - 10) / 10) * 30;
+  } else {
+    riskValue = 50 + ((averageUndernourishment - 20) / 10) * 50;
+  }
+  riskValue = Math.min(100, parseFloat(riskValue.toFixed(2)));
 
   predictionState.riskIndices.famineRisk = {
     value: riskValue,
     source: foodSecurityData.source,
     confidence: 0.85,
+    averageUndernourishment: averageUndernourishment,
+    countries: Object.keys(foodSecurityData.data)
   };
-  console.log(`[PredictionEngine] Famine Risk Index updated to ${riskValue}.`);
+  console.log(`[PredictionEngine] Famine Risk Index updated to ${riskValue} based on average undernourishment of ${averageUndernourishment.toFixed(2)}%.`);
 }
 
 /**

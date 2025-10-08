@@ -68,6 +68,59 @@ class WorldBankIntegration {
 
     return await this.getEconomicIndicators(country, indicators, startYear, endYear);
   }
+
+  // Method for food security data
+  async getFoodSecurityData(countries = ['COL', 'PER', 'ARG'], startYear = '2020', endYear = '2024') {
+    const indicator = 'SN.ITK.DEFC.ZS'; // Prevalence of undernourishment (% of population)
+    try {
+      const results = {};
+
+      for (const country of countries) {
+        const url = `${this.baseUrl}/country/${country.toLowerCase()}/indicator/${indicator}?format=json&date=${startYear}:${endYear}&per_page=1000`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          console.warn(`World Bank API error for food security ${country}: ${response.status}`);
+          results[country] = { error: `API error: ${response.status}` };
+          continue;
+        }
+
+        const data = await response.json();
+        if (data[1] && data[1].length > 0) {
+          // Get the most recent value
+          const sortedData = data[1].sort((a, b) => parseInt(b.date) - parseInt(a.date));
+          const latest = sortedData[0];
+          results[country] = {
+            value: latest.value,
+            year: latest.date,
+            country: latest.country.value,
+            indicator: 'Prevalence of undernourishment (% of population)'
+          };
+        } else {
+          results[country] = { value: null, note: 'No data available' };
+        }
+
+        // Rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      return {
+        countries,
+        period: { startYear, endYear },
+        indicator: 'SN.ITK.DEFC.ZS',
+        data: results
+      };
+    } catch (error) {
+      console.error('Error fetching food security data:', error);
+      return {
+        countries,
+        period: { startYear, endYear },
+        indicator: 'SN.ITK.DEFC.ZS',
+        data: {},
+        error: error.message
+      };
+    }
+  }
 }
 
 export default WorldBankIntegration;
