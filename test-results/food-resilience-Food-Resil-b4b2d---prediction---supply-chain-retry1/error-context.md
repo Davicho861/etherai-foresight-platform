@@ -1,83 +1,9 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
-  - generic [ref=e2]:
-    - region "Notifications (F8)":
-      - list
-    - region "Notifications alt+T"
-    - generic [ref=e3]:
-      - heading "Plataforma de Resiliencia Alimentaria - Perú" [level=2] [ref=e4]
-      - generic [ref=e5]:
-        - generic [ref=e6]:
-          - heading "Precios de Alimentos" [level=3] [ref=e7]
-          - generic [ref=e8]:
-            - generic [ref=e9]:
-              - generic [ref=e10]: rice
-              - generic [ref=e11]:
-                - generic [ref=e12]: "Actual: S/ 4.50"
-                - generic [ref=e13]: "Predicho: S/ 4.55"
-                - generic [ref=e14]: "Volatilidad: 12.0%"
-            - generic [ref=e15]:
-              - generic [ref=e16]: potatoes
-              - generic [ref=e17]:
-                - generic [ref=e18]: "Actual: S/ 4.50"
-                - generic [ref=e19]: "Predicho: S/ 4.55"
-                - generic [ref=e20]: "Volatilidad: 12.0%"
-            - generic [ref=e21]:
-              - generic [ref=e22]: corn
-              - generic [ref=e23]:
-                - generic [ref=e24]: "Actual: S/ 4.50"
-                - generic [ref=e25]: "Predicho: S/ 4.55"
-                - generic [ref=e26]: "Volatilidad: 12.0%"
-            - generic [ref=e27]:
-              - generic [ref=e28]: beans
-              - generic [ref=e29]:
-                - generic [ref=e30]: "Actual: S/ 4.50"
-                - generic [ref=e31]: "Predicho: S/ 4.55"
-                - generic [ref=e32]: "Volatilidad: 12.0%"
-        - generic [ref=e33]:
-          - heading "Optimización de Cadena de Suministro" [level=3] [ref=e34]
-          - generic [ref=e35]:
-            - generic [ref=e36]:
-              - generic [ref=e37]:
-                - generic [ref=e38]: Lima
-                - generic [ref=e39]: "Eficiencia: 7083%"
-              - generic [ref=e40]: "Capacidad: 85% | Costo: S/ 1.2 | Distancia: 500km"
-            - generic [ref=e41]:
-              - generic [ref=e42]:
-                - generic [ref=e43]: Arequipa
-                - generic [ref=e44]: "Eficiencia: 7083%"
-              - generic [ref=e45]: "Capacidad: 85% | Costo: S/ 1.2 | Distancia: 500km"
-            - generic [ref=e46]:
-              - generic [ref=e47]:
-                - generic [ref=e48]: Cusco
-                - generic [ref=e49]: "Eficiencia: 7083%"
-              - generic [ref=e50]: "Capacidad: 85% | Costo: S/ 1.2 | Distancia: 500km"
-            - generic [ref=e51]:
-              - generic [ref=e52]:
-                - generic [ref=e53]: Trujillo
-                - generic [ref=e54]: "Eficiencia: 7083%"
-              - generic [ref=e55]: "Capacidad: 85% | Costo: S/ 1.2 | Distancia: 500km"
-      - generic [ref=e56]:
-        - heading "Predicción de Precios" [level=3] [ref=e57]
-        - generic [ref=e58]:
-          - combobox [ref=e59]:
-            - option "rice" [selected]
-            - option "potatoes"
-            - option "corn"
-            - option "beans"
-          - button "Generar Predicción" [ref=e60] [cursor=pointer]
-      - generic [ref=e61]:
-        - heading "Recomendaciones de Mitigación" [level=3] [ref=e62]
-        - list [ref=e63]:
-          - listitem [ref=e64]: • Implementar stocks de reserva para arroz y papas
-          - listitem [ref=e65]: • Optimizar rutas de distribución desde Lima y Trujillo
-          - listitem [ref=e66]: • Monitorear factores climáticos y de importación
-          - listitem [ref=e67]: • Establecer alianzas con productores locales
-  - generic [ref=e68]:
-    - generic [ref=e69]: Test
-    - generic [ref=e70]: Manus AI - Centro de Mando
-    - generic [ref=e71]: Cargando planes...
-    - generic [ref=e72]: Cargando datos del módulo para Colombia
+- generic [ref=e1]:
+  - generic [ref=e2]: Test
+  - generic [ref=e3]: Manus AI - Centro de Mando
+  - generic [ref=e4]: Cargando planes...
+  - generic [ref=e5]: Cargando datos del módulo para Colombia
 ```

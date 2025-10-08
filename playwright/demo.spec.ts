@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 test.describe('Demo E2E', () => {
   test('completes demo flow with Colombia State Mission using data-testid', async ({ page }) => {
     // 1. Navegar a '/demo'
     await page.goto(`/demo`);
+      await waitForAppReady(page, { timeout: 20000 });
     await expect(page).toHaveURL('/demo');
 
     // Verificar que la página se cargue correctamente

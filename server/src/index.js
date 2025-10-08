@@ -10,6 +10,7 @@ import dashboardRouter from './routes/dashboard.js';
 import platformStatusRouter from './routes/platform-status.js';
 import agentRouter from './routes/agent.js';
 import llmRouter from './routes/llm.js';
+import oracleRouter from './routes/oracle.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
 import climateRouter from './routes/climate.js';
@@ -64,6 +65,7 @@ async function main() {
   app.use('/api/platform-status', platformStatusRouter);
   app.use('/api/agent', agentRouter);
   app.use('/api/llm', bearerAuth, llmRouter);
+  app.use('/api/oracle', bearerAuth, oracleRouter);
   app.use('/api/consciousness', bearerAuth, consciousnessRouter);
   app.use('/api/sacrifice', sacrificeRouter);
   app.use('/api/climate', climateRouter);

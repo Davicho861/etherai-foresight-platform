@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 const _API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
 const _TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
@@ -74,13 +75,25 @@ test.describe('Food Resilience Platform E2E', () => {
       }
     }
 
-    // Validate supply chain information is displayed
-    const supplyChainSection = page.locator('[data-testid="supply-chain"], .supply-chain, text="Supply Chain"');
+    // Wait for the app to be ready (SSE or main UI)
+    await waitForAppReady(page);
+
+    // Validate supply chain information is displayed using safer checks
+    const supplyByTestId = page.locator('[data-testid="supply-chain"]');
+    const supplyByClass = page.locator('.supply-chain');
+    const supplyByText = page.locator('text="Supply Chain"');
+
+    let supplyChainSection = supplyByTestId;
+    if (await supplyByTestId.count() === 0) {
+      if (await supplyByClass.count() > 0) supplyChainSection = supplyByClass;
+      else supplyChainSection = supplyByText;
+    }
+
     if (await supplyChainSection.count() > 0) {
       await expect(supplyChainSection.first()).toBeVisible();
 
       // Check for route information
-      const routeInfo = page.locator('text=Lima, text=Arequipa, text=Cusco, text=Trujillo');
+      const routeInfo = page.locator('text=Lima').or(page.locator('text=Arequipa')).or(page.locator('text=Cusco')).or(page.locator('text=Trujillo'));
       const routeCount = await routeInfo.count();
       expect(routeCount).toBeGreaterThan(0);
     }

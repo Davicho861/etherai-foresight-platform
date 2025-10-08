@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import safeFetch from '../lib/safeFetch.js';
 
 class MINAGRIIntegration {

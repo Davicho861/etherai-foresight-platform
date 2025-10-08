@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 test.describe('Visual Demo Snapshots', () => {
   test('Snapshot Visual: Sidebar de la Demo', async ({ page }) => {
@@ -8,9 +9,10 @@ test.describe('Visual Demo Snapshots', () => {
   });
 
   test('Snapshot Visual: Dashboard General', async ({ page }) => {
-    await page.goto('/demo');
-    // Wait for the container of the KPIs to be visible
-    await expect(page.locator('.grid.grid-cols-2.md\\:grid-cols-4.gap-6')).toBeVisible({ timeout: 10000 });
+  await page.goto('/demo');
+  await waitForAppReady(page, { timeout: 15000 });
+  // Wait for the container of the KPIs to be visible
+  await expect(page.locator('.grid.grid-cols-2.md\\:grid-cols-4.gap-6')).toBeVisible({ timeout: 10000 });
     // Verify that the dynamic KPIs show numbers
     await expect(page.locator('text=Precisión Promedio').locator('xpath=following-sibling::*').first()).toBeVisible();
     await expect(page.locator('text=Predicciones Diarias').locator('xpath=following-sibling::*').first()).toBeVisible();

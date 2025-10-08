@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 const API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
 const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
@@ -21,13 +22,14 @@ test.describe('Dashboard E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the frontend and wait for network to be idle
-    await page.goto('/', { waitUntil: 'networkidle' });
-    console.log('Current URL after goto:', await page.url());
+  // Visit the frontend and wait for the app to be ready
+  await page.goto('/', { waitUntil: 'networkidle' });
+  await waitForAppReady(page, { timeout: 20000 });
+  console.log('Current URL after goto:', await page.url());
 
-    // Wait for the main dashboard container to be visible
-    const dashboardLocator = page.locator('[data-testid="dashboard-container"]');
-    await expect(dashboardLocator).toBeVisible({ timeout: 15000 });
+  // Wait for the main dashboard container to be visible (fallback)
+  const dashboardLocator = page.locator('[data-testid="dashboard-container"]');
+  await expect(dashboardLocator).toBeVisible({ timeout: 15000 });
 
     // Validate KPIs are visible and match backend
     await expect(dashboardLocator.locator('text=Análisis Activos')).toBeVisible();

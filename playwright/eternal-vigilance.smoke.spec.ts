@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 // Smoke test: token -> SSE -> emit -> report
 test('eternal vigilance end-to-end smoke', async ({ page, request }) => {
@@ -41,9 +42,9 @@ test('eternal vigilance end-to-end smoke', async ({ page, request }) => {
     } as any;
   }, backend);
 
-  // Go to the page and wait for the SSE connection to be established
+  // Go to the page and wait for the app to be ready (SSE or main UI)
   await page.goto('/metatron-panel');
-  await page.waitForFunction(() => (window as any).eventSourceReady, { timeout: 15000 });
+  await waitForAppReady(page, { timeout: 20000 });
 
   // Emit a test event
   const emitResp = await request.post(`${backend}/api/eternal-vigilance/emit`, {

@@ -16,7 +16,7 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
       if (ct.includes('application/json')) {
         try {
           return await res.json();
-        } catch (e) {
+        } catch {
           throw new Error('Invalid JSON response');
         }
       }

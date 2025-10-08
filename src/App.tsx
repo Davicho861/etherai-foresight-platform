@@ -10,6 +10,7 @@ import PricingPage from "./pages/PricingPage";
 import DemoPage from "./pages/DemoPage";
 import FoodResiliencePage from "./pages/FoodResiliencePage";
 import MetatronPanel from "./components/MetatronPanel";
+import ErrorBoundary from './components/ErrorBoundary';
 
 const queryClient = new QueryClient();
 
@@ -20,19 +21,21 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard...</div>} />
-            <Route path="/module/colombia" element={<ModuleColombia />} />
-            <Route path="/food-resilience" element={<FoodResiliencePage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/demo" element={<DemoPage />} />
-            <Route path="/metatron-panel" element={<MetatronPanel />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard...</div>} />
+              <Route path="/module/colombia" element={<ModuleColombia />} />
+              <Route path="/food-resilience" element={<FoodResiliencePage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/demo" element={<DemoPage />} />
+              <Route path="/metatron-panel" element={<MetatronPanel />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ErrorBoundary>
       </TooltipProvider>
     </QueryClientProvider>
   );
