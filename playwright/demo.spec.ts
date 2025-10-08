@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { waitForAppReady } from './test-utils';
 
 test.describe('Demo E2E', () => {
   test('completes demo flow with Colombia State Mission using data-testid', async ({ page }) => {

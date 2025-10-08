@@ -11,6 +11,9 @@ RUN npm install --legacy-peer-deps
 # Copiar código fuente
 COPY server/ ./
 
+# Copiar archivo de configuración global
+COPY GLOBAL_OFFERING_PROTOCOL.json ./
+
 # Generar prisma
 RUN apt-get update && apt-get install -y --no-install-recommends python3 build-essential ca-certificates libssl-dev && rm -rf /var/lib/apt/lists/* \
   && npx prisma generate --schema=./prisma/schema.prisma

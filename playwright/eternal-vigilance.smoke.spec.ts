@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { waitForAppReady } from './test-utils';
 
 // Smoke test: token -> SSE -> emit -> report
 test('eternal vigilance end-to-end smoke', async ({ page, request }) => {

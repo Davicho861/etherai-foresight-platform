@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { waitForAppReady } from './test-utils';
 
 test('pricing page and request demo flow (smoke)', async ({ page }) => {
   await page.goto('/pricing');

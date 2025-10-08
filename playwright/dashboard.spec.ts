@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { waitForAppReady } from './test-utils';
 
 const API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
 const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';

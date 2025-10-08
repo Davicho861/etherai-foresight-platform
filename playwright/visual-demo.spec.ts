@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { waitForAppReady } from './test-utils';
 
 test.describe('Visual Demo Snapshots', () => {
   test('Snapshot Visual: Sidebar de la Demo', async ({ page }) => {

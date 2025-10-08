@@ -227,8 +227,12 @@ class LogosKernel {
         const dataAcquisitionAgent = new MetatronAgent('DataAcquisitionAgent');
         const data = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], gdeltCodes: ['CO', 'PE', 'AR'] });
 
+        // Obtener datos de seguridad alimentaria del Banco Mundial
+        const { getFoodSecurityIndex } = await import('./services/worldBankService.js');
+        const foodSecurityData = await getFoodSecurityIndex();
+
         const signalAnalysisAgent = new MetatronAgent('SignalAnalysisAgent');
-        const signals = await signalAnalysisAgent.run({ data });
+        const signals = await signalAnalysisAgent.run({ data, foodSecurity: foodSecurityData });
 
         const causalCorrelationAgent = new MetatronAgent('CausalCorrelationAgent');
         const correlations = await causalCorrelationAgent.run({ signals });
@@ -236,11 +240,21 @@ class LogosKernel {
         const riskAssessmentAgent = new MetatronAgent('RiskAssessmentAgent');
         const risks = await riskAssessmentAgent.run({ correlations });
 
-        // Actualizar riskIndices
+        // Actualizar riskIndices incluyendo factor de hambruna
         this.riskIndices = {};
         for (const [country, risk] of Object.entries(risks)) {
-          const level = risk > 7 ? 'Alto' : risk > 4 ? 'Medio' : 'Bajo';
-          this.riskIndices[country] = { riskScore: risk, level };
+          // Incorporar índice de hambruna al cálculo de riesgo
+          const foodSecurityValue = foodSecurityData.data[country]?.value || 0;
+          const famineRiskFactor = foodSecurityValue > 10 ? 2 : foodSecurityValue > 5 ? 1 : 0; // Aumentar riesgo si hambruna > 5%
+          const adjustedRisk = Math.min(10, risk + famineRiskFactor);
+
+          const level = adjustedRisk > 7 ? 'Alto' : adjustedRisk > 4 ? 'Medio' : 'Bajo';
+          this.riskIndices[country] = {
+            riskScore: adjustedRisk,
+            level,
+            foodSecurity: foodSecurityValue,
+            famineRisk: famineRiskFactor
+          };
         }
 
         // Generar alerta si supera umbral
@@ -249,14 +263,14 @@ class LogosKernel {
             const alertEvent = {
               timestamp: new Date().toISOString(),
               flow: 'Profecía',
-              message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)})`
+              message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)}) - Factor hambruna: ${data.famineRisk}`
             };
             this.activityFeed.push(alertEvent);
-            this.publishToVigilance(`Profecía: ALERTA - Riesgo alto en ${country} (${data.riskScore.toFixed(1)})`);
+            this.publishToVigilance(`Profecía: ALERTA - Riesgo alto en ${country} (${data.riskScore.toFixed(1)}) - Hambruna: ${data.foodSecurity.toFixed(1)}%`);
 
             // Generar informe automático
             const reportAgent = new MetatronAgent('ReportGenerationAgent');
-            await reportAgent.run({ risks, correlations });
+            await reportAgent.run({ risks, correlations, foodSecurity: foodSecurityData });
           }
         }
       } catch (error) {

@@ -42,6 +42,8 @@ const DemoPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [showBriefing, setShowBriefing] = useState(false);
+  const [geographyData, setGeographyData] = useState<any>(null);
+  const [mapError, setMapError] = useState(false);
 
   useEffect(() => {
     const fetchDemoData = async () => {
@@ -61,7 +63,22 @@ const DemoPage: React.FC = () => {
       }
     };
 
+    const fetchGeography = async () => {
+      try {
+        const response = await fetch(geoUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch geography data');
+        }
+        const data = await response.json();
+        setGeographyData(data);
+      } catch (err) {
+        console.error('Error fetching geography data:', err);
+        setMapError(true);
+      }
+    };
+
     fetchDemoData();
+    fetchGeography();
   }, []);
 
   if (loading) {
@@ -216,49 +233,59 @@ const DemoPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-64" data-testid="global-map">
-                  <ComposableMap
-                    projection="geoMercator"
-                    projectionConfig={{
-                      scale: 300,
-                      center: [-60, -15]
-                    }}
-                    className="w-full h-full"
-                  >
-                    <Geographies geography={geoUrl}>
-                      {({ geographies }) =>
-                        geographies.map((geo) => {
-                          const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
-                          return (
-                            <Geography
-                              key={geo.rsmKey}
-                              geography={geo}
-                              fill={country ? getCountryColor(country.code) : '#374151'}
-                              stroke="#FFFFFF"
-                              strokeWidth={0.5}
-                              style={{
-                                default: { outline: 'none' },
-                                hover: { outline: 'none', fill: '#60A5FA' },
-                                pressed: { outline: 'none' },
-                              }}
-                              data-testid={`country-${country?.code}`}
-                              onMouseEnter={() => {
-                                const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
-                                if (country) setHoveredCountry(country.name);
-                              }}
-                              onMouseLeave={() => setHoveredCountry(null)}
-                              onClick={() => {
-                                const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
-                                if (country) {
-                                  setSelectedCountry(country);
-                                  setShowBriefing(true);
-                                }
-                              }}
-                            />
-                          );
-                        })
-                      }
-                    </Geographies>
-                  </ComposableMap>
+                  {mapError ? (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      Mapa no disponible
+                    </div>
+                  ) : geographyData ? (
+                    <ComposableMap
+                      projection="geoMercator"
+                      projectionConfig={{
+                        scale: 300,
+                        center: [-60, -15]
+                      }}
+                      className="w-full h-full"
+                    >
+                      <Geographies geography={geographyData}>
+                        {({ geographies }) =>
+                          geographies.map((geo) => {
+                            const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
+                            return (
+                              <Geography
+                                key={geo.rsmKey}
+                                geography={geo}
+                                fill={country ? getCountryColor(country.code) : '#374151'}
+                                stroke="#FFFFFF"
+                                strokeWidth={0.5}
+                                style={{
+                                  default: { outline: 'none' },
+                                  hover: { outline: 'none', fill: '#60A5FA' },
+                                  pressed: { outline: 'none' },
+                                }}
+                                data-testid={`country-${country?.code}`}
+                                onMouseEnter={() => {
+                                  const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
+                                  if (country) setHoveredCountry(country.name);
+                                }}
+                                onMouseLeave={() => setHoveredCountry(null)}
+                                onClick={() => {
+                                  const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
+                                  if (country) {
+                                    setSelectedCountry(country);
+                                    setShowBriefing(true);
+                                  }
+                                }}
+                              />
+                            );
+                          })
+                        }
+                      </Geographies>
+                    </ComposableMap>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      Cargando mapa...
+                    </div>
+                  )}
                 </div>
                 {hoveredCountry && (
                   <p className="text-center text-gray-300 mt-2">
