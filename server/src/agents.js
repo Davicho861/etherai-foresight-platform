@@ -5,6 +5,7 @@ import WorldBankIntegration from './integrations/WorldBankIntegration.js';
 import GdeltIntegration from './integrations/GdeltIntegration.js';
 import FMIIntegration from './integrations/FMIIntegration.js';
 import SatelliteIntegration from './integrations/SatelliteIntegration.js';
+import CryptoIntegration from './integrations/CryptoIntegration.js';
 import { fetchRecentTemperature } from './integrations/open-meteo.mock.js';
 
 class MetatronAgent {
@@ -16,6 +17,7 @@ class MetatronAgent {
     this.chromaClient = getChroma ? getChroma() : null;
     this.neo4jDriver = null; // Will be initialized lazily
     this.meq = new QuantumEntanglementEngine();
+    this.cryptoIntegration = new CryptoIntegration();
   }
 
   runUnitTests(changes) {
@@ -47,9 +49,9 @@ class MetatronAgent {
 
   analyzeSystemCapabilities() {
     return {
-      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos'],
-      integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF', 'Satellite'],
-      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI']
+      agents: ['Metatron', 'Oracle/MEQ', 'EthicsCouncil', 'PlanningCrew', 'DevelopmentCrew', 'QualityCrew', 'DeploymentCrew', 'Tyche', 'Hephaestus', 'ConsensusAgent', 'Telos', 'CryptoVolatilityAgent'],
+      integrations: ['Neo4j', 'ChromaDB', 'OpenAI', 'GDELT', 'WorldBank', 'IMF', 'Satellite', 'Crypto'],
+      features: ['Vigilancia perpetua', 'Grafo causal', 'Protocolo de consenso', 'Cálculo de coherencia', 'Datos satelitales NDVI', 'Análisis de volatilidad cripto']
     };
   }
 
@@ -457,6 +459,38 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
       case 'DeploymentCrew': {
         return { status: 'Despliegue exitoso en el entorno de staging.' };
       }
+      case 'CryptoVolatilityAgent': {
+        const { cryptoIds = ['bitcoin', 'ethereum'], days = 30 } = input;
+        const cryptoData = await this.cryptoIntegration.getCryptoData(cryptoIds);
+        const volatilityAnalysis = {};
+
+        for (const crypto of cryptoData) {
+          const historicalData = await this.cryptoIntegration.getHistoricalData(crypto.id, days);
+          const prices = historicalData.prices.map(p => p[1]);
+          const volatility = this.calculateVolatility(prices);
+          const trend = this.analyzeTrend(prices);
+          const riskLevel = this.assessRiskLevel(volatility, crypto.price_change_percentage_24h);
+
+          volatilityAnalysis[crypto.id] = {
+            currentPrice: crypto.current_price,
+            priceChange24h: crypto.price_change_percentage_24h,
+            volatility: volatility,
+            trend: trend,
+            riskLevel: riskLevel,
+            marketCap: crypto.market_cap,
+            volume24h: crypto.total_volume
+          };
+        }
+
+        const globalRiskAssessment = this.generateGlobalRiskAssessment(volatilityAnalysis);
+
+        return {
+          cryptoData,
+          volatilityAnalysis,
+          globalRiskAssessment,
+          timestamp: new Date().toISOString()
+        };
+      }
       default: {
         return { result: 'Tarea completada.' };
       }
@@ -498,6 +532,85 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
     // Mock data for testing
     const eventCount = Math.floor(Math.random() * 10); // 0-10 events
     return { eventCount, events: [] };
+  }
+
+  calculateVolatility(prices) {
+    if (prices.length < 2) return 0;
+    const returns = [];
+    for (let i = 1; i < prices.length; i++) {
+      returns.push((prices[i] - prices[i - 1]) / prices[i - 1]);
+    }
+    const mean = returns.reduce((sum, r) => sum + r, 0) / returns.length;
+    const variance = returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) / returns.length;
+    return Math.sqrt(variance) * Math.sqrt(252); // Annualized volatility (252 trading days)
+  }
+
+  analyzeTrend(prices) {
+    if (prices.length < 2) return 'neutral';
+    const recent = prices.slice(-7); // Last 7 days
+    const older = prices.slice(-14, -7); // Previous 7 days
+    const recentAvg = recent.reduce((sum, p) => sum + p, 0) / recent.length;
+    const olderAvg = older.reduce((sum, p) => sum + p, 0) / older.length;
+    const change = (recentAvg - olderAvg) / olderAvg;
+
+    if (change > 0.05) return 'bullish';
+    if (change < -0.05) return 'bearish';
+    return 'neutral';
+  }
+
+  assessRiskLevel(volatility, priceChange24h) {
+    const volScore = Math.min(volatility * 100, 10); // Cap at 10
+    const changeScore = Math.abs(priceChange24h) / 10; // Scale change percentage
+    const totalScore = volScore + changeScore;
+
+    if (totalScore > 15) return 'high';
+    if (totalScore > 8) return 'medium';
+    return 'low';
+  }
+
+  generateGlobalRiskAssessment(volatilityAnalysis) {
+    const cryptos = Object.values(volatilityAnalysis);
+    const avgVolatility = cryptos.reduce((sum, c) => sum + c.volatility, 0) / cryptos.length;
+    const highRiskCount = cryptos.filter(c => c.riskLevel === 'high').length;
+    const totalMarketCap = cryptos.reduce((sum, c) => sum + c.marketCap, 0);
+
+    let assessment = 'Estable';
+    if (highRiskCount > cryptos.length / 2) {
+      assessment = 'Alto riesgo de volatilidad extrema';
+    } else if (avgVolatility > 0.5) {
+      assessment = 'Moderada volatilidad detectada';
+    }
+
+    return {
+      averageVolatility: avgVolatility,
+      highRiskCryptos: highRiskCount,
+      totalMarketCap: totalMarketCap,
+      assessment: assessment,
+      recommendations: this.generateRecommendations(assessment, cryptos)
+    };
+  }
+
+  generateRecommendations(assessment, cryptos) {
+    const recommendations = [];
+
+    if (assessment.includes('Alto riesgo')) {
+      recommendations.push('Considerar diversificación en activos tradicionales');
+      recommendations.push('Implementar stop-loss orders');
+      recommendations.push('Monitorear noticias macroeconómicas');
+    } else if (assessment.includes('Moderada')) {
+      recommendations.push('Mantener posiciones pero con cautela');
+      recommendations.push('Revisar portafolios semanalmente');
+    } else {
+      recommendations.push('Oportunidad para inversión en cripto');
+      recommendations.push('Explorar nuevos proyectos emergentes');
+    }
+
+    const bullishCount = cryptos.filter(c => c.trend === 'bullish').length;
+    if (bullishCount > cryptos.length / 2) {
+      recommendations.push('Tendencia alcista general - considerar posiciones largas');
+    }
+
+    return recommendations;
   }
 }
 
