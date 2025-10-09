@@ -41,4 +41,29 @@ router.get('/', (req, res) => {
   res.json(response);
 });
 
+// Alias for /pricing-plans used by frontend
+router.get('/pricing-plans', (req, res) => {
+  const protocol = readProtocol();
+  if (!protocol) return res.status(500).json({ error: 'protocol not available' });
+
+  // Transform into a consumable response for the frontend
+  const segments = protocol.segments || {};
+  const response = {
+    currency: protocol.currency || 'USD',
+    globalSettings: protocol.globalSettings || {},
+    segments: Object.keys(segments).reduce((acc, key) => {
+      acc[key] = {
+        name: segments[key].name,
+        plans: segments[key].plans || []
+      };
+      return acc;
+    }, {}),
+  };
+
+  // Optionally include a pantheonOffering if present (backward compat)
+  if (protocol.pantheonOffering) response.pantheonOffering = protocol.pantheonOffering;
+
+  res.json(response);
+});
+
 export default router;
