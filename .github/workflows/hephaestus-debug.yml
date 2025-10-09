@@ -3,6 +3,9 @@ name: Hephaestus Debug - Capture Logs
 on:
   push:
     branches: [ debug/hephaestus-logs ]
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main ]
 
 jobs:
   debug_trace:
