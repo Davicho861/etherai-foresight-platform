@@ -312,7 +312,7 @@ class MetatronAgent {
           const { climate, economic, debt, social } = data[_country];
           // Analyze signals: e.g., extreme weather, economic downturns, high debt, social unrest
           const latestDebt = debt.debtData && debt.debtData.length > 0 ? debt.debtData[debt.debtData.length - 1] : 0;
-          signals[country] = {
+          signals[_country] = {
             extremeWeather: climate.temperature > 30 || climate.precipitation > 100,
             economicStress: economic.inflation > 10 || economic.unemployment > 10,
             debtStress: latestDebt > 50, // Assuming debt > 50% of GDP is high
