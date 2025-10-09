@@ -1,8 +1,5 @@
-FROM node:18-alpine
-WORKDIR /app
-COPY package.json package-lock.json* ./
-# Use npm ci with the unified lockfile for reproducible builds
-RUN npm ci --only=production --no-audit --no-fund --prefer-offline || true
-COPY . .
-EXPOSE 4000
-CMD ["node", "src/index.js"]
+# DEPRECATED: El uso de Docker en el repositorio ha sido purgado.
+# Este archivo fue reemplazado por la estrategia "Nube Nativa".
+# Si necesitas restaurar una versión anterior, recupérala del historial de Git.
+
+# Original Dockerfile eliminado durante la Purga Hermes.

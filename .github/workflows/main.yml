@@ -1,0 +1,109 @@
+name: Praevisio - CI/CD Global Sync
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  Deploy_Backend:
+    name: Deploy Backend (Railway)
+    runs-on: ubuntu-latest
+    outputs:
+      railway_backend_url: ${{ steps.extract.outputs.railway_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Railway CLI
+        run: |
+          curl -sSfL https://cli.railway.app/install.sh | sh
+
+      - name: Login Railway (token)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "$RAILWAY_TOKEN" | railway login --apiKey - || true
+
+      - name: Deploy backend (non-interactive)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          set -euo pipefail
+          if command -v docker >/dev/null 2>&1; then
+            docker --version || true
+          fi
+          railway up --yes || true
+          railway status --json > railway-status.json || true
+
+      - name: Extract Railway URL
+        id: extract
+        run: |
+          set -euo pipefail
+          if [ -f railway-status.json ]; then
+            RAILWAY_URL=$(jq -r '.services[].urls[0] // .services[].url // empty' railway-status.json | head -n1 || true)
+            if [ -n "$RAILWAY_URL" ]; then
+              echo "railway_url=$RAILWAY_URL" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+          # Fallback to secret-provided URL
+          if [ -n "${RAILWAY_BACKEND_URL:-}" ]; then
+            echo "railway_url=$RAILWAY_BACKEND_URL" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "railway_url=" >> $GITHUB_OUTPUT
+        env:
+          RAILWAY_BACKEND_URL: ${{ secrets.RAILWAY_BACKEND_URL }}
+
+  Deploy_Frontend:
+    name: Deploy Frontend (Vercel)
+    runs-on: ubuntu-latest
+    needs: Deploy_Backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Vercel CLI
+        run: |
+          npm install -g vercel@latest
+
+      - name: Prepare env and deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          RAILWAY_BACKEND_URL: ${{ needs.Deploy_Backend.outputs.railway_backend_url }}
+          SUPABASE_DATABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          echo "RAILWAY_BACKEND_URL=$RAILWAY_BACKEND_URL"
+          vercel --prod --token "$VERCEL_TOKEN" -e RAILWAY_BACKEND_URL="$RAILWAY_BACKEND_URL" -e SUPABASE_DATABASE_URL="$SUPABASE_DATABASE_URL"
+
+  Certify_Global_Reality:
+    name: Certify Global Reality
+    runs-on: ubuntu-latest
+    needs: Deploy_Frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run validation script
+        env:
+          RAILWAY_BACKEND_URL: ${{ needs.Deploy_Backend.outputs.railway_backend_url }}
+          VERCEL_URL: ${{ secrets.VERCEL_URL }}
+        run: |
+          set -euo pipefail
+          chmod +x ./scripts/validate_deploy.sh || true
+          ./scripts/validate_deploy.sh

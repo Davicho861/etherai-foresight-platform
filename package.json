@@ -8,12 +8,10 @@
     "server"
   ],
   "scripts": {
-    "start": "concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
-    "dev": "vite",
-    "dev:container": "vite --host 0.0.0.0 --port 3002",
-    "dev:live": "docker-compose up -d --build --force-recreate",
-    "validate": "./validate_local.sh",
-    "new:feature": "node scripts/execute-directive.js --",
+  "start": "concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
+  "dev": "vite",
+  "dev:container": "vite --host 0.0.0.0 --port 3002",
+  "new:feature": "node scripts/execute-directive.js --",
     "propose-plan": "node ./scripts/propose-plan.js --",
     "generate:component": "node ./scripts/generate-component.js",
     "generate:test": "node ./scripts/generate-e2e-test.js",
@@ -28,7 +26,7 @@
     "build": "npx vite build",
     "build:dev": "npx vite build --mode development",
     "lint": "eslint \"src/**/*.{js,ts,tsx}\" \"server/**/*.{js,ts}\" \"scripts/**/*.{js,ts}\" \"playwright/**/*.{ts,js}\" --max-warnings=10",
-    "preview": "vite preview"
+  "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

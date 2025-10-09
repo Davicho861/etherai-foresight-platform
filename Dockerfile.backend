@@ -1,42 +1,4 @@
 # Etapa builder
-FROM node:20-bullseye-slim AS builder
-WORKDIR /app
-
-# Copiar package*.json
-COPY server/package*.json ./
-
-# Ejecutar npm install
-RUN npm install --legacy-peer-deps
-
-# Copiar código fuente
-COPY server/ ./
-
-# Generar prisma
-RUN apt-get update && apt-get install -y --no-install-recommends python3 build-essential ca-certificates libssl-dev && rm -rf /var/lib/apt/lists/* \
-  && npx prisma generate --schema=./prisma/schema.prisma
-
-# Etapa runner
-FROM node:20-bullseye-slim AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-
-# Instalar curl y postgresql-client
-RUN apt-get update && apt-get install -y --no-install-recommends curl postgresql-client ca-certificates libssl-dev && rm -rf /var/lib/apt/lists/*
-
-# Copiar node_modules de producción
-COPY --from=builder /app/node_modules ./node_modules
-
-# Copiar código fuente
-COPY --from=builder /app ./
-
-# Copiar entrypoint y darle permisos de ejecución
-COPY server/entrypoint.sh ./
-RUN chmod +x ./entrypoint.sh
-
-EXPOSE 4000
-
-# Healthcheck
-HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5 \
-  CMD curl -f http://localhost:4000/api/platform-status || exit 1
-
-ENTRYPOINT ["./entrypoint.sh"]
+# DEPRECATED: Dockerfile.backend fue purgado por la estrategia Hermes.
+# Este repositorio ahora despliega a Railway mediante GitHub Actions.
+# Si necesitas restaurar el archivo consulte el historial de Git.

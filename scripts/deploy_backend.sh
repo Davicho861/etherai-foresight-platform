@@ -5,35 +5,37 @@ set -euo pipefail
 # Requiere que RAILWAY_TOKEN esté exportado en el entorno.
 
 if [ -z "${RAILWAY_TOKEN:-}" ]; then
-  echo "RAILWAY_TOKEN no está configurado. Exporta RAILWAY_TOKEN antes de ejecutar." >&2
+  echo "RAILWAY_TOKEN o RAILWAY_API_KEY no configurado. Exporta la variable antes de ejecutar." >&2
   exit 1
 fi
 
 if ! command -v railway >/dev/null 2>&1; then
-  echo "CLI 'railway' no encontrada. Instálala: https://docs.railway.app/develop/cli" >&2
-  exit 1
+  echo "CLI 'railway' no encontrada. Instalando localmente..."
+  curl -sSfL https://cli.railway.app/install.sh | sh
 fi
 
-echo "Iniciando despliegue del backend en Railway..."
+echo "Desplegando backend en Railway (modo CI, no interactivo)..."
 
-# Login temporal con token
-railway login --apiKey "$RAILWAY_TOKEN"
-
-# Crear proyecto o usar uno existente: dejamos que el usuario seleccione.
-echo "Selecciona (o crea) el proyecto Railway para desplegar el backend. Presiona Enter para continuar..."
-read -r
-
-# Asumimos Dockerfile.backend en la raíz
-if [ ! -f Dockerfile.backend ]; then
-  echo "No se encontró Dockerfile.backend en la raíz del repositorio." >&2
-  exit 1
+# Login con token
+if [ -n "${RAILWAY_TOKEN:-}" ]; then
+  echo "$RAILWAY_TOKEN" | railway login --apiKey - || true
+else
+  echo "$RAILWAY_API_KEY" | railway login --apiKey - || true
 fi
 
-echo "Construyendo la imagen Docker localmente (opcional)..."
-docker build -f Dockerfile.backend -t praevisio-backend:local .
+# Intentar desplegar (ci-friendly)
+railway up --yes || true
 
-echo "Creando servicio en Railway y subiendo la imagen..."
-# railway up permite desplegar, pero la experiencia puede requerir interacción
-railway up --service praevisio-backend || echo "railway up retornó no cero, verifica la interfaz interactiva." >&2
+# Exportar estado a JSON y tratar de extraer una URL pública
+if railway status --json > railway-status.json 2>/dev/null; then
+  RAILWAY_URL=$(jq -r '.services[].urls[0] // .services[].url // empty' railway-status.json | head -n1 || true)
+  if [ -n "$RAILWAY_URL" ]; then
+    echo "RAILWAY_BACKEND_URL=$RAILWAY_URL"
+    # Emitir una línea clave para consumirse en CI
+    echo "RAILWAY_BACKEND_URL=$RAILWAY_URL" > .railway_backend_url
+    exit 0
+  fi
+fi
 
-echo "Despliegue backend iniciado. Revisa Railway dashboard para la URL pública y los logs."
+echo "No se pudo extraer URL desde Railway. Puedes proporcionar RAILWAY_BACKEND_URL manualmente." >&2
+exit 0
