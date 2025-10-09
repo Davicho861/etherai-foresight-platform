@@ -1,4 +1,0 @@
-# Etapa builder
-# DEPRECATED: Dockerfile.backend fue purgado por la estrategia Hermes.
-# Este repositorio ahora despliega a Railway mediante GitHub Actions.
-# Si necesitas restaurar el archivo consulte el historial de Git.
