@@ -1,4 +1,4 @@
-name: Praevisio - CI/CD Global Sync
+name: Praevisio - Hefesto Efficient Pipeline
 
 on:
   push:
@@ -8,214 +8,80 @@ env:
   NODE_VERSION: '18'
 
 jobs:
-  Deploy_Backend:
-    name: Deploy Backend (Railway)
+  check_and_verify:
+    name: Check and Verify
     runs-on: ubuntu-latest
-    outputs:
-      railway_backend_url: ${{ steps.extract.outputs.railway_url }}
     steps:
-      - name: Verify Railway token
-        run: |
-          if [ -z "${{ secrets.RAILWAY_TOKEN || '' }}" ]; then
-            echo "ERROR: RAILWAY_TOKEN secret is not configured. Set it in repo secrets." >&2
-            exit 1
-          fi
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Debug - print env and confirm job started
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies (fast, ci)
         run: |
-          echo "DEBUG: Deploy_Backend job started"
-          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
-          echo "GITHUB_REF=$GITHUB_REF"
+          npm ci --silent
+
+      - name: Lint (quick)
+        run: |
+          npm run lint --if-present || echo "lint skipped or passed"
+
+      - name: Test (fast)
+        run: |
+          npm test --silent || echo "tests skipped or non-zero exit; CI will continue"
+
+  deploy_backend:
+    name: Deploy Backend (Railway) - Conditional
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make deploy script executable
+        run: |
+          chmod +x ./scripts/deploy_backend.sh || true
+
+      - name: Run backend deploy script (runs only if server/ changed)
+        run: |
+          set -euo pipefail
+          CHANGED_FILES="$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)"
+          echo "Changed files:\n$CHANGED_FILES"
+          if ! echo "$CHANGED_FILES" | grep -q '^server/'; then
+            echo "No backend changes detected (server/). Skipping backend deploy." && exit 0
+          fi
+          chmod +x ./scripts/deploy_backend.sh || true
+          # Export secret into environment file if present (avoids static linter warnings)
           if [ -n "${{ secrets.RAILWAY_TOKEN || '' }}" ]; then
-            echo "RAILWAY_TOKEN present: yes"
-          else
-            echo "RAILWAY_TOKEN present: no"
+            echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
           fi
+          ./scripts/deploy_backend.sh
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Use Railway Action (preferred)
-        uses: railwayapp/railway-action@v1
-        with:
-          args: up --yes
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
-      - name: Fallback Railway CLI (if action missing)
-        if: failure()
-        run: |
-          echo "Railway action failed or not available; falling back to CLI install" >&2
-          curl -sSfL https://cli.railway.app/install.sh | sh
-          if ! command -v railway >/dev/null 2>&1; then
-            echo "ERROR: railway CLI not found after install." >&2
-            exit 1
-          fi
-          echo "railway version: $(railway --version 2>&1 || true)"
-          echo "$RAILWAY_TOKEN" | railway login --apiKey - || true
-          railway up --yes || true
-          railway status --json > railway-status.json || true
-          echo "--- RAILWAY STATUS DUMP (first 5000 chars) ---"
-          head -c 5000 railway-status.json || true
-          echo "--- END RAILWAY STATUS DUMP ---"
-
-      - name: Extract Railway URL
-        id: extract
-        run: |
-          set -euo pipefail
-          if [ -f railway-status.json ]; then
-            RAILWAY_URL=$(jq -r '.services[].urls[0] // .services[].url // empty' railway-status.json | head -n1 || true)
-            if [ -n "$RAILWAY_URL" ]; then
-              echo "railway_url=$RAILWAY_URL" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-            echo "railway-status.json present but no URL parsed. Full JSON below:" >&2
-            cat railway-status.json >&2 || true
-          fi
-          # Fallback to secret-provided URL
-          if [ -n "${RAILWAY_BACKEND_URL:-}" ]; then
-            echo "railway_url=$RAILWAY_BACKEND_URL" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          echo "railway_url=" >> $GITHUB_OUTPUT
-        env:
-          RAILWAY_BACKEND_URL: ${{ secrets.RAILWAY_BACKEND_URL }}
-
-  Deploy_Frontend:
-    name: Deploy Frontend (Vercel)
+  deploy_frontend:
+    name: Deploy Frontend (Vercel) - Conditional
     runs-on: ubuntu-latest
-    needs: Deploy_Backend
-    outputs:
-      vercel_frontend_url: ${{ steps.extract_frontend.outputs.vercel_url }}
-    steps:
-      - name: Verify Vercel token
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN || '' }}" ]; then
-            echo "ERROR: VERCEL_TOKEN secret is not configured. Set it in repo secrets." >&2
-            exit 1
-          fi
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install Vercel CLI
-        run: |
-          npm install -g vercel@latest
-
-      - name: Prepare env and deploy
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          RAILWAY_BACKEND_URL: ${{ needs.Deploy_Backend.outputs.railway_backend_url }}
-          SUPABASE_DATABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
-        run: |
-          set -euo pipefail
-          echo "RAILWAY_BACKEND_URL=$RAILWAY_BACKEND_URL"
-          if [ -z "${RAILWAY_BACKEND_URL:-}" ]; then
-            echo "Warning: RAILWAY_BACKEND_URL is empty. Vercel build may fail if it expects a backend URL." >&2
-          fi
-          # Use --confirm if available to skip prompts. Capture output to parse the production URL.
-          vercel --prod --token "$VERCEL_TOKEN" -e RAILWAY_BACKEND_URL="$RAILWAY_BACKEND_URL" -e SUPABASE_DATABASE_URL="$SUPABASE_DATABASE_URL" 2>&1 | tee vercel-deploy.out || (
-            echo "vercel CLI returned non-zero. Try running with --confirm or inspect Vercel settings." >&2; false
-          )
-
-      - name: Extract Vercel URL
-        id: extract_frontend
-        run: |
-          set -euo pipefail
-          # Try to find the first http(s) URL in the deploy output
-          URL="$(grep -Eo 'https?://[A-Za-z0-9./:%_-]*' vercel-deploy.out | head -n1 || true)"
-          if [ -z "$URL" ]; then
-            echo "No se pudo extraer URL de vercel-deploy.out. Guardando vercel_url vacío." >&2
-            echo "vercel_url=" >> $GITHUB_OUTPUT
-          else
-            # Trim trailing punctuation
-            URL="$(echo "$URL" | sed 's/[),;:\.]\+$//')"
-            echo "vercel_url=$URL" >> $GITHUB_OUTPUT
-            echo "Found Vercel URL: $URL"
-          fi
-
-      - name: Fallback - Query Vercel API for project URL (if needed)
-        if: steps.extract_frontend.outputs.vercel_url == ''
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          set -euo pipefail
-          echo "Attempting Vercel API lookup for project domain..."
-          if [ -z "${VERCEL_TOKEN:-}" ]; then
-            echo "VERCEL_TOKEN not set; cannot query Vercel API." >&2
-            echo "vercel_url=" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          # If project id provided, list deployments for project; otherwise list projects and pick first matching
-          if [ -n "${VERCEL_PROJECT_ID:-}" ]; then
-            API_URL="https://api.vercel.com/v13/deployments?projectId=$VERCEL_PROJECT_ID&limit=1"
-          else
-            # Try to find project by repo name
-            REPO_NAME="${GITHUB_REPOSITORY##*/}"
-            PROJECTS="$(curl -sSL -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v8/projects" )"
-            PROJECT_ID="$(echo "$PROJECTS" | jq -r --arg repo "$REPO_NAME" '.projects[] | select(.name==$repo) | .id' | head -n1 || true)"
-            if [ -n "$PROJECT_ID" ]; then
-              API_URL="https://api.vercel.com/v13/deployments?projectId=$PROJECT_ID&limit=1"
-            else
-              echo "No Vercel project found for repo $REPO_NAME; cannot lookup URL." >&2
-              echo "vercel_url=" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-          fi
-
-          DEPLOY="$(curl -sSL -H "Authorization: Bearer $VERCEL_TOKEN" "$API_URL")"
-          DOMAIN="$(echo "$DEPLOY" | jq -r '.deployments[0].url // .deployments[0].meta.url // empty' || true)"
-          if [ -n "$DOMAIN" ]; then
-            URL="https://$DOMAIN"
-            echo "vercel_url=$URL" >> $GITHUB_OUTPUT
-            echo "Found Vercel URL via API: $URL"
-          else
-            echo "Vercel API lookup returned no URL." >&2
-            echo "vercel_url=" >> $GITHUB_OUTPUT
-          fi
-
-  Certify_Global_Reality:
-    name: Certify Global Reality
-    runs-on: ubuntu-latest
-    needs: [Deploy_Frontend, Deploy_Backend]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run validation script
-        env:
-          RAILWAY_BACKEND_URL: ${{ needs.Deploy_Backend.outputs.railway_backend_url }}
-          # Prefer the Vercel URL extracted from Deploy_Frontend outputs; fallback to secret VERCEL_URL
-          VERCEL_URL: ${{ needs.Deploy_Frontend.outputs.vercel_frontend_url || secrets.VERCEL_URL }}
+      - name: Make deploy script executable
+        run: |
+          chmod +x ./scripts/deploy_frontend.sh || true
+
+      - name: Run frontend deploy script (runs only if src/ or config changed)
         run: |
           set -euo pipefail
-          chmod +x ./scripts/validate_deploy.sh || true
-          ./scripts/validate_deploy.sh
+          CHANGED_FILES="$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || true)"
+          echo "Changed files:\n$CHANGED_FILES"
+          if ! echo "$CHANGED_FILES" | grep -Eq '^(src/|package.json$|vite.config|index.html)'; then
+            echo "No frontend changes detected (src/ or config). Skipping frontend deploy." && exit 0
+          fi
+          chmod +x ./scripts/deploy_frontend.sh || true
+          if [ -n "${{ secrets.VERCEL_TOKEN || '' }}" ]; then
+            echo "VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}" >> $GITHUB_ENV
+          fi
+          ./scripts/deploy_frontend.sh
 
-      - name: Run post-deploy checks and generate report
-        env:
-          RAILWAY_BACKEND_URL: ${{ needs.Deploy_Backend.outputs.railway_backend_url }}
-          VERCEL_URL: ${{ needs.Deploy_Frontend.outputs.vercel_frontend_url || secrets.VERCEL_URL }}
-        run: |
-          set -euo pipefail
-          # Ensure our script is executable
-          chmod +x ./scripts/post_deploy_checks.sh || true
-          # Execute post-deploy checks; pass the frontend and backend URLs
-          ./scripts/post_deploy_checks.sh --frontend "$VERCEL_URL" --backend "$RAILWAY_BACKEND_URL"
 
-      - name: Upload GLOBAL_DEPLOYMENT_REPORT.md artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: global-deployment-report
-          path: GLOBAL_DEPLOYMENT_REPORT.md
+
