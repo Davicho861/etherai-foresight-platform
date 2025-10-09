@@ -383,11 +383,24 @@ class MetatronAgent {
       case 'RiskAssessmentAgent': {
         const { correlations } = input;
         const risks = {};
+
+        // Get global crypto volatility factor
+        const cryptoAgent = new MetatronAgent('CryptoVolatilityAgent');
+        const cryptoResult = await cryptoAgent.run({ cryptoIds: ['bitcoin', 'ethereum'], days: 7 });
+        const globalCryptoVolatility = cryptoResult?.globalRiskAssessment?.averageVolatility || 0;
+        const cryptoRiskFactor = Math.min(globalCryptoVolatility * 200, 20); // Scale to 0-20 points
+
         for (const _country in correlations) {
           const { weatherToSocial, economicToSocial, debtToSocial } = correlations[_country];
-          // Calculate risk score including debt
-          risks[_country] = (weatherToSocial + economicToSocial + debtToSocial) / 3 * 100; // 0-100 scale
+          // Calculate base risk score including debt
+          const baseRisk = (weatherToSocial + economicToSocial + debtToSocial) / 3 * 100;
+          // Add global crypto volatility factor
+          risks[_country] = Math.min(baseRisk + cryptoRiskFactor, 100); // 0-100 scale, cap at 100
         }
+
+        // Add global crypto risk entry
+        risks['GLOBAL_CRYPTO'] = cryptoRiskFactor * 5; // Scale for visibility
+
         return risks;
       }
       case 'ReportGenerationAgent': {
