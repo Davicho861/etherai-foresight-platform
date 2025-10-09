@@ -1,0 +1,42 @@
+name: Hephaestus Debug - Capture Logs
+
+on:
+  push:
+    branches: [ debug/hephaestus-logs ]
+
+jobs:
+  debug_trace:
+    name: Debug Trace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect basic environment
+        run: |
+          set -euo pipefail
+          echo "=== START DEBUG LOG ===" > debug-log.txt
+          echo "Date: $(date -u)" >> debug-log.txt
+          echo "GitHub ref: $GITHUB_REF" >> debug-log.txt
+          echo "Runner: $RUNNER_OS" >> debug-log.txt
+          echo "Node & npm versions:" >> debug-log.txt
+          node -v >> debug-log.txt 2>&1 || echo "node not found" >> debug-log.txt
+          npm -v >> debug-log.txt 2>&1 || echo "npm not found" >> debug-log.txt
+          echo "--- NPM CI (limited, --prefer-offline) ---" >> debug-log.txt
+          if [ -f package-lock.json ] || [ -f package.json ]; then
+            npm ci --prefer-offline --no-audit --silent >> debug-log.txt 2>&1 || echo "npm ci failed" >> debug-log.txt
+          else
+            echo "No package.json found; skipping npm ci" >> debug-log.txt
+          fi
+          echo "--- Git Diff (last commit) ---" >> debug-log.txt
+          git --no-pager show --name-only --pretty="format:%h %s" HEAD | sed -n '1,200p' >> debug-log.txt 2>&1 || true
+          echo "--- scripts/deploy_frontend.sh (head) ---" >> debug-log.txt
+          head -n 200 scripts/deploy_frontend.sh >> debug-log.txt 2>&1 || echo "no frontend script" >> debug-log.txt
+          echo "--- scripts/deploy_backend.sh (head) ---" >> debug-log.txt
+          head -n 200 scripts/deploy_backend.sh >> debug-log.txt 2>&1 || echo "no backend script" >> debug-log.txt
+
+      - name: Upload debug log
+        uses: actions/upload-artifact@v4
+        with:
+          name: hephaestus-debug-log
+          path: debug-log.txt
