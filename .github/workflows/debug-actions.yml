@@ -1,0 +1,21 @@
+name: Praevisio - Actions Debug
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  debug:
+    name: Actions Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print hello
+        run: |
+          echo "Hello from GitHub Actions debug job"
+          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "Runner: $(hostname)"
+          echo "Date: $(date -u)"
