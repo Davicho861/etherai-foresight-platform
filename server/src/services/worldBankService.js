@@ -9,23 +9,45 @@ const worldBank = new WorldBankIntegration();
 
 /**
  * Fetches the global food security index for LATAM countries.
+ * Now uses the new serverless endpoint /api/global-risk/food-security
  * @returns {Promise<object>} A promise that resolves to the food security data.
  */
 export const getFoodSecurityIndex = async () => {
   try {
-    const data = await worldBank.getFoodSecurityData(['COL', 'PER', 'ARG'], '2020', '2024');
-    // Transform to expected format
+    // Use the new serverless endpoint instead of direct API calls
+    const API_BASE = process.env.API_BASE || 'http://localhost:4000';
+    const response = await fetch(`${API_BASE}/api/global-risk/food-security`, {
+      headers: {
+        'Authorization': `Bearer ${process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token'}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Food security endpoint returned ${response.status}`);
+    }
+
+    const endpointData = await response.json();
+
+    // Transform to expected format for backward compatibility
     const transformedData = {
-      countries: data.countries,
-      year: 2024, // Most recent year
-      source: "World Bank API - SN.ITK.DEFC.ZS",
-      data: data.data,
-      globalAverage: calculateGlobalAverage(data.data)
+      countries: endpointData.data.map(item => item.countryCode),
+      year: parseInt(endpointData.data[0]?.year || '2024'),
+      source: "World Bank API via Serverless Endpoint - SN.ITK.DEFC.ZS",
+      data: endpointData.data.reduce((acc, item) => {
+        acc[item.countryCode] = {
+          value: item.value,
+          year: item.year,
+          country: item.country
+        };
+        return acc;
+      }, {}),
+      globalAverage: endpointData.summary.averageValue
     };
+
     return transformedData;
   } catch (error) {
     console.error('Error in getFoodSecurityIndex:', error);
-    // Fallback to mock data if API fails
+    // Fallback to mock data if endpoint fails
     return {
       countries: ['COL', 'PER', 'ARG'],
       year: 2024,

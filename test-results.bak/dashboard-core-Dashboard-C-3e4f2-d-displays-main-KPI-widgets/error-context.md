@@ -1,0 +1,530 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - region "Notifications alt+T"
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - link "P Praevisio AI" [ref=e8] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e9]: P
+          - generic [ref=e10]: Praevisio AI
+        - navigation [ref=e11]:
+          - link "Inicio" [ref=e12] [cursor=pointer]:
+            - /url: "#hero"
+          - link "Dashboard" [ref=e13] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Precios" [ref=e14] [cursor=pointer]:
+            - /url: /pricing
+          - link "Módulo LATAM" [ref=e15] [cursor=pointer]:
+            - /url: /module/colombia
+          - link "Qué Hacemos" [ref=e16] [cursor=pointer]:
+            - /url: "#features"
+          - link "Soluciones" [ref=e17] [cursor=pointer]:
+            - /url: "#solutions"
+          - link "Cómo Funciona" [ref=e18] [cursor=pointer]:
+            - /url: "#how-it-works"
+          - link "Casos de Éxito" [ref=e19] [cursor=pointer]:
+            - /url: "#credibility"
+          - button "Ver Demo" [ref=e20] [cursor=pointer]
+    - generic [ref=e24]:
+      - generic [ref=e27]: IA Predictiva del 90% de Precisión
+      - heading "Anticipa el Futuro, Actúa Hoy" [level=1] [ref=e28]:
+        - text: Anticipa el Futuro,
+        - text: Actúa Hoy
+      - paragraph [ref=e29]: "Praevisio AI: Inteligencia anticipatoria de élite con precisión del 90% para un mundo más preparado y resiliente ante crisis globales."
+      - generic [ref=e30]:
+        - button "Actúa Antes de la Próxima Crisis" [ref=e31] [cursor=pointer]:
+          - text: Actúa Antes de la Próxima Crisis
+          - img
+        - button "Explorar Soluciones" [ref=e32] [cursor=pointer]:
+          - img
+          - text: Explorar Soluciones
+      - button "Ver video (90 seg)" [ref=e33] [cursor=pointer]:
+        - img [ref=e35]
+        - generic [ref=e37]: Ver video (90 seg)
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - heading "Precisión del 90%" [level=3] [ref=e40]
+          - paragraph [ref=e41]: En predicciones de eventos críticos como desastres naturales y crisis económicas
+        - generic [ref=e42]:
+          - heading "IA Explicable" [level=3] [ref=e43]
+          - paragraph [ref=e44]: Entendiendo cada predicción con total transparencia para generar confianza en la acción
+        - generic [ref=e45]:
+          - heading "Adaptable" [level=3] [ref=e46]
+          - paragraph [ref=e47]: A cualquier sector y organización, con soluciones personalizadas para tus desafíos específicos
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - heading "Predicciones que Transforman Decisiones" [level=2] [ref=e52]
+        - paragraph [ref=e53]: Praevisio AI integra inteligencia híbrida (clásica y cuántica) para ofrecer predicciones de crisis con precisión del 90%. Nuestra plataforma analiza datos complejos para anticipar eventos críticos, empoderando líderes y organizaciones para acciones oportunas y efectivas.
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - img [ref=e57]
+          - heading "Analiza todo" [level=3] [ref=e61]
+          - paragraph [ref=e62]: Clima, economía, redes sociales y más para obtener una visión integral de los posibles eventos futuros.
+        - generic [ref=e63]:
+          - img [ref=e65]
+          - heading "Funciona para todos" [level=3] [ref=e70]
+          - paragraph [ref=e71]: Salud, política, economía y medio ambiente, entregando soluciones específicas para cada contexto.
+        - generic [ref=e72]:
+          - img [ref=e74]
+          - heading "Resultados simples, decisiones claras" [level=3] [ref=e76]
+          - paragraph [ref=e77]: Interfaz intuitiva que traduce predicciones complejas en información accionable, sin necesidad de experiencia técnica.
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - heading "Transformando Datos en Predicciones Actionables" [level=3] [ref=e80]
+          - paragraph [ref=e81]: Nuestra plataforma unifica diversas fuentes de datos para crear modelos predictivos altamente precisos. Mediante análisis de tendencias, patrones y correlaciones, convertimos información compleja en señales claras para la toma de decisiones.
+          - generic [ref=e82]:
+            - generic [ref=e85]: Análisis multivariable de economía, clima, y tendencias sociales
+            - generic [ref=e88]: Detección temprana de crisis con ventanas de 3-6 meses
+            - generic [ref=e91]: Recomendaciones personalizadas y accionables
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - heading "Análisis de Riesgo Climático" [level=4] [ref=e98]
+            - generic [ref=e99]: 90% precisión
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic [ref=e103]: Riesgo de inundación
+              - generic [ref=e104]: Alto
+            - generic [ref=e108]:
+              - generic [ref=e109]: Impacto económico
+              - generic [ref=e110]: Medio
+            - generic [ref=e114]:
+              - generic [ref=e115]: Preparación social
+              - generic [ref=e116]: Bajo
+          - paragraph [ref=e120]: "Recomendación: Implementar medidas de mitigación en próximos 45 días para áreas costeras vulnerables."
+    - generic [ref=e122]:
+      - generic [ref=e123]:
+        - heading "Diseñado para Tu Sector" [level=2] [ref=e124]
+        - paragraph [ref=e125]: Sea cual sea tu desafío, Praevisio AI tiene la solución de inteligencia anticipatoria. Nuestra tecnología se adapta a tus necesidades específicas, proporcionando insights relevantes y accionables para tu industria.
+      - generic [ref=e126]:
+        - tablist [ref=e127]:
+          - tab "Gobiernos" [selected] [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]:
+              - img [ref=e130]
+              - generic [ref=e133]: Gobiernos
+          - tab "Empresas" [ref=e134] [cursor=pointer]:
+            - generic [ref=e135]:
+              - img [ref=e136]
+              - generic [ref=e139]: Empresas
+          - tab "ONGs" [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]:
+              - img [ref=e142]
+              - generic [ref=e147]: ONGs
+        - tabpanel "Gobiernos" [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - heading "Gobiernos & Políticas Públicas" [level=3] [ref=e154]
+              - paragraph [ref=e155]: Predice tendencias económicas y disturbios sociales para políticas proactivas. Predijo un aumento del 20% en migración, permitiendo a un país preparar refugios con 3 meses de ventaja.
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - img [ref=e159]
+                  - paragraph [ref=e161]: Anticipación de crisis económicas y sociales
+                - generic [ref=e162]:
+                  - img [ref=e164]
+                  - paragraph [ref=e166]: Planificación urbana basada en predicciones climáticas
+                - generic [ref=e167]:
+                  - img [ref=e169]
+                  - paragraph [ref=e171]: Optimización de recursos y presupuestos públicos
+                - generic [ref=e172]:
+                  - img [ref=e174]
+                  - paragraph [ref=e176]: Prevención de conflictos y gestión de seguridad
+                - button "Anticipa Crisis Gubernamentales" [ref=e178] [cursor=pointer]
+            - generic [ref=e181]:
+              - heading "Caso de Éxito" [level=4] [ref=e182]
+              - paragraph [ref=e183]: El Ministerio de Economía de Colombia utilizó Praevisio AI para anticipar una recesión regional, implementando políticas preventivas que redujeron un 30% el impacto económico y protegieron miles de empleos.
+    - generic [ref=e186]:
+      - generic [ref=e187]:
+        - heading "Experimenta el Poder Predictivo" [level=2] [ref=e188]
+        - paragraph [ref=e189]: Prueba nuestra tecnología predictiva en tiempo real. Ajusta las variables y observa cómo Praevisio AI genera predicciones con la misma tecnología que utilizan nuestros clientes.
+      - generic [ref=e191]:
+        - generic [ref=e192]:
+          - heading "Panel de Control Predictivo" [level=3] [ref=e194]:
+            - img [ref=e195]
+            - text: Panel de Control Predictivo
+          - generic [ref=e205]:
+            - generic [ref=e206]:
+              - generic [ref=e207]: Selecciona un sector de análisis
+              - combobox [ref=e208] [cursor=pointer]:
+                - generic: Salud Pública
+                - img [ref=e209]
+            - generic [ref=e211]:
+              - generic [ref=e212]:
+                - generic [ref=e213]:
+                  - generic [ref=e214]: Tasa de infección
+                  - generic [ref=e215]: 50%
+                - slider [ref=e220]
+              - generic [ref=e221]:
+                - generic [ref=e222]:
+                  - generic [ref=e223]: Cobertura de vacunación
+                  - generic [ref=e224]: 30%
+                - slider [ref=e229]
+            - button "Generar Predicción IA" [ref=e230] [cursor=pointer]:
+              - img
+              - text: Generar Predicción IA
+        - generic [ref=e231]:
+          - heading "Análisis de Riesgo Sanitario" [level=3] [ref=e233]:
+            - img [ref=e234]
+            - text: Análisis de Riesgo Sanitario
+          - generic [ref=e238]:
+            - img [ref=e239]
+            - paragraph [ref=e249]: Ajusta las variables en el panel de control y genera una predicción para ver el análisis completo
+    - generic [ref=e252]:
+      - generic [ref=e253]:
+        - heading "¿Por Qué Elegir Praevisio AI?" [level=2] [ref=e254]
+        - paragraph [ref=e255]: Comparamos nuestra inteligencia anticipatoria con las soluciones tradicionales del mercado
+      - generic [ref=e256]:
+        - generic [ref=e257]:
+          - generic [ref=e258]:
+            - generic [ref=e259]: Característica
+            - generic [ref=e260]: Praevisio AI
+            - generic [ref=e261]: Soluciones Tradicionales
+          - generic [ref=e262]:
+            - generic [ref=e263]: Precisión en Predicciones
+            - generic [ref=e265]: 90%
+            - generic [ref=e267]: 65%
+          - generic [ref=e268]:
+            - generic [ref=e269]: IA Explicable
+            - img [ref=e271]
+            - img [ref=e275]
+          - generic [ref=e279]:
+            - generic [ref=e280]: Tiempo de Implementación
+            - generic [ref=e282]: 2-4 semanas
+            - generic [ref=e284]: 6-12 meses
+          - generic [ref=e285]:
+            - generic [ref=e286]: Capacidad Multi-sector
+            - img [ref=e288]
+            - img [ref=e292]
+          - generic [ref=e296]:
+            - generic [ref=e297]: Análisis en Tiempo Real
+            - img [ref=e299]
+            - img [ref=e303]
+          - generic [ref=e307]:
+            - generic [ref=e308]: Soporte 24/7
+            - img [ref=e310]
+            - generic [ref=e314]: Limitado
+        - generic [ref=e315]:
+          - paragraph [ref=e316]: Únete a más de 50+ organizaciones que ya transformaron sus decisiones
+          - button "Comienza tu Transformación" [ref=e317] [cursor=pointer]
+    - generic [ref=e320]:
+      - generic [ref=e321]:
+        - heading "Innovación al Servicio de la Precisión" [level=2] [ref=e322]
+        - paragraph [ref=e323]: Nuestra plataforma combina datos de múltiples fuentes con una IA híbrida única para ofrecer predicciones rápidas, profundas y confiables.
+      - generic [ref=e324]:
+        - generic [ref=e325]:
+          - img [ref=e327]
+          - heading "Datos Diversos" [level=3] [ref=e331]
+          - paragraph [ref=e332]: Integramos fuentes de datos heterogéneas como PIB, encuestas, métricas climáticas, tendencias en redes sociales y más para crear una base completa de análisis.
+        - generic [ref=e333]:
+          - img [ref=e335]
+          - heading "IA Híbrida" [level=3] [ref=e338]
+          - paragraph [ref=e339]: Nuestra arquitectura fusiona algoritmos clásicos para rapidez con computación cuántica para análisis complejo, logrando un equilibrio perfecto entre precisión y eficiencia.
+        - generic [ref=e340]:
+          - img [ref=e342]
+          - heading "Resultados Claros" [level=3] [ref=e344]
+          - paragraph [ref=e345]: Transformamos análisis complejos en insights accionables, presentados en un formato accesible para todos los usuarios, sin importar su nivel técnico.
+      - generic [ref=e346]:
+        - generic [ref=e347]:
+          - heading "Transparencia con IA Explicable" [level=3] [ref=e348]
+          - paragraph [ref=e349]: Nuestra IA explicable profunda asegura que cada predicción incluya una explicación clara y comprensible. Entiende no solo el "qué", sino el "por qué" detrás de cada insight, generando confianza para actuar.
+          - generic [ref=e350]:
+            - generic [ref=e351]:
+              - heading "Transparencia Total" [level=4] [ref=e352]
+              - paragraph [ref=e353]: Cada predicción viene acompañada de una explicación detallada de los factores que la influyen, permitiéndote entender el razonamiento detrás de cada resultado.
+            - generic [ref=e354]:
+              - heading "Confianza Accionable" [level=4] [ref=e355]
+              - paragraph [ref=e356]: Al comprender el "por qué" detrás de cada predicción, los tomadores de decisiones pueden actuar con mayor confianza y precisión.
+            - generic [ref=e357]:
+              - heading "Verificabilidad" [level=4] [ref=e358]
+              - paragraph [ref=e359]: Nuestro sistema permite rastrear y verificar las fuentes de datos y los procesos de análisis que respaldan cada predicción.
+            - button "Ver Recursos" [ref=e361] [cursor=pointer]
+        - generic [ref=e365]:
+          - heading "Predicción Explicada" [level=4] [ref=e366]: Predicción Explicada
+          - generic [ref=e368]:
+            - generic [ref=e369]: "Evento Predicho:"
+            - generic [ref=e370]: Escasez de agua en región sureste de España en Q3 2024
+          - generic [ref=e371]:
+            - generic [ref=e372]: "Confianza:"
+            - generic [ref=e376]: 92%
+          - generic [ref=e377]:
+            - generic [ref=e378]: "Desglose de Predicción:"
+            - generic [ref=e379]:
+              - generic [ref=e381]: Clima (40%)
+              - generic [ref=e385]: Historial (30%)
+              - generic [ref=e389]: Sociales (30%)
+          - generic [ref=e392]:
+            - generic [ref=e393]: "Factores principales:"
+            - list [ref=e394]:
+              - listitem [ref=e395]:
+                - generic [ref=e397]: "1"
+                - paragraph [ref=e398]: Reducción del 40% en precipitaciones durante últimos 6 meses vs. promedio histórico
+              - listitem [ref=e399]:
+                - generic [ref=e401]: "2"
+                - paragraph [ref=e402]: Aumento de 2.3°C en temperatura media regional vs. último quinquenio
+              - listitem [ref=e403]:
+                - generic [ref=e405]: "3"
+                - paragraph [ref=e406]: Incremento del 35% en consumo agrícola por expansión de cultivos
+          - generic [ref=e407]:
+            - generic [ref=e408]: "Recomendaciones:"
+            - paragraph [ref=e409]: Implementar restricciones hídricas preventivas y desarrollar infraestructura de captación pluvial en próximos 60 días.
+    - generic [ref=e412]:
+      - generic [ref=e413]:
+        - heading "Preguntas Frecuentes" [level=2] [ref=e414]
+        - paragraph [ref=e415]: Resolvemos las dudas más comunes sobre Praevisio AI y cómo puede transformar tu capacidad de anticipación
+      - generic [ref=e416]:
+        - generic [ref=e417]:
+          - heading "¿Cómo funciona la precisión del 90% en las predicciones?" [level=3] [ref=e419]:
+            - button "¿Cómo funciona la precisión del 90% en las predicciones?" [ref=e420] [cursor=pointer]:
+              - text: ¿Cómo funciona la precisión del 90% en las predicciones?
+              - img [ref=e421]
+          - heading "¿Qué tipos de crisis puede predecir Praevisio AI?" [level=3] [ref=e424]:
+            - button "¿Qué tipos de crisis puede predecir Praevisio AI?" [ref=e425] [cursor=pointer]:
+              - text: ¿Qué tipos de crisis puede predecir Praevisio AI?
+              - img [ref=e426]
+          - heading "¿Cuánto tiempo toma implementar Praevisio AI en mi organización?" [level=3] [ref=e429]:
+            - button "¿Cuánto tiempo toma implementar Praevisio AI en mi organización?" [ref=e430] [cursor=pointer]:
+              - text: ¿Cuánto tiempo toma implementar Praevisio AI en mi organización?
+              - img [ref=e431]
+          - heading "¿Cómo garantizan la seguridad y privacidad de nuestros datos?" [level=3] [ref=e434]:
+            - button "¿Cómo garantizan la seguridad y privacidad de nuestros datos?" [ref=e435] [cursor=pointer]:
+              - text: ¿Cómo garantizan la seguridad y privacidad de nuestros datos?
+              - img [ref=e436]
+          - heading "¿Qué soporte técnico incluye la plataforma?" [level=3] [ref=e439]:
+            - button "¿Qué soporte técnico incluye la plataforma?" [ref=e440] [cursor=pointer]:
+              - text: ¿Qué soporte técnico incluye la plataforma?
+              - img [ref=e441]
+          - heading "¿Cómo se diferencia de otras soluciones de análisis predictivo?" [level=3] [ref=e444]:
+            - button "¿Cómo se diferencia de otras soluciones de análisis predictivo?" [ref=e445] [cursor=pointer]:
+              - text: ¿Cómo se diferencia de otras soluciones de análisis predictivo?
+              - img [ref=e446]
+        - generic [ref=e448]:
+          - paragraph [ref=e449]: ¿Tienes más preguntas? Nuestros expertos están listos para ayudarte
+          - button "Hablar con un Experto" [ref=e450] [cursor=pointer]
+    - generic [ref=e453]:
+      - generic [ref=e454]:
+        - heading "Confiado por Líderes Globales" [level=2] [ref=e455]
+        - paragraph [ref=e456]: Más de 50 organizaciones ya confían en Praevisio AI para anticipar eventos críticos y tomar decisiones informadas
+      - generic [ref=e457]:
+        - heading "Organizaciones que transformaron su futuro con nosotros" [level=3] [ref=e458]
+        - generic [ref=e459]:
+          - generic [ref=e460]:
+            - generic [ref=e462]: M
+            - paragraph [ref=e463]: Ministerio de Salud Colombia
+          - generic [ref=e464]:
+            - generic [ref=e466]: B
+            - paragraph [ref=e467]: Banco Central Ecuador
+          - generic [ref=e468]:
+            - generic [ref=e470]: O
+            - paragraph [ref=e471]: ONU Desarrollo
+          - generic [ref=e472]:
+            - generic [ref=e474]: C
+            - paragraph [ref=e475]: Cruz Roja Internacional
+          - generic [ref=e476]:
+            - generic [ref=e478]: B
+            - paragraph [ref=e479]: Banco Mundial
+          - generic [ref=e480]:
+            - generic [ref=e482]: C
+            - paragraph [ref=e483]: CEPAL
+      - generic [ref=e484]:
+        - generic [ref=e485]:
+          - generic [ref=e486]:
+            - img "Dr. María González" [ref=e487]
+            - generic [ref=e488]:
+              - heading "Dr. María González" [level=4] [ref=e489]
+              - paragraph [ref=e490]: Ministra de Salud
+              - paragraph [ref=e491]: República de Colombia
+            - button [ref=e492] [cursor=pointer]:
+              - img [ref=e493]
+          - blockquote [ref=e495]: "\"Praevisio AI nos ayudó a prever un brote de dengue en 2023, permitiéndonos implementar medidas preventivas que salvaron miles de vidas y optimizaron nuestros recursos sanitarios.\""
+          - generic [ref=e496]:
+            - generic [ref=e497]:
+              - generic [ref=e498]: 15,000+ vidas
+              - generic [ref=e499]: Impacto
+            - generic [ref=e500]:
+              - generic [ref=e501]: 5 meses
+              - generic [ref=e502]: Anticipación
+            - generic [ref=e503]:
+              - generic [ref=e504]: 94%
+              - generic [ref=e505]: Precisión
+        - generic [ref=e506]:
+          - generic [ref=e507]:
+            - img "Carlos Mendoza" [ref=e508]
+            - generic [ref=e509]:
+              - heading "Carlos Mendoza" [level=4] [ref=e510]
+              - paragraph [ref=e511]: Director de Planificación Estratégica
+              - paragraph [ref=e512]: Organización Internacional de Desarrollo
+            - button [ref=e513] [cursor=pointer]:
+              - img [ref=e514]
+          - blockquote [ref=e516]: "\"La capacidad predictiva de Praevisio AI transformó nuestra planificación estratégica. Anticipamos una crisis migratoria con 5 meses de antelación, permitiéndonos preparar adecuadamente recursos y coordinar esfuerzos internacionales.\""
+          - generic [ref=e517]:
+            - generic [ref=e518]:
+              - generic [ref=e519]: $7.2M ahorrados
+              - generic [ref=e520]: Impacto
+            - generic [ref=e521]:
+              - generic [ref=e522]: 5 meses
+              - generic [ref=e523]: Anticipación
+            - generic [ref=e524]:
+              - generic [ref=e525]: 89%
+              - generic [ref=e526]: Precisión
+      - generic [ref=e527]:
+        - generic [ref=e528]:
+          - img [ref=e529]
+          - generic [ref=e532]: "Destacado en Forbes 2024: Innovación en IA"
+        - generic [ref=e533]:
+          - generic [ref=e534]:
+            - img [ref=e536]
+            - generic [ref=e540]: 0%
+            - generic [ref=e541]: Precisión promedio
+            - generic [ref=e542]: En predicciones de eventos críticos
+          - generic [ref=e543]:
+            - img [ref=e545]
+            - generic [ref=e551]: 0+
+            - generic [ref=e552]: Organizaciones
+            - generic [ref=e553]: Confían en Praevisio AI
+          - generic [ref=e554]:
+            - img [ref=e556]
+            - generic [ref=e562]: 0M+
+            - generic [ref=e563]: Vidas impactadas
+            - generic [ref=e564]: Positivamente por nuestras predicciones
+          - generic [ref=e565]:
+            - img [ref=e567]
+            - generic [ref=e571]: 0%
+            - generic [ref=e572]: Reducción en tiempo
+            - generic [ref=e573]: De respuesta ante crisis
+      - generic [ref=e574]:
+        - heading "Únete a los Líderes que ya Anticipan el Futuro" [level=3] [ref=e575]
+        - paragraph [ref=e576]: No esperes a la próxima crisis. Solicita tu demo personalizada hoy y descubre cómo Praevisio AI puede transformar tu capacidad de anticipación.
+        - button "Solicitar Demo Personalizada" [ref=e577] [cursor=pointer]
+    - generic [ref=e580]:
+      - generic [ref=e581]:
+        - heading "No Esperes a la Próxima Crisis" [level=2] [ref=e582]
+        - paragraph [ref=e583]: Únete a los líderes que ya están transformando el futuro con Praevisio AI. Solicita tu demo personalizada hoy y descubre cómo anticipar y actuar a tiempo.
+      - generic [ref=e584]:
+        - generic [ref=e585]:
+          - generic [ref=e586]:
+            - heading "Contacto Directo" [level=3] [ref=e588]
+            - generic [ref=e589]:
+              - generic [ref=e590]:
+                - img [ref=e592]
+                - generic [ref=e595]:
+                  - paragraph [ref=e596]: Email
+                  - paragraph [ref=e597]: contacto@praevisio.ai
+              - generic [ref=e598]:
+                - img [ref=e600]
+                - generic [ref=e602]:
+                  - paragraph [ref=e603]: Teléfono
+                  - paragraph [ref=e604]: +57 1 234 5678
+              - generic [ref=e605]:
+                - img [ref=e607]
+                - generic [ref=e610]:
+                  - paragraph [ref=e611]: Oficina
+                  - paragraph [ref=e612]: Bogotá, Colombia
+          - generic [ref=e614]:
+            - heading "Demo Personalizada" [level=3] [ref=e615]
+            - list [ref=e616]:
+              - listitem [ref=e617]: ✓ Análisis específico para tu sector
+              - listitem [ref=e618]: ✓ Casos de uso relevantes
+              - listitem [ref=e619]: ✓ ROI estimado
+              - listitem [ref=e620]: ✓ Plan de implementación
+        - generic [ref=e622]:
+          - heading "Inicia tu Programa Piloto Hoy" [level=3] [ref=e624]
+          - generic [ref=e626]:
+            - generic [ref=e627]:
+              - generic [ref=e628]:
+                - generic [ref=e629]: Nombre completo *
+                - textbox "Tu nombre" [ref=e630]
+              - generic [ref=e631]:
+                - generic [ref=e632]: Correo electrónico *
+                - textbox "tu@organizacion.com" [ref=e633]
+            - generic [ref=e634]:
+              - generic [ref=e635]:
+                - generic [ref=e636]: Organización *
+                - textbox "Nombre de tu organización" [ref=e637]
+              - generic [ref=e638]:
+                - generic [ref=e639]: Sector *
+                - combobox [ref=e640] [cursor=pointer]:
+                  - generic: Selecciona tu sector
+                  - img [ref=e641]
+                - combobox [ref=e643]
+            - generic [ref=e644]:
+              - generic [ref=e645]: ¿En qué estás interesado específicamente?
+              - textbox "Cuéntanos sobre tus necesidades y desafíos..." [ref=e646]
+            - button "Solicitar Demo Personalizada" [disabled]:
+              - img
+              - text: Solicitar Demo Personalizada
+            - paragraph [ref=e647]: Al enviar este formulario, aceptas que Praevisio AI se ponga en contacto contigo para programar tu demo personalizada.
+    - contentinfo [ref=e648]:
+      - generic [ref=e649]:
+        - generic [ref=e650]:
+          - generic [ref=e651]:
+            - link "P Praevisio AI" [ref=e652] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e653]: P
+              - generic [ref=e654]: Praevisio AI
+            - paragraph [ref=e655]: Empoderando a líderes y organizaciones con inteligencia anticipatoria avanzada para un mundo más seguro y eficiente. Predicciones críticas con 90% de precisión.
+          - generic [ref=e656]:
+            - generic [ref=e657]:
+              - heading "Soluciones" [level=3] [ref=e658]
+              - list [ref=e659]:
+                - listitem [ref=e660]:
+                  - link "Para Gobiernos" [ref=e661] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e662]:
+                  - link "Para Empresas" [ref=e663] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e664]:
+                  - link "Para ONGs" [ref=e665] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e666]:
+                  - link "Consultoría Personalizada" [ref=e667] [cursor=pointer]:
+                    - /url: "#"
+            - generic [ref=e668]:
+              - heading "Compañía" [level=3] [ref=e669]
+              - list [ref=e670]:
+                - listitem [ref=e671]:
+                  - link "Sobre Nosotros" [ref=e672] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e673]:
+                  - link "Investigación" [ref=e674] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e675]:
+                  - link "Casos de Éxito" [ref=e676] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e677]:
+                  - link "Únete al Equipo" [ref=e678] [cursor=pointer]:
+                    - /url: "#"
+            - generic [ref=e679]:
+              - heading "Recursos" [level=3] [ref=e680]
+              - list [ref=e681]:
+                - listitem [ref=e682]:
+                  - link "Blog" [ref=e683] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e684]:
+                  - link "Documentación" [ref=e685] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e686]:
+                  - link "Preguntas Frecuentes" [ref=e687] [cursor=pointer]:
+                    - /url: "#"
+                - listitem [ref=e688]:
+                  - link "Contacto" [ref=e689] [cursor=pointer]:
+                    - /url: "#"
+        - generic [ref=e690]:
+          - paragraph [ref=e692]: © 2025 Praevisio AI. Todos los derechos reservados.
+          - generic [ref=e693]:
+            - link "Twitter" [ref=e694] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e695]: Twitter
+              - img [ref=e696]
+            - link "LinkedIn" [ref=e698] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e699]: LinkedIn
+              - img [ref=e700]
+            - link "GitHub" [ref=e702] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e703]: GitHub
+              - img [ref=e704]
+```
