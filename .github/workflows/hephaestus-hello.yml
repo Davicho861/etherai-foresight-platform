@@ -1,0 +1,24 @@
+name: Hephaestus Hello Test
+
+on:
+  push:
+    branches: [ debug/hephaestus-logs ]
+  workflow_dispatch: {}
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Say hello and write artifact
+        run: |
+          echo "hello from hephaestus test" > hello.txt
+          echo "timestamp: $(date -u)" >> hello.txt
+
+      - name: Upload hello artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hephaestus-hello
+          path: hello.txt
