@@ -84,7 +84,15 @@ class MetatronAgent {
   async run(input) {
     switch (this.name) {
       case 'EthicsCouncil': {
-        return { approved: true, reason: 'La misión se alinea con los principios éticos.' };
+        // Evalúa decisiones autónomas usando un vector de coherencia ética basado en principios de ética cuántica de Praevisio AI
+        const decision = typeof input === 'string' ? input : (input?.description || JSON.stringify(input));
+        const ethicalVector = this.calculateEthicalCoherenceVector(decision);
+        const coherenceScore = (ethicalVector.humanImpact + ethicalVector.environmentalSustainability + ethicalVector.socialEquity) / 3;
+        const approved = coherenceScore >= 0.7;
+        const reason = approved
+          ? `La decisión se alinea con los principios éticos de Praevisio AI. Vector de coherencia: ${JSON.stringify(ethicalVector)}`
+          : `La decisión no cumple con los umbrales éticos requeridos. Vector de coherencia: ${JSON.stringify(ethicalVector)}`;
+        return { approved, reason, ethicalVector, coherenceScore };
       }
       case 'Oracle': {
         const protocols = await this.meq.generateExecutionProtocols(input);
@@ -748,6 +756,52 @@ Generado por PeruAgent - Praevisio AI - ${new Date().toISOString()}
     }
 
     return recommendations;
+  }
+
+  /**
+   * Calcula el vector de coherencia ética para una decisión dada.
+   * Evalúa el texto de la decisión contra principios éticos de Praevisio AI:
+   * - Impacto humano: bienestar, salud, educación vs daño, violencia
+   * - Sostenibilidad ambiental: conservación, renovables vs contaminación, deforestación
+   * - Equidad social: igualdad, justicia, inclusión vs desigualdad, discriminación
+   *
+   * @param {string} decisionText - El texto de la decisión a evaluar
+   * @returns {Object} Vector ético con scores 0-1 para cada principio
+   * @property {number} humanImpact - Score de impacto humano (0-1)
+   * @property {number} environmentalSustainability - Score de sostenibilidad ambiental (0-1)
+   * @property {number} socialEquity - Score de equidad social (0-1)
+   */
+  calculateEthicalCoherenceVector(decisionText) {
+    const text = decisionText.toLowerCase();
+
+    // Keywords para impacto humano (positivo/negativo)
+    const humanPositive = ['ayuda', 'salud', 'educación', 'bienestar', 'protección', 'seguridad', 'apoyo', 'cuidado', 'desarrollo humano'];
+    const humanNegative = ['daño', 'violencia', 'explotación', 'abuso', 'muerte', 'sufrimiento', 'discriminación'];
+
+    // Keywords para sostenibilidad ambiental
+    const envPositive = ['sostenibilidad', 'renovable', 'conservación', 'ecológico', 'verde', 'biodiversidad', 'clima', 'medio ambiente'];
+    const envNegative = ['contaminación', 'deforestación', 'emisiones', 'desastre', 'daño ambiental', 'cambio climático negativo'];
+
+    // Keywords para equidad social
+    const socialPositive = ['equidad', 'igualdad', 'justicia', 'inclusión', 'comunidad', 'solidaridad', 'derechos', 'acceso igual'];
+    const socialNegative = ['desigualdad', 'discriminación', 'exclusión', 'marginalización', 'pobreza extrema', 'división social'];
+
+    const calculateScore = (positiveKeywords, negativeKeywords) => {
+      let score = 0.5; // Base neutral
+      positiveKeywords.forEach(keyword => {
+        if (text.includes(keyword)) score += 0.1;
+      });
+      negativeKeywords.forEach(keyword => {
+        if (text.includes(keyword)) score -= 0.1;
+      });
+      return Math.max(0, Math.min(1, score)); // Clamp 0-1
+    };
+
+    return {
+      humanImpact: calculateScore(humanPositive, humanNegative),
+      environmentalSustainability: calculateScore(envPositive, envNegative),
+      socialEquity: calculateScore(socialPositive, socialNegative)
+    };
   }
 }
 
