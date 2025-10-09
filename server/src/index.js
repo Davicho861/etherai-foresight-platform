@@ -10,6 +10,7 @@ import dashboardRouter from './routes/dashboard.js';
 import platformStatusRouter from './routes/platform-status.js';
 import agentRouter from './routes/agent.js';
 import llmRouter from './routes/llm.js';
+import oracleRouter from './routes/oracle.js';
 import consciousnessRouter from './routes/consciousness.js';
 import sacrificeRouter from './routes/sacrifice.js';
 import climateRouter from './routes/climate.js';
@@ -20,7 +21,6 @@ import eternalVigilanceStreamRouter from './routes/eternalVigilanceStream.js';
 import eternalVigilanceTokenRouter from './routes/eternalVigilanceToken.js';
 import demoRouter from './routes/demo.js';
 import foodResilienceRouter from './routes/food-resilience.js';
-import coffeeResilienceRouter from './routes/coffee-resilience.js';
 import globalRiskRouter from './routes/globalRiskRoutes.js';
 import seismicRouter from './routes/seismic.js';
 import sseTokenService from './sseTokenService.js';
@@ -65,6 +65,7 @@ async function main() {
   app.use('/api/platform-status', platformStatusRouter);
   app.use('/api/agent', agentRouter);
   app.use('/api/llm', bearerAuth, llmRouter);
+  app.use('/api/oracle', bearerAuth, oracleRouter);
   app.use('/api/consciousness', bearerAuth, consciousnessRouter);
   app.use('/api/sacrifice', sacrificeRouter);
   app.use('/api/climate', climateRouter);
@@ -77,12 +78,11 @@ async function main() {
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceTokenRouter);
   app.use('/api/demo', demoRouter);
   app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
-  app.use('/api/coffee-resilience', bearerAuth, coffeeResilienceRouter);
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
 
 
-  const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
+  const PORT = process.env.PORT ? Number(process.env.PORT) : 4001;
   app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Praevisio server running on http://localhost:${PORT}`);
     

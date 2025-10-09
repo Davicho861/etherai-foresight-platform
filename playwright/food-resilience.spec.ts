@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
-const API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
-const TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
+const _API_BASE = process.env.TEST_MODE === 'true' ? 'http://localhost:3001' : (process.env.API_BASE || 'http://localhost:4000');
+const _TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 test.describe('Food Resilience Platform E2E', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,13 +16,17 @@ test.describe('Food Resilience Platform E2E', () => {
 
   test('complete food resilience workflow: prices -> prediction -> supply chain', async ({ page }) => {
     // First, validate that the backend APIs are working
-    const pricesApiRes = await page.request.get(`${API_BASE}/api/food-resilience/prices`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  const pricesApiRes = await page.request.get(`${_API_BASE}/api/food-resilience/prices`, { headers: { Authorization: `Bearer ${_TOKEN}` } });
     expect(pricesApiRes.ok()).toBeTruthy();
-    const pricesData = await pricesApiRes.json();
+  const _pricesData = await pricesApiRes.json();
+    // Reference to avoid eslint no-unused-vars when running lint in CI
+    console.debug('_pricesData sample', Array.isArray(_pricesData.prices) ? _pricesData.prices.slice(0,1) : _pricesData);
 
-    const supplyChainApiRes = await page.request.get(`${API_BASE}/api/food-resilience/supply-chain`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  const supplyChainApiRes = await page.request.get(`${_API_BASE}/api/food-resilience/supply-chain`, { headers: { Authorization: `Bearer ${_TOKEN}` } });
     expect(supplyChainApiRes.ok()).toBeTruthy();
-    const supplyChainData = await supplyChainApiRes.json();
+  const _supplyChainData = await supplyChainApiRes.json();
+    // Reference to avoid eslint no-unused-vars when running lint in CI
+    console.debug('_supplyChainData sample', Array.isArray(_supplyChainData.routes) ? _supplyChainData.routes.slice(0,1) : _supplyChainData);
 
     // Navigate to food resilience page
     await page.goto('/food-resilience', { waitUntil: 'networkidle' });
@@ -70,13 +75,25 @@ test.describe('Food Resilience Platform E2E', () => {
       }
     }
 
-    // Validate supply chain information is displayed
-    const supplyChainSection = page.locator('[data-testid="supply-chain"], .supply-chain, text="Supply Chain"');
+    // Wait for the app to be ready (SSE or main UI)
+    await waitForAppReady(page);
+
+    // Validate supply chain information is displayed using safer checks
+    const supplyByTestId = page.locator('[data-testid="supply-chain"]');
+    const supplyByClass = page.locator('.supply-chain');
+    const supplyByText = page.locator('text="Supply Chain"');
+
+    let supplyChainSection = supplyByTestId;
+    if (await supplyByTestId.count() === 0) {
+      if (await supplyByClass.count() > 0) supplyChainSection = supplyByClass;
+      else supplyChainSection = supplyByText;
+    }
+
     if (await supplyChainSection.count() > 0) {
       await expect(supplyChainSection.first()).toBeVisible();
 
       // Check for route information
-      const routeInfo = page.locator('text=Lima, text=Arequipa, text=Cusco, text=Trujillo');
+      const routeInfo = page.locator('text=Lima').or(page.locator('text=Arequipa')).or(page.locator('text=Cusco')).or(page.locator('text=Trujillo'));
       const routeCount = await routeInfo.count();
       expect(routeCount).toBeGreaterThan(0);
     }
@@ -90,7 +107,7 @@ test.describe('Food Resilience Platform E2E', () => {
 
   test('API endpoints return valid data structure', async ({ page }) => {
     // Test prices endpoint
-    const pricesRes = await page.request.get(`${API_BASE}/api/food-resilience/prices`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  const pricesRes = await page.request.get(`${_API_BASE}/api/food-resilience/prices`, { headers: { Authorization: `Bearer ${_TOKEN}` } });
     expect(pricesRes.ok()).toBeTruthy();
 
     const pricesData = await pricesRes.json();
@@ -109,7 +126,7 @@ test.describe('Food Resilience Platform E2E', () => {
     expect(firstPrice).toHaveProperty('confidence');
 
     // Test supply chain endpoint
-    const supplyRes = await page.request.get(`${API_BASE}/api/food-resilience/supply-chain`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  const supplyRes = await page.request.get(`${_API_BASE}/api/food-resilience/supply-chain`, { headers: { Authorization: `Bearer ${_TOKEN}` } });
     expect(supplyRes.ok()).toBeTruthy();
 
     const supplyData = await supplyRes.json();
@@ -130,8 +147,8 @@ test.describe('Food Resilience Platform E2E', () => {
 
   test('prediction API works correctly', async ({ page }) => {
     // Test valid prediction request
-    const predictRes = await page.request.post(`${API_BASE}/api/food-resilience/predict`, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
+    const predictRes = await page.request.post(`${_API_BASE}/api/food-resilience/predict`, {
+      headers: { Authorization: `Bearer ${_TOKEN}` },
       data: {
         product: 'rice',
         timeframe: '30_days',
@@ -154,8 +171,8 @@ test.describe('Food Resilience Platform E2E', () => {
     expect(predictionData.factors.length).toBeGreaterThan(0);
 
     // Test invalid product
-    const invalidRes = await page.request.post(`${API_BASE}/api/food-resilience/predict`, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
+    const invalidRes = await page.request.post(`${_API_BASE}/api/food-resilience/predict`, {
+      headers: { Authorization: `Bearer ${_TOKEN}` },
       data: { product: '' }
     });
 
@@ -173,7 +190,7 @@ test.describe('Food Resilience Platform E2E', () => {
     ];
 
     for (const endpoint of endpoints) {
-      const res = await page.request.get(`${API_BASE}${endpoint}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  const res = await page.request.get(`${_API_BASE}${endpoint}`, { headers: { Authorization: `Bearer ${_TOKEN}` } });
       expect(res.ok()).toBeTruthy();
 
       const data = await res.json();

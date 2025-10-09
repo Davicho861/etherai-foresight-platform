@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import safeFetch from '../lib/safeFetch.js';
 
 class MINAGRIIntegration {
   constructor() {
@@ -15,13 +15,9 @@ class MINAGRIIntegration {
       const resourceId = 'produccion-agricola'; // Placeholder - would need actual resource ID
       const url = `${this.baseUrl}?resource_id=${resourceId}&q=${product}&filters[anio]=${year}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`MINAGRI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const records = data.result.records || [];
+      // use safeFetch to add timeouts/retries and robust JSON parsing
+      const data = await safeFetch(url, { method: 'GET' }, { timeout: 8000, retries: 2 });
+      const records = (data && data.result && data.result.records) ? data.result.records : [];
 
       // Process records to get production data
       const productionData = records.map(record => ({
@@ -37,8 +33,8 @@ class MINAGRIIntegration {
         productionData,
         isMock: false
       };
-    } catch (error) {
-      console.log(`Using mock agricultural production data for ${product} (${year})`);
+      } catch (error) {
+        console.debug(`Using mock agricultural production data for ${product} (${year}). Error:`, error?.message || error);
 
       // Mock data based on typical Peruvian agricultural production
       const mockProductions = {
@@ -68,13 +64,9 @@ class MINAGRIIntegration {
       const resourceId = 'capacidad-logistica'; // Placeholder
       const url = `${this.baseUrl}?resource_id=${resourceId}&q=${region}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`MINAGRI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const records = data.result.records || [];
+      // use safeFetch for capacity endpoint
+      const data = await safeFetch(url, { method: 'GET' }, { timeout: 8000, retries: 2 });
+      const records = (data && data.result && data.result.records) ? data.result.records : [];
 
       const capacityData = records.map(record => ({
         region: record.region || region,
@@ -89,8 +81,7 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`Using mock supply chain data for ${region}`);
-
+      console.debug(`Using mock supply chain data for ${region}. Error:`, error?.message || error);
       // Mock supply chain data
       const mockRegions = {
         'Lima': { capacity: 85, distance: 0, cost: 1.2 },

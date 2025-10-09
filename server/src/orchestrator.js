@@ -8,8 +8,8 @@ let eternalVigilanceService = null;
 (async () => {
   try {
     eternalVigilanceService = (await import('./eternalVigilanceService.js')).default;
-  } catch (e) {
-    console.error('Error importing eternal vigilance service:', e);
+  } catch (error) {
+    console.error('Error importing eternal vigilance service:', error?.message || error);
   }
 })();
 
@@ -60,7 +60,7 @@ class LogosKernel {
       this.neo4jDriver = await getNeo4jDriver();
       console.log('LogosKernel: Neo4j driver initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Neo4j driver in LogosKernel:', error);
+      console.error('Failed to initialize Neo4j driver in LogosKernel:', error?.message || error);
     }
 
     // Inicializar monitoreo de recursos
@@ -227,8 +227,12 @@ class LogosKernel {
         const dataAcquisitionAgent = new MetatronAgent('DataAcquisitionAgent');
         const data = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], gdeltCodes: ['CO', 'PE', 'AR'] });
 
+        // Obtener datos de seguridad alimentaria del Banco Mundial
+        const { getFoodSecurityIndex } = await import('./services/worldBankService.js');
+        const foodSecurityData = await getFoodSecurityIndex();
+
         const signalAnalysisAgent = new MetatronAgent('SignalAnalysisAgent');
-        const signals = await signalAnalysisAgent.run({ data });
+        const signals = await signalAnalysisAgent.run({ data, foodSecurity: foodSecurityData });
 
         const causalCorrelationAgent = new MetatronAgent('CausalCorrelationAgent');
         const correlations = await causalCorrelationAgent.run({ signals });
@@ -236,11 +240,21 @@ class LogosKernel {
         const riskAssessmentAgent = new MetatronAgent('RiskAssessmentAgent');
         const risks = await riskAssessmentAgent.run({ correlations });
 
-        // Actualizar riskIndices
+        // Actualizar riskIndices incluyendo factor de hambruna
         this.riskIndices = {};
         for (const [country, risk] of Object.entries(risks)) {
-          const level = risk > 7 ? 'Alto' : risk > 4 ? 'Medio' : 'Bajo';
-          this.riskIndices[country] = { riskScore: risk, level };
+          // Incorporar índice de hambruna al cálculo de riesgo
+          const foodSecurityValue = foodSecurityData.data[country]?.value || 0;
+          const famineRiskFactor = foodSecurityValue > 10 ? 2 : foodSecurityValue > 5 ? 1 : 0; // Aumentar riesgo si hambruna > 5%
+          const adjustedRisk = Math.min(10, risk + famineRiskFactor);
+
+          const level = adjustedRisk > 7 ? 'Alto' : adjustedRisk > 4 ? 'Medio' : 'Bajo';
+          this.riskIndices[country] = {
+            riskScore: adjustedRisk,
+            level,
+            foodSecurity: foodSecurityValue,
+            famineRisk: famineRiskFactor
+          };
         }
 
         // Generar alerta si supera umbral
@@ -249,18 +263,19 @@ class LogosKernel {
             const alertEvent = {
               timestamp: new Date().toISOString(),
               flow: 'Profecía',
-              message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)})`
+              message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)}) - Factor hambruna: ${data.famineRisk}`
             };
             this.activityFeed.push(alertEvent);
-            this.publishToVigilance(`Profecía: ALERTA - Riesgo alto en ${country} (${data.riskScore.toFixed(1)})`);
+            this.publishToVigilance(`Profecía: ALERTA - Riesgo alto en ${country} (${data.riskScore.toFixed(1)}) - Hambruna: ${data.foodSecurity.toFixed(1)}%`);
 
             // Generar informe automático
             const reportAgent = new MetatronAgent('ReportGenerationAgent');
-            await reportAgent.run({ risks, correlations });
+            await reportAgent.run({ risks, correlations, foodSecurity: foodSecurityData });
           }
         }
       } catch (error) {
-        // Silenciar errores de integraciones para evitar ruido en logs
+        // Log and fallback to avoid noisy stack traces in production
+        console.debug('Profecía flow error:', error?.message || error);
         console.log('Profecía: Usando datos de fallback debido a error en integraciones externas');
         this.publishToVigilance(`Profecía: Actualización completada con datos de fallback`);
       }
@@ -392,6 +407,7 @@ class LogosKernel {
           dataResult = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], period: { start: new Date().toISOString().split('T')[0], end: new Date(Date.now() + 6 * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] } });
           log({ taskId: 'data-acquisition', description: 'Datos recopilados exitosamente.', status: 'completed' });
         } catch (error) {
+          console.debug('DataAcquisitionAgent.run error:', error?.message || error);
           // Fallback to mock data if acquisition fails
           dataResult = {
             COL: { climate: { temperature: 25, precipitation: 50 }, economic: { inflation: 5, unemployment: 10 }, debt: { country: 'COL', period: { startYear: '2024', endYear: '2025' }, debtData: [{ year: '2024', value: 55 }, { year: '2025', value: 57 }], isMock: true }, social: { eventCount: 3, events: [] } },
@@ -428,78 +444,6 @@ class LogosKernel {
         // Update final report
         finalReport.prophecyReport = reportResult;
         log({ taskId: 'prophecy', description: 'Primera Profecía completada.', status: 'completed' });
-      }
-
-      // Special flow: if this is the coffee conquest mission, execute the CoffeeSupplyChainAgent
-      if (missionContract && missionContract.id === 'conquest-001-colombia-coffee') {
-        log({ taskId: 'coffee-conquest-init', description: 'Iniciando Conquista del Eje Cafetero...', status: 'in_progress' });
-
-        // Coffee Supply Chain Agent
-        log({ taskId: 'coffee-supply-chain', description: 'CoffeeSupplyChainAgent analizando rutas logísticas...', status: 'in_progress' });
-        const coffeeAgent = new MetatronAgent('CoffeeSupplyChainAgent');
-        const coffeeResult = await coffeeAgent.run({ routes: ['Manizales -> Buenaventura', 'Pereira -> Cartagena', 'Armenia -> Buenaventura'] });
-        log({ taskId: 'coffee-supply-chain', description: 'Análisis de cadena de suministro de café completado.', status: 'completed' });
-
-        // Generate conquest report
-        log({ taskId: 'coffee-report-generation', description: 'Generando informe de conquista del café...', status: 'in_progress' });
-        const fs = await import('fs');
-        const coffeeReport = `# CONQUEST_REPORT_COFFEE_001.md
-
-## Informe de Conquista: Plataforma de Resiliencia de la Cadena de Suministro de Café
-
-### Fecha de Generación
-${new Date().toISOString()}
-
-### Misión Ejecutada
-- **ID:** conquest-001-colombia-coffee
-- **Objetivo:** Desarrollar y desplegar MVP de Plataforma de Resiliencia de la Cadena de Suministro de Café para Colombia
-- **Alcance:** PYMEs del Eje Cafetero y puertos de Buenaventura/Cartagena
-
-### Resultados del CoffeeSupplyChainAgent
-
-#### Rutas Analizadas
-${Object.entries(coffeeResult.routeRisks).map(([route, data]) => `
-**${route}**
-- Índice de Riesgo Logístico: ${data.logisticRiskIndex}%
-- Factores de Riesgo:
-  - Sísmico: ${data.factors.seismic}%
-  - Social: ${data.factors.social}%
-  - Climático: ${data.factors.climate}%
-  - Económico: ${data.factors.economic}%
-- Recomendaciones: ${data.recommendations.join(', ')}
-`).join('\n')}
-
-### Inteligencia Accionable
-- **Rutas de Alto Riesgo:** ${Object.entries(coffeeResult.routeRisks).filter(([_, data]) => data.logisticRiskIndex > 70).map(([route]) => route).join(', ') || 'Ninguna'}
-- **Rutas Estables:** ${Object.entries(coffeeResult.routeRisks).filter(([_, data]) => data.logisticRiskIndex < 40).map(([route]) => route).join(', ') || 'Ninguna'}
-
-### Modelo de Riesgo
-El Índice de Riesgo Logístico se calcula como:
-IRL = (RiesgoSísmico × 0.25) + (RiesgoSocial × 0.35) + (RiesgoClimático × 0.25) + (RiesgoEconómico × 0.15)
-
-Donde:
-- Riesgo Sísmico: Basado en ubicación geográfica (Andes = alto)
-- Riesgo Social: Derivado de resiliencia comunitaria (inverso)
-- Riesgo Climático: Basado en precipitación (Open Meteo)
-- Riesgo Económico: Basado en inflación (World Bank)
-
-### Próximos Pasos
-1. Desplegar dashboard en /coffee-resilience
-2. Integrar actualizaciones en tiempo real
-3. Expandir a otros commodities (cobre, litio, aguacate)
-4. Implementar alertas automáticas
-
-### Conquista Completada
-La primera ofensiva soberana ha sido exitosa. Praevisio AI ha demostrado capacidad para resolver problemas complejos del mundo real mediante fusión multi-dominio de inteligencia.
-
-Generado por CoffeeSupplyChainAgent - Praevisio AI
-`;
-        fs.writeFileSync('CONQUEST_REPORT_COFFEE_001.md', coffeeReport);
-        log({ taskId: 'coffee-report-generation', description: 'Informe de conquista generado exitosamente.', status: 'completed' });
-
-        // Update final report
-        finalReport.coffeeConquestReport = coffeeResult;
-        log({ taskId: 'coffee-conquest', description: 'Conquista del Eje Cafetero completada.', status: 'completed' });
       }
 
       const finalReport = {

@@ -15,10 +15,11 @@ function mountApp() {
 			attempt++;
 			const el = document.getElementById('root');
 			console.log(`mount retry ${attempt}, root:`, el);
-			if (el) {
-				clearInterval(timer);
-				createRoot(el).render(<App />);
-			} else if (attempt >= retries) {
+				if (el) {
+						clearInterval(timer);
+						createRoot(el).render(<App />);
+						try { (window as any).__appReady = true; } catch { /* ignore in non-browser env */ }
+					} else if (attempt >= retries) {
 				clearInterval(timer);
 				console.error('Failed to find #root after retries.');
 			}
@@ -27,6 +28,10 @@ function mountApp() {
 	}
 
 	createRoot(rootEl).render(<App />);
+	try {
+		(window as any).__appReady = true;
+		document.body.setAttribute('data-app-ready', 'true');
+	} catch { /* ignore in non-browser env */ }
 }
 
 mountApp();

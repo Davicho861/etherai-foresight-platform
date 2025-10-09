@@ -3,40 +3,37 @@ class CryptoIntegration {
     this.baseUrl = 'https://api.coingecko.com/api/v3';
   }
 
-  async getCryptoData(cryptoIds = ['bitcoin', 'ethereum'], vsCurrency = 'usd') {
+  async getCryptoData(cryptoIds = ['bitcoin', 'ethereum'], _vsCurrency = 'usd') {
+    void _vsCurrency;
     try {
       const ids = cryptoIds.join(',');
-      const url = `${this.baseUrl}/coins/markets?ids=${ids}&vs_currency=${vsCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const url = `${this.baseUrl}/coins/markets?ids=${ids}&vs_currency=${_vsCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d`;
+      const safeFetch = (await import('../lib/safeFetch.js')).default;
+      const data = await safeFetch(url, { method: 'GET' }, { timeout: 7000, retries: 2 });
       return data;
     } catch (error) {
-      console.error('Error fetching crypto data:', error);
+      console.debug('CryptoIntegration getCryptoData error:', error?.message || error, 'vsCurrency:', _vsCurrency);
       // Fallback to mock data
-      return this.getMockCryptoData(cryptoIds, vsCurrency);
+      return this.getMockCryptoData(cryptoIds, _vsCurrency);
     }
   }
 
-  async getHistoricalData(cryptoId, days = 30, vsCurrency = 'usd') {
+  async getHistoricalData(cryptoId, days = 30, _vsCurrency = 'usd') {
+    void _vsCurrency;
     try {
-      const url = `${this.baseUrl}/coins/${cryptoId}/market_chart?vs_currency=${vsCurrency}&days=${days}&interval=daily`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const url = `${this.baseUrl}/coins/${cryptoId}/market_chart?vs_currency=${_vsCurrency}&days=${days}&interval=daily`;
+      const safeFetch = (await import('../lib/safeFetch.js')).default;
+      const data = await safeFetch(url, { method: 'GET' }, { timeout: 7000, retries: 2 });
       return data;
     } catch (error) {
-      console.error('Error fetching historical crypto data:', error);
+      console.debug('CryptoIntegration getHistoricalData error:', error?.message || error, 'vsCurrency:', _vsCurrency);
       // Fallback to mock data
-      return this.getMockHistoricalData(cryptoId, days, vsCurrency);
+      return this.getMockHistoricalData(cryptoId, days, _vsCurrency);
     }
   }
 
-  getMockCryptoData(cryptoIds, vsCurrency) {
+  getMockCryptoData(cryptoIds, _vsCurrency) {
+    void _vsCurrency;
     return cryptoIds.map(id => ({
       id,
       symbol: id.substring(0, 3).toUpperCase(),
@@ -74,7 +71,8 @@ class CryptoIntegration {
     }));
   }
 
-  getMockHistoricalData(cryptoId, days, vsCurrency) {
+  getMockHistoricalData(cryptoId, days, _vsCurrency) {
+    void _vsCurrency;
     const prices = [];
     const marketCaps = [];
     const totalVolumes = [];

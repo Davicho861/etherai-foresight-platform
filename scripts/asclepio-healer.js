@@ -3,13 +3,14 @@
 import fs from 'fs';
 import path from 'path';
 
-const [testPath, errorMessage] = process.argv.slice(2);
+const [testPath, _errorMessage] = process.argv.slice(2);
 if (!testPath) {
   console.error('Usage: asclepio-healer.js <testPath> [errorMessage]');
   process.exit(1);
 }
 
 console.log(`[Asclepio] Attempting to heal test: ${testPath}`);
+if (_errorMessage) console.debug('[Asclepio] Original error message:', _errorMessage);
 // Demo strategy: replace common fragile selectors like text= with data-testid hints if present in same folder
 try {
   const abs = path.resolve(testPath);

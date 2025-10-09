@@ -71,14 +71,16 @@ const FoodResiliencePage: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="p-8">Cargando datos de resiliencia alimentaria...</div>;
-  if (error) return <div className="p-8">Error: {error}</div>;
-
   return (
     <div className="min-h-screen p-8 bg-etherblue-dark text-white" data-testid="food-resilience-page">
       <h2 className="text-3xl font-bold mb-6">Plataforma de Resiliencia Alimentaria - Perú</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      {loading && <div className="p-8">Cargando datos de resiliencia alimentaria...</div>}
+      {error && <div className="p-8">Error: {error}</div>}
+
+      {!loading && !error && (
+        <React.Fragment>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Precios de Alimentos */}
         <div className="p-6 bg-etherblue rounded-lg">
           <h3 className="text-xl font-semibold mb-4">Precios de Alimentos</h3>
@@ -115,8 +117,8 @@ const FoodResiliencePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Predicción Interactiva */}
       <div className="p-6 bg-etherblue rounded-lg mb-8">
+        {/* Predicción Interactiva */}
         <h3 className="text-xl font-semibold mb-4">Predicción de Precios</h3>
         <div className="flex gap-4 items-center mb-4">
           <select
@@ -156,8 +158,8 @@ const FoodResiliencePage: React.FC = () => {
         )}
       </div>
 
-      {/* Recomendaciones */}
       <div className="p-6 bg-red-900 rounded-lg">
+        {/* Recomendaciones */}
         <h3 className="text-xl font-semibold mb-4">Recomendaciones de Mitigación</h3>
         <ul className="space-y-2 text-sm">
           <li>• Implementar stocks de reserva para arroz y papas</li>
@@ -165,7 +167,9 @@ const FoodResiliencePage: React.FC = () => {
           <li>• Monitorear factores climáticos y de importación</li>
           <li>• Establecer alianzas con productores locales</li>
         </ul>
-      </div>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 };

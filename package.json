@@ -19,11 +19,11 @@
     "generate:test": "node ./scripts/generate-e2e-test.js",
     "consult:oracle": "node ./scripts/consult-oracle.js --",
     "playwright": "playwright test",
-  "test:smart": "node ./scripts/run-smart-tests.js",
-  "heal:test": "node ./scripts/asclepio-healer.js",
-  "propose:tests": "node ./scripts/propose-new-tests.js",
-  "athena:run": "node ./scripts/run-smart-tests.js && node ./scripts/propose-new-tests.js",
-  "athena:cycle": "node ./scripts/athena-cycle.js",
+    "test:smart": "node ./scripts/run-smart-tests.js",
+    "heal:test": "node ./scripts/asclepio-healer.js",
+    "propose:tests": "node ./scripts/propose-new-tests.js",
+    "athena:run": "node ./scripts/run-smart-tests.js && node ./scripts/propose-new-tests.js",
+    "athena:cycle": "node ./scripts/athena-cycle.js",
     "test": "jest --passWithNoTests",
     "build": "npx vite build",
     "build:dev": "npx vite build --mode development",
@@ -84,7 +84,7 @@
     "react-is": "^18.3.1",
     "react-resizable-panels": "^2.1.9",
     "react-router-dom": "^6.30.1",
-    "react-simple-maps": "^3.0.0",
+    "react-simple-maps": "^1.0.0",
     "recharts": "^3.2.1",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
@@ -94,13 +94,15 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@playwright/test": "^1.47.0",
     "@sveltejs/adapter-auto": "^3.2.2",
     "@sveltejs/adapter-node": "^5.2.0",
-    "@sveltejs/kit": "^2.5.18",
+    "@sveltejs/kit": "^2.46.4",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
@@ -128,6 +130,6 @@
     "svelte-check": "^3.8.4",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5"
+    "vite": "^7.1.9"
   }
 }

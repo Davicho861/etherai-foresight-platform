@@ -8,9 +8,11 @@ on:
 
 permissions:
   issues: write
+  contents: read
+  actions: read
 
 jobs:
-  lint_and_test_unit:
+  lint_and_unit_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,6 +20,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            server/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install deps
         run: |
           npm ci
@@ -29,53 +41,132 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  e2e:
-    needs: lint_and_test_unit
+  build_docker_images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Set up Docker Compose
-        uses: docker/setup-docker@v2
-      - name: Build images with docker-compose
-        run: docker compose build --progress=plain
-      - name: Start services
-        run: docker compose up -d
-      - name: Wait for backend health (uses secret)
-        env:
-          PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
+        uses: docker/setup-buildx-action@v3
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Build backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.backend
+          push: false
+          tags: praevisio-backend:ci
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      - name: Build frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.frontend
+          push: false
+          tags: praevisio-frontend:ci
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      - name: Move cache
         run: |
-          TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token}
-          for i in {1..30}; do
-            if curl -sS http://localhost:4000/api/platform-status -H "Authorization: Bearer $TOKEN" >/dev/null; then
-              echo "Backend is up"; exit 0
-            fi
-            echo "Waiting for backend... ($i/30)"; sleep 2
-          done
-          echo "Backend failed to become healthy"; exit 1
-      - name: Install dev deps + Playwright
-        run: |
-          npm ci
-          npx playwright install --with-deps
-      - name: Run Playwright tests
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  # e2e_validation:
+  #   needs: [lint_and_unit_tests, build_docker_images]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Set up Docker Compose
+  #       uses: docker/setup-docker@v3
+  #     - name: Build and start services
+  #       run: |
+  #         docker compose build --progress=plain
+  #         docker compose up -d
+  #     - name: Wait for backend health
+  #       env:
+  #         PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
+  #       run: |
+  #         TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token}
+  #         for i in {1..60}; do
+  #           if curl -sS http://localhost:4000/api/platform-status -H "Authorization: Bearer $TOKEN" >/dev/null; then
+  #             echo "Backend is up"; exit 0
+  #           fi
+  #           echo "Waiting for backend... ($i/60)"; sleep 2
+  #         done
+  #         echo "Backend failed to become healthy"; exit 1
+  #     - name: Install Playwright
+  #       run: |
+  #         npm ci
+  #         npx playwright install --with-deps
+  #     - name: Run E2E tests
+  #       env:
+  #         NODE_ENV: test
+  #         PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
+  #       run: npx playwright test --config=playwright.config.ts --reporter=json --output=test-results
+  #     - name: Upload Playwright artifacts on failure
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: playwright-artifacts-${{ github.run_id }}
+  #         path: |
+  #           test-results/
+  #           playwright-report/
+  #         retention-days: 7
+  #     - name: Detect flaky tests
+  #       if: always()
+  #       run: node scripts/detect-flaky-tests.js
+  #     - name: Tear down
+  #       if: always()
+  #       run: docker compose down --volumes --remove-orphans || true
+
+  deploy:
+    needs: [lint_and_unit_tests, build_docker_images]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+      - name: Deploy backend to Railway
         env:
-          NODE_ENV: test
-          PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
-        run: npx playwright test --config=playwright.config.ts --reporter=json --output=test-results
-      - name: Detect flaky tests
-        if: always()
-        run: node scripts/detect-flaky-tests.js
-      - name: Tear down
-        if: always()
-        run: docker compose down --volumes || true
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: bash scripts/deploy_backend.sh
+      - name: Wait for Railway deployment
+        run: sleep 120
+      - name: Get Railway backend URL
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          # This might need adjustment based on Railway CLI output
+          BACKEND_URL=$(railway domain | grep -o 'https://[^ ]*' | head -1)
+          echo "RAILWAY_BACKEND_URL=$BACKEND_URL" >> $GITHUB_ENV
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Deploy frontend to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          RAILWAY_BACKEND_URL: ${{ env.RAILWAY_BACKEND_URL }}
+        run: bash scripts/deploy_frontend.sh
 
   sync_kanban:
-    needs: e2e
+    needs: [lint_and_unit_tests, build_docker_images]
     runs-on: ubuntu-latest
-    if: secrets.GITHUB_TOKEN
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node

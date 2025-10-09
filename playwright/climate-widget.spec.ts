@@ -15,6 +15,7 @@ test.describe('Climate Widget E2E', () => {
 
     // Visit the dashboard and wait for it to be idle
     await page.goto('/dashboard', { waitUntil: 'networkidle' });
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
 
     // Wait for the climate widget container to be visible with a longer timeout
     const climateWidgetLocator = page.locator('[data-testid="climate-widget"]');

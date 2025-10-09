@@ -91,26 +91,35 @@ async function updateFamineRiskIndex() {
 }
 
 /**
- * Updates the Geophysical Risk Index based on the latest seismic activity and risk prediction.
+ * Updates the Geophysical Risk Index based on the latest seismic activity.
  */
 async function updateGeophysicalRiskIndex() {
   console.log('[PredictionEngine] Updating Geophysical Risk Index...');
   const seismicEvents = await fetchInternalData('/api/seismic/activity');
-  const riskPrediction = await fetchInternalData('/api/seismic/risk');
 
-  if (!Array.isArray(seismicEvents) || !riskPrediction) {
-    console.error('[PredictionEngine] Invalid seismic data or risk prediction received.');
+  if (!Array.isArray(seismicEvents)) {
+    console.error('[PredictionEngine] Invalid seismic data received.');
     return;
   }
 
   predictionState.riskIndices.geophysicalRisk.significantEvents = seismicEvents;
-  predictionState.riskIndices.geophysicalRisk.value = riskPrediction.overallRisk;
-  predictionState.riskIndices.geophysicalRisk.confidence = 0.90; // Confidence from agent prediction
-  predictionState.riskIndices.geophysicalRisk.maxMagnitude = riskPrediction.maxMagnitude;
-  predictionState.riskIndices.geophysicalRisk.eventCount = riskPrediction.eventCount;
-  predictionState.riskIndices.geophysicalRisk.highRiskZones = riskPrediction.highRiskZones;
 
-  console.log(`[PredictionEngine] Geophysical Risk Index updated to ${riskPrediction.overallRisk} based on ${riskPrediction.eventCount} events, max mag ${riskPrediction.maxMagnitude}.`);
+  if (seismicEvents.length === 0) {
+    predictionState.riskIndices.geophysicalRisk.value = 0;
+    predictionState.riskIndices.geophysicalRisk.confidence = 0.95; // High confidence in no risk
+    console.log('[PredictionEngine] No significant seismic events detected. Geophysical Risk is 0.');
+    return;
+  }
+
+  // Simplified risk: scale of 0-100 based on the max magnitude of the day.
+  // A magnitude of 8.0 or higher is considered catastrophic (100).
+  const maxMagnitude = Math.max(...seismicEvents.map(e => e.magnitude));
+  const riskValue = Math.min(100, parseFloat(((maxMagnitude / 8.0) * 100).toFixed(2)));
+
+  predictionState.riskIndices.geophysicalRisk.value = riskValue;
+  predictionState.riskIndices.geophysicalRisk.confidence = 0.90; // Static confidence
+
+  console.log(`[PredictionEngine] Geophysical Risk Index updated to ${riskValue} based on max magnitude of ${maxMagnitude}.`);
 }
 
 /**

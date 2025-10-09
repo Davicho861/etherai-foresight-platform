@@ -143,7 +143,7 @@ const ClimateWidget: React.FC = () => {
           </div>
         )}
 
-        {predictionData && (
+        {predictionData && predictionData.time && predictionData.weathercode && predictionData.temperature_2m_max && predictionData.temperature_2m_min && predictionData.precipitation_sum && (
           <div>
             <h3 className="text-lg font-semibold mb-2">Predicción 7 días</h3>
             <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
@@ -156,13 +156,13 @@ const ClimateWidget: React.FC = () => {
                     {new Date(date).toLocaleDateString('es-ES', { day: 'numeric' })}
                   </div>
                   <div className="text-lg my-1">
-                    {getWeatherIcon(predictionData.weathercode[index])}
+                    {predictionData.weathercode && predictionData.weathercode[index] !== undefined ? getWeatherIcon(predictionData.weathercode[index]) : '❓'}
                   </div>
                   <div className="text-sm">
-                    {predictionData.temperature_2m_max[index]}° / {predictionData.temperature_2m_min[index]}°
+                    {predictionData.temperature_2m_max && predictionData.temperature_2m_max[index] !== undefined ? predictionData.temperature_2m_max[index] : 'N/A'}° / {predictionData.temperature_2m_min && predictionData.temperature_2m_min[index] !== undefined ? predictionData.temperature_2m_min[index] : 'N/A'}°
                   </div>
                   <div className="text-xs text-gray-500">
-                    {predictionData.precipitation_sum[index]}mm
+                    {predictionData.precipitation_sum && predictionData.precipitation_sum[index] !== undefined ? predictionData.precipitation_sum[index] : 'N/A'}mm
                   </div>
                 </div>
               ))}

@@ -4,6 +4,7 @@ test.describe('Demo E2E', () => {
   test('completes demo flow with Colombia State Mission using data-testid', async ({ page }) => {
     // 1. Navegar a '/demo'
     await page.goto(`/demo`);
+    await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
     await expect(page).toHaveURL('/demo');
 
     // Verificar que la página se cargue correctamente

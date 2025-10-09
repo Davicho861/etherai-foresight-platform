@@ -21,13 +21,14 @@ test.describe('Dashboard E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the frontend and wait for network to be idle
-    await page.goto('/', { waitUntil: 'networkidle' });
-    console.log('Current URL after goto:', await page.url());
+  // Visit the frontend and wait for the app to be ready
+  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.waitForSelector('body[data-app-ready="true"]', { timeout: 60000 });
+  console.log('Current URL after goto:', await page.url());
 
-    // Wait for the main dashboard container to be visible
-    const dashboardLocator = page.locator('[data-testid="dashboard-container"]');
-    await expect(dashboardLocator).toBeVisible({ timeout: 15000 });
+  // Wait for the main dashboard container to be visible (fallback)
+  const dashboardLocator = page.locator('[data-testid="dashboard-container"]');
+  await expect(dashboardLocator).toBeVisible({ timeout: 15000 });
 
     // Validate KPIs are visible and match backend
     await expect(dashboardLocator.locator('text=Análisis Activos')).toBeVisible();

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForAppReady } from './test-utils';
 
 test.describe('Consciousness Health Widget E2E', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,13 +12,13 @@ test.describe('Consciousness Health Widget E2E', () => {
       window.localStorage.setItem('praevisio_token', 'demo-token');
     });
 
-    // Visit the Metatron Panel and wait for network to be idle
-    await page.goto('/metatron-panel', { waitUntil: 'networkidle' });
-    console.log('Current URL after goto:', await page.url());
+  // Visit the Metatron Panel and wait for the app to be ready
+  await page.goto('/metatron-panel', { waitUntil: 'networkidle' });
+  await waitForAppReady(page, { timeout: 20000 });
 
-    // Validate the widget is visible with a longer timeout
-    const widgetLocator = page.locator('[data-testid="consciousness-health-widget"]');
-    await expect(widgetLocator).toBeVisible({ timeout: 15000 });
+  // Validate the widget is visible with a longer timeout
+  const widgetLocator = page.locator('[data-testid="consciousness-health-widget"]');
+  await expect(widgetLocator).toBeVisible({ timeout: 15000 });
     await expect(widgetLocator.locator('text=Salud de la Conciencia')).toBeVisible();
 
     // Validate the lessons learned count is displayed (now from real ChromaDB data)

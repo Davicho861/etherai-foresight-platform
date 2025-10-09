@@ -1,14 +1,12 @@
 import express from 'express';
 import SIMIntegration from '../integrations/SIMIntegration.js';
 import MINAGRIIntegration from '../integrations/MINAGRIIntegration.js';
-import INEIIntegration from '../integrations/INEIIntegration.js';
 
 const router = express.Router();
 
 // Initialize integrations
 const simIntegration = new SIMIntegration();
 const minagriIntegration = new MINAGRIIntegration();
-const ineiIntegration = new INEIIntegration();
 
 // GET /api/food-resilience/prices
 router.get('/prices', async (req, res) => {
