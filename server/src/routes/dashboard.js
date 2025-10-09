@@ -95,4 +95,16 @@ router.get('/overview', async (req, res) => {
   }
 });
 
+// GET /api/dashboard/credits
+router.get('/credits', async (req, res) => {
+  try {
+    // Mock credits response for testing
+    const credits = 1500; // Mock value
+    res.json({ credits });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'internal_error' });
+  }
+});
+
 export default router;
