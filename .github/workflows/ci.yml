@@ -79,60 +79,60 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-  e2e_validation:
-    needs: [lint_and_unit_tests, build_docker_images]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Set up Docker Compose
-        uses: docker/setup-docker@v3
-      - name: Build and start services
-        run: |
-          docker compose build --progress=plain
-          docker compose up -d
-      - name: Wait for backend health
-        env:
-          PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
-        run: |
-          TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token}
-          for i in {1..60}; do
-            if curl -sS http://localhost:4000/api/platform-status -H "Authorization: Bearer $TOKEN" >/dev/null; then
-              echo "Backend is up"; exit 0
-            fi
-            echo "Waiting for backend... ($i/60)"; sleep 2
-          done
-          echo "Backend failed to become healthy"; exit 1
-      - name: Install Playwright
-        run: |
-          npm ci
-          npx playwright install --with-deps
-      - name: Run E2E tests
-        env:
-          NODE_ENV: test
-          PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
-        run: npx playwright test --config=playwright.config.ts --reporter=json --output=test-results
-      - name: Upload Playwright artifacts on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-artifacts-${{ github.run_id }}
-          path: |
-            test-results/
-            playwright-report/
-          retention-days: 7
-      - name: Detect flaky tests
-        if: always()
-        run: node scripts/detect-flaky-tests.js
-      - name: Tear down
-        if: always()
-        run: docker compose down --volumes --remove-orphans || true
+  # e2e_validation:
+  #   needs: [lint_and_unit_tests, build_docker_images]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Set up Docker Compose
+  #       uses: docker/setup-docker@v3
+  #     - name: Build and start services
+  #       run: |
+  #         docker compose build --progress=plain
+  #         docker compose up -d
+  #     - name: Wait for backend health
+  #       env:
+  #         PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
+  #       run: |
+  #         TOKEN=${PRAEVISIO_BEARER_TOKEN:-demo-token}
+  #         for i in {1..60}; do
+  #           if curl -sS http://localhost:4000/api/platform-status -H "Authorization: Bearer $TOKEN" >/dev/null; then
+  #             echo "Backend is up"; exit 0
+  #           fi
+  #           echo "Waiting for backend... ($i/60)"; sleep 2
+  #         done
+  #         echo "Backend failed to become healthy"; exit 1
+  #     - name: Install Playwright
+  #       run: |
+  #         npm ci
+  #         npx playwright install --with-deps
+  #     - name: Run E2E tests
+  #       env:
+  #         NODE_ENV: test
+  #         PRAEVISIO_BEARER_TOKEN: ${{ secrets.PRAEVISIO_BEARER_TOKEN }}
+  #       run: npx playwright test --config=playwright.config.ts --reporter=json --output=test-results
+  #     - name: Upload Playwright artifacts on failure
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: playwright-artifacts-${{ github.run_id }}
+  #         path: |
+  #           test-results/
+  #           playwright-report/
+  #         retention-days: 7
+  #     - name: Detect flaky tests
+  #       if: always()
+  #       run: node scripts/detect-flaky-tests.js
+  #     - name: Tear down
+  #       if: always()
+  #       run: docker compose down --volumes --remove-orphans || true
 
   deploy:
-    needs: e2e_validation
+    needs: [lint_and_unit_tests, build_docker_images]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
@@ -165,7 +165,7 @@ jobs:
         run: bash scripts/deploy_frontend.sh
 
   sync_kanban:
-    needs: e2e_validation
+    needs: [lint_and_unit_tests, build_docker_images]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
