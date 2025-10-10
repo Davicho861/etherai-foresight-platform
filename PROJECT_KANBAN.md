@@ -9,7 +9,7 @@
     - Nuevo endpoint en la API (`/api/global-risk/food-security`) que devuelva los datos más recientes.
     - Pruebas de backend que validen la integridad y disponibilidad de los datos.
     - Flujo de predicción que utilice estos datos para actualizar el "Índice de Riesgo de Hambruna".
-- **Estado:** **PROPUESTO**
+- **Estado:** **COMPLETADO**
 
 ### MIS-002: Monitoreo de Actividad Sísmica Global
 - **Objetivo:** Integrar datos en tiempo real del USGS sobre terremotos para predecir riesgos en cadenas de suministro.
