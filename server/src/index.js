@@ -6,8 +6,10 @@ import predictRouter from './routes/predict.js';
 import contactRouter from './routes/contact.js';
 import moduleRouter from './routes/module.js';
 import pricingRouter from './routes/pricing.js';
+import pricingPlansRouter from './routes/pricing-plans.js';
 import dashboardRouter from './routes/dashboard.js';
 import platformStatusRouter from './routes/platform-status.js';
+import healthRouter from './routes/health.js';
 import agentRouter from './routes/agent.js';
 import llmRouter from './routes/llm.js';
 import consciousnessRouter from './routes/consciousness.js';
@@ -23,7 +25,7 @@ import foodResilienceRouter from './routes/food-resilience.js';
 import globalRiskRouter from './routes/globalRiskRoutes.js';
 import seismicRouter from './routes/seismic.js';
 import sseTokenService from './sseTokenService.js';
-import { runProphecyCycle } from './services/predictionEngine.js';
+import { runProphecyCycle, getRiskIndices } from './services/predictionEngine.js';
 
 
 // Función principal para iniciar el servidor
@@ -59,9 +61,12 @@ async function main() {
   app.use('/api/predict', predictRouter);
   app.use('/api/contact', contactRouter);
   app.use('/api/module', bearerAuth, moduleRouter);
+  // Mount the new pricing-plans endpoint first so it overrides legacy pricing if present
+  app.use('/api/pricing-plans', pricingPlansRouter);
   app.use('/api/pricing-plans', pricingRouter);
   app.use('/api/dashboard', bearerAuth, dashboardRouter);
   app.use('/api/platform-status', platformStatusRouter);
+  app.use('/api/health', healthRouter);
   app.use('/api/agent', agentRouter);
   app.use('/api/llm', bearerAuth, llmRouter);
   app.use('/api/consciousness', bearerAuth, consciousnessRouter);
@@ -79,8 +84,22 @@ async function main() {
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
 
+  // Ethical Assessment endpoint
+  app.get('/api/ethical-assessment', bearerAuth, (req, res) => {
+    try {
+      const riskState = getRiskIndices();
+      res.json({
+        success: true,
+        data: riskState.ethicalAssessment,
+      });
+    } catch (error) {
+      console.error('[EthicalAssessment] Error retrieving ethical assessment:', error.message);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
-  const PORT = process.env.PORT ? Number(process.env.PORT) : 4001;
+
+  const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
   app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Praevisio server running on http://localhost:${PORT}`);
     

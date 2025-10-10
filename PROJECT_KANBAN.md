@@ -26,4 +26,12 @@
 
 ## Misiones Completadas
 
-- *Ninguna actualmente.*
+### MIS-003: Expansión de IA Ética
+- **Objetivo:** Mejorar el marco vectorial ético para evaluaciones de impacto humano, sostenibilidad ambiental y equidad social.
+- **Agente Líder:** Kairós (Oportunidad)
+- **Criterios de Éxito:**
+    - Nuevo módulo ethicalVectorModule.js con funciones para calcular vectores éticos.
+    - Integración en predictionEngine.js para evaluaciones éticas continuas.
+    - Endpoint API `/api/ethical-assessment` que devuelve evaluaciones éticas.
+    - Pruebas unitarias en `server/__tests__/services/ethicalVectorModule.test.js`.
+- **Estado:** **COMPLETADO**

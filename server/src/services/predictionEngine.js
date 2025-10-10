@@ -5,6 +5,7 @@
  */
 
 import axios from 'axios';
+import { calculateEthicalVector } from './ethicalVectorModule.js';
 
 // This would be stored in a more secure and dynamic configuration in a real system.
 const PRAEVISIO_API_BASE_URL = `http://localhost:${process.env.PORT || 4001}`;
@@ -34,6 +35,17 @@ const predictionState = {
   multiDomainRiskIndex: {
     value: null,
     confidence: 0.0,
+  },
+  ethicalAssessment: {
+    vector: [0, 0, 0],
+    components: {
+      humanImpact: 0,
+      environmentalSustainability: 0,
+      socialEquity: 0,
+    },
+    overallScore: 0,
+    assessment: 'Low Ethical Concern',
+    timestamp: null,
   },
 };
 
@@ -202,6 +214,19 @@ function updateMultiDomainRiskIndex() {
 }
 
 /**
+ * Updates the Ethical Assessment based on current risk indices.
+ * Evaluates predictions against human impact, environmental sustainability, and social equity.
+ */
+function updateEthicalAssessment() {
+  console.log('[PredictionEngine] Updating Ethical Assessment...');
+
+  const ethicalVector = calculateEthicalVector(predictionState.riskIndices);
+  predictionState.ethicalAssessment = ethicalVector;
+
+  console.log(`[PredictionEngine] Ethical Assessment updated: ${ethicalVector.assessment} (Score: ${ethicalVector.overallScore.toFixed(2)}).`);
+}
+
+/**
  * Retrieves the current state of all risk indices.
  * @returns {object} The current prediction state.
  */
@@ -221,8 +246,9 @@ async function runProphecyCycle() {
     ]);
 
     updateMultiDomainRiskIndex();
+    updateEthicalAssessment();
     predictionState.lastUpdated = new Date().toISOString();
-    console.log('[PredictionEngine] Prophecy cycle complete. All risk indices updated.');
+    console.log('[PredictionEngine] Prophecy cycle complete. All risk indices and ethical assessment updated.');
 
   } catch (error) {
     console.error('[PredictionEngine] Error during prophecy cycle:', error.message);
