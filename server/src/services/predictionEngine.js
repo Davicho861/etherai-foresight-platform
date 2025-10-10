@@ -31,6 +31,13 @@ const predictionState = {
       confidence: 0.0,
       affectedRegions: [],
     },
+    climateExtremesRisk: {
+      value: null,
+      source: 'NASA-POWER',
+      confidence: 0.0,
+      extremeEvents: [],
+      affectedCountries: [],
+    },
   },
   multiDomainRiskIndex: {
     value: null,
@@ -187,23 +194,68 @@ async function updateSupplyChainRiskIndex() {
 }
 
 /**
+ * Updates the Climate Extremes Risk Index based on extreme weather events.
+ */
+async function updateClimateExtremesRiskIndex() {
+  console.log('[PredictionEngine] Updating Climate Extremes Risk Index...');
+  const climateData = await fetchInternalData('/api/global-risk/climate-extremes');
+
+  if (!climateData || !climateData.data || !Array.isArray(climateData.data)) {
+    console.error('[PredictionEngine] Invalid climate extremes data received.');
+    return;
+  }
+
+  const data = climateData.data;
+  const extremeEvents = data.filter(item => item.extremeEvents > 0);
+  const affectedCountries = data.filter(item => item.riskLevel === 'high' || item.riskLevel === 'medium');
+
+  // Calculate summary
+  const totalExtremeEvents = data.reduce((sum, item) => sum + (item.extremeEvents || 0), 0);
+  const highRiskCountries = data.filter(item => item.riskLevel === 'high').length;
+  const mediumRiskCountries = data.filter(item => item.riskLevel === 'medium').length;
+
+  // Calculate risk based on extreme events and high-risk countries
+  let riskValue = 0;
+  if (totalExtremeEvents > 0) {
+    riskValue += Math.min(totalExtremeEvents * 5, 50); // Up to 50 points for extreme events
+  }
+  if (highRiskCountries > 0) {
+    riskValue += Math.min(highRiskCountries * 15, 50); // Up to 50 points for high-risk countries
+  }
+  if (mediumRiskCountries > 0) {
+    riskValue += Math.min(mediumRiskCountries * 5, 25); // Up to 25 points for medium-risk countries
+  }
+
+  riskValue = Math.min(100, riskValue);
+
+  predictionState.riskIndices.climateExtremesRisk.value = riskValue;
+  predictionState.riskIndices.climateExtremesRisk.confidence = 0.85;
+  predictionState.riskIndices.climateExtremesRisk.extremeEvents = extremeEvents;
+  predictionState.riskIndices.climateExtremesRisk.affectedCountries = affectedCountries;
+
+  console.log(`[PredictionEngine] Climate Extremes Risk Index updated to ${riskValue} based on ${totalExtremeEvents} extreme events, ${highRiskCountries} high-risk countries, and ${mediumRiskCountries} medium-risk countries.`);
+}
+
+/**
  * Calculates the Multi-Domain Risk Index based on all individual risk indices.
  * This is a weighted average for demonstration.
  */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk, supplyChainRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.4;
-  const geoWeight = 0.3;
-  const supplyChainWeight = 0.3;
+  const famineWeight = 0.25;
+  const geoWeight = 0.25;
+  const supplyChainWeight = 0.25;
+  const climateWeight = 0.25;
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
   const supplyChainValue = supplyChainRisk.value || 0;
+  const climateValue = climateExtremesRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -243,6 +295,7 @@ async function runProphecyCycle() {
       updateFamineRiskIndex(),
       updateGeophysicalRiskIndex(),
       updateSupplyChainRiskIndex(),
+      updateClimateExtremesRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

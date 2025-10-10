@@ -1,6 +1,7 @@
 import express from 'express';
 import { getFoodSecurityIndex } from '../services/worldBankService.js';
 import { getSeismicActivity } from '../services/usgsService.js';
+import { getClimateExtremesIndex } from '../services/climateService.js';
 
 const router = express.Router();
 
@@ -46,6 +47,29 @@ router.get('/seismic-activity', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Internal Server Error: Could not retrieve seismic activity data.',
+    });
+  }
+});
+
+/**
+ * @route GET /api/global-risk/climate-extremes
+ * @description Provides the latest global climate extremes data from NASA POWER.
+ * @access Public
+ */
+router.get('/climate-extremes', async (req, res) => {
+  try {
+    const data = await getClimateExtremesIndex();
+    res.status(200).json({
+      success: true,
+      source: 'Praevisio-Aion-NASA-POWER-Integration',
+      timestamp: new Date().toISOString(),
+      data,
+    });
+  } catch (error) {
+    console.error('Error fetching climate extremes:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: Could not retrieve climate extremes data.',
     });
   }
 });

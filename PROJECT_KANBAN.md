@@ -22,7 +22,15 @@
 
 ## Misiones en Progreso
 
-- *Ninguna actualmente.*
+### MIS-005: Integración de Datos Climáticos Extremos
+- **Objetivo:** Integrar datos en tiempo real sobre eventos climáticos extremos (huracanes, inundaciones, sequías) para mejorar la capacidad predictiva de Praevisio sobre riesgos climáticos en LATAM.
+- **Agente Líder:** Kairós (Oportunidad)
+- **Criterios de Éxito:**
+    - Nuevo endpoint en la API (`/api/global-risk/climate-extremes`) que devuelva datos climáticos extremos más recientes.
+    - Servicio climateService.js con método getClimateExtremes() operativo.
+    - Flujo de predicción que utilice estos datos para actualizar el "Índice de Riesgo Climático Extremo".
+    - Integración ética vectorial para evaluaciones de impacto ambiental.
+- **Estado:** **EN PROGRESO**
 
 ## Misiones Completadas
 
