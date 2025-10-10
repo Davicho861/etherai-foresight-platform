@@ -5,8 +5,6 @@ import { getNeo4jDriver } from '../database.js';
 
 const router = express.Router();
 
-import { getNeo4jDriver } from '../database.js';
-
 // POST /api/llm/predict-tests (enhanced with Neo4j causal analysis)
 router.post('/predict-tests', async (req, res) => {
   try {
@@ -15,8 +13,9 @@ router.post('/predict-tests', async (req, res) => {
       return res.status(400).json({ error: 'changedFiles array is required' });
     }
 
-    const neo4jDriver = await getNeo4jDriver();
-    const session = neo4jDriver.session();
+  // In native dev mode we skip Neo4j-based causal analysis
+  const neo4jDriver = (process.env.NATIVE_DEV_MODE === 'true') ? null : await getNeo4jDriver();
+  const session = neo4jDriver ? neo4jDriver.session() : null;
     const suggestedTests = new Set();
 
     for (const file of changedFiles) {
@@ -43,7 +42,7 @@ router.post('/predict-tests', async (req, res) => {
       }
     }
 
-    await session.close();
+  if (session) await session.close();
 
     return res.json({
       suggested: Array.from(suggestedTests),

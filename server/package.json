@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "prisma:generate": "npx prisma generate --schema=./prisma/schema.prisma",
+    "seed": "node ./seed.js"
   },
   "dependencies": {
     "@langchain/core": "^0.2.11",

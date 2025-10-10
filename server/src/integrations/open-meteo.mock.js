@@ -4,7 +4,11 @@ import axios from 'axios';
 // Wrapper for Open-Meteo calls that respects TEST_MODE and returns a normalized shape
 export async function fetchRecentTemperature(lat, lon) {
   try {
-    const base = process.env.TEST_MODE === 'true' ? 'http://mock-api-server:3001/open-meteo' : 'https://api.open-meteo.com/v1/forecast';
+    const native = process.env.NATIVE_DEV_MODE === 'true';
+    const openMeteoMockPort = process.env.OPEN_METEO_MOCK_PORT || 4030;
+    const base = native
+      ? `http://localhost:${openMeteoMockPort}/v1/forecast`
+      : (process.env.TEST_MODE === 'true' ? 'http://mock-api-server:3001/open-meteo' : 'https://api.open-meteo.com/v1/forecast');
     const url = `${base}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&timezone=auto`;
     const response = await axios.get(url, { timeout: 10000 });
     const data = response.data || {};
@@ -31,7 +35,11 @@ export async function fetchRecentTemperature(lat, lon) {
 
 export async function fetchClimatePrediction(lat, lon, days = 7) {
   try {
-    const base = process.env.TEST_MODE === 'true' ? 'http://mock-api-server:3001/open-meteo' : 'https://api.open-meteo.com/v1/forecast';
+    const native = process.env.NATIVE_DEV_MODE === 'true';
+    const openMeteoMockPort = process.env.OPEN_METEO_MOCK_PORT || 4030;
+    const base = native
+      ? `http://localhost:${openMeteoMockPort}/v1/forecast`
+      : (process.env.TEST_MODE === 'true' ? 'http://mock-api-server:3001/open-meteo' : 'https://api.open-meteo.com/v1/forecast');
     const url = `${base}?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto&forecast_days=${days}`;
     const response = await axios.get(url, { timeout: 15000 });
     return (response.data && response.data.daily) ? response.data.daily : null;

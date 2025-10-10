@@ -20,4 +20,4 @@ Grafo causal generado en Neo4j mostrando relaciones entre variables:
 - Alto riesgo en países con correlaciones fuertes (>0.7).
 - Recomendaciones: Monitoreo continuo, políticas de mitigación climática, económica y de deuda.
 
-Generado por Praevisio AI - 2025-10-09T21:56:59.868Z
+Generado por Praevisio AI - 2025-10-10T00:56:24.278Z

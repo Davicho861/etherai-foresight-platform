@@ -1,0 +1,29 @@
+[Unit]
+Description=Praevisio (Native Dev) Service
+After=network.target
+
+[Service]
+Type=forking
+# Editar "User" y "WorkingDirectory" si es necesario antes de instalar.
+User=davicho
+WorkingDirectory=/home/davicho/etherai-foresight-platform-main
+
+# Asegurar que systemd vea los binarios locales de npm del proyecto
+# (vite, nodemon, etc). Ajusta las rutas si tu usuario o ubicación difieren.
+Environment=PATH=/home/davicho/etherai-foresight-platform-main/node_modules/.bin:/home/davicho/etherai-foresight-platform-main/server/node_modules/.bin:/usr/local/bin:/usr/bin:/bin
+
+# Variables de entorno recomendadas. Puedes modificarlas en el servicio o
+# definirlas en /etc/environment o un archivo .env gestionado por systemd.
+Environment=NODE_ENV=development
+Environment=NATIVE_DEV_MODE=true
+Environment=PORT=4001
+Environment=VITE_PORT=3002
+
+# Ejecuta el arranque en background (usa los scripts proporcionados)
+ExecStart=/usr/bin/env bash -lc '/home/davicho/etherai-foresight-platform-main/scripts/systemd-start-wrapper.sh'
+Restart=on-failure
+RestartSec=5s
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

@@ -43,16 +43,16 @@ describe('EnhancedRiskDashboard', () => {
 
   it('displays risk overview cards', () => {
     render(<EnhancedRiskDashboard />);
-    expect(screen.getByText('COL')).toBeInTheDocument();
-    expect(screen.getByText('PER')).toBeInTheDocument();
-    expect(screen.getByText('ARG')).toBeInTheDocument();
+    expect(screen.getAllByText('COL')).toHaveLength(2); // One in card header, one in alert
+    expect(screen.getAllByText('PER')).toHaveLength(2); // One in card header, one in alert
+    expect(screen.getAllByText('ARG')).toHaveLength(2); // One in card header, one in alert
   });
 
   it('shows filter controls', () => {
     render(<EnhancedRiskDashboard />);
     expect(screen.getByText('Filtros:')).toBeInTheDocument();
-    expect(screen.getByText('Selecciona un sector')).toBeInTheDocument();
-    expect(screen.getByText('Selecciona un nivel de riesgo')).toBeInTheDocument();
+    expect(screen.getByText('Todos los países')).toBeInTheDocument();
+    expect(screen.getByText('Todos los niveles')).toBeInTheDocument();
   });
 
   it('displays active alerts section', () => {
@@ -97,17 +97,27 @@ describe('EnhancedRiskDashboard', () => {
     expect(screen.getByText('Alertas Activas (3)')).toBeInTheDocument();
 
     // Filter by Colombia
-    const selectTrigger = screen.getAllByText('Selecciona un sector')[0];
-    fireEvent.click(selectTrigger);
+    const selectElement = screen.getByDisplayValue('Todos los países');
+    fireEvent.change(selectElement, { target: { value: 'COL' } });
 
-    // Note: In a real test, we'd need to mock the Select component properly
-    // For now, this tests the basic structure
+    // Should still show alerts (mock data includes COL)
+    expect(screen.getByText('Alertas Activas (1)')).toBeInTheDocument();
   });
 
   it('exports data when export button is clicked', () => {
     // Mock document methods
-    const mockLink = { click: jest.fn() };
-    jest.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
+    const mockLink = {
+      click: jest.fn(),
+      setAttribute: jest.fn(),
+      style: {}
+    };
+    const originalCreateElement = document.createElement;
+    jest.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
+      if (tagName === 'a') {
+        return mockLink as any;
+      }
+      return originalCreateElement.call(document, tagName);
+    });
 
     render(<EnhancedRiskDashboard />);
 

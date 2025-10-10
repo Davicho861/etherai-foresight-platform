@@ -9,6 +9,7 @@ import HowItWorksSection from '../components/HowItWorksSection';
 import AdvancedInteractiveDashboard from '../components/AdvancedInteractiveDashboard';
 import EnhancedContactSection from '../components/EnhancedContactSection';
 import EnhancedCredibilitySection from '../components/EnhancedCredibilitySection';
+import TestimonialCarousel from '../components/generated/TestimonialCarousel';
 import EnhancedFAQSection from '../components/EnhancedFAQSection';
 import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
@@ -91,6 +92,7 @@ const Index = () => {
       <HowItWorksSection />
       <EnhancedFAQSection />
       <EnhancedCredibilitySection />
+      <TestimonialCarousel />
       <EnhancedContactSection />
       <Footer />
     </div>

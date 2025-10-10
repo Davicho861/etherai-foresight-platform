@@ -31,3 +31,4 @@ playwright/*-snapshots/
 **/*-snapshots/
 *.png
 
+.vercel

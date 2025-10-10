@@ -4,9 +4,10 @@ generator client {
 
 // Use DATABASE_URL from environment for CI/Prod (Postgres). Fallbacks can be
 // configured locally if needed.
+// For native local development we use SQLite for maximum agility.
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Lead {

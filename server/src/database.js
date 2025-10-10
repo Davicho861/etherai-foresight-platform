@@ -1,5 +1,36 @@
 import neo4j from 'neo4j-driver';
 import 'dotenv/config';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Paths for persisting chroma fallback to disk so native mode can survive restarts
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const FALLBACK_DIR = path.join(__dirname, '..', 'data');
+const FALLBACK_FILE = path.join(FALLBACK_DIR, 'chroma_fallback.json');
+
+async function loadFallbackFromDisk() {
+  try {
+    const txt = await fs.readFile(FALLBACK_FILE, 'utf8');
+    global.__praevisio_chroma_fallback = JSON.parse(txt);
+    console.log('Loaded chroma fallback from disk');
+  } catch (e) {
+    global.__praevisio_chroma_fallback = global.__praevisio_chroma_fallback || {};
+  }
+}
+
+async function persistFallbackToDisk() {
+  try {
+    await fs.mkdir(FALLBACK_DIR, { recursive: true });
+    await fs.writeFile(FALLBACK_FILE, JSON.stringify(global.__praevisio_chroma_fallback || {}, null, 2), 'utf8');
+  } catch (e) {
+    console.warn('Failed to persist chroma fallback to disk:', e.message);
+  }
+}
+
+// Load persisted fallback if present (fire-and-forget)
+loadFallbackFromDisk().catch(() => {});
 
 let chromaClient;
 let neo4jDriver;
@@ -20,6 +51,36 @@ function textToEmbedding(text, dims = 8) {
 }
 
 function getChromaClient() {
+  // If running in native dev mode, avoid calling external Chroma service and
+  // provide an in-memory fallback client so the app remains fully functional
+  // without external dependencies.
+  if (process.env.NATIVE_DEV_MODE === 'true') {
+    if (!chromaClient) {
+      chromaClient = {
+        url: 'native-disabled',
+        async isAlive() { return false; },
+        async ensureCollection() { return; },
+        async upsertLog(missionId, log) {
+          // keep fallback storage in memory
+          const col = `missions_logs`;
+          const text = typeof log === 'string' ? log : (log.description || JSON.stringify(log));
+          const id = `${missionId}-${(Date.now()).toString(36)}-${Math.floor(Math.random() * 10000)}`;
+          const embedding = textToEmbedding(text, 8);
+          if (!global.__praevisio_chroma_fallback) global.__praevisio_chroma_fallback = {};
+          if (!global.__praevisio_chroma_fallback[col]) global.__praevisio_chroma_fallback[col] = [];
+          global.__praevisio_chroma_fallback[col].push({ id, missionId, log, embedding, ts: Date.now() });
+        },
+        async querySimilar(text, topK = 5) {
+          if (global.__praevisio_chroma_fallback && global.__praevisio_chroma_fallback['missions_logs']) {
+            return global.__praevisio_chroma_fallback['missions_logs'].slice(-topK);
+          }
+          return [];
+        }
+      };
+    }
+    return chromaClient;
+  }
+
   if (!chromaClient) {
     chromaClient = {
       url: CHROMA_URL,
@@ -49,31 +110,32 @@ function getChromaClient() {
         const text = typeof log === 'string' ? log : (log.description || JSON.stringify(log));
         const id = `${missionId}-${(Date.now()).toString(36)}-${Math.floor(Math.random() * 10000)}`;
         const embedding = textToEmbedding(text, 8);
-        try {
-          const alive = await this.isAlive();
-          if (!alive) throw new Error('Chroma unreachable');
+          try {
+            const alive = await this.isAlive();
+            if (!alive) throw new Error('Chroma unreachable');
 
-          await this.ensureCollection(col);
+            await this.ensureCollection(col);
 
-          // Try the common Chroma REST shape: /api/collections/{name}/points
-          const body = {
-            ids: [id],
-            embeddings: [embedding],
-            metadatas: [{ missionId, ...(log || {}) }],
-            documents: [text],
-          };
-          await fetch(`${this.url}/api/collections/${encodeURIComponent(col)}/points`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
-        } catch {
-          // Fallback: write to a simple in-memory map so system continues to operate.
-          // For durability, consider writing to disk or a proper Chroma client.
-          if (!global.__praevisio_chroma_fallback) global.__praevisio_chroma_fallback = {};
-          if (!global.__praevisio_chroma_fallback[col]) global.__praevisio_chroma_fallback[col] = [];
-          global.__praevisio_chroma_fallback[col].push({ id, missionId, log, embedding, ts: Date.now() });
-        }
+            // Try the common Chroma REST shape: /api/collections/{name}/points
+            const body = {
+              ids: [id],
+              embeddings: [embedding],
+              metadatas: [{ missionId, ...(log || {}) }],
+              documents: [text],
+            };
+            await fetch(`${this.url}/api/collections/${encodeURIComponent(col)}/points`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body),
+            });
+          } catch {
+            // Fallback: write to a simple in-memory map so system continues to operate.
+            if (!global.__praevisio_chroma_fallback) global.__praevisio_chroma_fallback = {};
+            if (!global.__praevisio_chroma_fallback[col]) global.__praevisio_chroma_fallback[col] = [];
+            global.__praevisio_chroma_fallback[col].push({ id, missionId, log, embedding, ts: Date.now() });
+            // Persist fallback to disk asynchronously (best-effort)
+            persistFallbackToDisk().catch(() => {});
+          }
       },
       async querySimilar(text, topK = 5) {
         try {
@@ -101,6 +163,12 @@ function getChromaClient() {
 }
 
 async function getNeo4jDriver() {
+  // If running in native local mode, skip connecting to Neo4j and return null
+  // so callers can decide to operate in degraded/local mode.
+  if (process.env.NATIVE_DEV_MODE === 'true') {
+    return null;
+  }
+
   if (!neo4jDriver) {
     const host = process.env.NEO4J_HOST || 'localhost';
     const port = process.env.NEO4J_PORT || '7687';

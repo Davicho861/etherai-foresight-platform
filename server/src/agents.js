@@ -13,9 +13,10 @@ class MetatronAgent {
     this.name = name;
     const getLLM = llmMod.getLLM || (llmMod.default && llmMod.default.getLLM);
     this.llm = getLLM ? getLLM() : null;
-    const getChroma = db.getChromaClient || (db.default && db.default.getChromaClient);
-    this.chromaClient = getChroma ? getChroma() : null;
-    this.neo4jDriver = null; // Will be initialized lazily
+  const getChroma = db.getChromaClient || (db.default && db.default.getChromaClient);
+  // In native dev mode, avoid initializing external DB clients
+  this.chromaClient = (process.env.NATIVE_DEV_MODE === 'true') ? null : (getChroma ? getChroma() : null);
+  this.neo4jDriver = null; // Will be initialized lazily
     this.meq = new QuantumEntanglementEngine();
     this.cryptoIntegration = new CryptoIntegration();
   }
@@ -142,8 +143,13 @@ class MetatronAgent {
         try {
           const query = typeof input === 'string' ? input : (input?.context || JSON.stringify(input));
           let similar = [];
-          if (this.chromaClient && this.chromaClient.querySimilar) {
-            similar = await this.chromaClient.querySimilar(query, 5).catch(() => []);
+          if (process.env.NATIVE_DEV_MODE === 'true') {
+            // Skip Chroma queries in native dev mode and return empty
+            similar = [];
+          } else {
+            if (this.chromaClient && this.chromaClient.querySimilar) {
+              similar = await this.chromaClient.querySimilar(query, 5).catch(() => []);
+            }
           }
           if (similar && similar.length > 0) {
             const suggestion = `Se detectaron ${similar.length} eventos similares. Revisar dependencias e identificar flakes.`;
@@ -200,8 +206,12 @@ class MetatronAgent {
         };
 
         // Persistir el informe
-        if (this.chromaClient && this.chromaClient.upsertLog) {
-          await this.chromaClient.upsertLog('wisdom-reports', wisdomReport).catch(() => {});
+        if (process.env.NATIVE_DEV_MODE === 'true') {
+          // Skip persistence in native dev mode
+        } else {
+          if (this.chromaClient && this.chromaClient.upsertLog) {
+            await this.chromaClient.upsertLog('wisdom-reports', wisdomReport).catch(() => {});
+          }
         }
 
         return wisdomReport;
@@ -310,10 +320,15 @@ class MetatronAgent {
         const { signals } = input;
         const correlations = {};
         // Initialize Neo4j driver lazily
-        if (!this.neo4jDriver) {
-          const getNeo = db.getNeo4jDriver || (db.default && db.default.getNeo4jDriver);
-          if (getNeo) {
-            this.neo4jDriver = await getNeo();
+        if (process.env.NATIVE_DEV_MODE === 'true') {
+          // Skip Neo4j initialization in native dev mode
+          this.neo4jDriver = null;
+        } else {
+          if (!this.neo4jDriver) {
+            const getNeo = db.getNeo4jDriver || (db.default && db.default.getNeo4jDriver);
+            if (getNeo) {
+              this.neo4jDriver = await getNeo();
+            }
           }
         }
         const session = this.neo4jDriver ? this.neo4jDriver.session() : null;

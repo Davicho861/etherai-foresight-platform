@@ -17,8 +17,9 @@ const activeMissions = new Map();
 
 class LogosKernel {
   constructor() {
-    this.chromaClient = getChromaClient();
-    this.neo4jDriver = null;
+  // In native dev mode we avoid initializing external services
+  this.chromaClient = (process.env.NATIVE_DEV_MODE === 'true') ? null : getChromaClient();
+  this.neo4jDriver = null;
     this.crews = {
       planning: new MetatronAgent('PlanningCrew'),
       development: new MetatronAgent('DevelopmentCrew'),
@@ -57,8 +58,12 @@ class LogosKernel {
 
   async initializeDrivers() {
     try {
-      this.neo4jDriver = await getNeo4jDriver();
-      console.log('LogosKernel: Neo4j driver initialized successfully');
+      if (process.env.NATIVE_DEV_MODE === 'true') {
+        console.log('LogosKernel: NATIVE_DEV_MODE=true, skipping Neo4j initialization');
+      } else {
+        this.neo4jDriver = await getNeo4jDriver();
+        console.log('LogosKernel: Neo4j driver initialized successfully');
+      }
     } catch (error) {
       console.error('Failed to initialize Neo4j driver in LogosKernel:', error);
     }
@@ -66,8 +71,8 @@ class LogosKernel {
     // Inicializar monitoreo de recursos
     this.startResourceMonitoring();
 
-    // Iniciar flujos perpetuos
-    this.startPerpetualFlows();
+    // Flujos perpetuos desacoplados a funciones serverless para hibernación inteligente
+    console.log('LogosKernel: Perpetual flows decoupled to serverless functions for eternal efficiency');
   }
 
   // Gestión de recursos
@@ -125,153 +130,7 @@ class LogosKernel {
     }
   }
 
-  // Flujos perpetuos
-  startPerpetualFlows() {
-    // Auto-Preservación: Chequeo cada hora con Crew de Calidad y Seguridad
-    this.perpetualFlows.autoPreservation = setInterval(async () => {
-      this.lastRunAutoPreservation = new Date().toISOString();
-      const event = {
-        timestamp: this.lastRunAutoPreservation,
-        flow: 'Auto-Preservación',
-        message: 'Iniciando chequeo de salud completo del sistema'
-      };
-      this.activityFeed.push(event);
-      this.publishToVigilance(`Auto-Preservación: Chequeo de salud iniciado`);
 
-      // Ejecutar QualityCrew para pruebas
-      const qualityResult = await this.crews.quality.run({ changes: [] }); // Simular chequeo
-      const qualityEvent = {
-        timestamp: new Date().toISOString(),
-        flow: 'Auto-Preservación',
-        message: `QualityCrew: ${qualityResult.passed ? 'Todas las pruebas pasaron' : 'Fallo en pruebas'}`
-      };
-      this.activityFeed.push(qualityEvent);
-      this.publishToVigilance(`Auto-Preservación: ${qualityEvent.message}`);
-
-      // Simular Cerbero (Seguridad) - no existe, usar ConsensusAgent
-      const securityAgent = new MetatronAgent('ConsensusAgent');
-      const securityResult = await securityAgent.run({ changes: [] });
-      const securityEvent = {
-        timestamp: new Date().toISOString(),
-        flow: 'Auto-Preservación',
-        message: `Cerbero: ${securityResult.consensus ? 'Sistema seguro' : 'Anomalías detectadas'}`
-      };
-      this.activityFeed.push(securityEvent);
-      this.publishToVigilance(`Auto-Preservación: ${securityEvent.message}`);
-
-      // Si anomalía, iniciar reparación automática
-      if (!qualityResult.passed || !securityResult.consensus) {
-        const anomalyEvent = {
-          timestamp: new Date().toISOString(),
-          flow: 'Auto-Preservación',
-          message: 'Anomalía detectada: iniciando misión de reparación automática'
-        };
-        this.activityFeed.push(anomalyEvent);
-        this.publishToVigilance(`Auto-Preservación: Anomalía detectada - iniciando reparación`);
-
-        // Iniciar Hephaestus para corrección
-        const hephaestus = new MetatronAgent('Hephaestus');
-        await hephaestus.run({ suggestion: 'Reparar anomalías detectadas' });
-        const repairEvent = {
-          timestamp: new Date().toISOString(),
-          flow: 'Auto-Preservación',
-          message: 'Reparación automática completada'
-        };
-        this.activityFeed.push(repairEvent);
-        this.publishToVigilance(`Auto-Preservación: Reparación automática completada`);
-      }
-
-      // Mantener solo últimas 100 entradas
-      if (this.activityFeed.length > 100) this.activityFeed.shift();
-    }, 60000); // Cada minuto para prueba (60,000 ms)
-
-    // Conocimiento: Kairós en ciclo perpetuo de escaneo
-    this.perpetualFlows.knowledge = setInterval(async () => {
-      this.lastRunKnowledge = new Date().toISOString();
-      const scanEvent = {
-        timestamp: this.lastRunKnowledge,
-        flow: 'Conocimiento',
-        message: 'Kairós escaneando fuentes de datos para oportunidades'
-      };
-      this.activityFeed.push(scanEvent);
-      this.publishToVigilance(`Conocimiento: Kairós escaneando oportunidades`);
-
-      // Simular consulta a Kairós
-      const kairosResult = await this.oracle.consultKairos(); // Usar método de MetatronAgent
-      // Si detecta oportunidad, proponer misión
-      if (kairosResult.opportunities.length > 0) {
-        const opportunityEvent = {
-          timestamp: new Date().toISOString(),
-          flow: 'Conocimiento',
-          message: `Nueva oportunidad detectada: ${kairosResult.opportunities[0]}. Proponiendo Misión de Expansión.`
-        };
-        this.activityFeed.push(opportunityEvent);
-        this.publishToVigilance(`Conocimiento: Nueva oportunidad detectada - ${kairosResult.opportunities[0]}`);
-        // Aquí podría iniciar una misión automáticamente
-      }
-    }, 5000); // Cada 5 segundos (para prueba)
-
-    // Profecía: Servicio continuo de predicción
-    this.perpetualFlows.prophecy = setInterval(async () => {
-      this.lastRunProphecy = new Date().toISOString();
-      const prophecyEvent = {
-        timestamp: this.lastRunProphecy,
-        flow: 'Profecía',
-        message: 'Actualizando índices de riesgo global en tiempo real'
-      };
-      this.activityFeed.push(prophecyEvent);
-      this.publishToVigilance(`Profecía: Actualizando índices de riesgo global`);
-
-      try {
-        // Ejecutar agentes de predicción para LATAM
-        const dataAcquisitionAgent = new MetatronAgent('DataAcquisitionAgent');
-        const data = await dataAcquisitionAgent.run({ countries: ['COL', 'PER', 'ARG'], gdeltCodes: ['CO', 'PE', 'AR'] });
-
-        const signalAnalysisAgent = new MetatronAgent('SignalAnalysisAgent');
-        const signals = await signalAnalysisAgent.run({ data });
-
-        const causalCorrelationAgent = new MetatronAgent('CausalCorrelationAgent');
-        const correlations = await causalCorrelationAgent.run({ signals });
-
-        const riskAssessmentAgent = new MetatronAgent('RiskAssessmentAgent');
-        const risks = await riskAssessmentAgent.run({ correlations });
-
-        // Actualizar riskIndices
-        this.riskIndices = {};
-        for (const [country, risk] of Object.entries(risks)) {
-          const level = risk > 7 ? 'Alto' : risk > 4 ? 'Medio' : 'Bajo';
-          this.riskIndices[country] = { riskScore: risk, level };
-        }
-
-        // Generar alerta si supera umbral
-        for (const [country, data] of Object.entries(this.riskIndices)) {
-          if (data.riskScore > 7) {
-            const alertEvent = {
-              timestamp: new Date().toISOString(),
-              flow: 'Profecía',
-              message: `Alerta Predictiva: Índice de riesgo en ${country} superó umbral crítico (${data.riskScore.toFixed(1)})`
-            };
-            this.activityFeed.push(alertEvent);
-            this.publishToVigilance(`Profecía: ALERTA - Riesgo alto en ${country} (${data.riskScore.toFixed(1)})`);
-
-            // Generar informe automático
-            const reportAgent = new MetatronAgent('ReportGenerationAgent');
-            await reportAgent.run({ risks, correlations });
-          }
-        }
-      } catch (error) {
-        // Silenciar errores de integraciones para evitar ruido en logs
-        console.log('Profecía: Usando datos de fallback debido a error en integraciones externas');
-        this.publishToVigilance(`Profecía: Actualización completada con datos de fallback`);
-      }
-    }, 8000); // Cada 8 segundos (para prueba)
-  }
-
-  stopPerpetualFlows() {
-    Object.values(this.perpetualFlows).forEach(flow => {
-      if (flow) clearInterval(flow);
-    });
-  }
 
   async startMission(missionId, missionContract, logCallback) {
     activeMissions.set(missionId, { logs: [], status: 'running' });
@@ -289,25 +148,33 @@ class LogosKernel {
       }
       // Persist log to Chroma (best-effort)
       try {
-        if (this.chromaClient && this.chromaClient.upsertLog) {
-          this.chromaClient.upsertLog(missionId, task).catch(() => {});
+        if (process.env.NATIVE_DEV_MODE === 'true') {
+          // In native dev mode we skip best-effort persistence to external DBs
+        } else {
+          if (this.chromaClient && this.chromaClient.upsertLog) {
+            this.chromaClient.upsertLog(missionId, task).catch(() => {});
+          }
         }
       } catch { /* ignore persistence errors */ }
       // Persist to Neo4j (best-effort): create a Mission node and a Log node
       try {
-        if (this.neo4jDriver) {
-          const session = this.neo4jDriver.session();
-          const q = `MERGE (m:Mission {id: $missionId})
-                      MERGE (l:Log {id: $logId})
-                      SET l += $logProps
-                      MERGE (m)-[:HAS_LOG]->(l)`;
-          const params = {
-            missionId,
-            logId: task.taskId || (`log-${Date.now()}-${Math.floor(Math.random()*10000)}`),
-            logProps: { ...task, ts: Date.now() }
-          };
-          // Ensure we catch async errors from the driver so they don't become unhandled
-          session.run(q, params).catch(() => { /* ignore runtime errors */ }).finally(() => session.close());
+        if (process.env.NATIVE_DEV_MODE === 'true') {
+          // Skip neo4j persistence in native dev mode
+        } else {
+          if (this.neo4jDriver) {
+            const session = this.neo4jDriver.session();
+            const q = `MERGE (m:Mission {id: $missionId})
+                        MERGE (l:Log {id: $logId})
+                        SET l += $logProps
+                        MERGE (m)-[:HAS_LOG]->(l)`;
+            const params = {
+              missionId,
+              logId: task.taskId || (`log-${Date.now()}-${Math.floor(Math.random()*10000)}`),
+              logProps: { ...task, ts: Date.now() }
+            };
+            // Ensure we catch async errors from the driver so they don't become unhandled
+            session.run(q, params).catch(() => { /* ignore runtime errors */ }).finally(() => session.close());
+          }
         }
       } catch { /* ignore neo4j errors */ }
     };
@@ -458,12 +325,16 @@ class LogosKernel {
   getVigilanceStatus() {
     return {
       flows: {
-        autoPreservation: { active: this.perpetualFlows.autoPreservation !== null, lastRun: this.lastRunAutoPreservation },
-        knowledge: { active: this.perpetualFlows.knowledge !== null, lastRun: this.lastRunKnowledge },
-        prophecy: { active: this.perpetualFlows.prophecy !== null, lastRun: this.lastRunProphecy },
+        autoPreservation: { active: 'serverless', decoupled: true, endpoint: '/api/auto-preservation' },
+        knowledge: { active: 'serverless', decoupled: true, endpoint: '/api/knowledge' },
+        prophecy: { active: 'serverless', decoupled: true, endpoint: '/api/prophecy' },
       },
       riskIndices: this.riskIndices,
       activityFeed: this.activityFeed,
+      hibernation: {
+        status: 'enabled',
+        reason: 'Perpetual flows decoupled to serverless functions for eternal efficiency'
+      }
     };
   }
 

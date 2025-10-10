@@ -24,6 +24,7 @@ import demoRouter from './routes/demo.js';
 import foodResilienceRouter from './routes/food-resilience.js';
 import globalRiskRouter from './routes/globalRiskRoutes.js';
 import seismicRouter from './routes/seismic.js';
+import communityResilienceRouter from './routes/community-resilience.js';
 import sseTokenService from './sseTokenService.js';
 import { runProphecyCycle, getRiskIndices } from './services/predictionEngine.js';
 
@@ -83,6 +84,7 @@ async function main() {
   app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
+  app.use('/api/community-resilience', bearerAuth, communityResilienceRouter);
 
   // Ethical Assessment endpoint
   app.get('/api/ethical-assessment', bearerAuth, (req, res) => {
