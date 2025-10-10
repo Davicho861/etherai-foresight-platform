@@ -22,6 +22,18 @@ interface SeismicMapWidgetProps {
   seismicData?: any[];
 }
 
+/**
+ * Normalize various external seismic payload shapes into an array of features.
+ * Exported as a helper for testing.
+ */
+export const normalizeSeismicRaw = (raw: any): any[] => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (raw.events && Array.isArray(raw.events)) return raw.events;
+  if (raw.features && Array.isArray(raw.features)) return raw.features;
+  return [];
+};
+
 const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSeismicData }) => {
   const [magnitudeFilter, setMagnitudeFilter] = useState<number>(4.0);
   const [hoveredEvent, setHoveredEvent] = useState<any>(null);
@@ -30,7 +42,9 @@ const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSe
   const [error, setError] = useState<string | null>(null);
 
   // Use prop data if available, otherwise use local data
-  const seismicData = propSeismicData || localSeismicData;
+    const seismicDataRaw = propSeismicData ?? localSeismicData;
+
+    const seismicArray: any[] = React.useMemo(() => normalizeSeismicRaw(seismicDataRaw), [seismicDataRaw]);
 
   useEffect(() => {
     if (propSeismicData) {
@@ -57,7 +71,36 @@ const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSe
   }, [propSeismicData]);
 
   // Filter events by magnitude and focus on LATAM region
-  const filteredEvents = seismicData?.filter((event: any) => {
+  // Normalize each event to a consistent geojson-like shape: { id, properties: { mag, place, time }, geometry: { coordinates: [lon, lat, depth] } }
+  const normalizedEvents = seismicArray.map((e: any, idx: number) => {
+    // If it already looks like geojson feature, return as-is
+    if (e && e.properties && e.geometry && Array.isArray(e.geometry.coordinates)) {
+      return e;
+    }
+
+    // Common alternative shapes: { coordinates: [...], magnitude / mag, place, time }
+    const coords = e.coordinates || e.geometry?.coordinates || e.geom || e.coords || [0, 0, 0];
+    const mag = e.properties?.mag ?? e.magnitude ?? e.mag ?? 0;
+    const place = e.properties?.place ?? e.place ?? e.description ?? 'Desconocido';
+    const time = e.properties?.time ?? e.time ?? Date.now();
+
+    return {
+      id: e.id ?? `evt-${idx}-${time}`,
+      properties: {
+        mag,
+        place,
+        time,
+        tsunami: e.properties?.tsunami ?? e.tsunami ?? 0,
+        sig: e.properties?.sig ?? e.sig ?? 0,
+        url: e.properties?.url ?? e.url ?? null
+      },
+      geometry: {
+        coordinates: coords
+      }
+    };
+  });
+
+  const filteredEvents = normalizedEvents.filter((event: any) => {
     const mag = event.properties?.mag || 0;
     const [lon, lat] = event.geometry?.coordinates || [0, 0];
 
@@ -114,6 +157,13 @@ const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSe
           <div>
             <CardTitle className="text-white">Monitoreo Sísmico LATAM</CardTitle>
             <p className="text-gray-400 text-sm">Eventos sísmicos en tiempo real</p>
+          </div>
+          {/* Show mock indicator when data source is mocked */}
+          <div>
+            {((seismicDataRaw && seismicDataRaw.isMock) || (seismicDataRaw && seismicDataRaw.__meta && seismicDataRaw.__meta.isMock) ||
+              (seismicDataRaw && seismicDataRaw.source && seismicDataRaw.source === 'builtin-mock')) && (
+              <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-600 text-black">SIMULADO</span>
+            )}
           </div>
           <Select value={magnitudeFilter.toString()} onValueChange={(value) => setMagnitudeFilter(parseFloat(value))}>
             <SelectTrigger className="w-32 bg-gray-700 border-gray-600 text-white">

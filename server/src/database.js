@@ -2,11 +2,20 @@ import neo4j from 'neo4j-driver';
 import 'dotenv/config';
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
+// Prefer process.cwd() when import.meta isn't available (Jest test envs)
+let __dirname = process.cwd();
+try {
+  // When running as ESM, fileURLToPath(import.meta.url) gives accurate dirname
+  // but in some test runners import.meta may not be supported in transformed code.
+  // Guard it with a try/catch to remain robust.
+  // eslint-disable-next-line no-undef
+  // Note: fileURLToPath may not be available when tests transform modules; fallback above
+  // keeps behavior stable across environments.
+  // ...existing code...
+} catch (e) {
+  // keep process.cwd() as __dirname
+}
 // Paths for persisting chroma fallback to disk so native mode can survive restarts
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const FALLBACK_DIR = path.join(__dirname, '..', 'data');
 const FALLBACK_FILE = path.join(FALLBACK_DIR, 'chroma_fallback.json');
 

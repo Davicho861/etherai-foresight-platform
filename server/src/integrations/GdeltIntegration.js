@@ -3,18 +3,43 @@ import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } fr
 class GdeltIntegration {
   constructor() {
     const native = process.env.NATIVE_DEV_MODE === 'true';
+    const forceMocks = process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1';
     const gdeltMockPort = process.env.GDELT_MOCK_PORT || 4020;
     this.baseUrl = native
       ? `http://localhost:${gdeltMockPort}/gdelt/events`
       : (process.env.TEST_MODE === 'true'
         ? 'http://mock-api-server:3001/gdelt' // internal mock server used in CI
         : 'https://api.gdeltproject.org/api/v2/doc/doc');
-    this.circuitBreaker = new CircuitBreaker(5, 600000); // 5 failures, 10 min recovery (GDELT rate limits are stricter)
+    this.forceMocks = forceMocks;
+    // Use shorter circuit breaker window in tests to avoid long waits/logs
+    const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';
+    this.circuitBreaker = new CircuitBreaker(isTest ? 1 : 5, isTest ? 1000 : 600000); // failures, recovery ms
   }
 
   async getSocialEvents(country, startDate, endDate) {
+    // If forced mocks are enabled, return a high-fidelity mock immediately
+    if (this.forceMocks) {
+      return {
+        country,
+        period: { start: startDate, end: endDate },
+        eventCount: 12,
+        socialIntensity: 18.5,
+        articles: [
+          { title: 'Community protest over food prices', url: 'http://example.org/article/1', themes: 'PROTEST;ECONOMY' },
+          { title: 'Strike affects supply chains', url: 'http://example.org/article/2', themes: 'STRIKE;ECONOMY' }
+        ],
+        isMock: true,
+        source: 'FORCE_MOCKS:GDELT'
+      };
+    }
     try {
       const result = await this.circuitBreaker.execute(async () => {
+        // Reduce retries/delays when running tests to keep test suites fast and deterministic
+        const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true' || process.env.CI === 'true';
+        const retries = isTest ? 1 : 3;
+        const baseDelay = isTest ? 50 : 5000; // ms
+        const maxDelay = isTest ? 200 : 30000; // ms
+
         return await retryWithBackoff(async () => {
           // GDELT API query for social unrest events
           // Using keywords like protest, riot, etc.
@@ -76,13 +101,27 @@ class GdeltIntegration {
             articles: events.slice(0, 10), // Top 10 articles
             isMock: false
           };
-        }, 3, 5000, 30000); // 3 retries, base delay 5s, max 30s for rate limits
+        }, retries, baseDelay, maxDelay); // configurable retries/delays (shorter in tests)
       });
 
       return result;
 
     } catch (error) {
-      console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}. No fallback to mock data.`);
+      console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}.`);
+
+      // If forceMocks is enabled at runtime env var (fallback) return mock
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        return {
+          country,
+          period: { start: startDate, end: endDate },
+          eventCount: 0,
+          socialIntensity: 0,
+          articles: [],
+          isMock: true,
+          source: 'FORCE_MOCKS:GDELT',
+          note: `Returned mock due to error: ${error.message}`
+        };
+      }
 
       // No fallback to mock data - return error indication
       return {

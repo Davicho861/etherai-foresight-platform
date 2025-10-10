@@ -53,6 +53,28 @@ function cleanupExpired() {
   }
 }
 
-setInterval(cleanupExpired, 60 * 1000).unref && setInterval(cleanupExpired, 60 * 1000).unref();
+let _cleanupInterval = null;
+function startCleanupInterval() {
+  if (process.env.NODE_ENV === 'test' || process.env.DISABLE_BACKGROUND_TASKS === 'true') return;
+  if (_cleanupInterval) return;
+  _cleanupInterval = setInterval(cleanupExpired, 60 * 1000);
+  if (_cleanupInterval.unref) _cleanupInterval.unref();
+}
 
-export default { generateToken, validateToken };
+function stopCleanupInterval() {
+  if (_cleanupInterval) {
+    clearInterval(_cleanupInterval);
+    _cleanupInterval = null;
+  }
+}
+
+// Export functions for explicit lifecycle management
+export function initialize() {
+  startCleanupInterval();
+}
+
+export function shutdown() {
+  stopCleanupInterval();
+}
+
+export default { generateToken, validateToken, initialize, shutdown };

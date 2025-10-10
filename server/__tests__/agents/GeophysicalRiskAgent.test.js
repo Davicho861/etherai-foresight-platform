@@ -29,6 +29,7 @@ describe('GeophysicalRiskAgent', () => {
         time: 1672531200000,
         url: 'http://earthquake.usgs.gov/test',
         tsunami: { warning: 0 },
+        riskScore: 52,
       },
     ];
 

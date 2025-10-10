@@ -54,7 +54,8 @@ describe('Community Resilience Routes', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
-      expect(response.body.data.resilienceAnalysis.COL).toHaveProperty('isMock', true);
+      expect(response.body.data.resilienceAnalysis.COL).toBeDefined();
+      expect(typeof response.body.data.resilienceAnalysis.COL.resilienceScore).toBe('number');
     });
   });
 

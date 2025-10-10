@@ -36,6 +36,13 @@ const CommandCenterLayout: React.FC = () => {
   const [dark, setDark] = useState(document.documentElement.classList.contains('dark'));
   const [platformStatus, setPlatformStatus] = useState<PlatformStatus | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
+  const [isMockMode, setIsMockMode] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('NATIVE_DEV_MODE') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
 
   useEffect(() => {
     if (dark) document.documentElement.classList.add('dark');
@@ -49,7 +56,23 @@ const CommandCenterLayout: React.FC = () => {
       try {
         const token = (typeof window !== 'undefined' && window.localStorage.getItem('praevisio_token')) || 'demo-token';
         console.log('token:', token);
-        const isTestMode = import.meta.env.TEST_MODE === 'true';
+        // Safe runtime env accessor to avoid import.meta usage (Jest/Node incompatibilities)
+        const getEnvFlag = (key: string) => {
+          try {
+            // Prefer a runtime-injected global
+            if (typeof (globalThis as any).__RUNTIME_ENV__ !== 'undefined' && (globalThis as any).__RUNTIME_ENV__[key]) {
+              return String((globalThis as any).__RUNTIME_ENV__[key]);
+            }
+            // Fallback to process.env when available (tests)
+            if (typeof process !== 'undefined' && process.env && process.env[key]) {
+              return String(process.env[key]);
+            }
+          } catch (e) {
+            // ignore
+          }
+          return undefined;
+        };
+        const isTestMode = getEnvFlag('TEST_MODE') === 'true';
         const url = isTestMode ? 'http://localhost:3001/api/platform-status' : '/api/platform-status';
         console.log('fetching:', url, 'testMode:', isTestMode);
         const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
@@ -70,8 +93,30 @@ const CommandCenterLayout: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const getEnvFlagTop = (key: string) => {
+    try {
+      if (typeof (globalThis as any).__RUNTIME_ENV__ !== 'undefined' && (globalThis as any).__RUNTIME_ENV__[key]) {
+        return String((globalThis as any).__RUNTIME_ENV__[key]);
+      }
+      if (typeof process !== 'undefined' && process.env && process.env[key]) {
+        return String(process.env[key]);
+      }
+    } catch (e) {
+      // ignore
+    }
+    return undefined;
+  };
+
+  const globalMockActive = (getEnvFlagTop('FORCE_MOCKS') === 'true') || isMockMode;
+
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      {/* Global mock/banner indicator */}
+      {globalMockActive && (
+        <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="px-3 py-1 rounded-full bg-yellow-600 text-black text-sm font-semibold">MODO SIMULADO</div>
+        </div>
+      )}
       <aside className={`flex flex-col ${collapsed ? 'w-16' : 'w-64'} bg-etherblue-dark/80 text-white border-r border-gray-800 transition-all`} data-testid="sidebar-nav">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
@@ -112,9 +157,30 @@ const CommandCenterLayout: React.FC = () => {
               {!collapsed && <div className="text-sm">Nombre de Analista<br/><span className="text-xs text-gray-300">Estratega de Riesgos</span></div>}
             </div>
             {!collapsed && (
-              <button onClick={() => setDark(d => !d)} className="p-2 rounded hover:bg-white/5" data-testid="theme-toggle-btn">
-                {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
+              <div className="flex items-center space-x-2">
+                <button onClick={() => setDark(d => !d)} className="p-2 rounded hover:bg-white/5" data-testid="theme-toggle-btn">
+                  {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
+
+                {/* Toggle for mock mode (stores flag in localStorage) */}
+                <button
+                  onClick={() => {
+                    try {
+                      const next = !isMockMode;
+                      setIsMockMode(next);
+                      if (typeof window !== 'undefined' && window.localStorage) {
+                        window.localStorage.setItem('NATIVE_DEV_MODE', next ? 'true' : 'false');
+                      }
+                    } catch (e) {
+                      // ignore
+                    }
+                  }}
+                  className={`px-2 py-1 rounded text-xs ${isMockMode ? 'bg-yellow-600 text-black' : 'bg-gray-700 text-white'}`}
+                  data-testid="mock-toggle-btn"
+                >
+                  {isMockMode ? 'SIMULADO ON' : 'SIMULADO OFF'}
+                </button>
+              </div>
             )}
           </div>
         </div>

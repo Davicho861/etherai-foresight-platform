@@ -9,7 +9,9 @@ import { calculateEthicalVector } from './ethicalVectorModule.js';
 import cache from '../cache.js';
 
 // This would be stored in a more secure and dynamic configuration in a real system.
-const PRAEVISIO_API_BASE_URL = `http://localhost:${process.env.PORT || 4001}`;
+// Use native dev port when NATIVE_DEV_MODE is enabled (server runs on 4003 in native mode)
+const DEFAULT_PORT = process.env.NATIVE_DEV_MODE === 'true' ? 4003 : (process.env.PORT ? Number(process.env.PORT) : 4001);
+const PRAEVISIO_API_BASE_URL = `http://localhost:${DEFAULT_PORT}`;
 const AUTH_TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 const predictionState = {
@@ -68,6 +70,40 @@ async function fetchInternalData(endpoint) {
   if (cached) {
     console.log(`[PredictionEngine] Using cached data for ${endpoint}`);
     return cached;
+  }
+
+  // If FORCE_MOCKS is enabled, return high-fidelity simulated internal data
+  if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+    console.log(`[PredictionEngine] FORCE_MOCKS enabled - returning mocked data for ${endpoint}`);
+    let mock;
+    if (endpoint === '/api/global-risk/food-security') {
+      mock = {
+        source: 'FORCE_MOCKS:WorldBank',
+        data: {
+          COL: { value: 7.5, year: '2023' },
+          PER: { value: 9.2, year: '2023' },
+          ARG: { value: 6.1, year: '2023' }
+        }
+      };
+    } else if (endpoint === '/api/seismic/activity') {
+      mock = [
+        { id: 'evt1', place: 'Near Lima, Peru', magnitude: 5.8, coordinates: [-76.5, -12.0], time: Date.now() - 3600000 },
+        { id: 'evt2', place: 'Offshore Colombia', magnitude: 6.4, coordinates: [-74.0, 5.0], time: Date.now() - 7200000 }
+      ];
+    } else if (endpoint === '/api/global-risk/climate-extremes') {
+      mock = {
+        source: 'FORCE_MOCKS:Climate',
+        data: [
+          { country: 'COL', extremeEvents: 3, riskLevel: 'medium' },
+          { country: 'PER', extremeEvents: 5, riskLevel: 'high' },
+          { country: 'ARG', extremeEvents: 1, riskLevel: 'low' }
+        ]
+      };
+    } else {
+      mock = { ok: true, data: {} };
+    }
+    cache.set(cacheKey, mock, 5 * 60 * 1000);
+    return mock;
   }
 
   try {

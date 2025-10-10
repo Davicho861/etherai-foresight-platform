@@ -58,6 +58,27 @@ class SimpleCache {
 const cache = new SimpleCache();
 
 // Cleanup expired entries every 5 minutes
-setInterval(() => cache.cleanup(), 5 * 60 * 1000);
+let _cacheCleanupHandle = null;
+function startCacheCleanup() {
+  if (process.env.NODE_ENV === 'test' || process.env.DISABLE_BACKGROUND_TASKS === 'true') return;
+  if (_cacheCleanupHandle) return;
+  _cacheCleanupHandle = setInterval(() => cache.cleanup(), 5 * 60 * 1000);
+}
+
+function stopCacheCleanup() {
+  if (_cacheCleanupHandle) {
+    clearInterval(_cacheCleanupHandle);
+    _cacheCleanupHandle = null;
+  }
+}
+
+// Export functions for explicit lifecycle management
+export function initialize() {
+  startCacheCleanup();
+}
+
+export function shutdown() {
+  stopCacheCleanup();
+}
 
 export default cache;

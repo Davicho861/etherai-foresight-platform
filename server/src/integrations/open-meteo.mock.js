@@ -3,6 +3,19 @@ import axios from 'axios';
 
 // Wrapper for Open-Meteo calls that respects TEST_MODE and returns a normalized shape
 export async function fetchRecentTemperature(lat, lon) {
+  // If forced mocks are enabled, return a deterministic built-in mock quickly
+  if (process.env.FORCE_MOCKS === 'true') {
+    return {
+      temperature: 25.0,
+      humidity: 60,
+      precipitation_probability: 5,
+      weather_code: 1,
+      wind_speed: 3.4,
+      source: 'builtin-mock',
+      isMock: true
+    };
+  }
+
   try {
     const native = process.env.NATIVE_DEV_MODE === 'true';
     const openMeteoMockPort = process.env.OPEN_METEO_MOCK_PORT || 4030;
@@ -28,12 +41,32 @@ export async function fetchRecentTemperature(lat, lon) {
     };
   } catch (error) {
     console.error('Error fetching from Open Meteo:', error && error.message ? error.message : error);
-    // No fallback to mock values - return error indication
-    return { error: error.message || error, lat, lon };
+    // Return an informative mock rather than raw error to keep flows resilient
+    return { error: error.message || error, lat, lon, source: 'error-mock', isMock: true };
   }
 }
 
 export async function fetchClimatePrediction(lat, lon, days = 7) {
+  // Respect FORCE_MOCKS and return a predictable daily forecast
+  if (process.env.FORCE_MOCKS === 'true') {
+    const daysArr = Array.from({ length: days }).map((_, i) => ({
+      day: i + 1,
+      temperature_2m_max: 28 + i % 3,
+      temperature_2m_min: 18 - (i % 2),
+      precipitation_sum: Math.max(0, (i % 5) - 2),
+      weathercode: 1
+    }));
+    return {
+      time: daysArr.map((d, i) => new Date(Date.now() + i * 24 * 3600 * 1000).toISOString().slice(0, 10)),
+      temperature_2m_max: daysArr.map(d => d.temperature_2m_max),
+      temperature_2m_min: daysArr.map(d => d.temperature_2m_min),
+      precipitation_sum: daysArr.map(d => d.precipitation_sum),
+      weathercode: daysArr.map(d => d.weathercode),
+      source: 'builtin-mock',
+      isMock: true
+    };
+  }
+
   try {
     const native = process.env.NATIVE_DEV_MODE === 'true';
     const openMeteoMockPort = process.env.OPEN_METEO_MOCK_PORT || 4030;
@@ -45,7 +78,7 @@ export async function fetchClimatePrediction(lat, lon, days = 7) {
     return (response.data && response.data.daily) ? response.data.daily : null;
   } catch (error) {
     console.error('Error fetching climate prediction:', error && error.message ? error.message : error);
-    // No fallback - return error indication
-    return { error: error.message || error, lat, lon, days };
+    // Return a small mock so callers get consistent shape
+    return { error: error.message || error, lat, lon, days, source: 'error-mock', isMock: true };
   }
 }

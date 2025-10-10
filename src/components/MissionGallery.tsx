@@ -69,20 +69,24 @@ const MissionGallery: React.FC = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {taskReplays.map((replay) => (
-        <Card
-          key={replay.id}
-          className="bg-gray-800 text-white cursor-pointer hover:bg-gray-700 transition-colors"
-          onClick={() => handleReplaySelect(replay)}
-        >
-          <CardHeader>
-            <CardTitle className="text-lg">{replay.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-400">{replay.description}</p>
-          </CardContent>
-        </Card>
-      ))}
+      {taskReplays.map((replay, idx) => {
+        // Ensure a stable unique key: prefer replay.id but fallback to id+index if needed
+        const key = replay.id ? `${replay.id}-${idx}` : `replay-${idx}`;
+        return (
+          <Card
+            key={key}
+            className="bg-gray-800 text-white cursor-pointer hover:bg-gray-700 transition-colors"
+            onClick={() => handleReplaySelect(replay)}
+          >
+            <CardHeader>
+              <CardTitle className="text-lg">{replay.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-400">{replay.description}</p>
+            </CardContent>
+          </Card>
+        );
+      })}
 
       {selectedReplay && (
         <div className="col-span-full mt-8">
