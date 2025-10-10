@@ -32,6 +32,19 @@
     - Integración ética vectorial para evaluaciones de impacto ambiental.
 - **Estado:** **COMPLETADO**
 
+## Misiones en Progreso
+
+### MIS-012: Expansión de Cobertura de Tests a 85%
+- **Objetivo:** Aumentar la cobertura de pruebas unitarias del 81.4% al 85% para fortalecer la auto-preservación y asegurar evolución robusta.
+- **Agente Líder:** Cronos (Tiempo)
+- **Criterios de Éxito:**
+    - Cobertura general ≥85% (statements, branches, functions, lines)
+    - Tests para componentes críticos sin cobertura (HeroSection, FeaturesSection, etc.)
+    - Tests para módulos de predicción y ética
+    - Validación con npm test y npx playwright test
+    - Commit en main con mejoras de cobertura
+- **Estado:** **EN PROGRESO**
+
 ## Misiones Completadas
 
 ### MIS-003: Expansión de IA Ética
