@@ -40,12 +40,99 @@ class MetatronAgent {
   }
 
   async consultKairos() {
-    // Simular consulta a Kairós sobre el estado del mundo
+    const fs = await import('fs');
+    let kanbanContent = '';
+    try {
+      kanbanContent = fs.readFileSync('docs/PROJECT_KANBAN.md', 'utf8');
+    } catch (error) {
+      console.warn('No se pudo leer PROJECT_KANBAN.md:', error.message);
+    }
+
+    // Analizar tareas pendientes en kanban
+    const pendingTasks = this.extractPendingTasks(kanbanContent);
+
+    // Obtener tendencias globales de APIs
+    let globalTrends = {};
+    try {
+      const gdelt = new GdeltIntegration();
+      const endDate = new Date().toISOString().split('T')[0];
+      const startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // Última semana
+      const socialData = await gdelt.getSocialEvents('COL', startDate, endDate); // Ejemplo para Colombia
+      globalTrends.socialEvents = socialData.eventCount || 0;
+    } catch (error) {
+      console.warn('Error obteniendo tendencias sociales:', error.message);
+      globalTrends.socialEvents = 0;
+    }
+
+    try {
+      const cryptoData = await this.cryptoIntegration.getCryptoData(['bitcoin']);
+      globalTrends.cryptoVolatility = cryptoData.length > 0 ? this.calculateVolatility(cryptoData[0].price_change_percentage_24h ? [cryptoData[0].current_price] : []) : 0;
+    } catch (error) {
+      console.warn('Error obteniendo tendencias cripto:', error.message);
+      globalTrends.cryptoVolatility = 0;
+    }
+
+    // Usar LLM para generar oportunidades basadas en kanban, tareas pendientes y tendencias globales
+    let opportunities = ['Integración de IA ética', 'Desarrollo de resiliencia comunitaria']; // Fallback
+    if (this.llm) {
+      try {
+        const prompt = `Eres Kairós, el agente de oportunidades estratégicas. Basado en el estado del proyecto Kanban, tareas pendientes, tendencias globales recientes, y riesgos globales actuales (volatilidad cripto-económica, inestabilidad social en LATAM, cambios climáticos extremos), identifica 3-5 oportunidades de misión estratégicas de alto impacto que podrían expandir las capacidades del sistema Praevisio AI. Cada oportunidad debe ser específica, alineada con el propósito de ética cuántica y trascendencia, y abordar gaps en el kanban, tendencias o riesgos.
+
+Estado del Kanban:
+${kanbanContent}
+
+Tareas Pendientes: ${pendingTasks.join(', ')}
+
+Tendencias Globales: Eventos sociales recientes: ${globalTrends.socialEvents}, Volatilidad cripto: ${globalTrends.cryptoVolatility}
+
+Oportunidades deben ser innovadoras y no obvias. Responde en formato JSON: {"opportunities": ["oportunidad1", "oportunidad2", ...]}`;
+
+        const llmResp = await (this.llm.call ? this.llm.call(prompt) : this.llm.generate(prompt));
+        const text = (typeof llmResp === 'string') ? llmResp : (llmResp?.generations?.[0]?.[0]?.text || JSON.stringify(llmResp));
+        const parsed = JSON.parse(text);
+        if (parsed.opportunities && Array.isArray(parsed.opportunities)) {
+          opportunities = parsed.opportunities;
+        }
+      } catch (error) {
+        console.warn('Error generando oportunidades con LLM:', error.message);
+      }
+    }
+
     return {
       globalRisks: ['Volatilidad cripto-económica', 'Inestabilidad social en LATAM', 'Cambios climáticos extremos'],
-      opportunities: ['Integración de IA ética', 'Desarrollo de resiliencia comunitaria'],
+      opportunities: opportunities,
+      globalTrends: globalTrends,
       timestamp: new Date().toISOString()
     };
+  }
+
+  extractPendingTasks(kanbanContent) {
+    // Extraer tareas de las columnas "Backlog" y "Por Hacer"
+    const lines = kanbanContent.split('\n');
+    const pendingTasks = [];
+    let inBacklog = false;
+    let inTodo = false;
+
+    for (const line of lines) {
+      if (line.includes('| Backlog |')) {
+        inBacklog = true;
+        inTodo = false;
+      } else if (line.includes('| Por Hacer |')) {
+        inTodo = true;
+        inBacklog = false;
+      } else if (line.includes('| En Progreso |')) {
+        inBacklog = false;
+        inTodo = false;
+      } else if ((inBacklog || inTodo) && line.includes('| [') && line.includes('](')) {
+        // Extraer tarea, e.g., [Crear guía de contribución](...)
+        const match = line.match(/\| \[([^\]]+)\]\([^)]+\)/);
+        if (match) {
+          pendingTasks.push(match[1]);
+        }
+      }
+    }
+
+    return pendingTasks;
   }
 
   analyzeSystemCapabilities() {
