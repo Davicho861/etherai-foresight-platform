@@ -4,16 +4,16 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NativeModeBanner from "./components/NativeModeBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Lazy load pages for code splitting
 const Index = React.lazy(() => import("./pages/Index"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const ModuleColombia = React.lazy(() => import("./pages/ModuleColombia"));
 const PricingPage = React.lazy(() => import("./pages/PricingPage"));
-const DemoPage = React.lazy(() => import("./pages/DemoPage"));
 const FoodResiliencePage = React.lazy(() => import("./pages/FoodResiliencePage"));
 const MetatronPanel = React.lazy(() => import("./components/MetatronPanel"));
+const DemoPage = React.lazy(() => import("./pages/DemoPage"));
 
 const queryClient = new QueryClient();
 

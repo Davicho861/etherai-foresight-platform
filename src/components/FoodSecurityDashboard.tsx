@@ -33,7 +33,7 @@ const FoodSecurityDashboard: React.FC = () => {
         });
         if (response.ok) {
           const data: FoodSecurityResponse = await response.json();
-          setFoodData(data.data);
+          setFoodData(Array.isArray(data.data) ? data.data : []);
         } else {
           throw new Error('Failed to fetch food security data');
         }
@@ -49,21 +49,21 @@ const FoodSecurityDashboard: React.FC = () => {
   }, []);
 
   // Get unique countries
-  const countries = [...new Set(foodData.map(d => d.country))];
+  const countries = Array.isArray(foodData) ? [...new Set(foodData.map(d => d.country))] : [];
 
   // Filter data for selected country
-  const countryData = foodData.filter(d => d.country === selectedCountry);
+  const countryData = Array.isArray(foodData) ? foodData.filter(d => d.country === selectedCountry) : [];
 
   // Prepare chart data
-  const chartData = countryData.map(d => ({
+  const chartData = Array.isArray(countryData) ? countryData.map(d => ({
     year: d.year,
     prevalence: d.prevalenceUndernourishment,
     riskIndex: d.riskIndex,
     volatility: d.volatilityIndex,
-  }));
+  })) : [];
 
   // Get latest data for selected country
-  const latestData = countryData.sort((a, b) => b.year - a.year)[0];
+  const latestData = Array.isArray(countryData) && countryData.length > 0 ? countryData.sort((a, b) => b.year - a.year)[0] : null;
 
   const getRiskColor = (risk: number) => {
     if (risk >= 70) return 'text-red-400';
@@ -119,7 +119,7 @@ const FoodSecurityDashboard: React.FC = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-gray-700 border-gray-600">
-                {countries.map(country => (
+                {Array.isArray(countries) && countries.map(country => (
                   <SelectItem key={country} value={country} className="text-white">
                     {country}
                   </SelectItem>

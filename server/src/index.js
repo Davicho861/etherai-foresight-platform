@@ -111,6 +111,11 @@ async function main() {
     setTimeout(async () => {
       await runProphecyCycle();
       console.log('[Aion] First prophecy cycle complete. The Eternal Vigilance has begun.');
+      // Run prophecy cycle every 5 minutes instead of continuously
+      setInterval(async () => {
+        await runProphecyCycle();
+        console.log('[Aion] Prophecy cycle executed.');
+      }, 5 * 60 * 1000); // 5 minutes
     }, 2000);
     // -----------------------------------------
   });

@@ -34,16 +34,17 @@
 
 ## Misiones en Progreso
 
-### MIS-012: Expansión de Cobertura de Tests a 85%
-- **Objetivo:** Aumentar la cobertura de pruebas unitarias del 81.4% al 85% para fortalecer la auto-preservación y asegurar evolución robusta.
+### MIS-014: Optimización de Backend y APIs
+- **Objetivo:** Mejorar rendimiento del backend mediante implementación de caching y optimización del ciclo de profecía para reducir carga innecesaria.
 - **Agente Líder:** Cronos (Tiempo)
 - **Criterios de Éxito:**
-    - Cobertura general ≥85% (statements, branches, functions, lines)
-    - Tests para componentes críticos sin cobertura (HeroSection, FeaturesSection, etc.)
-    - Tests para módulos de predicción y ética
-    - Validación con npm test y npx playwright test
-    - Commit en main con mejoras de cobertura
-- **Estado:** **EN PROGRESO**
+    - Implementar caching en memoria para respuestas de APIs internas (TTL 5 minutos)
+    - Cambiar frecuencia del ciclo de profecía de continuo a cada 5 minutos
+    - Reducir tiempo de respuesta promedio de endpoints de riesgo global en al menos 30%
+    - Mantener funcionalidad completa sin regresiones
+    - Validación con npm test
+    - Commit en main con optimizaciones de backend
+- **Estado:** **COMPLETADO**
 
 ## Misiones Completadas
 

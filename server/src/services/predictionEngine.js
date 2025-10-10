@@ -6,6 +6,7 @@
 
 import axios from 'axios';
 import { calculateEthicalVector } from './ethicalVectorModule.js';
+import cache from '../cache.js';
 
 // This would be stored in a more secure and dynamic configuration in a real system.
 const PRAEVISIO_API_BASE_URL = `http://localhost:${process.env.PORT || 4001}`;
@@ -57,16 +58,26 @@ const predictionState = {
 };
 
 /**
- * Fetches data from a Praevisio internal API endpoint.
+ * Fetches data from a Praevisio internal API endpoint with caching.
  * @param {string} endpoint The API endpoint to fetch data from.
  * @returns {Promise<object>} The data from the endpoint.
  */
 async function fetchInternalData(endpoint) {
+  const cacheKey = `internal_${endpoint}`;
+  const cached = cache.get(cacheKey);
+  if (cached) {
+    console.log(`[PredictionEngine] Using cached data for ${endpoint}`);
+    return cached;
+  }
+
   try {
     const response = await axios.get(`${PRAEVISIO_API_BASE_URL}${endpoint}`, {
       headers: { 'Authorization': `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data.data || response.data;
+    const data = response.data.data || response.data;
+    // Cache for 5 minutes
+    cache.set(cacheKey, data, 5 * 60 * 1000);
+    return data;
   } catch (error) {
     console.error(`[PredictionEngine] Failed to fetch internal data from ${endpoint}:`, error.message);
     throw new Error('Internal data source unavailable.');

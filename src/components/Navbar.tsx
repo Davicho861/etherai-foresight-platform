@@ -25,6 +25,7 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: "Inicio", href: "#hero" },
+    { name: "Ver Demo", href: "/demo" },
     { name: "Dashboard", href: "/dashboard" },
     { name: "Precios", href: "/pricing" },
     { name: "Módulo LATAM", href: "/module/colombia" },
@@ -53,17 +54,14 @@ const Navbar: React.FC = () => {
             {!isMobile ? (
               <nav className="hidden md:flex items-center space-x-6">
                 {navLinks.map((link) => (
-                  <a 
-                    key={link.name} 
-                    href={link.href} 
+                  <a
+                    key={link.name}
+                    href={link.href}
                     className="text-sm text-white hover:text-etherneon transition-colors link-underline"
                   >
                     {link.name}
                   </a>
                 ))}
-                <Button className="bg-etherneon hover:bg-etherneon/80 text-etherblue-dark ml-4" onClick={() => navigate('/demo')}>
-                  Ver Demo
-                </Button>
               </nav>
             ) : (
               <button
@@ -94,21 +92,15 @@ const Navbar: React.FC = () => {
         <div className="fixed inset-0 z-40 bg-etherblue-dark/95 pt-20 px-4 flex flex-col">
           <nav className="flex flex-col space-y-6 items-center py-8">
             {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
+              <a
+                key={link.name}
+                href={link.href}
                 className="text-lg text-white hover:text-etherneon transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
               </a>
             ))}
-            <Button
-              className="bg-etherneon hover:bg-etherneon/80 text-etherblue-dark w-full mt-4"
-              onClick={() => { setMobileMenuOpen(false); navigate('/demo'); }}
-            >
-              Ver Demo
-            </Button>
           </nav>
         </div>
       )}

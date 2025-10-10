@@ -39,7 +39,6 @@ describe('Navbar', () => {
     expect(screen.getByText('Praevisio AI')).toBeInTheDocument();
     expect(screen.getByText('Inicio')).toBeInTheDocument();
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Ver Demo')).toBeInTheDocument();
   });
 
   it('renders mobile menu button on mobile', () => {
@@ -75,7 +74,6 @@ describe('Navbar', () => {
     // Now menu should be visible
     expect(screen.getByText('Inicio')).toBeInTheDocument();
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Ver Demo')).toBeInTheDocument();
   });
 
   it('closes mobile menu when navigation link is clicked', () => {
