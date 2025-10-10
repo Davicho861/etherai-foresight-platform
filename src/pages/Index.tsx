@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Navbar from '../components/Navbar';
 import ModuleColombia from './ModuleColombia';
 import HeroSection from '../components/HeroSection';
@@ -15,10 +15,12 @@ import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
 import ComparisonSection from '../components/ComparisonSection';
 import CommandCenterLayout from '../components/CommandCenterLayout';
-import CommunityResilienceWidget from '../components/CommunityResilienceWidget';
-import SeismicMapWidget from '../components/SeismicMapWidget';
-import FoodSecurityDashboard from '../components/FoodSecurityDashboard';
-import EthicalVectorDisplay from '../components/EthicalVectorDisplay';
+
+// Lazy load heavy components for performance
+const CommunityResilienceWidget = React.lazy(() => import('../components/CommunityResilienceWidget'));
+const SeismicMapWidget = React.lazy(() => import('../components/SeismicMapWidget'));
+const FoodSecurityDashboard = React.lazy(() => import('../components/FoodSecurityDashboard'));
+const EthicalVectorDisplay = React.lazy(() => import('../components/EthicalVectorDisplay'));
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
@@ -111,7 +113,9 @@ const Index = () => {
               <h3 className="text-3xl font-bold text-white mb-2">Acto I: La Resiliencia Comunitaria</h3>
               <p className="text-gray-400">Fortaleza social frente a amenazas - Evaluación en tiempo real de comunidades LATAM</p>
             </div>
-            <CommunityResilienceWidget />
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-etherneon"></div></div>}>
+              <CommunityResilienceWidget />
+            </Suspense>
           </div>
 
           {/* Acto II: La Conquista Geofísica */}
@@ -120,7 +124,9 @@ const Index = () => {
               <h3 className="text-3xl font-bold text-white mb-2">Acto II: La Conquista Geofísica</h3>
               <p className="text-gray-400">Monitoreo sísmico en tiempo real - Protección contra desastres naturales</p>
             </div>
-            <SeismicMapWidget />
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-etherneon"></div></div>}>
+              <SeismicMapWidget />
+            </Suspense>
           </div>
 
           {/* Acto III: La Profecía Alimentaria */}
@@ -129,7 +135,9 @@ const Index = () => {
               <h3 className="text-3xl font-bold text-white mb-2">Acto III: La Profecía Alimentaria</h3>
               <p className="text-gray-400">Índice de riesgo de hambruna - Vigilancia de seguridad alimentaria global</p>
             </div>
-            <FoodSecurityDashboard />
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-etherneon"></div></div>}>
+              <FoodSecurityDashboard />
+            </Suspense>
           </div>
 
           {/* Acto IV: La Conciencia Ética */}
@@ -138,7 +146,9 @@ const Index = () => {
               <h3 className="text-3xl font-bold text-white mb-2">Acto IV: La Conciencia Ética</h3>
               <p className="text-gray-400">Vector Ético de IA - Máxima expresión de IA Explicable y responsable</p>
             </div>
-            <EthicalVectorDisplay />
+            <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-etherneon"></div></div>}>
+              <EthicalVectorDisplay />
+            </Suspense>
           </div>
         </div>
       </section>

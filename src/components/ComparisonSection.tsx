@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 const ComparisonSection = () => {
-  const features = [
+  const features = useMemo(() => [
     {
       feature: "Precisión en Predicciones",
   etherAI: "90%",
@@ -39,7 +39,7 @@ const ComparisonSection = () => {
       traditional: "Limitado",
       highlight: false
     }
-  ];
+  ], []);
 
   return (
     <section className="py-20 md:py-28 bg-etherblue-medium/30 relative">
