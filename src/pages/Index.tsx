@@ -15,6 +15,10 @@ import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
 import ComparisonSection from '../components/ComparisonSection';
 import CommandCenterLayout from '../components/CommandCenterLayout';
+import CommunityResilienceWidget from '../components/CommunityResilienceWidget';
+import SeismicMapWidget from '../components/SeismicMapWidget';
+import FoodSecurityDashboard from '../components/FoodSecurityDashboard';
+import EthicalVectorDisplay from '../components/EthicalVectorDisplay';
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
@@ -88,6 +92,57 @@ const Index = () => {
       <FeaturesSection />
       <SolutionsSection />
       <AdvancedInteractiveDashboard />
+
+      {/* Sinfonía de Manifestación Total - Secciones Interactivas */}
+      <section id="manifestation-symphony" className="py-20 bg-gradient-to-b from-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Sinfonía de Manifestación Total
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Cada capacidad de Praevisio AI manifestada visualmente. Explora la inteligencia que protege el futuro de América Latina.
+            </p>
+          </div>
+
+          {/* Acto I: Resiliencia Comunitaria */}
+          <div className="mb-20">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-2">Acto I: La Resiliencia Comunitaria</h3>
+              <p className="text-gray-400">Fortaleza social frente a amenazas - Evaluación en tiempo real de comunidades LATAM</p>
+            </div>
+            <CommunityResilienceWidget />
+          </div>
+
+          {/* Acto II: La Conquista Geofísica */}
+          <div className="mb-20">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-2">Acto II: La Conquista Geofísica</h3>
+              <p className="text-gray-400">Monitoreo sísmico en tiempo real - Protección contra desastres naturales</p>
+            </div>
+            <SeismicMapWidget />
+          </div>
+
+          {/* Acto III: La Profecía Alimentaria */}
+          <div className="mb-20">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-2">Acto III: La Profecía Alimentaria</h3>
+              <p className="text-gray-400">Índice de riesgo de hambruna - Vigilancia de seguridad alimentaria global</p>
+            </div>
+            <FoodSecurityDashboard />
+          </div>
+
+          {/* Acto IV: La Conciencia Ética */}
+          <div className="mb-20">
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold text-white mb-2">Acto IV: La Conciencia Ética</h3>
+              <p className="text-gray-400">Vector Ético de IA - Máxima expresión de IA Explicable y responsable</p>
+            </div>
+            <EthicalVectorDisplay />
+          </div>
+        </div>
+      </section>
+
       <ComparisonSection />
       <HowItWorksSection />
       <EnhancedFAQSection />

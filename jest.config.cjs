@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['@babel/preset-env', '@babel/preset-react'] }]
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -9,5 +9,5 @@ module.exports = {
     '^.+\\.(png|jpg|jpeg|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '/playwright/', '/server/'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.frontend.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };

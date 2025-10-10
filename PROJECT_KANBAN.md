@@ -30,7 +30,7 @@
     - Servicio climateService.js con método getClimateExtremes() operativo.
     - Flujo de predicción que utilice estos datos para actualizar el "Índice de Riesgo Climático Extremo".
     - Integración ética vectorial para evaluaciones de impacto ambiental.
-- **Estado:** **EN PROGRESO**
+- **Estado:** **COMPLETADO**
 
 ## Misiones Completadas
 

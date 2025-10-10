@@ -7,6 +7,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Sidebar from '@/components/Sidebar';
 import MissionGallery from '@/components/MissionGallery';
 import AnimatedMetric from '@/components/AnimatedMetrics';
+import CommunityResilienceWidget from '@/components/CommunityResilienceWidget';
+import SeismicMapWidget from '@/components/SeismicMapWidget';
+import FoodSecurityDashboard from '@/components/FoodSecurityDashboard';
+import EthicalVectorDisplay from '@/components/EthicalVectorDisplay';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -365,6 +369,43 @@ const DemoPage: React.FC = () => {
                 <MissionGallery />
               </CardContent>
             </Card>
+          </motion.div>
+
+          {/* Sinfonía de Manifestación - Capacidades Completas */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.5 }}
+            className="mt-12"
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-white mb-4">Sinfonía de Manifestación Total</h2>
+              <p className="text-gray-300">Todas las capacidades de Praevisio AI en una experiencia unificada</p>
+            </div>
+
+            {/* Resiliencia Comunitaria */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-4">🏛️ Resiliencia Comunitaria LATAM</h3>
+              <CommunityResilienceWidget />
+            </div>
+
+            {/* Monitoreo Sísmico */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-4">🌋 Monitoreo Sísmico en Tiempo Real</h3>
+              <SeismicMapWidget />
+            </div>
+
+            {/* Seguridad Alimentaria */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-4">🌾 Seguridad Alimentaria Global</h3>
+              <FoodSecurityDashboard />
+            </div>
+
+            {/* IA Ética */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-4">⚖️ Vector Ético - IA Explicable</h3>
+              <EthicalVectorDisplay />
+            </div>
           </motion.div>
         </motion.div>
       </div>
