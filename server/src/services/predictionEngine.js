@@ -24,6 +24,12 @@ const predictionState = {
       confidence: 0.0,
       significantEvents: [],
     },
+    supplyChainRisk: {
+      value: null,
+      source: 'USGS-Seismic',
+      confidence: 0.0,
+      affectedRegions: [],
+    },
   },
   multiDomainRiskIndex: {
     value: null,
@@ -123,21 +129,69 @@ async function updateGeophysicalRiskIndex() {
 }
 
 /**
+ * Updates the Supply Chain Risk Index based on seismic activity that could disrupt logistics.
+ */
+async function updateSupplyChainRiskIndex() {
+  console.log('[PredictionEngine] Updating Supply Chain Risk Index...');
+  const seismicEvents = await fetchInternalData('/api/seismic/activity');
+
+  if (!Array.isArray(seismicEvents)) {
+    console.error('[PredictionEngine] Invalid seismic data received for supply chain analysis.');
+    return;
+  }
+
+  if (seismicEvents.length === 0) {
+    predictionState.riskIndices.supplyChainRisk.value = 0;
+    predictionState.riskIndices.supplyChainRisk.confidence = 0.95;
+    predictionState.riskIndices.supplyChainRisk.affectedRegions = [];
+    console.log('[PredictionEngine] No significant seismic events detected. Supply Chain Risk is 0.');
+    return;
+  }
+
+  // Identify regions with significant seismic activity that could affect supply chains
+  const affectedRegions = seismicEvents
+    .filter(event => event.magnitude >= 6.0) // Events >= 6.0 magnitude can disrupt logistics
+    .map(event => ({
+      location: event.place,
+      magnitude: event.magnitude,
+      coordinates: event.coordinates,
+      potentialImpact: event.magnitude >= 7.0 ? 'High' : 'Medium'
+    }));
+
+  // Calculate risk based on number and severity of events
+  let riskValue = 0;
+  if (affectedRegions.length > 0) {
+    const avgMagnitude = affectedRegions.reduce((sum, region) => sum + region.magnitude, 0) / affectedRegions.length;
+    const eventCountFactor = Math.min(affectedRegions.length * 10, 50); // Up to 50 points for multiple events
+    const magnitudeFactor = Math.min((avgMagnitude - 6.0) * 25, 50); // Scale from 6.0+
+    riskValue = Math.min(100, eventCountFactor + magnitudeFactor);
+  }
+
+  predictionState.riskIndices.supplyChainRisk.value = riskValue;
+  predictionState.riskIndices.supplyChainRisk.confidence = 0.88;
+  predictionState.riskIndices.supplyChainRisk.affectedRegions = affectedRegions;
+
+  console.log(`[PredictionEngine] Supply Chain Risk Index updated to ${riskValue} based on ${affectedRegions.length} significant seismic events.`);
+}
+
+/**
  * Calculates the Multi-Domain Risk Index based on all individual risk indices.
  * This is a weighted average for demonstration.
  */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.6;
-  const geoWeight = 0.4;
+  const famineWeight = 0.4;
+  const geoWeight = 0.3;
+  const supplyChainWeight = 0.3;
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
+  const supplyChainValue = supplyChainRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -163,6 +217,7 @@ async function runProphecyCycle() {
     await Promise.all([
       updateFamineRiskIndex(),
       updateGeophysicalRiskIndex(),
+      updateSupplyChainRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

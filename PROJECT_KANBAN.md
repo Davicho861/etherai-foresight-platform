@@ -14,7 +14,11 @@
 ### MIS-002: Monitoreo de Actividad Sísmica Global
 - **Objetivo:** Integrar datos en tiempo real del USGS sobre terremotos para predecir riesgos en cadenas de suministro.
 - **Agente Líder:** Kairós (Oportunidad)
-- **Estado:** PENDIENTE
+- **Criterios de Éxito:**
+    - Nuevo endpoint en la API (`/api/global-risk/seismic-activity`) que devuelve los datos sísmicos más recientes.
+    - Servicio usgsService.js con método getSeismicActivity() operativo.
+    - Flujo de predicción que utiliza estos datos para actualizar el "Índice de Riesgo de Cadenas de Suministro".
+- **Estado:** **COMPLETADO**
 
 ## Misiones en Progreso
 
