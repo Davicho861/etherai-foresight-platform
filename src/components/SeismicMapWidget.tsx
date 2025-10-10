@@ -18,18 +18,30 @@ const fetchSeismicActivity = async () => {
   return res.json();
 };
 
-const SeismicMapWidget: React.FC = () => {
+interface SeismicMapWidgetProps {
+  seismicData?: any[];
+}
+
+const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSeismicData }) => {
   const [magnitudeFilter, setMagnitudeFilter] = useState<number>(4.0);
   const [hoveredEvent, setHoveredEvent] = useState<any>(null);
-  const [seismicData, setSeismicData] = useState<any[]>([]);
+  const [localSeismicData, setLocalSeismicData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Use prop data if available, otherwise use local data
+  const seismicData = propSeismicData || localSeismicData;
+
   useEffect(() => {
+    if (propSeismicData) {
+      setLoading(false);
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const data = await fetchSeismicActivity();
-        setSeismicData(data);
+        setLocalSeismicData(data);
         setError(null);
       } catch (err) {
         console.error('Error fetching seismic data:', err);
@@ -42,7 +54,7 @@ const SeismicMapWidget: React.FC = () => {
     fetchData();
     const interval = setInterval(fetchData, 60000); // Refetch every 60 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [propSeismicData]);
 
   // Filter events by magnitude and focus on LATAM region
   const filteredEvents = seismicData?.filter((event: any) => {

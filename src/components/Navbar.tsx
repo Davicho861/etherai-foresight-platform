@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,8 +24,8 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: "Inicio", href: "#hero" },
-    { name: "Ver Demo", href: "/demo" },
+    { name: "Inicio", href: "#inicio" },
+    { name: "Ver Demo", href: "#demo" },
     { name: "Dashboard", href: "/dashboard" },
     { name: "Precios", href: "/pricing" },
     { name: "Módulo LATAM", href: "/module/colombia" },
@@ -45,22 +45,22 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <a href="#" className="text-white font-bold text-xl flex items-center">
+              <Link to="#inicio" className="text-white font-bold text-xl flex items-center">
                 <div className="h-8 w-8 rounded-full bg-etherneon mr-2 flex items-center justify-center text-etherblue-dark font-bold">P</div>
                 <span>Praevisio AI</span>
-              </a>
+              </Link>
             </div>
             
             {!isMobile ? (
               <nav className="hidden md:flex items-center space-x-6">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.name}
-                    href={link.href}
+                    to={link.href}
                     className="text-sm text-white hover:text-etherneon transition-colors link-underline"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             ) : (
@@ -92,14 +92,14 @@ const Navbar: React.FC = () => {
         <div className="fixed inset-0 z-40 bg-etherblue-dark/95 pt-20 px-4 flex flex-col">
           <nav className="flex flex-col space-y-6 items-center py-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-lg text-white hover:text-etherneon transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

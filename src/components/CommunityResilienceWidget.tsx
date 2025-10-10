@@ -18,33 +18,25 @@ interface CommunityResilienceResponse {
   timestamp: string;
 }
 
-const CommunityResilienceWidget: React.FC = () => {
-  const [resilienceData, setResilienceData] = useState<CommunityResilienceResponse | null>(null);
-  const [loading, setLoading] = useState(true);
+interface CommunityResilienceWidgetProps {
+  resilienceData?: CommunityResilienceResponse;
+}
+
+const CommunityResilienceWidget: React.FC<CommunityResilienceWidgetProps> = ({ resilienceData: resilienceData }) => {
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('praevisio_token') || 'demo-token';
-        const response = await fetch('/api/community-resilience', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setResilienceData(data.data);
-        }
-      } catch (error) {
-        console.error('Error fetching resilience data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  // If no resilienceData is provided, we show an informative state — DemoSection is expected to supply data
+  if (!resilienceData || !resilienceData.resilienceAnalysis) {
+    return (
+      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+        <CardContent className="pt-6">
+          <div className="text-center py-8">
+            <p className="text-gray-300">Datos de resiliencia comunitaria no disponibles (orquestador)</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const getCountryColor = (countryCode: string) => {
     if (!resilienceData) return '#DDD';
@@ -74,18 +66,6 @@ const CommunityResilienceWidget: React.FC = () => {
     `;
   };
 
-  if (loading) {
-    return (
-      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
-            <span className="ml-2 text-gray-300">Cargando resiliencia comunitaria...</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">

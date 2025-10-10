@@ -15,6 +15,7 @@ import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
 import ComparisonSection from '../components/ComparisonSection';
 import CommandCenterLayout from '../components/CommandCenterLayout';
+import DemoSection from '../components/DemoSection';
 
 
 const Index = () => {
@@ -85,16 +86,27 @@ const Index = () => {
     <div className="min-h-screen bg-etherblue-dark text-white">
       <Toaster position="top-right" />
       <Navbar />
-      <HeroSection />
-      <FeaturesSection />
-      <SolutionsSection />
+      <div id="inicio">
+        <HeroSection />
+      </div>
+      <div id="features">
+        <FeaturesSection />
+      </div>
+      <div id="solutions">
+        <SolutionsSection />
+      </div>
       <AdvancedInteractiveDashboard />
-
-
+      <div id="demo">
+        <DemoSection />
+      </div>
       <ComparisonSection />
-      <HowItWorksSection />
+      <div id="how-it-works">
+        <HowItWorksSection />
+      </div>
       <EnhancedFAQSection />
-      <EnhancedCredibilitySection />
+      <div id="credibility">
+        <EnhancedCredibilitySection />
+      </div>
       <TestimonialCarousel />
       <EnhancedContactSection />
       <Footer />

@@ -23,12 +23,6 @@ interface Country {
   prediction: number;
 }
 
-interface ChartData {
-  month: string;
-  accuracy: number;
-  predictions: number;
-}
-
 interface LiveData {
   kpis: {
     precisionPromedio: number;
@@ -52,7 +46,7 @@ interface LiveData {
   lastUpdated: string;
 }
 
-const DemoPage: React.FC = () => {
+const DemoSection: React.FC = () => {
   const [demoData, setDemoData] = useState<LiveData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +69,7 @@ const DemoPage: React.FC = () => {
         const data: LiveData = await response.json();
         setDemoData(data);
         setSelectedCountry(data.countries[0] ? { name: data.countries[0].name, code: data.countries[0].code, risk: 'N/A', prediction: 0 } : null);
-        setError(null); // Clear error on success
+        setError(null);
       } catch (err) {
         console.error('Error fetching demo data:', err);
         setError('Error al cargar datos de la demo');
@@ -86,10 +80,8 @@ const DemoPage: React.FC = () => {
 
     fetchDemoData();
 
-    // Set up interval to fetch data every 60 seconds
     const interval = setInterval(fetchDemoData, 60000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
 
@@ -112,7 +104,6 @@ const DemoPage: React.FC = () => {
   const getCountryColor = (countryCode: string) => {
     const country = demoData?.countries.find(c => c.code === countryCode);
     if (!country) return '#DDD';
-    // Default color for live data
     return '#60A5FA';
   };
 
@@ -138,7 +129,6 @@ const DemoPage: React.FC = () => {
       setRiskIndex(result.riskIndex);
     } catch (error) {
       console.error('Error simulating scenario:', error);
-      // Fallback calculation
       const baseRisk = 50;
       const inflationRisk = inflationIncrease * 2;
       const droughtRisk = droughtLevel * 5;
@@ -156,7 +146,6 @@ const DemoPage: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-7xl mx-auto space-y-8"
         >
-          {/* Header */}
           <div className="text-center mb-12">
             <motion.h1
               className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
@@ -176,7 +165,6 @@ const DemoPage: React.FC = () => {
             </motion.p>
           </div>
 
-          {/* Metrics Dashboard */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
             initial={{ opacity: 0, y: 20 }}
@@ -217,7 +205,6 @@ const DemoPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Country Selector and Map */}
           <motion.div
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8"
             initial={{ opacity: 0, x: -20 }}
@@ -245,7 +232,7 @@ const DemoPage: React.FC = () => {
                   </SelectContent>
                 </Select>
                 {selectedCountry && (
-                  <div className="mt-6 space-y-4" data-testid={`country-card-${selectedCountry.code}`}>
+                  <div className="mt-6 space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">País Seleccionado:</span>
                       <span className="text-white font-semibold">{selectedCountry.name}</span>
@@ -273,7 +260,7 @@ const DemoPage: React.FC = () => {
                 <CardTitle className="text-white">Mapa Interactivo - América Latina</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64" data-testid="global-map">
+                <div className="h-64">
                   <ComposableMap
                     projection="geoMercator"
                     projectionConfig={{
@@ -298,7 +285,6 @@ const DemoPage: React.FC = () => {
                                 hover: { outline: 'none', fill: '#60A5FA' },
                                 pressed: { outline: 'none' },
                               }}
-                              data-testid={`country-${country?.code}`}
                               onMouseEnter={() => {
                                 const country = demoData.countries.find(c => c.code === geo.properties.ISO_A3);
                                 if (country) setHoveredCountry(country.name);
@@ -327,7 +313,6 @@ const DemoPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Briefing Panel */}
           {showBriefing && selectedCountry && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -338,7 +323,7 @@ const DemoPage: React.FC = () => {
                 <CardHeader>
                   <CardTitle className="text-white">Panel de Briefing en Tiempo Real - {selectedCountry.name}</CardTitle>
                 </CardHeader>
-                <CardContent data-testid="briefing-panel">
+                <CardContent>
                   <p className="text-gray-300">Datos climáticos, sociales y económicos actualizados</p>
                   <p className="text-gray-300">Última actualización: {demoData?.lastUpdated}</p>
                 </CardContent>
@@ -346,7 +331,6 @@ const DemoPage: React.FC = () => {
             </motion.div>
           )}
 
-          {/* Panel de Control Interactivo */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -425,8 +409,6 @@ const DemoPage: React.FC = () => {
             </Card>
           </motion.div>
 
-
-          {/* Mission Gallery */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -443,7 +425,6 @@ const DemoPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Sinfonía de Manifestación - Capacidades Completas */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -455,28 +436,24 @@ const DemoPage: React.FC = () => {
               <p className="text-gray-300">Todas las capacidades de Praevisio AI en una experiencia unificada</p>
             </div>
 
-            {/* Resiliencia Comunitaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🏛️ Resiliencia Comunitaria LATAM</h3>
-              <CommunityResilienceWidget />
+              <CommunityResilienceWidget resilienceData={demoData.communityResilience?.data || demoData.communityResilience} />
             </div>
 
-            {/* Monitoreo Sísmico */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌋 Monitoreo Sísmico en Tiempo Real</h3>
-              <SeismicMapWidget />
+              <SeismicMapWidget seismicData={demoData.global.seismic} />
             </div>
 
-            {/* Seguridad Alimentaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌾 Seguridad Alimentaria Global</h3>
-              <FoodSecurityDashboard />
+              <FoodSecurityDashboard foodSecurityData={demoData.foodSecurity} />
             </div>
 
-            {/* IA Ética */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">⚖️ Vector Ético - IA Explicable</h3>
-              <EthicalVectorDisplay />
+              <EthicalVectorDisplay ethicalAssessment={demoData.ethicalAssessment} />
             </div>
           </motion.div>
         </motion.div>
@@ -485,4 +462,4 @@ const DemoPage: React.FC = () => {
   );
 };
 
-export default DemoPage;
+export default DemoSection;

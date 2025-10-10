@@ -29,14 +29,14 @@ export const getSeismicActivity = async () => {
     return transformSeismicData(rawData);
   } catch (error) {
     console.error('Error in getSeismicActivity:', error);
-    // Fallback to mock data if integration fails
+    // No fallback to mock data - return error indication
     return {
       events: [],
       summary: {
         totalEvents: 0,
         maxMagnitude: 0,
         lastUpdated: new Date().toISOString(),
-        source: "Fallback Mock Data"
+        source: "Error - No Data Available"
       },
       error: error.message
     };

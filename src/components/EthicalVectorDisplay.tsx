@@ -12,41 +12,17 @@ interface EthicalVector {
 interface EthicalAssessmentResponse {
   success: boolean;
   data: EthicalVector;
+  isMock?: boolean;
 }
 
-const EthicalVectorDisplay: React.FC = () => {
-  const [ethicalData, setEthicalData] = useState<EthicalVector | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface Props {
+  ethicalAssessment?: EthicalAssessmentResponse | null;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('praevisio_token') || 'demo-token';
-        const response = await fetch('/api/ethical-assessment', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data: EthicalAssessmentResponse = await response.json();
-          setEthicalData(data.data);
-        } else {
-          throw new Error('Failed to fetch ethical assessment');
-        }
-      } catch (err) {
-        console.error('Error fetching ethical assessment:', err);
-        setError('Error al cargar evaluación ética');
-      } finally {
-        setLoading(false);
-      }
-    };
+const EthicalVectorDisplay: React.FC<Props> = ({ ethicalAssessment = null }) => {
+  const [error] = useState<string | null>(null);
 
-    fetchData();
-    const interval = setInterval(fetchData, 30000); // Update every 30 seconds
-    return () => clearInterval(interval);
-  }, []);
-
+  const ethicalData = ethicalAssessment && ethicalAssessment.data ? ethicalAssessment.data : null;
   const getScoreColor = (score: number) => {
     if (score >= 70) return 'text-green-400';
     if (score >= 40) return 'text-yellow-400';
@@ -65,25 +41,12 @@ const EthicalVectorDisplay: React.FC = () => {
     return 'text-red-400';
   };
 
-  if (loading) {
-    return (
-      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
-            <span className="ml-2 text-gray-300">Cargando evaluación ética...</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   if (error || !ethicalData) {
     return (
       <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
         <CardContent className="pt-6">
           <div className="text-center py-8">
-            <p className="text-red-400">{error || 'No hay datos éticos disponibles'}</p>
+            <p className="text-red-400">{error || 'No hay datos éticos disponibles (orquestador no proporcionó datos)'}</p>
           </div>
         </CardContent>
       </Card>

@@ -13,46 +13,23 @@ interface FoodSecurityData {
 
 interface FoodSecurityResponse {
   data: FoodSecurityData[];
-  timestamp: string;
+  timestamp?: string;
+  source?: string;
+  isMock?: boolean;
 }
 
-const FoodSecurityDashboard: React.FC = () => {
-  const [foodData, setFoodData] = useState<FoodSecurityData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface Props {
+  foodSecurityData?: FoodSecurityResponse | null;
+}
+
+const FoodSecurityDashboard: React.FC<Props> = ({ foodSecurityData = null }) => {
   const [selectedCountry, setSelectedCountry] = useState<string>('COL');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('praevisio_token') || 'demo-token';
-        const response = await fetch('/api/global-risk/food-security', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data: FoodSecurityResponse = await response.json();
-          setFoodData(Array.isArray(data.data) ? data.data : []);
-        } else {
-          throw new Error('Failed to fetch food security data');
-        }
-      } catch (err) {
-        console.error('Error fetching food security data:', err);
-        setError('Error al cargar datos de seguridad alimentaria');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   // Get unique countries
-  const countries = Array.isArray(foodData) ? [...new Set(foodData.map(d => d.country))] : [];
+  const countries = Array.isArray(foodSecurityData?.data) ? [...new Set(foodSecurityData!.data.map(d => d.country))] : [];
 
   // Filter data for selected country
-  const countryData = Array.isArray(foodData) ? foodData.filter(d => d.country === selectedCountry) : [];
+  const countryData = Array.isArray(foodSecurityData?.data) ? foodSecurityData!.data.filter(d => d.country === selectedCountry) : [];
 
   // Prepare chart data
   const chartData = Array.isArray(countryData) ? countryData.map(d => ({
@@ -77,25 +54,13 @@ const FoodSecurityDashboard: React.FC = () => {
     return 'Bajo';
   };
 
-  if (loading) {
-    return (
-      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
-            <span className="ml-2 text-gray-300">Cargando datos de seguridad alimentaria...</span>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
+  // If no data provided, render an informative empty state (frontend expects backend to provide structured data)
+  if (!foodSecurityData || !Array.isArray(foodSecurityData.data)) {
     return (
       <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
         <CardContent className="pt-6">
           <div className="text-center py-8">
-            <p className="text-red-400">{error}</p>
+            <p className="text-gray-300">Datos de seguridad alimentaria no disponibles (esperando orquestador)</p>
           </div>
         </CardContent>
       </Card>

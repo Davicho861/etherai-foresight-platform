@@ -2,13 +2,14 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Brain, TrendingUp, Shield, Truck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
   const menuItems = [
-    { icon: Brain, label: 'Centro de Mando', active: true },
-    { icon: TrendingUp, label: 'Análisis Predictivo' },
-    { icon: Shield, label: 'Evaluación de Riesgos' },
-    { icon: Truck, label: 'Optimización Logística' }
+    { icon: Brain, label: 'Centro de Mando', href: '#demo', active: true },
+    { icon: TrendingUp, label: 'Análisis Predictivo', href: '#analisis' },
+    { icon: Shield, label: 'Evaluación de Riesgos', href: '#riesgos' },
+    { icon: Truck, label: 'Optimización Logística', href: '#logistica' }
   ];
 
   return (
@@ -17,14 +18,16 @@ const Sidebar: React.FC = () => {
         <h2 className="text-xl font-bold mb-8">Praevisio AI</h2>
         <nav className="space-y-2" data-testid="sidebar-nav">
           {menuItems.map((item, index) => (
-            <Button
+            <Link
               key={index}
-              variant={item.active ? "secondary" : "ghost"}
-              className={`w-full justify-start ${item.active ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
+              to={item.href}
+              className={`flex items-center w-full px-3 py-2 text-left rounded-md transition-colors ${
+                item.active ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+              }`}
             >
               <item.icon className="w-5 h-5 mr-3" />
               {item.label}
-            </Button>
+            </Link>
           ))}
         </nav>
       </div>

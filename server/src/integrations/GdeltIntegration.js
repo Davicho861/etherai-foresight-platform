@@ -82,20 +82,18 @@ class GdeltIntegration {
       return result;
 
     } catch (error) {
-      console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}. Using mock data.`);
+      console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}. No fallback to mock data.`);
 
-      // Fallback to mock data for robustness
-      const mockEventCount = Math.floor(Math.random() * 10);
-      const mockIntensity = mockEventCount * 1.5;
+      // No fallback to mock data - return error indication
       return {
         country,
         period: { start: startDate, end: endDate },
-        eventCount: mockEventCount,
-        socialIntensity: mockIntensity,
+        eventCount: 0,
+        socialIntensity: 0,
         articles: [],
-        isMock: true,
-        note: 'Using mock data due to API error',
-        error: error.message
+        isMock: false,
+        error: error.message,
+        note: 'API error - no data available'
       };
     }
   }

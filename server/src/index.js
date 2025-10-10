@@ -101,7 +101,7 @@ async function main() {
   });
 
 
-  const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
+  const PORT = process.env.PORT ? Number(process.env.PORT) : (process.env.NATIVE_DEV_MODE === 'true' ? 4003 : 4000);
   app.listen(PORT, '0.0.0.0', async () => {
     console.log(`Praevisio server running on http://localhost:${PORT}`);
     

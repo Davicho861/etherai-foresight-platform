@@ -28,8 +28,8 @@ export async function fetchRecentTemperature(lat, lon) {
     };
   } catch (error) {
     console.error('Error fetching from Open Meteo:', error && error.message ? error.message : error);
-    // Fallback to deterministic-ish mock values to keep tests stable
-    return { temperature: 28, humidity: 60, precipitation_probability: 0 };
+    // No fallback to mock values - return error indication
+    return { error: error.message || error, lat, lon };
   }
 }
 
@@ -45,6 +45,7 @@ export async function fetchClimatePrediction(lat, lon, days = 7) {
     return (response.data && response.data.daily) ? response.data.daily : null;
   } catch (error) {
     console.error('Error fetching climate prediction:', error && error.message ? error.message : error);
-    return null;
+    // No fallback - return error indication
+    return { error: error.message || error, lat, lon, days };
   }
 }
