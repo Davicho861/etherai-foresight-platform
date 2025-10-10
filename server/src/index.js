@@ -85,7 +85,7 @@ async function main() {
     console.log(`Praevisio server running on http://localhost:${PORT}`);
     
     // --- AION: ETERNAL VIGILANCE ACTIVATION ---
-    console.log('[Aion] Awakening... Initiating the Perpetual Prophecy Flow.');
+    console.log('[Aion] Awakening... Initiating the Perpetual Prophecy Flow. Final Conquest.');
     // Wait a moment for the server to be fully ready before starting the cycle.
     setTimeout(async () => {
       await runProphecyCycle();
