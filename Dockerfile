@@ -20,4 +20,4 @@ RUN npx prisma generate
 EXPOSE 4001
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["node", "src/index.js"]
