@@ -41,6 +41,13 @@ const predictionState = {
       extremeEvents: [],
       affectedCountries: [],
     },
+    communityResilienceRisk: {
+      value: null,
+      source: 'CommunityResilienceAgent',
+      confidence: 0.0,
+      lowResilienceCountries: [],
+      averageResilience: 0,
+    },
   },
   multiDomainRiskIndex: {
     value: null,
@@ -98,6 +105,22 @@ async function fetchInternalData(endpoint) {
           { country: 'PER', extremeEvents: 5, riskLevel: 'high' },
           { country: 'ARG', extremeEvents: 1, riskLevel: 'low' }
         ]
+      };
+    } else if (endpoint === '/api/global-risk/community-resilience') {
+      mock = {
+        timestamp: new Date().toISOString(),
+        resilienceAnalysis: {
+          COL: { socialEvents: 5, resilienceScore: 65, recommendations: ['Community programs'], period: { startDate: '2025-09-11', endDate: '2025-10-11' } },
+          PER: { socialEvents: 3, resilienceScore: 70, recommendations: ['Education initiatives'], period: { startDate: '2025-09-11', endDate: '2025-10-11' } },
+          ARG: { socialEvents: 7, resilienceScore: 55, recommendations: ['Social services'], period: { startDate: '2025-09-11', endDate: '2025-10-11' } }
+        },
+        globalResilienceAssessment: {
+          averageResilience: 63.3,
+          lowResilienceCountries: ['ARG'],
+          assessment: 'Moderate community resilience with some vulnerabilities',
+          globalRecommendations: ['Strengthen social networks', 'Improve access to resources']
+        },
+        source: 'FORCE_MOCKS:CommunityResilience'
       };
     } else {
       mock = { ok: true, data: {} };
@@ -284,25 +307,59 @@ async function updateClimateExtremesRiskIndex() {
 }
 
 /**
+ * Updates the Community Resilience Risk Index based on community resilience data.
+ */
+async function updateCommunityResilienceRiskIndex() {
+  console.log('[PredictionEngine] Updating Community Resilience Risk Index...');
+  const resilienceData = await fetchInternalData('/api/global-risk/community-resilience');
+
+  if (!resilienceData || !resilienceData.resilienceAnalysis) {
+    console.error('[PredictionEngine] Invalid community resilience data received.');
+    return;
+  }
+
+  const { globalResilienceAssessment, resilienceAnalysis } = resilienceData;
+
+  // Calculate risk: lower resilience = higher risk
+  // Risk is 100 - average resilience score
+  const averageResilience = globalResilienceAssessment.averageResilience || 0;
+  const riskValue = Math.max(0, 100 - averageResilience);
+
+  // Identify countries with low resilience (below 60)
+  const lowResilienceCountries = Object.entries(resilienceAnalysis)
+    .filter(([country, data]) => data.resilienceScore < 60)
+    .map(([country]) => country);
+
+  predictionState.riskIndices.communityResilienceRisk.value = riskValue;
+  predictionState.riskIndices.communityResilienceRisk.confidence = 0.80;
+  predictionState.riskIndices.communityResilienceRisk.lowResilienceCountries = lowResilienceCountries;
+  predictionState.riskIndices.communityResilienceRisk.averageResilience = averageResilience;
+
+  console.log(`[PredictionEngine] Community Resilience Risk Index updated to ${riskValue} based on average resilience of ${averageResilience.toFixed(1)}. Low resilience countries: ${lowResilienceCountries.join(', ')}`);
+}
+
+/**
  * Calculates the Multi-Domain Risk Index based on all individual risk indices.
  * This is a weighted average for demonstration.
  */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.25;
-  const geoWeight = 0.25;
-  const supplyChainWeight = 0.25;
-  const climateWeight = 0.25;
+  const famineWeight = 0.2;
+  const geoWeight = 0.2;
+  const supplyChainWeight = 0.2;
+  const climateWeight = 0.2;
+  const resilienceWeight = 0.2;
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
   const supplyChainValue = supplyChainRisk.value || 0;
   const climateValue = climateExtremesRisk.value || 0;
+  const resilienceValue = communityResilienceRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -343,6 +400,7 @@ async function runProphecyCycle() {
       updateGeophysicalRiskIndex(),
       updateSupplyChainRiskIndex(),
       updateClimateExtremesRiskIndex(),
+      updateCommunityResilienceRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

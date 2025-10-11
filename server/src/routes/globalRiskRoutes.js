@@ -2,6 +2,7 @@ import express from 'express';
 import { getFoodSecurityIndex } from '../services/worldBankService.js';
 import { getSeismicActivity } from '../services/usgsService.js';
 import { getClimateExtremesIndex } from '../services/climateService.js';
+import { getCommunityResilienceIndex } from '../services/communityResilienceService.js';
 
 const router = express.Router();
 
@@ -70,6 +71,31 @@ router.get('/climate-extremes', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Internal Server Error: Could not retrieve climate extremes data.',
+    });
+  }
+});
+
+/**
+ * @route GET /api/global-risk/community-resilience
+ * @description Provides the latest community resilience analysis for LATAM countries.
+ * @access Public
+ */
+router.get('/community-resilience', async (req, res) => {
+  try {
+    const { countries = ['COL', 'PER', 'ARG'], days = 30 } = req.query;
+    const countriesArray = Array.isArray(countries) ? countries : countries.split(',').map(c => c.trim().toUpperCase());
+    const data = await getCommunityResilienceIndex(countriesArray, parseInt(days));
+    res.status(200).json({
+      success: true,
+      source: 'Praevisio-Aion-CommunityResilienceAgent',
+      timestamp: new Date().toISOString(),
+      data,
+    });
+  } catch (error) {
+    console.error('Error fetching community resilience:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: Could not retrieve community resilience data.',
     });
   }
 });

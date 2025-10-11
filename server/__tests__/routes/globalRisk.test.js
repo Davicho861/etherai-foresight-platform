@@ -3,10 +3,12 @@ import express from 'express';
 import globalRiskRouter from '../../src/routes/globalRiskRoutes.js';
 import { getFoodSecurityIndex } from '../../src/services/worldBankService.js';
 import { getClimateExtremesIndex } from '../../src/services/climateService.js';
+import { getCommunityResilienceIndex } from '../../src/services/communityResilienceService.js';
 
 // Mock the service layer
 jest.mock('../../src/services/worldBankService.js');
 jest.mock('../../src/services/climateService.js');
+jest.mock('../../src/services/communityResilienceService.js');
 
 const app = express();
 app.use(express.json());
@@ -98,5 +100,69 @@ describe('GET /api/global-risk/climate-extremes', () => {
     expect(response.status).toBe(500);
     expect(response.body.success).toBe(false);
     expect(response.body.message).toContain('Could not retrieve climate extremes data.');
+  });
+});
+
+describe('GET /api/global-risk/community-resilience', () => {
+  it('should return a 200 OK status and the community resilience data for LATAM countries', async () => {
+    const mockData = {
+      timestamp: '2025-10-11T19:00:00.000Z',
+      resilienceAnalysis: {
+        COL: { socialEvents: 5, resilienceScore: 65, recommendations: ['Community programs'] },
+        PER: { socialEvents: 3, resilienceScore: 70, recommendations: ['Education initiatives'] },
+        ARG: { socialEvents: 7, resilienceScore: 55, recommendations: ['Social services'] }
+      },
+      globalResilienceAssessment: {
+        averageResilience: 63.3,
+        lowResilienceCountries: ['ARG'],
+        assessment: 'Moderate community resilience with some vulnerabilities',
+        globalRecommendations: ['Strengthen social networks', 'Improve access to resources']
+      },
+      source: 'CommunityResilienceAgent'
+    };
+
+    getCommunityResilienceIndex.mockResolvedValue(mockData);
+
+    const response = await request(app).get('/api/global-risk/community-resilience');
+
+    expect(response.status).toBe(200);
+    expect(response.body.success).toBe(true);
+    expect(response.body.source).toBe('Praevisio-Aion-CommunityResilienceAgent');
+    expect(response.body.data).toEqual(mockData);
+    expect(getCommunityResilienceIndex).toHaveBeenCalledWith(['COL', 'PER', 'ARG'], 30);
+  });
+
+  it('should accept custom countries and days parameters', async () => {
+    const mockData = {
+      timestamp: '2025-10-11T19:00:00.000Z',
+      resilienceAnalysis: {
+        COL: { socialEvents: 5, resilienceScore: 65, recommendations: ['Community programs'] }
+      },
+      globalResilienceAssessment: {
+        averageResilience: 65,
+        lowResilienceCountries: [],
+        assessment: 'Good community resilience',
+        globalRecommendations: ['Continue monitoring']
+      },
+      source: 'CommunityResilienceAgent'
+    };
+
+    getCommunityResilienceIndex.mockResolvedValue(mockData);
+
+    const response = await request(app).get('/api/global-risk/community-resilience?countries=COL&days=60');
+
+    expect(response.status).toBe(200);
+    expect(getCommunityResilienceIndex).toHaveBeenCalledWith(['COL'], 60);
+  });
+
+  it('should handle errors and return a 500 status', async () => {
+    const errorMessage = 'Failed to fetch community resilience data';
+    getCommunityResilienceIndex.mockRejectedValue(new Error(errorMessage));
+
+    const response = await request(app).get('/api/global-risk/community-resilience');
+
+    expect(response.status).toBe(500);
+    expect(response.body.success).toBe(false);
+    expect(response.body.message).toContain('Could not retrieve community resilience data.');
   });
 });
