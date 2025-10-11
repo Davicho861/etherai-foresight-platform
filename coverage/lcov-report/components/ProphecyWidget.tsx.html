@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/ui/slider.tsx</title>
+    <title>Code coverage report for components/ProphecyWidget.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/ui</a> slider.tsx</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ProphecyWidget.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -89,17 +89,12 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">36x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -112,36 +107,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as React from "react"
-import * as SliderPrimitive from "@radix-ui/react-slider"
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
 &nbsp;
-import { cn } from "@/lib/utils"
+const ProphecyWidget: React.FC = () =&gt; {
+  return (
+    &lt;div className="bg-etherblue-dark/60 border border-gray-700 rounded-lg p-6 mt-8"&gt;
+      &lt;h2 className="text-xl font-bold mb-4"&gt;Primera Profecía Global: Riesgo de Inestabilidad Social en LATAM&lt;/h2&gt;
+      &lt;p className="text-gray-300 mb-4"&gt;
+        Análisis predictivo de riesgo de inestabilidad social en Colombia, Perú y Argentina para los próximos 6 meses.
+      &lt;/p&gt;
+      &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-4"&gt;
+        &lt;div className="bg-red-600/20 border border-red-500 rounded p-4"&gt;
+          &lt;h3 className="font-bold"&gt;Colombia&lt;/h3&gt;
+          &lt;p&gt;Riesgo: 68%&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div className="bg-orange-600/20 border border-orange-500 rounded p-4"&gt;
+          &lt;h3 className="font-bold"&gt;Perú&lt;/h3&gt;
+          &lt;p&gt;Riesgo: 75%&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div className="bg-red-800/20 border border-red-700 rounded p-4"&gt;
+          &lt;h3 className="font-bold"&gt;Argentina&lt;/h3&gt;
+          &lt;p&gt;Riesgo: 82%&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;a href="/INTELLIGENCE_REPORT_001.md" className="text-blue-400 underline mt-4 block"&gt;Ver Informe Completo&lt;/a&gt;
+    &lt;/div&gt;
+  );
+};
 &nbsp;
-const Slider = React.forwardRef&lt;
-  React.ElementRef&lt;typeof SliderPrimitive.Root&gt;,
-  React.ComponentPropsWithoutRef&lt;typeof SliderPrimitive.Root&gt;
-&gt;(({ className, ...props }, ref) =&gt; (
-  &lt;SliderPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative flex w-full touch-none select-none items-center",
-      className
-    )}
-    {...props}
-  &gt;
-    &lt;SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary"&gt;
-      &lt;SliderPrimitive.Range className="absolute h-full bg-primary" /&gt;
-    &lt;/SliderPrimitive.Track&gt;
-    &lt;SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" /&gt;
-  &lt;/SliderPrimitive.Root&gt;
-))
-Slider.displayName = SliderPrimitive.Root.displayName
-&nbsp;
-export { Slider }
-&nbsp;</pre></td></tr></table></pre>
+export default ProphecyWidget;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
@@ -150,14 +156,14 @@ export { Slider }
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-10-11T18:51:05.953Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     
