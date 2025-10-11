@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import globalOfferingProtocol from '../../GLOBAL_OFFERING_PROTOCOL.json';
+import DemoPage from './DemoPage';
 
 type Plan = {
   id: string;
@@ -13,30 +16,55 @@ type Plan = {
   popular?: boolean;
 };
 
-const PricingPage: React.FC = () => {
-  console.log('PricingPage render');
-  const [segments, setSegments] = useState<Record<string, { name: string; plans: Plan[] }>>({});
-  const [currency, setCurrency] = useState<string>('USD');
-  const [error, setError] = useState<string | null>(null);
+const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride }) => {
+   console.log('PricingPage render');
+   const [segments, setSegments] = useState<Record<string, { name: string; plans: Plan[] }>>({});
+   const [currency, setCurrency] = useState<string>('USD');
+   const [error, setError] = useState<string | null>(null);
+   const [demoModalOpen, setDemoModalOpen] = useState(false);
+   const [selectedPlanForDemo, setSelectedPlanForDemo] = useState<string | null>(null);
 
   useEffect(() => {
-    // Use GLOBAL_OFFERING_PROTOCOL.json as the single source of truth
-    try {
-      const protocol = globalOfferingProtocol as { plans: Plan[] };
-      // Group plans into segments (for now, all in one segment)
-      const defaultSegment = {
-        name: 'Planes Principales',
-        plans: protocol.plans.map(plan => ({
-          ...plan,
-          price: plan.price_monthly,
-          popular: plan.id === 'panteon' // Mark Panteon as popular
-        }))
-      };
-      setSegments({ default: defaultSegment });
-      setCurrency('USD');
-    } catch (err) {
-      setError('Error loading pricing data');
-    }
+    // Dynamically import GLOBAL_OFFERING_PROTOCOL.json to allow tests to mock it
+    let mounted = true;
+    (async () => {
+      try {
+        let protocol: any = null;
+        if (protocolOverride !== undefined) {
+          if (protocolOverride === null) throw new Error('protocol override null');
+          protocol = protocolOverride;
+        } else {
+          // Prefer synchronous require so jest.mock at top of tests is honored
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            protocol = require('../../GLOBAL_OFFERING_PROTOCOL.json');
+            protocol = (protocol && protocol.default) ? protocol.default : protocol;
+          } catch (reqErr) {
+            // Fallback to dynamic import if require isn't available
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const protocolModule = await import('../../GLOBAL_OFFERING_PROTOCOL.json');
+            protocol = (protocolModule && protocolModule.default) ? protocolModule.default : protocolModule;
+          }
+        }
+
+        const defaultSegment = {
+          name: 'Planes Principales',
+          plans: (protocol.plans || []).map((plan: Plan) => ({
+            ...plan,
+            price: plan.price_monthly,
+            popular: plan.id === 'panteon'
+          }))
+        };
+        if (mounted) {
+          setSegments({ default: defaultSegment });
+          setCurrency('USD');
+        }
+      } catch (err) {
+        if (mounted) setError('Error loading pricing data');
+      }
+    })();
+
+    return () => { mounted = false; };
   }, []);
 
   // Simple client-side ERI demo modifier: look for ?region=mx or the navigator.language
@@ -52,58 +80,176 @@ const PricingPage: React.FC = () => {
 
   const modifier = eriModifier();
 
+  const openDemoModal = (planId: string) => {
+    setSelectedPlanForDemo(planId);
+    setDemoModalOpen(true);
+  };
+
   if (error) return <div className="p-8">Error cargando planes: {error}</div>;
   if (!Object.keys(segments).length) return <div className="p-8">Cargando planes...</div>;
 
   return (
-    <div className="min-h-screen p-8 bg-etherblue-dark text-white">
-      <h1 className="text-3xl font-bold mb-6">Planes y Precios</h1>
+    <div className="min-h-screen bg-gradient-to-br from-etherblue-dark via-gray-900 to-purple-900 text-white relative overflow-hidden">
+      {/* Background blur effect */}
+      <div className="absolute inset-0 bg-etherblue-dark/50 backdrop-blur-sm"></div>
 
-      {/* Pricing table container - used by visual tests */}
-      <section data-testid="pricing-table">
-        {Object.keys(segments).map(segKey => {
-          const seg = segments[segKey];
-          return (
-            <div key={segKey} className="mb-10">
-              <h2 className="text-2xl font-semibold mb-4">{seg.name}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {seg.plans.map(plan => (
-                  <div key={plan.id} className={`p-6 rounded border ${plan.popular ? 'border-amber-400 shadow-lg' : 'border-gray-700'}`}>
-                    {plan.popular && <div className="text-xs uppercase text-amber-400 mb-2">Más Popular</div>}
-                    <h3 className="text-xl font-semibold">{plan.name}</h3>
-                    <div className="text-2xl font-bold my-4">{typeof plan.price === 'number' ? `${Math.round((plan.price as number) * modifier)} ${currency}` : plan.price}</div>
-                    {plan.baseCredits && <div className="text-sm text-gray-300">Créditos: {plan.baseCredits}</div>}
-                    <p className="text-sm mb-4">{plan.description}</p>
-                    <ul className="text-sm mb-4 list-disc list-inside">
-                      {(plan.features || []).map((f: any, i: number) => <li key={i}>{typeof f === 'string' ? f : f.name}</li>)}
-                    </ul>
-                    <a href="#contact" className="inline-block bg-amber-500 text-black px-4 py-2 rounded">Solicitar Demo</a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </section>
+      <div className="relative z-10 p-8">
+        <motion.h1
+          className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Panteón de Valor - Praevisio AI
+        </motion.h1>
 
-      {/* Calculadora de Combos Inteligente */}
-      <section className="mt-12 p-6 border border-etherneon rounded bg-etherblue-light">
-        <h2 className="text-2xl font-bold mb-4">Calculadora de Combos Inteligente</h2>
-        <p className="text-sm mb-4">Selecciona características adicionales para personalizar tu plan y ver el valor total. Nuestra IA explica por qué cada característica vale la pena.</p>
-        <ComboCalculator plans={Object.values(segments).flatMap(seg => seg.plans)} />
-      </section>
+        <motion.p
+          className="text-xl text-center mb-16 text-gray-300 max-w-4xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          Cada plan es un altar sagrado, cada demo una epifanía. Elige tu camino hacia la inteligencia predictiva de élite.
+        </motion.p>
 
-      {/* Panteón destacado si existe */}
-      {/* The server currently may not expose pantheonOffering; this reserves the space */}
-      <aside className="mt-12 p-6 border border-amber-400 rounded bg-etherblue-light">
-        <h2 className="text-2xl font-bold">Nivel Panteón</h2>
-        <p className="text-sm mt-2">Oferta exclusiva de nivel Panteón: disponible para clientes de máximo impacto.</p>
-      </aside>
+        {/* Pricing table container - used by visual tests */}
+        <section data-testid="pricing-table" className="mb-20">
+          {Object.keys(segments).map((segKey, segIndex) => {
+            const seg = segments[segKey];
+            return (
+              <motion.div
+                key={segKey}
+                className="mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + segIndex * 0.2, duration: 0.6 }}
+              >
+                <h2 className="text-3xl font-semibold mb-8 text-center">{seg.name}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                  {seg.plans.map((plan, planIndex) => (
+                    <motion.div
+                      key={plan.id}
+                      className={`relative p-8 rounded-2xl border backdrop-blur-md bg-white/5 shadow-2xl ${
+                        plan.popular
+                          ? 'border-etherneon shadow-etherneon/20'
+                          : 'border-white/20 hover:border-white/40'
+                      } transition-all duration-300`}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.7 + planIndex * 0.1, duration: 0.5 }}
+                      whileHover={{ y: -10, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {plan.popular && (
+                        <motion.div
+                          className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-etherneon text-etherblue-dark px-4 py-1 rounded-full text-sm font-semibold uppercase"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 1 + planIndex * 0.1, type: 'spring', stiffness: 200 }}
+                        >
+                          Altar Principal
+                        </motion.div>
+                      )}
+
+                      <div className="text-center mb-6">
+                        <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                        <div
+                          data-testid={`plan-price-${plan.id}`}
+                          className="text-4xl font-extrabold text-etherneon mb-2"
+                        >
+                          {typeof plan.price === 'number' ? `${Math.round((plan.price as number) * modifier)} ${currency}` : plan.price}
+                        </div>
+                        {plan.baseCredits && (
+                          <div className="text-sm text-gray-400">Créditos: {plan.baseCredits}</div>
+                        )}
+                      </div>
+
+                      <p className="text-gray-300 mb-6 text-center">{plan.description}</p>
+
+                      <ul className="text-sm mb-8 space-y-2">
+                        {(plan.features || []).map((f: any, i: number) => (
+                          <li key={i} className="flex items-center">
+                            <span className="text-etherneon mr-2">✦</span>
+                            {typeof f === 'string' ? f : f.name}
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex flex-col gap-3">
+                        <Dialog open={demoModalOpen && selectedPlanForDemo === plan.id} onOpenChange={setDemoModalOpen}>
+                          <DialogTrigger asChild>
+                            <motion.button
+                              className="w-full bg-gradient-to-r from-etherneon to-blue-500 text-etherblue-dark font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => openDemoModal(plan.id)}
+                            >
+                              Ver Demo de este Plan
+                            </motion.button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-full h-full p-0 bg-transparent border-none">
+                            <DemoPage plan={selectedPlanForDemo || undefined} />
+                          </DialogContent>
+                        </Dialog>
+
+                        <a
+                          href="#contact"
+                          className="text-center text-sm underline text-etherneon hover:text-white transition-colors"
+                        >
+                          Solicitar Demo Personalizada
+                        </a>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
+        </section>
+
+        {/* Calculadora Soberana */}
+        <motion.section
+          className="mb-20 p-8 rounded-3xl border border-etherneon/30 backdrop-blur-md bg-gradient-to-br from-etherblue-light/20 to-purple-900/20 shadow-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-etherneon to-blue-400 bg-clip-text text-transparent">
+              Calculadora Soberana
+            </h2>
+            <p className="text-lg text-gray-300">
+              Forja tu combo perfecto. Nuestra IA revela el valor oculto de cada elección.
+            </p>
+          </div>
+          <ComboCalculator plans={(Object.values(segments) as Array<{ name: string; plans: Plan[] }>).flatMap(seg => seg.plans)} />
+        </motion.section>
+
+        {/* Panteón destacado */}
+        <motion.aside
+          className="p-8 rounded-3xl border border-amber-400/50 backdrop-blur-md bg-gradient-to-br from-amber-900/20 to-etherblue-light/20 shadow-2xl text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+        >
+          <h2 className="text-3xl font-bold mb-4 text-amber-400">Nivel Panteón</h2>
+          <p className="text-lg text-gray-300 mb-6">
+            Oferta exclusiva para visionarios de máximo impacto. Accede a la inteligencia predictiva definitiva.
+          </p>
+          <motion.button
+            className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Solicitar Acceso Panteón
+          </motion.button>
+        </motion.aside>
+      </div>
     </div>
   );
 };
 
-// Componente de Calculadora de Combos Inteligente
+// Componente de Calculadora Soberana
 const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
   const [selectedPlans, setSelectedPlans] = useState<Set<string>>(new Set());
   const [selectedFeatures, setSelectedFeatures] = useState<Set<string>>(new Set());
@@ -152,68 +298,140 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-3">Selecciona Planes Base</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map(plan => (
-            <div key={plan.id} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id={`plan-${plan.id}`}
-                checked={selectedPlans.has(plan.id)}
-                onChange={() => togglePlan(plan.id)}
-                className="rounded"
-              />
-              <label htmlFor={`plan-${plan.id}`} className="text-sm">
-                {plan.name} - ${typeof plan.price === 'number' ? plan.price : 'N/A'}/mes
-              </label>
-            </div>
-          ))}
-        </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Panel de Selección */}
+      <div className="space-y-8">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold mb-6 text-etherneon">Altares Base</h3>
+          <div className="space-y-4">
+            {plans.map(plan => (
+              <motion.div
+                key={plan.id}
+                data-testid={`plan-toggle-${plan.id}`}
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  selectedPlans.has(plan.id)
+                    ? 'border-etherneon bg-etherneon/10 shadow-lg'
+                    : 'border-white/20 hover:border-white/40'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => togglePlan(plan.id)}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold">{plan.name}</h4>
+                    <p className="text-sm text-gray-400">${typeof plan.price === 'number' ? plan.price : 'N/A'}/mes</p>
+                  </div>
+                  <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                    selectedPlans.has(plan.id) ? 'bg-etherneon border-etherneon' : 'border-white/40'
+                  }`}>
+                    {selectedPlans.has(plan.id) && <span className="text-black text-sm">✓</span>}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold mb-6 text-etherneon">Reliquias Adicionales</h3>
+          <div className="grid grid-cols-1 gap-4">
+            {['Integración API Avanzada', 'Dashboard Personalizado', 'Soporte 24/7', 'Análisis de Tendencias'].map(feature => (
+              <motion.div
+                key={feature}
+                data-testid={`feature-toggle-${feature.replace(/\s+/g, '-').toLowerCase()}`}
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  selectedFeatures.has(feature)
+                    ? 'border-etherneon bg-etherneon/10 shadow-lg'
+                    : 'border-white/20 hover:border-white/40'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => toggleFeature(feature)}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold">{feature}</h4>
+                    <p className="text-sm text-gray-400">$50/mes</p>
+                  </div>
+                  <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                    selectedFeatures.has(feature) ? 'bg-etherneon border-etherneon' : 'border-white/40'
+                  }`}>
+                    {selectedFeatures.has(feature) && <span className="text-black text-sm">✓</span>}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-3">Características Adicionales</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {['Integración API Avanzada', 'Dashboard Personalizado', 'Soporte 24/7', 'Análisis de Tendencias'].map(feature => (
-            <div key={feature} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id={`feature-${feature}`}
-                checked={selectedFeatures.has(feature)}
-                onChange={() => toggleFeature(feature)}
-                className="rounded"
-              />
-              <label htmlFor={`feature-${feature}`} className="text-sm">
-                {feature} - $50/mes
-              </label>
-            </div>
-          ))}
+      {/* Panel de Resultados */}
+      <motion.div
+        className="space-y-6"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+      >
+        <div className="bg-gradient-to-br from-etherblue-light/30 to-purple-900/30 p-6 rounded-2xl border border-etherneon/30">
+          <h3 className="text-2xl font-bold mb-4 text-center">Total Soberano</h3>
+          <motion.div
+            className="text-5xl font-extrabold text-center text-etherneon mb-2"
+            data-testid="calculator-total"
+            key={calculateTotal()}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+          >
+            ${calculateTotal()}/mes
+          </motion.div>
+          <p className="text-center text-gray-400">Valor calculado instantáneamente</p>
         </div>
-      </div>
 
-      <div className="border-t pt-4">
-        <h3 className="text-lg font-semibold mb-3">Resumen del Combo</h3>
-        <div className="text-xl font-bold text-etherneon">
-          Total: ${calculateTotal()}/mes
-        </div>
-        <div className="mt-4 space-y-2">
+        <div className="space-y-4">
+          <h3 className="text-xl font-bold text-etherneon">Oráculo de Valor</h3>
           {Array.from(selectedPlans).map(planId => {
             const plan = plans.find(p => p.id === planId);
             return plan ? (
-              <div key={planId} className="text-sm bg-etherblue-dark p-2 rounded">
-                <strong>{plan.name}:</strong> {getAIExplanation(plan.name, 'plan')}
-              </div>
+              <motion.div
+                key={planId}
+                className="p-4 bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-lg border border-blue-500/30"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h4 className="font-semibold text-blue-400 mb-2">{plan.name}</h4>
+                <p className="text-sm text-gray-300">{getAIExplanation(plan.name, 'plan')}</p>
+              </motion.div>
             ) : null;
           })}
           {Array.from(selectedFeatures).map(feature => (
-            <div key={feature} className="text-sm bg-etherblue-dark p-2 rounded">
-              <strong>{feature}:</strong> {getAIExplanation(feature as string, 'feature')}
-            </div>
+            <motion.div
+              key={feature}
+              className="p-4 bg-gradient-to-r from-green-900/50 to-teal-900/50 rounded-lg border border-green-500/30"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <h4 className="font-semibold text-green-400 mb-2">{feature}</h4>
+              <p className="text-sm text-gray-300">{getAIExplanation(feature as string, 'feature')}</p>
+            </motion.div>
           ))}
+          {selectedPlans.size === 0 && selectedFeatures.size === 0 && (
+            <div className="text-center text-gray-500 py-8">
+              Selecciona altares y reliquias para revelar el oráculo de valor
+            </div>
+          )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

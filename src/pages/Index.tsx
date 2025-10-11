@@ -6,16 +6,18 @@ import HeroSection from '../components/HeroSection';
 import FeaturesSection from '../components/FeaturesSection';
 import SolutionsSection from '../components/SolutionsSection';
 import HowItWorksSection from '../components/HowItWorksSection';
-import AdvancedInteractiveDashboard from '../components/AdvancedInteractiveDashboard';
 import EnhancedContactSection from '../components/EnhancedContactSection';
 import EnhancedCredibilitySection from '../components/EnhancedCredibilitySection';
-import TestimonialCarousel from '../components/generated/TestimonialCarousel';
 import EnhancedFAQSection from '../components/EnhancedFAQSection';
 import Footer from '../components/Footer';
 import { Toaster } from 'sonner';
 import ComparisonSection from '../components/ComparisonSection';
 import CommandCenterLayout from '../components/CommandCenterLayout';
-import DemoSection from '../components/DemoSection';
+
+// Lazy load heavy components for better performance
+const AdvancedInteractiveDashboard = React.lazy(() => import('../components/AdvancedInteractiveDashboard'));
+const TestimonialCarousel = React.lazy(() => import('../components/generated/TestimonialCarousel'));
+// DemoSection removed from landing — demo moved to /demo (Praevisio-Apollo-Sanctuary-Restoration)
 
 
 const Index = () => {
@@ -27,10 +29,10 @@ const Index = () => {
     const token = window.localStorage.getItem('praevisio_token');
     setHasToken(!!token);
 
-    // Simulate loading delay for animation
+    // Minimal loading delay for smooth UX
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 800);
+    }, 200);
 
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -95,10 +97,18 @@ const Index = () => {
       <div id="solutions">
         <SolutionsSection />
       </div>
-      <AdvancedInteractiveDashboard />
-      <div id="demo">
-        <DemoSection />
-      </div>
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-etherblue-dark text-etherneon"><div className="animate-spin rounded-full h-16 w-16 border-b-2 border-etherneon"></div></div>}>
+        <AdvancedInteractiveDashboard />
+      </Suspense>
+      <section id="demo-cta" className="py-20 bg-gradient-to-r from-etherblue-dark to-transparent">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h2 className="text-3xl font-bold mb-4">Experimenta la Sinfonía en Vivo — v2</h2>
+          <p className="text-gray-300 mb-6">Visita nuestro demo inmersivo para ver todas las capacidades de Praevisio AI en acción. (HMR test)</p>
+          <div className="flex justify-center">
+            <a href="#/demo" className="inline-block bg-etherneon text-etherblue-dark font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Ver la Demo</a>
+          </div>
+        </div>
+      </section>
       <ComparisonSection />
       <div id="how-it-works">
         <HowItWorksSection />
@@ -107,7 +117,9 @@ const Index = () => {
       <div id="credibility">
         <EnhancedCredibilitySection />
       </div>
-      <TestimonialCarousel />
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-etherblue-dark text-etherneon"><div className="animate-spin rounded-full h-16 w-16 border-b-2 border-etherneon"></div></div>}>
+        <TestimonialCarousel />
+      </Suspense>
       <EnhancedContactSection />
       <Footer />
     </div>

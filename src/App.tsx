@@ -14,6 +14,7 @@ const PricingPage = React.lazy(() => import("./pages/PricingPage"));
 const FoodResiliencePage = React.lazy(() => import("./pages/FoodResiliencePage"));
 const MetatronPanel = React.lazy(() => import("./components/MetatronPanel"));
 const DemoPage = React.lazy(() => import("./pages/DemoPage"));
+const SolutionsPage = React.lazy(() => import("./pages/SolutionsPage"));
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => {
               <Route path="/food-resilience" element={<FoodResiliencePage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/demo" element={<DemoPage />} />
+              <Route path="/solutions" element={<SolutionsPage />} />
               <Route path="/metatron-panel" element={<MetatronPanel />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

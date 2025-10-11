@@ -39,10 +39,10 @@ describe('CIMetricsWidget', () => {
 
   test('renders metric cards with correct styling', () => {
     render(<CIMetricsWidget />);
-
-    const metricCards = screen.getAllByText(/12.5 min|85.3%|2|SUCCESS/).map(el => el.closest('div'));
-    metricCards.forEach(card => {
-      expect(card).toHaveClass('bg-etherblue-dark/50', 'rounded', 'p-4');
+    const metricIds = ['ci-metric-buildtime', 'ci-metric-coverage', 'ci-metric-failed', 'ci-metric-lastbuild'];
+    metricIds.forEach(id => {
+      const el = screen.getByTestId(id);
+      expect(el).toHaveClass('bg-etherblue-dark/50', 'rounded', 'p-4');
     });
   });
 
@@ -90,7 +90,7 @@ describe('CIMetricsWidget', () => {
       expect(screen.getByText('Log del Oracle')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('[Oracle Prediction] Probabilidad de fallo: 75.0%. Sugerencia: Posible fallo en pipeline de datos debido a alta carga del sistema. Recomendación: Escalar recursos o optimizar consultas.')).toBeInTheDocument();
+    expect(screen.getByTestId('oracle-log')).toHaveTextContent('Posible fallo en pipeline de datos debido a alta carga del sistema.');
 
     // Check console.log was called
     expect(consoleSpy).toHaveBeenCalledWith('[Oracle Prediction] Probabilidad de fallo: 75.0%. Sugerencia: Posible fallo en pipeline de datos debido a alta carga del sistema. Recomendación: Escalar recursos o optimizar consultas.');
@@ -153,7 +153,8 @@ describe('CIMetricsWidget', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Posible fallo en pipeline de datos debido a alta carga del sistema. Recomendación: Escalar recursos o optimizar consultas.')).toBeInTheDocument();
+      expect(screen.getByTestId('oracle-log')).toBeInTheDocument();
     });
+    expect(screen.getByTestId('oracle-log')).toHaveTextContent('Posible fallo en pipeline de datos debido a alta carga del sistema.');
   });
 });

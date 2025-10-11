@@ -29,3 +29,21 @@ if (typeof window.matchMedia === 'undefined') {
     })),
   });
 }
+
+if (typeof global.IntersectionObserver === 'undefined') {
+  global.IntersectionObserver = class IntersectionObserver {
+    constructor() {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
+
+if (typeof window.IntersectionObserver === 'undefined') {
+  window.IntersectionObserver = class IntersectionObserver {
+    constructor() {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}

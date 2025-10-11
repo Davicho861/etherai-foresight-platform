@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: "Inicio", href: "#inicio" },
-    { name: "Ver Demo", href: "#demo" },
+    { name: "Ver Demo", href: "/demo" },
     { name: "Dashboard", href: "/dashboard" },
     { name: "Precios", href: "/pricing" },
     { name: "Módulo LATAM", href: "/module/colombia" },
@@ -62,6 +62,10 @@ const Navbar: React.FC = () => {
                     {link.name}
                   </Link>
                 ))}
+                {/* Desktop CTA */}
+                <Link to="/demo" className="ml-4 inline-block">
+                  <Button className="bg-etherneon text-etherblue-dark px-4 py-2">Ver la Demo</Button>
+                </Link>
               </nav>
             ) : (
               <button

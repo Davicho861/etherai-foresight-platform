@@ -1,0 +1,21 @@
+{
+  "kpis": {
+    "precisionPromedio": 90,
+    "prediccionesDiarias": 120,
+    "monitoreoContinuo": 24,
+    "coberturaRegional": 6
+  },
+  "countries": [
+    { "name": "Colombia", "code": "COL", "lat": 4.5709, "lon": -74.2973 },
+    { "name": "Perú", "code": "PER", "lat": -9.1899, "lon": -75.0152 },
+    { "name": "Brasil", "code": "BRA", "lat": -14.2350, "lon": -51.9253 },
+    { "name": "México", "code": "MEX", "lat": 23.6345, "lon": -102.5528 },
+    { "name": "Argentina", "code": "ARG", "lat": -38.4161, "lon": -63.6167 },
+    { "name": "Chile", "code": "CHL", "lat": -35.6751, "lon": -71.5430 }
+  ],
+  "global": {
+    "crypto": { "data": [{ "id": "bitcoin", "current_price": 50000 }], "isMock": true },
+    "seismic": { "events": [], "isMock": true }
+  },
+  "lastUpdated": "2025-10-11T00:00:00.000Z"
+}

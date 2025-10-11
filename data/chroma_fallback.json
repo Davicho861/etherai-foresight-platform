@@ -1,27 +1,7 @@
 {
   "missions_logs": [
     {
-      "id": "m-reject-mgmmu8jw-6882",
-      "missionId": "m-reject",
-      "log": {
-        "taskId": "ethics-council",
-        "description": "Consultando al Consejo de Ética...",
-        "status": "in_progress"
-      },
-      "embedding": [
-        0.8100558659217877,
-        0.7430167597765364,
-        1,
-        0.6778398510242085,
-        0.7914338919925512,
-        0.7932960893854749,
-        0.515828677839851,
-        0.5772811918063314
-      ],
-      "ts": 1760208746185
-    },
-    {
-      "id": "m-reject-mgmmu8km-7585",
+      "id": "m-reject-mgmt5mjr-3602",
       "missionId": "m-reject",
       "log": {
         "taskId": "error",
@@ -38,29 +18,48 @@
         0.534446764091858,
         0.5636743215031316
       ],
-      "ts": 1760208746185
-    }
-  ]
-}{
-      "id": "wisdom-reports-mgmmu8z1-5363",
+      "ts": 1760219355267
+    },
+    {
+      "id": "m-reject-mgmt5mi1-8148",
+      "missionId": "m-reject",
+      "log": {
+        "taskId": "ethics-council",
+        "description": "Consultando al Consejo de Ética...",
+        "status": "in_progress"
+      },
+      "embedding": [
+        0.8100558659217877,
+        0.7430167597765364,
+        1,
+        0.6778398510242085,
+        0.7914338919925512,
+        0.7932960893854749,
+        0.515828677839851,
+        0.5772811918063314
+      ],
+      "ts": 1760219355268
+    },
+    {
+      "id": "wisdom-reports-mgmt85cd-9122",
       "missionId": "wisdom-reports",
       "log": {
-        "timestamp": "2025-10-11T18:52:26.220Z",
+        "timestamp": "2025-10-11T21:51:12.396Z",
         "newHypothesis": {},
         "refinedInsights": [],
         "summary": "Se han refinado 0 insights basados en el nuevo conocimiento."
       },
       "embedding": [
         1,
-        0.7805194805194805,
-        0.8428571428571429,
-        0.638961038961039,
-        0.8896103896103896,
-        0.7857142857142857,
-        0.8246753246753247,
-        0.8077922077922078
+        0.7859007832898173,
+        0.839425587467363,
+        0.6514360313315927,
+        0.902088772845953,
+        0.7885117493472585,
+        0.8289817232375979,
+        0.8107049608355091
       ],
-      "ts": 1760208746409
+      "ts": 1760219472580
     }
   ]
 }

@@ -152,7 +152,7 @@ const HeroSection: React.FC = () => {
             <ArrowRight className="ml-2 h-4 w-4 transition-all group-hover:translate-x-1" />
           </Button>
           
-          <Button variant="outline" size="lg" className="border-ethergray border-opacity-30 hover:bg-etherblue text-white group">
+          <Button variant="outline" size="lg" className="border-ethergray border-opacity-30 hover:bg-etherblue text-white group" onClick={() => { window.location.hash = '/solutions'; }}>
             <Globe className="mr-2 h-4 w-4 transition-all group-hover:rotate-12" /> 
             Explorar Soluciones
           </Button>

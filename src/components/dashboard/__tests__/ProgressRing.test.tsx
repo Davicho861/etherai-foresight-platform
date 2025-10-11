@@ -4,27 +4,27 @@ import ProgressRing from '../ProgressRing';
 
 describe('ProgressRing', () => {
   test('renders SVG with default props', () => {
-    render(<ProgressRing progress={50} />);
+    const { container } = render(<ProgressRing progress={50} />);
 
-    const svg = screen.getByRole('img', { hidden: true }); // SVG elements are treated as images
-    expect(svg).toBeInTheDocument();
-    expect(svg).toHaveAttribute('width', '80');
-    expect(svg).toHaveAttribute('height', '80');
+  const svg = container.querySelector('svg');
+  expect(svg).toBeInTheDocument();
+  expect(svg).toHaveAttribute('width', '80');
+  expect(svg).toHaveAttribute('height', '80');
   });
 
   test('renders SVG with custom size', () => {
-    render(<ProgressRing progress={50} size={100} />);
+    const { container } = render(<ProgressRing progress={50} size={100} />);
 
-    const svg = screen.getByRole('img', { hidden: true });
-    expect(svg).toHaveAttribute('width', '100');
-    expect(svg).toHaveAttribute('height', '100');
+  const svg = container.querySelector('svg');
+  expect(svg).toHaveAttribute('width', '100');
+  expect(svg).toHaveAttribute('height', '100');
   });
 
   test('renders SVG with custom stroke', () => {
-    render(<ProgressRing progress={50} stroke={10} />);
+    const { container } = render(<ProgressRing progress={50} stroke={10} />);
 
-    const svg = screen.getByRole('img', { hidden: true });
-    expect(svg).toBeInTheDocument();
+  const svg = container.querySelector('svg');
+  expect(svg).toBeInTheDocument();
   });
 
   test('renders background circle', () => {

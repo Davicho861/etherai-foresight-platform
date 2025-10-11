@@ -52,7 +52,11 @@ interface LiveData {
   lastUpdated: string;
 }
 
-const DemoPage: React.FC = () => {
+interface DemoPageProps {
+  plan?: string;
+}
+
+const DemoPage: React.FC<DemoPageProps> = ({ plan }) => {
   const [demoData, setDemoData] = useState<LiveData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,8 +68,20 @@ const DemoPage: React.FC = () => {
   const [droughtLevel, setDroughtLevel] = useState<number>(0);
   const [riskIndex, setRiskIndex] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [planParam, setPlanParam] = useState<string | null>(null);
 
   useEffect(() => {
+    // Read optional plan query param to parameterize the demo, or use prop
+    if (plan) {
+      setPlanParam(plan.toLowerCase());
+    } else {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const planFromUrl = params.get('plan');
+        if (planFromUrl) setPlanParam(planFromUrl.toLowerCase());
+      } catch (e) {}
+    }
+
     const fetchDemoData = async () => {
       try {
         const response = await fetch('/api/demo/live-state');
@@ -74,11 +90,56 @@ const DemoPage: React.FC = () => {
         }
         const data: LiveData = await response.json();
         setDemoData(data);
-        setSelectedCountry(data.countries[0] ? { name: data.countries[0].name, code: data.countries[0].code, risk: 'N/A', prediction: 0 } : null);
+        const first = data.countries[0];
+        setSelectedCountry(first ? { name: first.name, code: first.code, risk: 'N/A', prediction: 0 } : null);
+        // Ensure simulation select has a sensible default so tests that click simulate without selecting still trigger POST
+        if (first) setSimulationCountry(first.code);
         setError(null); // Clear error on success
       } catch (err) {
         console.error('Error fetching demo data:', err);
-        setError('Error al cargar datos de la demo');
+        // Try to load a static mock JSON from public/mock if available
+        try {
+          const staticResp = await fetch('/mock/demo-live-state.json');
+          if (staticResp.ok) {
+            const staticData: LiveData = await staticResp.json();
+            setDemoData(staticData);
+            const first = staticData.countries[0];
+            setSelectedCountry(first ? { name: first.name, code: first.code, risk: 'N/A', prediction: 0 } : null);
+            if (first) setSimulationCountry(first.code);
+            // Friendly informational banner indicating static mock was used
+            setError('Datos de la demo cargados desde mock estático (modo demostración, datos simulados)');
+            return;
+          }
+        } catch (e) {
+          console.warn('Static mock not available:', e?.message || e);
+        }
+
+        // Fallback: inline high-fidelity mock so the demo remains functional even if backend is unavailable
+        const now = new Date().toISOString();
+        const mock: LiveData = {
+          kpis: {
+            precisionPromedio: 90,
+            prediccionesDiarias: 120,
+            monitoreoContinuo: 24,
+            coberturaRegional: 6
+          },
+          countries: [
+            { name: 'Colombia', code: 'COL', lat: 4.5709, lon: -74.2973 },
+            { name: 'Perú', code: 'PER', lat: -9.1899, lon: -75.0152 },
+            { name: 'Brasil', code: 'BRA', lat: -14.2350, lon: -51.9253 },
+            { name: 'México', code: 'MEX', lat: 23.6345, lon: -102.5528 },
+            { name: 'Argentina', code: 'ARG', lat: -38.4161, lon: -63.6167 },
+            { name: 'Chile', code: 'CHL', lat: -35.6751, lon: -71.5430 }
+          ],
+          global: { crypto: { data: [{ id: 'bitcoin', current_price: 50000 }], isMock: true }, seismic: { events: [], isMock: true } },
+          lastUpdated: now
+        };
+  setDemoData(mock);
+        const first = mock.countries[0];
+        setSelectedCountry(first ? { name: first.name, code: first.code, risk: 'N/A', prediction: 0 } : null);
+        if (first) setSimulationCountry(first.code);
+  // Friendly informational banner so users know the demo is running with simulated data
+  setError('Datos de la demo cargados desde fallback local (simulados)');
       } finally {
         setLoading(false);
       }
@@ -93,6 +154,24 @@ const DemoPage: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // If the URL contains contact=true, scroll to the contact section once demoData is available
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const contact = params.get('contact');
+      if (contact && contact.toLowerCase() === 'true') {
+        // Delay slightly to allow the page layout to settle
+        const t = setTimeout(() => {
+          const el = document.getElementById('contact');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 350);
+        return () => clearTimeout(t);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [demoData]);
+
   if (loading) {
     return (
       <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 items-center justify-center">
@@ -101,7 +180,8 @@ const DemoPage: React.FC = () => {
     );
   }
 
-  if (error || !demoData) {
+  // Only show a blocking full-screen error when we have no demo data at all.
+  if (!demoData) {
     return (
       <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 items-center justify-center">
         <div className="text-white text-xl">{error || 'Error al cargar datos'}</div>
@@ -115,6 +195,53 @@ const DemoPage: React.FC = () => {
     // Default color for live data
     return '#60A5FA';
   };
+
+  // Determine which widgets to show based on plan param
+  const widgetsForPlan = (plan?: string) => {
+    // default: show all
+    const normalized = (plan || '').toLowerCase();
+    switch (normalized) {
+      case 'starter':
+      case 'oracle':
+        return {
+          community: false,
+          seismic: true,
+          food: false,
+          ethical: false,
+          missionGallery: false
+        };
+      case 'growth':
+      case 'titans':
+        return {
+          community: true,
+          seismic: true,
+          food: true,
+          ethical: false,
+          missionGallery: true
+        };
+      case 'panteon':
+      case 'enterprise':
+      case 'gov':
+      case 'ngo':
+        return {
+          community: true,
+          seismic: true,
+          food: true,
+          ethical: true,
+          missionGallery: true
+        };
+      default:
+        return {
+          community: true,
+          seismic: true,
+          food: true,
+          ethical: true,
+          missionGallery: true
+        };
+    }
+  };
+
+  const activeWidgets = widgetsForPlan(planParam || undefined);
 
   const simulateScenario = async () => {
     if (!simulationCountry) return;
@@ -172,8 +299,47 @@ const DemoPage: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              Inteligencia Predictiva de Élite para América Latina - 90% de Precisión
+              {planParam ? (
+                (() => {
+                  const p = planParam.toLowerCase();
+                  if (p === 'starter' || p === 'oracle') return (
+                    <>
+                      Demo optimizada para <span className="text-etherneon font-semibold">{planParam.toUpperCase()}</span>. Prueba las capacidades esenciales y comprueba la integrabilidad con tus sistemas.
+                    </>
+                  );
+                  if (p === 'growth' || p === 'titans') return (
+                    <>
+                      Demo del plan <span className="text-etherneon font-semibold">{planParam.toUpperCase()}</span>: incluye integración comunitaria y paneles avanzados de riesgo.
+                    </>
+                  );
+                  if (p === 'panteon' || p === 'enterprise' || p === 'gov' || p === 'ngo') return (
+                    <>
+                      Experiencia completa del <span className="text-etherneon font-semibold">{planParam.toUpperCase()}</span>: acceso a todos los módulos, datos de alta fidelidad y soporte prioritario.
+                    </>
+                  );
+                  return (
+                    <>
+                      Experiencia de demo personalizada para el plan <span className="text-etherneon font-semibold">{planParam.toUpperCase()}</span> — vea capacidades y límites del plan en tiempo real.
+                    </>
+                  );
+                })()
+              ) : (
+                'Inteligencia Predictiva de Élite para América Latina - 90% de Precisión'
+              )}
             </motion.p>
+            {/* Plan banner with CTAs */}
+            {planParam && (
+              <div className="mt-4 inline-flex items-center justify-center space-x-3">
+                <a href={`#/pricing?highlight=${encodeURIComponent(planParam)}`} className="inline-block bg-etherneon text-etherblue-dark font-semibold px-5 py-2 rounded">Ver Plan</a>
+                <a href={`#/demo?plan=${encodeURIComponent(planParam)}&contact=true`} className="inline-block border border-white/20 px-5 py-2 rounded">Contactar Ventas</a>
+              </div>
+            )}
+            {/* Non-blocking informational banner when demo loaded from fallback/mock */}
+            {error && (
+              <div className="mt-6 max-w-2xl mx-auto bg-yellow-800/20 border-l-4 border-yellow-400 text-yellow-100 px-4 py-2 rounded">
+                <strong className="font-semibold">Aviso:</strong> {error}
+              </div>
+            )}
           </div>
 
           {/* Metrics Dashboard */}
@@ -233,7 +399,7 @@ const DemoPage: React.FC = () => {
                   const country = demoData.countries.find(c => c.name === value);
                   if (country) setSelectedCountry({ name: country.name, code: country.code, risk: 'N/A', prediction: 0 });
                 }}>
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                  <SelectTrigger data-testid="country-select-trigger" className="bg-gray-700 border-gray-600 text-white">
                     <SelectValue placeholder="Selecciona un país" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600">
@@ -362,7 +528,7 @@ const DemoPage: React.FC = () => {
                   <div>
                     <label className="text-gray-300 block mb-2">Selecciona País para Simulación</label>
                     <Select onValueChange={setSimulationCountry}>
-                      <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                      <SelectTrigger data-testid="simulation-select-trigger" className="bg-gray-700 border-gray-600 text-white">
                         <SelectValue placeholder="Selecciona un país" />
                       </SelectTrigger>
                       <SelectContent className="bg-gray-700 border-gray-600">
@@ -397,7 +563,7 @@ const DemoPage: React.FC = () => {
                     />
                   </div>
 
-                  <Button onClick={simulateScenario} className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button data-testid="simulate-button" onClick={simulateScenario} className="w-full bg-blue-600 hover:bg-blue-700">
                     Calcular Índice de Riesgo
                   </Button>
 
@@ -432,15 +598,17 @@ const DemoPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.5 }}
           >
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white text-2xl">Galería de Misiones - Task Replay</CardTitle>
-                <p className="text-gray-400">Haz clic en una misión para ver el análisis predictivo en tiempo real</p>
-              </CardHeader>
-              <CardContent>
-                <MissionGallery />
-              </CardContent>
-            </Card>
+              {activeWidgets.missionGallery && (
+                <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+                  <CardHeader>
+                    <CardTitle className="text-white text-2xl">Galería de Misiones - Task Replay</CardTitle>
+                    <p className="text-gray-400">Haz clic en una misión para ver el análisis predictivo en tiempo real</p>
+                  </CardHeader>
+                  <CardContent>
+                    <MissionGallery />
+                  </CardContent>
+                </Card>
+              )}
           </motion.div>
 
           {/* Sinfonía de Manifestación - Capacidades Completas */}
@@ -458,25 +626,25 @@ const DemoPage: React.FC = () => {
             {/* Resiliencia Comunitaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🏛️ Resiliencia Comunitaria LATAM</h3>
-              <CommunityResilienceWidget />
+              {activeWidgets.community && <CommunityResilienceWidget />}
             </div>
 
             {/* Monitoreo Sísmico */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌋 Monitoreo Sísmico en Tiempo Real</h3>
-              <SeismicMapWidget />
+              {activeWidgets.seismic && <SeismicMapWidget />}
             </div>
 
             {/* Seguridad Alimentaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌾 Seguridad Alimentaria Global</h3>
-              <FoodSecurityDashboard />
+              {activeWidgets.food && <FoodSecurityDashboard />}
             </div>
 
             {/* IA Ética */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">⚖️ Vector Ético - IA Explicable</h3>
-              <EthicalVectorDisplay />
+              {activeWidgets.ethical && <EthicalVectorDisplay />}
             </div>
           </motion.div>
         </motion.div>

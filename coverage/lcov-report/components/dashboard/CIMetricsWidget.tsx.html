@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.69% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -141,34 +141,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,34 +210,34 @@ interface CIMetrics {
   lastBuildStatus: string;
 }
 &nbsp;
-const CIMetricsWidget: React.FC = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-  const metrics = <span class="cstat-no" title="statement not covered" >useState&lt;CIMetrics&gt;({</span>
+const CIMetricsWidget: React.FC = () =&gt; {
+  const metrics = useState&lt;CIMetrics&gt;({
     buildTime: 12.5,
     testCoverage: 85.3,
     failedBuilds: 2,
     lastBuildStatus: 'SUCCESS'
   })[0];
 &nbsp;
-  const [oracleLog, setOracleLog] = <span class="cstat-no" title="statement not covered" >useState&lt;string&gt;('');</span>
+  const [oracleLog, setOracleLog] = useState&lt;string&gt;('');
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  useEffect(() =&gt; {
     // Simular predicción del Oracle anticipando un fallo potencial
-    const simulateOraclePrediction = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-      const prediction = <span class="cstat-no" title="statement not covered" >{</span>
+    const simulateOraclePrediction = () =&gt; {
+      const prediction = {
         probability: 0.75,
         suggestion: 'Posible fallo en pipeline de datos debido a alta carga del sistema. Recomendación: Escalar recursos o optimizar consultas.'
       };
-      const log = <span class="cstat-no" title="statement not covered" >`[Oracle Prediction] Probabilidad de fallo: ${(prediction.probability * 100).toFixed(1)}%. Sugerencia: ${prediction.suggestion}`;</span>
-<span class="cstat-no" title="statement not covered" >      console.log(log);</span>
-<span class="cstat-no" title="statement not covered" >      setOracleLog(log);</span>
+      const log = `[Oracle Prediction] Probabilidad de fallo: ${(prediction.probability * 100).toFixed(1)}%. Sugerencia: ${prediction.suggestion}`;
+      console.log(log);
+      setOracleLog(log);
     };
 &nbsp;
     // Simular llamada al Oracle después de 2 segundos
-    const timer = <span class="cstat-no" title="statement not covered" >setTimeout(simulateOraclePrediction, 2000);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >clearTimeout(timer);</span></span>
+    const timer = setTimeout(simulateOraclePrediction, 2000);
+    return () =&gt; clearTimeout(timer);
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="bg-etherblue-dark/60 border border-gray-700 rounded-lg p-6"&gt;
       &lt;h3 className="text-lg font-bold mb-4"&gt;Métricas de CI/CD&lt;/h3&gt;
       &lt;div className="grid grid-cols-2 gap-4 mb-4"&gt;
@@ -255,7 +255,7 @@ const CIMetricsWidget: React.FC = <span class="fstat-no" title="function not cov
         &lt;/div&gt;
         &lt;div className="bg-etherblue-dark/50 rounded p-4"&gt;
           &lt;div className="text-sm text-gray-300"&gt;Último Build&lt;/div&gt;
-          &lt;div className={`text-xl font-bold ${metrics.lastBuildStatus === 'SUCCESS' ? 'text-green-400' : 'text-red-400'}`}&gt;
+          &lt;div className={`text-xl font-bold ${metrics.lastBuildStatus === 'SUCCESS' ? 'text-green-400' : <span class="branch-1 cbranch-no" title="branch not covered" >'text-red-400'}</span>`}&gt;
             {metrics.lastBuildStatus}
           &lt;/div&gt;
         &lt;/div&gt;
@@ -277,7 +277,7 @@ export default CIMetricsWidget;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-11T18:51:05.953Z
+                at 2025-10-11T18:53:32.985Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

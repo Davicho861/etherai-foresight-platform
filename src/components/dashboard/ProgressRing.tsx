@@ -10,7 +10,8 @@ type Props = {
 const ProgressRing: React.FC<Props> = ({ size = 80, stroke = 8, progress, children }) => {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
+  const clampedProgress = Math.max(0, Math.min(100, progress));
+  const offset = circumference - (clampedProgress / 100) * circumference;
 
   return (
     <svg width={size} height={size} className="block">
