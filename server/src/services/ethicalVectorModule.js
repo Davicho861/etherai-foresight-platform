@@ -1,7 +1,7 @@
 /**
  * @fileoverview Ethical Vector Module for Praevisio AI.
  * This module implements the Quantum Ethics framework for evaluating predictions
- * against human impact, environmental sustainability, and social equity.
+ * against human impact, environmental sustainability, social equity, privacy, and algorithmic justice.
  */
 
 /**
@@ -66,8 +66,47 @@ function calculateSocialEquity(riskIndices) {
 }
 
 /**
+ * Calculates the privacy risk component of the ethical vector.
+ * Higher values indicate greater potential privacy violations in data handling.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Privacy risk score (0-1).
+ */
+function calculatePrivacyRisk(riskIndices) {
+  const { communityResilienceRisk, climateExtremesRisk } = riskIndices;
+
+  // Privacy risk increases with detailed community data exposure
+  const communityDataExposure = (communityResilienceRisk.value || 0) / 100;
+  const climateDataExposure = (climateExtremesRisk.value || 0) / 100;
+
+  // Weighted combination: community data has higher privacy sensitivity
+  const privacyRisk = (communityDataExposure * 0.6) + (climateDataExposure * 0.4);
+
+  return Math.min(1, privacyRisk);
+}
+
+/**
+ * Calculates the algorithmic justice component of the ethical vector.
+ * Higher values indicate greater potential for algorithmic bias or unfair outcomes.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Algorithmic justice score (0-1).
+ */
+function calculateAlgorithmicJustice(riskIndices) {
+  const { famineRisk, geophysicalRisk } = riskIndices;
+
+  // Algorithmic justice considers potential biases in risk predictions
+  // Higher concentration of risk in specific regions may indicate bias
+  const famineConcentration = famineRisk.countries ? Math.min(1, famineRisk.countries.length / 10) : 0;
+  const geoConcentration = (geophysicalRisk.value || 0) / 100;
+
+  // Combined justice score: concentration indicates potential bias
+  const algorithmicJustice = (famineConcentration * 0.5) + (geoConcentration * 0.5);
+
+  return Math.min(1, algorithmicJustice);
+}
+
+/**
  * Calculates the complete ethical vector for the current risk assessment.
- * The vector represents [humanImpact, environmentalSustainability, socialEquity]
+ * The vector represents [humanImpact, environmentalSustainability, socialEquity, privacyRisk, algorithmicJustice]
  * where each component is normalized 0-1.
  * @param {object} riskIndices - The current risk indices from prediction engine.
  * @returns {object} Ethical vector with components and overall assessment.
@@ -76,17 +115,23 @@ function calculateEthicalVector(riskIndices) {
   const humanImpact = calculateHumanImpact(riskIndices);
   const environmentalSustainability = calculateEnvironmentalSustainability(riskIndices);
   const socialEquity = calculateSocialEquity(riskIndices);
+  const privacyRisk = calculatePrivacyRisk(riskIndices);
+  const algorithmicJustice = calculateAlgorithmicJustice(riskIndices);
 
   // Overall ethical score: weighted average
-  // Human impact has highest weight in ethical considerations
-  const overallScore = (humanImpact * 0.5) + (environmentalSustainability * 0.3) + (socialEquity * 0.2);
+  // Human impact has highest weight, followed by environmental and social concerns
+  // Privacy and algorithmic justice are emerging ethical dimensions
+  const overallScore = (humanImpact * 0.35) + (environmentalSustainability * 0.25) +
+                      (socialEquity * 0.2) + (privacyRisk * 0.1) + (algorithmicJustice * 0.1);
 
   return {
-    vector: [humanImpact, environmentalSustainability, socialEquity],
+    vector: [humanImpact, environmentalSustainability, socialEquity, privacyRisk, algorithmicJustice],
     components: {
       humanImpact,
       environmentalSustainability,
       socialEquity,
+      privacyRisk,
+      algorithmicJustice,
     },
     overallScore,
     assessment: overallScore > 0.7 ? 'High Ethical Concern' :
@@ -99,5 +144,7 @@ export {
   calculateHumanImpact,
   calculateEnvironmentalSustainability,
   calculateSocialEquity,
+  calculatePrivacyRisk,
+  calculateAlgorithmicJustice,
   calculateEthicalVector,
 };
