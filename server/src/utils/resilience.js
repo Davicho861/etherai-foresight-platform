@@ -73,18 +73,31 @@ async function retryWithBackoff(fn, maxRetries = 3, baseDelay = 1000, maxDelay =
 
 async function fetchWithTimeout(url, options = {}, timeout = 10000) {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  // Create a timeout promise that rejects after `timeout` ms.
+  // We still call controller.abort() to keep behavior when real fetch supports it,
+  // but also race the fetch against this timeout so mocked fetches that ignore
+  // the signal don't hang the test.
+  let timeoutId;
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      try { controller.abort(); } catch (e) {}
+      reject(new Error(`Request timeout after ${timeout}ms`));
+    }, timeout);
+  });
 
   try {
-    const response = await fetch(url, {
-      ...options,
-      signal: controller.signal
-    });
+    const response = await Promise.race([
+      fetch(url, { ...options, signal: controller.signal }),
+      timeoutPromise
+    ]);
+
     clearTimeout(timeoutId);
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
-    if (error.name === 'AbortError') {
+    // If the fetch was aborted and produced an AbortError, normalize the message
+    if (error && error.name === 'AbortError') {
       throw new Error(`Request timeout after ${timeout}ms`);
     }
     throw error;
@@ -93,7 +106,7 @@ async function fetchWithTimeout(url, options = {}, timeout = 10000) {
 
 function isJsonResponse(response) {
   const contentType = response.headers.get('content-type');
-  return contentType && contentType.includes('application/json');
+  return !!(contentType && contentType.includes('application/json'));
 }
 
 export { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse };

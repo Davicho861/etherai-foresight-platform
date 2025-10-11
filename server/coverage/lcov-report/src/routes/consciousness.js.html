@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.89% </span>
+                <span class="strong">89.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/29</span>
+                <span class='fraction'>26/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">68.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>13/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.09% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/22</span>
+                <span class='fraction'>20/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -105,31 +105,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -145,28 +145,28 @@ import path from 'path';
 const router = express.Router();
 &nbsp;
 // GET /api/consciousness
-router.get('/', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const client = <span class="cstat-no" title="statement not covered" >getChromaClient();</span>
-    const clientUsable = <span class="cstat-no" title="statement not covered" >client &amp;&amp; typeof client.getOrCreateCollection === 'function' &amp;&amp; !client.mock;</span>
-<span class="cstat-no" title="statement not covered" >    if (clientUsable) {</span>
-      const collection = <span class="cstat-no" title="statement not covered" >await client.getOrCreateCollection({ name: 'failure_patterns' });</span>
-      const all = <span class="cstat-no" title="statement not covered" >await collection.get();</span>
-      const docs = <span class="cstat-no" title="statement not covered" >(all || {}).documents || [];</span>
-      const metadatas = <span class="cstat-no" title="statement not covered" >(all || {}).metadatas || [];</span>
-      const ids = <span class="cstat-no" title="statement not covered" >(all || {}).ids || [];</span>
-      const result = <span class="cstat-no" title="statement not covered" >ids.map(<span class="fstat-no" title="function not covered" >(i</span>d, i) =&gt; (<span class="cstat-no" title="statement not covered" >{ id, error: docs[i], metadata: metadatas[i] })</span>);</span>
-<span class="cstat-no" title="statement not covered" >      return res.json({ source: 'chroma', items: result });</span>
+router.get('/', async (req, res) =&gt; {
+  try {
+    const client = getChromaClient();
+    const clientUsable = client &amp;&amp; typeof client.getOrCreateCollection === 'function' &amp;&amp; !client.mock;
+    if (clientUsable) {
+      const collection = await client.getOrCreateCollection({ name: 'failure_patterns' });
+      const all = await collection.get();
+      const docs = (all || <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>.documents || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+      const metadatas = (all || <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>.metadatas || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+      const ids = (all || <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>.ids || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+      const result = ids.map((id, i) =&gt; ({ id, error: docs[i], metadata: metadatas[i] }));
+      return res.json({ source: 'chroma', items: result });
     }
 &nbsp;
     // Fallback: read local JSONL
-    const p = <span class="cstat-no" title="statement not covered" >path.join(process.cwd(), 'server', 'data', 'failure_patterns.jsonl');</span>
-    const exists = <span class="cstat-no" title="statement not covered" >await fs.access(p).then(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >true)</span>.catch(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >false)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (!exists) <span class="cstat-no" title="statement not covered" >return res.json({ source: 'local', items: [] });</span></span>
-    const txt = <span class="cstat-no" title="statement not covered" >await fs.readFile(p, 'utf8');</span>
-    const lines = <span class="cstat-no" title="statement not covered" >txt.split('\n').filter(Boolean);</span>
-    const items = <span class="cstat-no" title="statement not covered" >lines.map(<span class="fstat-no" title="function not covered" >l </span>=&gt; { <span class="cstat-no" title="statement not covered" >try { <span class="cstat-no" title="statement not covered" >return JSON.parse(l); </span>} catch { <span class="cstat-no" title="statement not covered" >return { raw: l }; </span>} </span>});</span>
-<span class="cstat-no" title="statement not covered" >    return res.json({ source: 'local', items });</span>
+    const p = path.join(process.cwd(), 'server', 'data', 'failure_patterns.jsonl');
+    const exists = await fs.access(p).then(() =&gt; true).catch(() =&gt; false);
+    if (!exists) return res.json({ source: 'local', items: [] });
+    const txt = await fs.readFile(p, 'utf8');
+    const lines = txt.split('\n').filter(Boolean);
+    const items = lines.map(l =&gt; { try { return JSON.parse(l); } catch { <span class="cstat-no" title="statement not covered" >return { raw: l }; </span>} });
+    return res.json({ source: 'local', items });
   } catch (e) {
 <span class="cstat-no" title="statement not covered" >    console.error('consciousness route error', e);</span>
 <span class="cstat-no" title="statement not covered" >    return res.status(500).json({ error: 'Internal server error' });</span>
@@ -181,7 +181,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

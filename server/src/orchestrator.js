@@ -52,14 +52,16 @@ class LogosKernel {
     this.activityFeed = [];
     this.riskIndices = {};
 
-    // Inicializar drivers y servicios
-    this.initializeDrivers();
+    // Inicializar drivers y servicios (skip en entorno de test para evitar side-effects)
+    if (process.env.NODE_ENV !== 'test') {
+      this.initializeDrivers();
+    }
   }
 
   async initializeDrivers() {
     try {
-      if (process.env.NATIVE_DEV_MODE === 'true') {
-        console.log('LogosKernel: NATIVE_DEV_MODE=true, skipping Neo4j initialization');
+      if (process.env.NATIVE_DEV_MODE === 'true' || process.env.NODE_ENV === 'test') {
+        console.log('LogosKernel: Skipping Neo4j initialization in test/native modes');
       } else {
         this.neo4jDriver = await getNeo4jDriver();
         console.log('LogosKernel: Neo4j driver initialized successfully');
@@ -69,7 +71,7 @@ class LogosKernel {
     }
 
     // Inicializar monitoreo de recursos
-    this.startResourceMonitoring();
+    if (process.env.NODE_ENV !== 'test') this.startResourceMonitoring();
 
     // Flujos perpetuos desacoplados a funciones serverless para hibernación inteligente
     console.log('LogosKernel: Perpetual flows decoupled to serverless functions for eternal efficiency');

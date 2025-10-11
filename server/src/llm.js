@@ -1,8 +1,6 @@
 import { ChatOpenAI } from '@langchain/openai';
 import 'dotenv/config';
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
 class OllamaLLM {
   constructor(opts = {}) {
     this.model = opts.model || process.env.OLLAMA_MODEL || 'llama3';
@@ -53,13 +51,13 @@ class OllamaLLM {
 }
 
 function getLLM() {
-  if (OPENAI_API_KEY) {
+  if (process.env.OPENAI_API_KEY) {
     return new ChatOpenAI({
-      openAIApiKey: OPENAI_API_KEY,
+      openAIApiKey: process.env.OPENAI_API_KEY,
       modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
     });
   }
   return new OllamaLLM({ model: process.env.OLLAMA_MODEL || 'llama3', url: process.env.OLLAMA_URL });
 }
 
-export { getLLM };
+export { getLLM, OllamaLLM };

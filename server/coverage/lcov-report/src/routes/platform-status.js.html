@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>8/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -92,14 +92,14 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,18 +122,18 @@ import os from 'os';
 const router = express.Router();
 &nbsp;
 // GET /api/platform-status
-router.get('/', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-  const native = <span class="cstat-no" title="statement not covered" >process.env.NATIVE_DEV_MODE === 'true';</span>
-  const fallback = <span class="cstat-no" title="statement not covered" >(global.__praevisio_chroma_fallback &amp;&amp; global.__praevisio_chroma_fallback['missions_logs']) ? global.__praevisio_chroma_fallback['missions_logs'].length : 0;</span>
-  const port = <span class="cstat-no" title="statement not covered" >process.env.PORT ? Number(process.env.PORT) : 4001;</span>
-<span class="cstat-no" title="statement not covered" >  res.json({</span>
+router.get('/', (req, res) =&gt; {
+  const native = process.env.NATIVE_DEV_MODE === 'true';
+  const fallback = (global.__praevisio_chroma_fallback &amp;&amp; global.__praevisio_chroma_fallback['missions_logs']) ? global.__praevisio_chroma_fallback['missions_logs'].length : 0;
+  const port = process.env.PORT ? <span class="branch-0 cbranch-no" title="branch not covered" >Number(process.env.PORT) </span>: 4001;
+  res.json({
     statusGeneral: 'OPERACIONAL',
     nativeMode: native,
-    ports: { backend: port, frontend: process.env.VITE_PORT ? Number(process.env.VITE_PORT) : 3002 },
+    ports: { backend: port, frontend: process.env.VITE_PORT ? <span class="branch-0 cbranch-no" title="branch not covered" >Number(process.env.VITE_PORT) </span>: 3002 },
     fallbackCounts: { chromaMissionsLogs: fallback },
     componentes: {
       apiPrincipal: { status: 'ONLINE', pid: process.pid },
-      baseDeDatos: { status: native ? 'SQLITE' : 'EXTERNA', conexionesActivas: native ? 1 : 32 },
+      baseDeDatos: { status: native ? <span class="branch-0 cbranch-no" title="branch not covered" >'SQLITE' </span>: 'EXTERNA', conexionesActivas: native ? <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>: 32 },
       motorPredictivoIA: { status: 'ACTIVO', modelosCargados: 5 },
       pipelineDeDatos: { status: 'DEGRADADO', ultimoIngreso: 'Hace 2 horas' }
     },
@@ -151,7 +151,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

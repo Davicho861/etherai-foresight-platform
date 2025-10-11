@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.33% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/24</span>
+                <span class='fraction'>20/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">52.63% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>10/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/20</span>
+                <span class='fraction'>16/20</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -115,41 +115,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,10 +165,10 @@ import path from 'path';
 &nbsp;
 const router = express.Router();
 &nbsp;
-router.get('/', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
+router.get('/', async (req, res) =&gt; {
+  try {
     // Try several likely locations because process.cwd() may be 'server' or repo root
-    const candidates = <span class="cstat-no" title="statement not covered" >[</span>
+    const candidates = [
       path.join(process.cwd(), 'server', 'data', 'GLOBAL_OFFERING_PROTOCOL.json'),
       path.join(process.cwd(), 'server', 'GLOBAL_OFFERING_PROTOCOL.json'),
       path.join(process.cwd(), 'data', 'GLOBAL_OFFERING_PROTOCOL.json'),
@@ -176,28 +176,28 @@ router.get('/', <span class="fstat-no" title="function not covered" >as</span>yn
       path.join(process.cwd(), '..', 'GLOBAL_OFFERING_PROTOCOL.json'),
       path.join(process.cwd(), 'GLOBAL_OFFERING_PROTOCOL.json')
     ];
-    let dataPath = <span class="cstat-no" title="statement not covered" >null;</span>
-<span class="cstat-no" title="statement not covered" >    for (const c of candidates) {</span>
-<span class="cstat-no" title="statement not covered" >      if (fs.existsSync(c)) { <span class="cstat-no" title="statement not covered" >dataPath = c; <span class="cstat-no" title="statement not covered" ></span>break; </span>}</span>
+    let dataPath = null;
+    for (const c of candidates) {
+      if (fs.existsSync(c)) { dataPath = c; break; }
     }
-<span class="cstat-no" title="statement not covered" >    if (!dataPath) <span class="cstat-no" title="statement not covered" >return res.status(404).json({ error: 'pricing mock not found' });</span></span>
-    const raw = <span class="cstat-no" title="statement not covered" >fs.readFileSync(dataPath, 'utf8');</span>
-  const json = <span class="cstat-no" title="statement not covered" >JSON.parse(raw);</span>
-<span class="cstat-no" title="statement not covered" >  console.log('pricing-plans: read dataPath=', dataPath);</span>
-<span class="cstat-no" title="statement not covered" >  console.log('pricing-plans: json keys=', Object.keys(json));</span>
+    if (!dataPath) return res.status(404).json({ error: 'pricing mock not found' });
+    const raw = fs.readFileSync(dataPath, 'utf8');
+  const json = JSON.parse(raw);
+  console.log('pricing-plans: read dataPath=', dataPath);
+  console.log('pricing-plans: json keys=', Object.keys(json));
     // normalize response shape: accept either { plans: [...] } or { segments: {...} }
-<span class="cstat-no" title="statement not covered" >    if (json.segments) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (json.segments) {
 <span class="cstat-no" title="statement not covered" >      return res.json({ currency: json.currency || 'USD', segments: json.segments });</span>
     }
-<span class="cstat-no" title="statement not covered" >    if (Array.isArray(json.plans)) {</span>
-      const mapped = <span class="cstat-no" title="statement not covered" >json.plans.map(<span class="fstat-no" title="function not covered" >p </span>=&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(json.plans)) {
+      const mapped = json.plans.map(p =&gt; ({
         id: p.id,
         name: p.name,
-        price: p.price_monthly || p.price || 0,
-        features: p.features || [],
-        description: p.description || ''
+        price: p.price_monthly || <span class="branch-1 cbranch-no" title="branch not covered" >p.price </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >0,</span>
+        features: p.features || <span class="branch-1 cbranch-no" title="branch not covered" >[],</span>
+        description: p.description || <span class="branch-1 cbranch-no" title="branch not covered" >''</span>
       }));
-<span class="cstat-no" title="statement not covered" >      return res.json({ currency: json.currency || 'USD', segments: { default: { name: 'Planes', plans: mapped } } });</span>
+      return res.json({ currency: json.currency || <span class="branch-1 cbranch-no" title="branch not covered" >'USD',</span> segments: { default: { name: 'Planes', plans: mapped } } });
     }
 <span class="cstat-no" title="statement not covered" >    return res.status(500).json({ error: 'unrecognized pricing format' });</span>
   } catch (err) {
@@ -214,7 +214,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

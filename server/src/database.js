@@ -172,6 +172,8 @@ function getChromaClient() {
 }
 
 async function getNeo4jDriver() {
+  // Prevent Neo4j connections during unit tests to avoid external side effects
+  if (process.env.NODE_ENV === 'test') return null;
   // If running in native local mode, skip connecting to Neo4j and return null
   // so callers can decide to operate in degraded/local mode.
   if (process.env.NATIVE_DEV_MODE === 'true') {

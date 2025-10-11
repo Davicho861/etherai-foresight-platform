@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.29% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -102,34 +102,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,31 +140,31 @@ import rateLimit from 'express-rate-limit';
 const router = express.Router();
 &nbsp;
 // GET /api/eternal-vigilance/state
-router.get('/state', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  res.json(vigilance.getState());</span>
+router.get('/state', (req, res) =&gt; {
+  res.json(vigilance.getState());
 });
 &nbsp;
 // POST /api/eternal-vigilance/start
-router.post('/start', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  vigilance.start();</span>
-<span class="cstat-no" title="statement not covered" >  res.json({ ok: true });</span>
+router.post('/start', (req, res) =&gt; {
+  vigilance.start();
+  res.json({ ok: true });
 });
 &nbsp;
 // rate limiter for emits
 const emitLimiter = rateLimit({ windowMs: 60 * 1000, max: 60, message: { error: 'Too many emits, slow down' } });
 // POST /api/eternal-vigilance/report
-router.post('/report', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-  const md = <span class="cstat-no" title="statement not covered" >vigilance.generateReport();</span>
-<span class="cstat-no" title="statement not covered" >  res.setHeader('Content-Type', 'text/markdown');</span>
-<span class="cstat-no" title="statement not covered" >  res.send(md);</span>
+router.post('/report', (req, res) =&gt; {
+  const md = vigilance.generateReport();
+  res.setHeader('Content-Type', 'text/markdown');
+  res.send(md);
 });
 &nbsp;
 // POST /api/eternal-vigilance/emit  - body { message }
-router.post('/emit', emitLimiter, <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-  const { message } = <span class="cstat-no" title="statement not covered" >req.body || {};</span>
-<span class="cstat-no" title="statement not covered" >  if (!message) <span class="cstat-no" title="statement not covered" >return res.status(400).json({ error: 'message required' });</span></span>
-<span class="cstat-no" title="statement not covered" >  vigilance.emitEvent(message);</span>
-<span class="cstat-no" title="statement not covered" >  res.json({ ok: true });</span>
+router.post('/emit', emitLimiter, (req, res) =&gt; {
+  const { message } = req.body || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+  if (!message) return res.status(400).json({ error: 'message required' });
+  vigilance.emitEvent(message);
+  res.json({ ok: true });
 });
 &nbsp;
 export default router;
@@ -175,7 +175,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

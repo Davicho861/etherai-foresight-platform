@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import demoRouter from '../../src/routes/demo.js';
+import demoRouter from '../src/routes/demo.js';
 
 // No mocks needed - using __mocks__ for integrations
 

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.66% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/18</span>
+                <span class='fraction'>17/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>8/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,43 +111,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,38 +160,38 @@ const router = express.Router();
 // Read the GLOBAL_OFFERING_PROTOCOL.json and expose structured plans
 const PROTOCOL_PATH = path.resolve(process.cwd(), 'GLOBAL_OFFERING_PROTOCOL.json');
 &nbsp;
-function <span class="fstat-no" title="function not covered" >readProtocol(</span>) {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const raw = <span class="cstat-no" title="statement not covered" >fs.readFileSync(PROTOCOL_PATH, 'utf-8');</span>
-<span class="cstat-no" title="statement not covered" >    return JSON.parse(raw);</span>
+function readProtocol() {
+  try {
+    const raw = fs.readFileSync(PROTOCOL_PATH, 'utf-8');
+    return JSON.parse(raw);
   } catch (err) {
-<span class="cstat-no" title="statement not covered" >    console.error('Failed to read GLOBAL_OFFERING_PROTOCOL.json:', err?.message || err);</span>
-<span class="cstat-no" title="statement not covered" >    return null;</span>
+    console.error('Failed to read GLOBAL_OFFERING_PROTOCOL.json:', err?.message || <span class="branch-1 cbranch-no" title="branch not covered" >err)</span>;
+    return null;
   }
 }
 &nbsp;
-router.get('/', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-  const protocol = <span class="cstat-no" title="statement not covered" >readProtocol();</span>
-<span class="cstat-no" title="statement not covered" >  if (!protocol) <span class="cstat-no" title="statement not covered" >return res.status(500).json({ error: 'protocol not available' });</span></span>
+router.get('/', (req, res) =&gt; {
+  const protocol = readProtocol();
+  if (!protocol) return res.status(500).json({ error: 'protocol not available' });
 &nbsp;
   // Transform into a consumable response for the frontend
-  const segments = <span class="cstat-no" title="statement not covered" >protocol.segments || {};</span>
-  const response = <span class="cstat-no" title="statement not covered" >{</span>
-    currency: protocol.currency || 'USD',
-    globalSettings: protocol.globalSettings || {},
-    segments: Object.keys(segments).reduce(<span class="fstat-no" title="function not covered" >(a</span>cc, key) =&gt; {
-<span class="cstat-no" title="statement not covered" >      acc[key] = {</span>
+  const segments = protocol.segments || <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
+  const response = {
+    currency: protocol.currency || <span class="branch-1 cbranch-no" title="branch not covered" >'USD',</span>
+    globalSettings: protocol.globalSettings || <span class="branch-1 cbranch-no" title="branch not covered" >{},</span>
+    segments: Object.keys(segments).reduce((acc, key) =&gt; {
+      acc[key] = {
         name: segments[key].name,
-        plans: segments[key].plans || []
+        plans: segments[key].plans || <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
       };
-<span class="cstat-no" title="statement not covered" >      return acc;</span>
+      return acc;
     }, {}),
   };
 &nbsp;
   // Optionally include a pantheonOffering if present (backward compat)
-<span class="cstat-no" title="statement not covered" >  if (protocol.pantheonOffering) <span class="cstat-no" title="statement not covered" >response.pantheonOffering = protocol.pantheonOffering;</span></span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (protocol.pantheonOffering) <span class="cstat-no" title="statement not covered" >response.pantheonOffering = protocol.pantheonOffering;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  res.json(response);</span>
+  res.json(response);
 });
 &nbsp;
 export default router;
@@ -202,7 +202,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">92% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>23/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -103,34 +103,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,31 +142,31 @@ import sseTokenService from '../sseTokenService.js';
 const router = express.Router();
 &nbsp;
 // Allow EventSource to authenticate via query param: /stream?token=xxx
-router.get('/stream', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+router.get('/stream', async (req, res) =&gt; {
   // prefer token from cookie (praevisio_sse_token), fallback to query param for backward compatibility
-  const cookieToken = <span class="cstat-no" title="statement not covered" >req.cookies &amp;&amp; req.cookies.praevisio_sse_token ? String(req.cookies.praevisio_sse_token) : '';</span>
-  const token = <span class="cstat-no" title="statement not covered" >cookieToken || (req.query &amp;&amp; (req.query.token || req.query.auth) ? String(req.query.token || req.query.auth) : '');</span>
-  const expected = <span class="cstat-no" title="statement not covered" >process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';</span>
-  const okStatic = <span class="cstat-no" title="statement not covered" >token &amp;&amp; token === expected;</span>
-  const okTemp = <span class="cstat-no" title="statement not covered" >token &amp;&amp; (await sseTokenService.validateToken(token));</span>
-<span class="cstat-no" title="statement not covered" >  if (!okStatic &amp;&amp; !okTemp) {</span>
+  const cookieToken = req.cookies &amp;&amp; req.cookies.praevisio_sse_token ? String(req.cookies.praevisio_sse_token) : '';
+  const token = cookieToken || (req.query &amp;&amp; (req.query.token || req.query.auth) ? String(req.query.token || <span class="branch-1 cbranch-no" title="branch not covered" >req.query.auth)</span> : '');
+  const expected = process.env.PRAEVISIO_BEARER_TOKEN || <span class="branch-1 cbranch-no" title="branch not covered" >'demo-token';</span>
+  const okStatic = token &amp;&amp; token === expected;
+  const okTemp = token &amp;&amp; (await sseTokenService.validateToken(token));
+  if (!okStatic &amp;&amp; !okTemp) {
     // return 401 to the client
-<span class="cstat-no" title="statement not covered" >    res.status(401).json({ error: 'Unauthorized - invalid token' });</span>
-<span class="cstat-no" title="statement not covered" >    return;</span>
+    res.status(401).json({ error: 'Unauthorized - invalid token' });
+    return;
   }
   // headers SSE
-<span class="cstat-no" title="statement not covered" >  res.setHeader('Content-Type', 'text/event-stream');</span>
-<span class="cstat-no" title="statement not covered" >  res.setHeader('Cache-Control', 'no-cache');</span>
-<span class="cstat-no" title="statement not covered" >  res.setHeader('Connection', 'keep-alive');</span>
-<span class="cstat-no" title="statement not covered" >  res.flushHeaders &amp;&amp; res.flushHeaders();</span>
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders &amp;&amp; res.flushHeaders();
 &nbsp;
   // send initial state
-<span class="cstat-no" title="statement not covered" >  res.write(`data: ${JSON.stringify({ event: 'init', state: vigilance.getState() })}\n\n`);</span>
+  res.write(`data: ${JSON.stringify({ event: 'init', state: vigilance.getState() })}\n\n`);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  vigilance.subscribe(res);</span>
+  vigilance.subscribe(res);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  req.on('close', <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    vigilance.unsubscribe(res);</span>
+  req.on('close', () =&gt; {
+    vigilance.unsubscribe(res);
   });
 });
 &nbsp;
@@ -178,7 +178,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-10T23:34:27.644Z
+                at 2025-10-11T18:29:50.116Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
