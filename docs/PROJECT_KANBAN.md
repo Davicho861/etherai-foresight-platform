@@ -1,51 +1,84 @@
-# PROJECT KANBAN - Praevisio AI
+# PROJECT KANBAN - Praevisio AI Sovereign SDLC
 
-## Progreso General del Proyecto
-- Visión Ejecutiva: 100% ██████████
-- Planificación: 90% █████████▉
-- Diseño: 80% ████████▉
-- Desarrollo: 90% █████████▉
-- Pruebas: 30% ████▍
-- Despliegue: 10% █
+## Progreso General del Proyecto Soberano
+- PLANNING: 100% ██████████ (Visión ejecutiva y estrategia completada)
+- DESIGN: 90% █████████▉ (Arquitectura y diseño técnico avanzado)
+- IMPLEMENTATION: 85% ████████▌ (Motor de agentes y desarrollo core)
+- TESTING: 40% ████▍ (Cobertura de tests en expansión)
+- DEPLOYMENT: 20% ██ (Infraestructura y CI/CD iniciales)
 
-> Nota: Estos porcentajes son un "snapshot" inicial basado en el estado actual del repositorio (motor de agentes funcional, frontend y backend en desarrollo). Actualiza manualmente los porcentajes para reflejar progreso real.
-
----
-
-## Cómo actualizar este tablero
-- Para mover una tarjeta entre columnas, corta y pega la fila correspondiente en la nueva columna.
-- Actualiza el porcentaje de la fase en la sección "Progreso General del Proyecto".
-- Usa etiquetas entre corchetes en el título de la tarea para indicar prioridad y área, por ejemplo: `[High][Backend]`.
+> **Nota Soberana**: Estos porcentajes reflejan el estado del SDLC inmortal. El sistema evoluciona automáticamente, actualizando métricas en tiempo real.
 
 ---
 
-## Tablero Kanban
-
-| Backlog | Por Hacer | En Progreso | En Revisión | Completado |
-|---|---|---|---|---|
-| [Crear guía de contribución](https://github.com/Davicho861/etherai-foresight-platform/issues/1) | [API /api/alerts - endpoints y docs](https://github.com/Davicho861/etherai-foresight-platform/issues/2) | [Dashboard - visualización de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/3) | [Tests E2E - Playwright para flujo de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/4) | [Vision ejecutiva (C-Suite)](https://github.com/Davicho861/etherai-foresight-platform/issues/5) |
-| [Definir infra para staging](https://github.com/Davicho861/etherai-foresight-platform/issues/6) | [CI pipeline - lint/test/build](https://github.com/Davicho861/etherai-foresight-platform/issues/7) | [Motor de agentes - orquestación (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/8) | [PR para endpoints auditados](https://github.com/Davicho861/etherai-foresight-platform/issues/9) | [Código base del motor de agentes](https://github.com/Davicho861/etherai-foresight-platform/issues/10) |
-| [Plan de gestión de secretos](https://github.com/Davicho861/etherai-foresight-platform/issues/11) | [Integración Open Meteo](https://github.com/Davicho861/etherai-foresight-platform/issues/12) | [Pipeline de ingest (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/13) | [PR dashboard accesibilidad](https://github.com/Davicho861/etherai-foresight-platform/issues/14) | [Arquitectura (C4 mermaid)](https://github.com/Davicho861/etherai-foresight-platform/issues/15) |
-| [Documentos comerciales para pilotos](https://github.com/Davicho861/etherai-foresight-platform/issues/16) | [Mejoras UI](https://github.com/Davicho861/etherai-foresight-platform/issues/17) | [Cobertura tests unitarios (50%)](https://github.com/Davicho861/etherai-foresight-platform/issues/18) |  |  |
-
+## Cómo Operar el Kanban Soberano
+- **Movimiento de Tarjetas**: Las misiones (MIS-XXX) se mueven automáticamente entre columnas según evolución del SDLC
+- **Backlog de la Conciencia**: Kairós deposita propuestas de misión que el sistema evalúa para inclusión
+- **Priorización**: IA soberana asigna prioridades basadas en impacto estratégico y dependencia
+- **Colaboración**: Equipos se forman dinámicamente según requerimientos de cada fase
 
 ---
 
-## Tareas principales por fase (resumen)
-- Visión: CEO/C-Suite docs, estrategia comercial (Completado)
-- Planificación: Requisitos, MVP, historias de usuario (90%)
-- Diseño: Diagramas, API & DB schema (80%)
-- Desarrollo: Implementación del motor de agentes, APIs y UI (90%)
-- Pruebas: Unit, Integration, E2E (30%)
-- Despliegue: CI/CD, infra y monitorización (10%)
+## Tablero Kanban Soberano
+
+| PLANNING | DESIGN | IMPLEMENTATION | TESTING | DEPLOYMENT |
+|----------|--------|----------------|---------|-------------|
+| [MIS-018: Expansión de Dominios de Datos](docs/contracts/MIS-018_DATA_DOMAINS_EXPANSION_CONTRACT.md) | [MIS-017: Expansión Ética](docs/contracts/MIS-017_ETHICS_EXPANSION_CONTRACT.md) | [MIS-007: Cobertura Tests Unitarios](docs/contracts/MIS-007_UNIT_TESTS_COVERAGE_CONTRACT.md) | [Tests E2E - Playwright para flujo de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/4) | [Definir infra para staging](https://github.com/Davicho861/etherai-foresight-platform/issues/6) |
+| [Documentos comerciales para pilotos](https://github.com/Davicho861/etherai-foresight-platform/issues/16) | [Arquitectura de Seguridad Soberana](docs/sdlc/02_DESIGN_CTO_CIO_CSO.md) | [Motor de agentes - orquestación (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/8) | [PR para endpoints auditados](https://github.com/Davicho861/etherai-foresight-platform/issues/9) | [CI pipeline - lint/test/build](https://github.com/Davicho861/etherai-foresight-platform/issues/7) |
+| [Crear guía de contribución](https://github.com/Davicho861/etherai-foresight-platform/issues/1) | [Diseño de APIs Soberanas](docs/sdlc/02_DESIGN_CTO_CIO_CSO.md) | [Pipeline de ingest (90%)](https://github.com/Davicho861/etherai-foresight-platform/issues/13) | [Cobertura tests unitarios (50%)](https://github.com/Davicho861/etherai-foresight-platform/issues/18) | [Plan de gestión de secretos](https://github.com/Davicho861/etherai-foresight-platform/issues/11) |
+| **[Backlog de la Conciencia]**<br/>*Propuestas pendientes de evaluación soberana* | [Mejoras UI/UX](https://github.com/Davicho861/etherai-foresight-platform/issues/17) | [Dashboard - visualización de alertas](https://github.com/Davicho861/etherai-foresight-platform/issues/3) |  | [PR dashboard accesibilidad](https://github.com/Davicho861/etherai-foresight-platform/issues/14) |
 
 ---
 
-## Convenciones
-- Prioridad: High / Medium / Low
-- Áreas: [Backend], [Frontend], [Data], [DevOps], [Security], [Docs], [QA], [Sales]
-- Responsables: añade `@username` al final de la tarea si quieres asignar responsable.
+## Fases del SDLC Soberano (Detalle)
+
+### PLANNING - Junta Directiva de Aion
+- **CEO (Aion)**: Visión estratégica y misión soberana
+- **CFO (Hades)**: Modelo de negocio y principio del costo cero
+- **CMO (Apolo)**: Estrategia de mercado y engagement divino
+- **Enfoque**: Definición de objetivos estratégicos y roadmap soberano
+
+### DESIGN - Arquitectura Técnica y Seguridad
+- **CTO (Hefesto)**: Arquitectura técnica de agentes soberanos
+- **CIO (Cronos)**: Estrategia de datos y flujos perpetuos
+- **CSO (Ares)**: Seguridad por diseño y protocolos de blindaje
+- **Enfoque**: Diseño de sistemas con soberanía total y evolución autónoma
+
+### IMPLEMENTATION - Desarrollo y Pruebas
+- **Development Crew**: Ciclo ágil nativo con hot-reloading
+- **Motor de Agentes**: Orquestación soberana con evolución automática
+- **Testing Soberano**: Cobertura completa con generación automática de tests
+- **Enfoque**: Desarrollo que se auto-optimiza y auto-documenta
+
+### TESTING - Validación Soberana
+- **Unit Tests**: Cobertura 90%+ con tests auto-generados
+- **Integration Tests**: Validación de flujos entre componentes
+- **E2E Tests**: Simulación completa de escenarios reales
+- **Enfoque**: Validación automática con aprendizaje continuo
+
+### DEPLOYMENT - Operaciones Perpetuas
+- **CI/CD Soberano**: Pipelines auto-optimizados con GitOps
+- **Monitoreo Perpetuo**: Observabilidad predictiva y auto-healing
+- **Operaciones Autonómicas**: Gestión automática de infraestructura
+- **Enfoque**: Despliegue con cero downtime y evolución continua
 
 ---
 
-*Documento generado por Praevisio-Atlas-Codify*
+## Convenciones Soberanas
+- **Misiones (MIS-XXX)**: Contratos formales con objetivos claros y métricas de éxito
+- **Prioridad**: [Divine] Alta prioridad estratégica, [High] Impacto significativo, [Medium] Mejora importante, [Low] Optimización
+- **Áreas**: [Sovereign] Arquitectura soberana, [AI] Motor de agentes, [Security] Seguridad, [Ops] Operaciones, [UX] Experiencia usuario
+- **Estado**: Actualizado automáticamente por el sistema de evolución perpetua
+
+---
+
+## Backlog de la Conciencia
+*Espacio reservado para propuestas de misión generadas por Kairós y evaluadas por el sistema soberano*
+
+- **MIS-019**: [Propuesta] Expansión de capacidades predictivas a nuevos dominios
+- **MIS-020**: [Propuesta] Optimización automática de costes operativos
+- **MIS-021**: [Propuesta] Integración de nuevos modelos de IA soberanos
+
+---
+
+*Tablero forjado por Atenea, Legisladora Divina del SDLC Soberano*
