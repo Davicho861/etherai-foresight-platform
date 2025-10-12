@@ -7,21 +7,11 @@ describe('GdeltIntegration', () => {
   });
 
   test('parses events and intensity on success', async () => {
-    jest.doMock('../../src/utils/resilience.js', () => ({
-      CircuitBreaker: class { constructor() {} execute(cb) { return cb(); } },
-      retryWithBackoff: async (fn) => fn(),
-      fetchWithTimeout: async () => ({
-        ok: true,
-        status: 200,
-        headers: { get: (k) => 'application/json' },
-        json: async () => ({
-          articles: [
-            { title: 'Community protest', url: 'http://a', themes: 'PROTEST;RIOT' },
-            { title: 'Workers strike', url: 'http://b', themes: 'STRIKE' }
-          ]
-        })
-      }),
-      isJsonResponse: () => true
+    jest.doMock('../../src/lib/safeFetch.js', () => jest.fn().mockResolvedValue({
+      articles: [
+        { title: 'Community protest', url: 'http://a', themes: 'PROTEST;RIOT' },
+        { title: 'Workers strike', url: 'http://b', themes: 'STRIKE' }
+      ]
     }));
 
     const GdeltIntegration = require('../../src/integrations/GdeltIntegration.js').default;
@@ -38,17 +28,7 @@ describe('GdeltIntegration', () => {
   });
 
   test('handles non-JSON response gracefully', async () => {
-    jest.doMock('../../src/utils/resilience.js', () => ({
-      CircuitBreaker: class { constructor() {} execute(cb) { return cb(); } },
-      retryWithBackoff: async (fn) => fn(),
-      fetchWithTimeout: async () => ({
-        ok: true,
-        status: 200,
-        headers: { get: (k) => 'text/html' },
-        json: async () => { throw new Error('invalid json'); }
-      }),
-      isJsonResponse: () => false
-    }));
+    jest.doMock('../../src/lib/safeFetch.js', () => jest.fn().mockRejectedValue(new Error('Non-JSON response (content-type: text/html): <html>blocked</html>')));
 
     const GdeltIntegration = require('../../src/integrations/GdeltIntegration.js').default;
     const gi = new GdeltIntegration();
@@ -61,12 +41,7 @@ describe('GdeltIntegration', () => {
   });
 
   test('handles HTTP 429 rate limit errors', async () => {
-    jest.doMock('../../src/utils/resilience.js', () => ({
-      CircuitBreaker: class { constructor() {} execute(cb) { return cb(); } },
-      retryWithBackoff: async (fn) => fn(),
-      fetchWithTimeout: async () => ({ ok: false, status: 429, statusText: 'Too Many Requests' }),
-      isJsonResponse: () => false
-    }));
+    jest.doMock('../../src/lib/safeFetch.js', () => jest.fn().mockRejectedValue(new Error('HTTP 429: Too Many Requests')));
 
     const GdeltIntegration = require('../../src/integrations/GdeltIntegration.js').default;
     const gi = new GdeltIntegration();

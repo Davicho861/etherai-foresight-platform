@@ -1,27 +1,7 @@
 {
   "missions_logs": [
     {
-      "id": "m-reject-mgmt5mjr-3602",
-      "missionId": "m-reject",
-      "log": {
-        "taskId": "error",
-        "description": "Error: Misión rechazada por el Consejo de Ética: not aligned",
-        "status": "error"
-      },
-      "embedding": [
-        0.7640918580375783,
-        0.8413361169102297,
-        1,
-        0.9822546972860126,
-        0.6941544885177453,
-        0.6315240083507306,
-        0.534446764091858,
-        0.5636743215031316
-      ],
-      "ts": 1760219355267
-    },
-    {
-      "id": "m-reject-mgmt5mi1-8148",
+      "id": "m-reject-mgnxyhoh-7127",
       "missionId": "m-reject",
       "log": {
         "taskId": "ethics-council",
@@ -38,28 +18,27 @@
         0.515828677839851,
         0.5772811918063314
       ],
-      "ts": 1760219355268
+      "ts": 1760287886122
     },
     {
-      "id": "wisdom-reports-mgmt85cd-9122",
-      "missionId": "wisdom-reports",
+      "id": "m-reject-mgnxyhol-5097",
+      "missionId": "m-reject",
       "log": {
-        "timestamp": "2025-10-11T21:51:12.396Z",
-        "newHypothesis": {},
-        "refinedInsights": [],
-        "summary": "Se han refinado 0 insights basados en el nuevo conocimiento."
+        "taskId": "error",
+        "description": "Error: Misión rechazada por el Consejo de Ética: not aligned",
+        "status": "error"
       },
       "embedding": [
+        0.7640918580375783,
+        0.8413361169102297,
         1,
-        0.7859007832898173,
-        0.839425587467363,
-        0.6514360313315927,
-        0.902088772845953,
-        0.7885117493472585,
-        0.8289817232375979,
-        0.8107049608355091
+        0.9822546972860126,
+        0.6941544885177453,
+        0.6315240083507306,
+        0.534446764091858,
+        0.5636743215031316
       ],
-      "ts": 1760219472580
+      "ts": 1760287886123
     }
   ]
 }

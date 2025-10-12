@@ -1,7 +1,16 @@
+import { server } from '../mocks/server.js';
 const request = require('supertest');
 const express = require('express');
 
 describe('/api/demo routes', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
@@ -10,13 +19,6 @@ describe('/api/demo routes', () => {
 
   test('GET /full-state returns aggregated structure', async () => {
     await jest.isolateModulesAsync(async () => {
-      // Mock GdeltIntegration to return a few events
-      jest.doMock('../../src/integrations/GdeltIntegration.js', () => {
-        return function() {
-          this.getSocialEvents = jest.fn().mockResolvedValue([{ id: 'e1' }, { id: 'e2' }]);
-        };
-      });
-
       // Mock prisma.moduleData.findMany to return some historical entries
       jest.doMock('../../src/prisma.js', () => ({
         moduleData: {
@@ -27,9 +29,6 @@ describe('/api/demo routes', () => {
           ])
         }
       }));
-
-      // Mock global.fetch for dashboard overview
-      global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ kpis: { modelAccuracy: { value: 95 }, criticalSignals: { value: 120 } } }) });
 
       const demoRouter = require('../../src/routes/demo.js');
       let router = demoRouter;

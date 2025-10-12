@@ -1,5 +1,6 @@
 import express from 'express';
 import { fetchRecentTemperature, fetchClimatePrediction } from '../integrations/open-meteo.mock.js';
+import SatelliteIntegration from '../integrations/SatelliteIntegration.js';
 
 const router = express.Router();
 
@@ -30,6 +31,20 @@ router.get('/predict', async (req, res) => {
   } catch (err) {
     console.error('Error in /api/climate/predict:', err);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/climate/satellite?lat=4.7110&lon=-74.0721&startDate=2025-10-01&endDate=2025-10-07
+router.get('/satellite', async (req, res) => {
+  try {
+    const { lat, lon, startDate, endDate } = req.query;
+    if (!lat || !lon || !startDate || !endDate) return res.status(400).json({ error: 'lat, lon, startDate and endDate required' });
+    const sat = new SatelliteIntegration();
+    const data = await sat.getNDVIData(parseFloat(lat), parseFloat(lon), startDate, endDate);
+    res.json(data);
+  } catch (err) {
+    console.error('Error in /api/climate/satellite:', err);
+    res.status(500).json({ error: err && err.message ? err.message : String(err) });
   }
 });
 

@@ -1,22 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-
-// Function to fetch seismic data
-const fetchSeismicActivity = async () => {
-  const res = await fetch('/api/seismic/activity', {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('praevisio_token') || 'demo-token'}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return res.json();
-};
 
 interface SeismicMapWidgetProps {
   seismicData?: any[];
@@ -37,38 +24,11 @@ export const normalizeSeismicRaw = (raw: any): any[] => {
 const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSeismicData }) => {
   const [magnitudeFilter, setMagnitudeFilter] = useState<number>(4.0);
   const [hoveredEvent, setHoveredEvent] = useState<any>(null);
-  const [localSeismicData, setLocalSeismicData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Use prop data if available, otherwise use local data
-    const seismicDataRaw = propSeismicData ?? localSeismicData;
+  // Use prop data if available
+  const seismicDataRaw = propSeismicData;
 
-    const seismicArray: any[] = React.useMemo(() => normalizeSeismicRaw(seismicDataRaw), [seismicDataRaw]);
-
-  useEffect(() => {
-    if (propSeismicData) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        const data = await fetchSeismicActivity();
-        setLocalSeismicData(data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching seismic data:', err);
-        setError('Error al cargar datos sísmicos');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 60000); // Refetch every 60 seconds
-    return () => clearInterval(interval);
-  }, [propSeismicData]);
+  const seismicArray: any[] = React.useMemo(() => normalizeSeismicRaw(seismicDataRaw), [seismicDataRaw]);
 
   // Filter events by magnitude and focus on LATAM region
   // Normalize each event to a consistent geojson-like shape: { id, properties: { mag, place, time }, geometry: { coordinates: [lon, lat, depth] } }
@@ -121,30 +81,17 @@ const SeismicMapWidget: React.FC<SeismicMapWidgetProps> = ({ seismicData: propSe
     return Math.max(magnitude * 2, 3);
   };
 
-  if (loading) {
+  // If no seismicData is provided, show informative state
+  if (!seismicDataRaw || !seismicArray.length) {
     return (
       <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
         <CardHeader>
           <CardTitle className="text-white">Monitoreo Sísmico LATAM</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
-            <span className="ml-2 text-gray-300">Cargando datos sísmicos...</span>
+          <div className="text-center py-8">
+            <p className="text-gray-300">Datos sísmicos no disponibles (orquestador)</p>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white">Error</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-300">No se pudo cargar la actividad sísmica.</p>
         </CardContent>
       </Card>
     );

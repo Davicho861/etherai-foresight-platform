@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import safeFetch from '../lib/safeFetch.js';
 
 class MINAGRIIntegration {
   constructor() {
@@ -15,13 +15,8 @@ class MINAGRIIntegration {
       const resourceId = 'produccion-agricola'; // Placeholder - would need actual resource ID
       const url = `${this.baseUrl}?resource_id=${resourceId}&q=${product}&filters[anio]=${year}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`MINAGRI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const records = data.result.records || [];
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
+      const records = (data && data.result && data.result.records) ? data.result.records : [];
 
       // Process records to get production data
       const productionData = records.map(record => ({
@@ -38,27 +33,30 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`Using mock agricultural production data for ${product} (${year})`);
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for ${product} (${year})`);
+        const mockProductions = {
+          'rice': 2200000, // tonnes
+          'potatoes': 4500000,
+          'corn': 1800000,
+          'beans': 180000
+        };
 
-      // Mock data based on typical Peruvian agricultural production
-      const mockProductions = {
-        'rice': 2200000, // tonnes
-        'potatoes': 4500000,
-        'corn': 1800000,
-        'beans': 180000
-      };
-
-      return {
-        product,
-        year,
-        productionData: [{
+        return {
           product,
           year,
-          production: mockProductions[product.toLowerCase()] || 1000000,
-          unit: 'tonnes'
-        }],
-        isMock: true
-      };
+          productionData: [{
+            product,
+            year,
+            production: mockProductions[product.toLowerCase()] || 1000000,
+            unit: 'tonnes'
+          }],
+          isMock: true,
+          source: 'FORCE_MOCKS:MINAGRI'
+        };
+      }
+
+      throw new Error(`MINAGRIIntegration failed: ${error && error.message ? error.message : String(error)}`);
     }
   }
 
@@ -68,13 +66,8 @@ class MINAGRIIntegration {
       const resourceId = 'capacidad-logistica'; // Placeholder
       const url = `${this.baseUrl}?resource_id=${resourceId}&q=${region}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`MINAGRI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const records = data.result.records || [];
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
+      const records = (data && data.result && data.result.records) ? data.result.records : [];
 
       const capacityData = records.map(record => ({
         region: record.region || region,
@@ -89,28 +82,31 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`Using mock supply chain data for ${region}`);
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for supply chain ${region}`);
+        const mockRegions = {
+          'Lima': { capacity: 85, distance: 0, cost: 1.2 },
+          'Arequipa': { capacity: 72, distance: 800, cost: 2.1 },
+          'Cusco': { capacity: 68, distance: 1200, cost: 2.8 },
+          'Trujillo': { capacity: 79, distance: 600, cost: 1.9 }
+        };
 
-      // Mock supply chain data
-      const mockRegions = {
-        'Lima': { capacity: 85, distance: 0, cost: 1.2 },
-        'Arequipa': { capacity: 72, distance: 800, cost: 2.1 },
-        'Cusco': { capacity: 68, distance: 1200, cost: 2.8 },
-        'Trujillo': { capacity: 79, distance: 600, cost: 1.9 }
-      };
+        const regionData = mockRegions[region] || { capacity: 75, distance: 400, cost: 1.8 };
 
-      const regionData = mockRegions[region] || { capacity: 75, distance: 400, cost: 1.8 };
-
-      return {
-        region,
-        capacityData: [{
+        return {
           region,
-          capacity: regionData.capacity,
-          distance: regionData.distance,
-          cost: regionData.cost
-        }],
-        isMock: true
-      };
+          capacityData: [{
+            region,
+            capacity: regionData.capacity,
+            distance: regionData.distance,
+            cost: regionData.cost
+          }],
+          isMock: true,
+          source: 'FORCE_MOCKS:MINAGRI'
+        };
+      }
+
+      throw new Error(`MINAGRIIntegration failed: ${error && error.message ? error.message : String(error)}`);
     }
   }
 }

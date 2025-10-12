@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
-  "start:native": "npx kill-port 4000 4001 4003 3000 3002 3003 4010 4020 && export NATIVE_DEV_MODE=true FORCE_MOCKS=true PORT=4000 VITE_PORT=3002 && concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
+  "start:native": "npx kill-port 4000 4001 4003 3000 3002 3003 4010 4020 && export NATIVE_DEV_MODE=true PORT=4000 VITE_PORT=3002 && concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
     "start:native:test": "PORT=4000 VITE_PORT=3002 NATIVE_DEV_MODE=true concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
     "native:setup": "npm ci && cd server && npm ci && npx prisma generate --schema=./prisma/schema.prisma && node seed.js",
     "dev": "vite",
@@ -17,6 +17,7 @@
     "propose-plan": "node ./scripts/propose-plan.js --",
     "generate:component": "node ./scripts/generate-component.js",
     "consult:oracle": "node ./scripts/consult-oracle.js --",
+    "create-report": "node ./scripts/create-report.js",
     "test": "jest",
     "build": "npx vite build",
     "build:dev": "npx vite build --mode development",

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">18.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>4/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">23.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>4/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,38 +101,38 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">33x</span>
-<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">92x</span>
-<span class="cline-any cline-yes">92x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">92x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,35 +141,35 @@
 const subscribers = new Map();
 const globalSubscribers = new Set();
 &nbsp;
-export function subscribe(missionId, cb) {
-  if (!subscribers.has(missionId)) subscribers.set(missionId, new Set());
-  subscribers.get(missionId).add(cb);
-  return () =&gt; {
-    const s = subscribers.get(missionId);
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (s) {
-      s.delete(cb);
-      if (s.size === 0) subscribers.delete(missionId);
+export function <span class="fstat-no" title="function not covered" >subscribe(</span>missionId, cb) {
+<span class="cstat-no" title="statement not covered" >  if (!subscribers.has(missionId)) <span class="cstat-no" title="statement not covered" >subscribers.set(missionId, new Set());</span></span>
+<span class="cstat-no" title="statement not covered" >  subscribers.get(missionId).add(cb);</span>
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+    const s = <span class="cstat-no" title="statement not covered" >subscribers.get(missionId);</span>
+<span class="cstat-no" title="statement not covered" >    if (s) {</span>
+<span class="cstat-no" title="statement not covered" >      s.delete(cb);</span>
+<span class="cstat-no" title="statement not covered" >      if (s.size === 0) <span class="cstat-no" title="statement not covered" >subscribers.delete(missionId);</span></span>
     }
   };
 }
 &nbsp;
 export function subscribeAll(cb) {
   globalSubscribers.add(cb);
-  return () =&gt; globalSubscribers.delete(cb);
+  return <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >globalSubscribers.delete(cb);</span>
 }
 &nbsp;
-export function publish(missionId, event) {
+export function <span class="fstat-no" title="function not covered" >publish(</span>missionId, event) {
   // Notify mission-specific subscribers
-  const s = subscribers.get(missionId);
-  if (s) {
-    for (const cb of s) {
-      try { cb(event); } catch { /* ignore subscriber errors */ }
+  const s = <span class="cstat-no" title="statement not covered" >subscribers.get(missionId);</span>
+<span class="cstat-no" title="statement not covered" >  if (s) {</span>
+<span class="cstat-no" title="statement not covered" >    for (const cb of s) {</span>
+<span class="cstat-no" title="statement not covered" >      try { <span class="cstat-no" title="statement not covered" >cb(event); </span>} catch { /* ignore subscriber errors */ }</span>
     }
   }
 &nbsp;
   // Notify global subscribers
-  for (const cb of globalSubscribers) {
-    try { cb({ missionId, ...event }); } catch { /* ignore */ }
+<span class="cstat-no" title="statement not covered" >  for (const cb of globalSubscribers) {</span>
+<span class="cstat-no" title="statement not covered" >    try { <span class="cstat-no" title="statement not covered" >cb({ missionId, ...event }); </span>} catch { /* ignore */ }</span>
   }
 }
 &nbsp;
@@ -181,7 +181,7 @@ export default { subscribe, subscribeAll, publish };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-11T18:29:50.116Z
+                at 2025-10-11T23:08:34.425Z
             </div>
         <script src="../prettify.js"></script>
         <script>

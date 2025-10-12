@@ -9,9 +9,10 @@ import { calculateEthicalVector } from './ethicalVectorModule.js';
 import cache from '../cache.js';
 
 // This would be stored in a more secure and dynamic configuration in a real system.
-// Use native dev port when NATIVE_DEV_MODE is enabled (server runs on 4003 in native mode)
-const DEFAULT_PORT = process.env.NATIVE_DEV_MODE === 'true' ? 4003 : (process.env.PORT ? Number(process.env.PORT) : 4001);
-const PRAEVISIO_API_BASE_URL = `http://localhost:${DEFAULT_PORT}`;
+// Resolve the internal API base URL to the actual running server port.
+// Default to PORT env or 4000 (the server listens on 4000 by default for native/dev runs).
+const RESOLVED_PORT = process.env.PORT ? Number(process.env.PORT) : (process.env.NATIVE_DEV_MODE === 'true' ? 4003 : 4000);
+const PRAEVISIO_API_BASE_URL = `http://localhost:${RESOLVED_PORT}`;
 const AUTH_TOKEN = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
 
 const predictionState = {
@@ -47,6 +48,14 @@ const predictionState = {
       confidence: 0.0,
       lowResilienceCountries: [],
       averageResilience: 0,
+    },
+    cryptoVolatilityRisk: {
+      value: null,
+      source: 'CryptoService',
+      confidence: 0.0,
+      volatilityIndex: 0,
+      riskAssessment: 'Low',
+      marketData: [],
     },
   },
   multiDomainRiskIndex: {
@@ -122,6 +131,21 @@ async function fetchInternalData(endpoint) {
         },
         source: 'FORCE_MOCKS:CommunityResilience'
       };
+    } else if (endpoint === '/api/global-risk/crypto-volatility') {
+      mock = {
+        timestamp: new Date().toISOString(),
+        volatilityIndex: 35,
+        marketData: [
+          { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin', current_price: 45000, price_change_percentage_24h: -2.5 },
+          { id: 'ethereum', symbol: 'eth', name: 'Ethereum', current_price: 2800, price_change_percentage_24h: 1.2 }
+        ],
+        analysis: {
+          totalCryptos: 2,
+          averageVolatility: 1.85,
+          riskAssessment: 'Moderate'
+        },
+        source: 'FORCE_MOCKS:CryptoService'
+      };
     } else {
       mock = { ok: true, data: {} };
     }
@@ -138,7 +162,7 @@ async function fetchInternalData(endpoint) {
     cache.set(cacheKey, data, 5 * 60 * 1000);
     return data;
   } catch (error) {
-    console.error(`[PredictionEngine] Failed to fetch internal data from ${endpoint}:`, error.message);
+    console.error(`[PredictionEngine] Failed to fetch internal data from ${endpoint}:`, error && error.stack ? error.stack : (error && error.message) || String(error));
     throw new Error('Internal data source unavailable.');
   }
 }
@@ -307,8 +331,8 @@ async function updateClimateExtremesRiskIndex() {
 }
 
 /**
- * Updates the Community Resilience Risk Index based on community resilience data.
- */
+  * Updates the Community Resilience Risk Index based on community resilience data.
+  */
 async function updateCommunityResilienceRiskIndex() {
   console.log('[PredictionEngine] Updating Community Resilience Risk Index...');
   const resilienceData = await fetchInternalData('/api/global-risk/community-resilience');
@@ -339,27 +363,56 @@ async function updateCommunityResilienceRiskIndex() {
 }
 
 /**
- * Calculates the Multi-Domain Risk Index based on all individual risk indices.
- * This is a weighted average for demonstration.
- */
+  * Updates the Crypto Volatility Risk Index based on cryptocurrency market data.
+  */
+async function updateCryptoVolatilityRiskIndex() {
+  console.log('[PredictionEngine] Updating Crypto Volatility Risk Index...');
+  const cryptoData = await fetchInternalData('/api/global-risk/crypto-volatility');
+
+  if (!cryptoData || cryptoData.volatilityIndex === undefined) {
+    console.error('[PredictionEngine] Invalid crypto volatility data received.');
+    return;
+  }
+
+  const { volatilityIndex, analysis, marketData } = cryptoData;
+
+  // The volatility index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, volatilityIndex));
+
+  predictionState.riskIndices.cryptoVolatilityRisk.value = riskValue;
+  predictionState.riskIndices.cryptoVolatilityRisk.confidence = 0.85;
+  predictionState.riskIndices.cryptoVolatilityRisk.volatilityIndex = volatilityIndex;
+  predictionState.riskIndices.cryptoVolatilityRisk.riskAssessment = analysis?.riskAssessment || 'Unknown';
+  predictionState.riskIndices.cryptoVolatilityRisk.marketData = marketData || [];
+
+  console.log(`[PredictionEngine] Crypto Volatility Risk Index updated to ${riskValue} (${analysis?.riskAssessment || 'Unknown'} risk) based on ${analysis?.totalCryptos || 0} cryptocurrencies.`);
+}
+
+/**
+  * Calculates the Multi-Domain Risk Index based on all individual risk indices.
+  * This is a weighted average for demonstration.
+  */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk, cryptoVolatilityRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.2;
-  const geoWeight = 0.2;
-  const supplyChainWeight = 0.2;
-  const climateWeight = 0.2;
-  const resilienceWeight = 0.2;
+  const famineWeight = 0.15;
+  const geoWeight = 0.15;
+  const supplyChainWeight = 0.15;
+  const climateWeight = 0.15;
+  const resilienceWeight = 0.15;
+  const cryptoWeight = 0.25; // Higher weight for crypto volatility as emerging risk
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
   const supplyChainValue = supplyChainRisk.value || 0;
   const climateValue = climateExtremesRisk.value || 0;
   const resilienceValue = communityResilienceRisk.value || 0;
+  const cryptoValue = cryptoVolatilityRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight) + (cryptoValue * cryptoWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight) + (cryptoVolatilityRisk.confidence * cryptoWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -401,6 +454,7 @@ async function runProphecyCycle() {
       updateSupplyChainRiskIndex(),
       updateClimateExtremesRiskIndex(),
       updateCommunityResilienceRiskIndex(),
+      updateCryptoVolatilityRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

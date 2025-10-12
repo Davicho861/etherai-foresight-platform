@@ -1,52 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useQuery } from '@tanstack/react-query';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
-// Function to fetch seismic data
-const fetchSeismicActivity = async () => {
-  const res = await fetch('/api/seismic/activity', {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('praevisio_token') || 'demo-token'}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return res.json();
-};
+interface SeismicActivityWidgetProps {
+  seismicData?: any[];
+}
 
-const SeismicActivityWidget = () => {
-  const { data: seismicData, isLoading, error } = useQuery({
-    queryKey: ['seismicActivity'],
-    queryFn: fetchSeismicActivity,
-    refetchInterval: 60000, // Refetch every 60 seconds
-  });
+const SeismicActivityWidget: React.FC<SeismicActivityWidgetProps> = ({ seismicData }) => {
 
-  if (isLoading) {
+  // If no seismicData is provided, show informative state
+  if (!seismicData || !seismicData.length) {
     return (
       <Card>
         <CardHeader>
           <CardTitle>Monitoreo de Actividad Sísmica Global</CardTitle>
         </CardHeader>
         <CardContent>
-          <Skeleton className="w-full h-[300px]" />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Error</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>No se pudo cargar la actividad sísmica.</p>
+          <div className="text-center py-8">
+            <p className="text-gray-300">Datos sísmicos no disponibles (orquestador)</p>
+          </div>
         </CardContent>
       </Card>
     );
@@ -65,7 +39,7 @@ const SeismicActivityWidget = () => {
                 geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} fill="#EAEAEC" stroke="#D6D6DA" />)
               }
             </Geographies>
-            {seismicData && seismicData.map(event => {
+            {seismicData.map(event => {
               const [lon, lat] = event.geometry.coordinates;
               return (
                 <Marker key={event.id} coordinates={[lon, lat]}>
@@ -78,7 +52,7 @@ const SeismicActivityWidget = () => {
         <div className="mt-4">
           <h4 className="font-bold">Eventos Significativos Recientes:</h4>
           <ul className="list-disc pl-5 mt-2 text-sm">
-            {seismicData && seismicData.slice(0, 5).map(event => (
+            {seismicData.slice(0, 5).map(event => (
               <li key={event.id}>
                 <strong>M{event.properties.mag.toFixed(1)}</strong> - {event.properties.place}
               </li>

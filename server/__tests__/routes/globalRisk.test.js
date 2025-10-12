@@ -1,3 +1,4 @@
+import { server } from '../mocks/server.js';
 import request from 'supertest';
 import express from 'express';
 import globalRiskRouter from '../../src/routes/globalRiskRoutes.js';
@@ -13,6 +14,15 @@ jest.mock('../../src/services/communityResilienceService.js');
 const app = express();
 app.use(express.json());
 app.use('/api/global-risk', globalRiskRouter);
+
+describe('Global Risk Routes', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
 
 describe('GET /api/global-risk/food-security', () => {
   it('should return a 200 OK status and the food security data for LATAM countries', async () => {
@@ -101,6 +111,7 @@ describe('GET /api/global-risk/climate-extremes', () => {
     expect(response.body.success).toBe(false);
     expect(response.body.message).toContain('Could not retrieve climate extremes data.');
   });
+});
 });
 
 describe('GET /api/global-risk/community-resilience', () => {

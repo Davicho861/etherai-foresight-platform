@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import safeFetch from '../lib/safeFetch.js';
 
 class SIMIntegration {
   constructor() {
@@ -13,12 +13,7 @@ class SIMIntegration {
       // Attempt to fetch real SIM food prices
       const url = `${this.baseUrl}/precios?producto=${encodeURIComponent(product)}&region=${encodeURIComponent(region)}&fecha=${new Date().toISOString().split('T')[0]}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`SIM API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
 
       // Process price data
       const priceData = {
@@ -40,9 +35,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock food price data for ${product} in ${region}`);
-
-      // Mock food prices based on typical Peruvian market prices
+      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
       const mockPrices = {
         'rice': { current: 4.50, min: 4.20, max: 4.80, avg: 4.45 },
         'potatoes': { current: 2.20, min: 1.80, max: 2.60, avg: 2.25 },
@@ -64,7 +57,7 @@ class SIMIntegration {
           averagePrice: productData.avg,
           unit: 'PEN/kg',
           date: new Date().toISOString(),
-          source: 'Mock SIM Data'
+          source: 'FALLBACK_MOCK:SIM'
         },
         isMock: true
       };
@@ -80,12 +73,7 @@ class SIMIntegration {
 
       const url = `${this.baseUrl}/precios/historico?producto=${encodeURIComponent(product)}&region=${encodeURIComponent(region)}&fecha_inicio=${startDate.toISOString().split('T')[0]}&fecha_fin=${endDate.toISOString().split('T')[0]}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`SIM API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
 
       // Process historical price data
       const historyData = (data.precios || []).map(item => ({
@@ -101,8 +89,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock price history for ${product} in ${region}`);
-
+      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
       // Generate mock historical data
       const historyData = [];
       const basePrice = { rice: 4.50, potatoes: 2.20, corn: 3.10, beans: 5.80 }[product.toLowerCase()] || 3.00;
@@ -124,7 +111,8 @@ class SIMIntegration {
         product,
         region,
         historyData,
-        isMock: true
+        isMock: true,
+        source: 'FALLBACK_MOCK:SIM'
       };
     }
   }
@@ -134,12 +122,7 @@ class SIMIntegration {
       // Attempt to fetch real SIM volatility data
       const url = `${this.baseUrl}/volatilidad?producto=${encodeURIComponent(product)}&region=${encodeURIComponent(region)}`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`SIM API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
 
       return {
         product,
@@ -149,9 +132,7 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      // console.log(`Using mock volatility data for ${product} in ${region}`);
-
-      // Mock volatility based on product type
+      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
       const volatilities = {
         'rice': 0.12,
         'potatoes': 0.18,
@@ -167,7 +148,8 @@ class SIMIntegration {
         region,
         volatilityIndex: volatility,
         riskLevel,
-        isMock: true
+        isMock: true,
+        source: 'FALLBACK_MOCK:SIM'
       };
     }
   }

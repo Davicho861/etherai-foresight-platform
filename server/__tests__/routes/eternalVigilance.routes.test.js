@@ -1,7 +1,16 @@
+import { server } from '../mocks/server.js';
 const express = require('express')
 const request = require('supertest')
 
 describe('eternalVigilance routes - stream and token', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   beforeEach(() => {
     jest.resetModules()
     process.env.NODE_ENV = 'test'

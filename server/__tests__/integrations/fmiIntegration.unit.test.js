@@ -1,4 +1,5 @@
 // Tests for FMIIntegration
+import { server } from '../mocks/server.js';
 
 jest.mock('../../src/utils/resilience.js', () => ({
   CircuitBreaker: class { constructor(){} execute(fn){ return fn(); } },
@@ -11,6 +12,14 @@ let FMIIntegration = require('../../src/integrations/FMIIntegration.js');
 if (FMIIntegration && FMIIntegration.default) FMIIntegration = FMIIntegration.default;
 
 describe('FMIIntegration', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();

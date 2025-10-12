@@ -1,3 +1,4 @@
+import { server } from '../mocks/server.js';
 import { getSeismicActivity } from '../../src/services/usgsService.js';
 import { getSeismicData } from '../../src/services/SeismicIntegration.js';
 
@@ -5,6 +6,14 @@ import { getSeismicData } from '../../src/services/SeismicIntegration.js';
 jest.mock('../../src/services/SeismicIntegration.js');
 
 describe('USGS Service', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

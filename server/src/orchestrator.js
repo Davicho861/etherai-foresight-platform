@@ -1,5 +1,6 @@
 import { getChromaClient, getNeo4jDriver } from './database.js';
 import MetatronAgent from './agents.js';
+console.log('MetatronAgent imported:', typeof MetatronAgent, MetatronAgent);
 import { publish } from './eventHub.js';
 import * as os from 'os';
 

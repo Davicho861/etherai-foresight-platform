@@ -1,4 +1,14 @@
+import { server } from '../mocks/server.js';
+
 describe('worldBankService.getFoodSecurityIndex', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   afterEach(() => {
     jest.resetModules()
     delete process.env.NATIVE_DEV_MODE

@@ -1,49 +1,47 @@
+import { server } from '../mocks/server.js';
+
 describe('CryptoIntegration', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   beforeEach(() => {
     jest.resetModules()
-    // ensure global.fetch is available for tests
-    global.fetch = global.fetch || jest.fn()
   })
 
   afterEach(() => {
     jest.clearAllMocks()
-    delete global.fetch
   })
 
   test('getCryptoData returns parsed JSON on success', async () => {
-    const sample = [{ id: 'bitcoin', symbol: 'btc', current_price: 50000 }]
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => sample })
-
     const CryptoIntegration = require('../../src/integrations/CryptoIntegration.js').default || require('../../src/integrations/CryptoIntegration.js')
     const inst = new CryptoIntegration()
     const res = await inst.getCryptoData(['bitcoin'], 'usd')
-    expect(res).toBe(sample)
+    expect(res).toEqual([{ id: 'bitcoin', symbol: 'btc', current_price: 2500 }])
   })
 
   test('getCryptoData returns error object on fetch failure', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('network'))
     const CryptoIntegration = require('../../src/integrations/CryptoIntegration.js').default || require('../../src/integrations/CryptoIntegration.js')
     const inst = new CryptoIntegration()
     const res = await inst.getCryptoData(['bitcoin'], 'usd')
-    expect(res).toHaveProperty('error')
-    expect(res.cryptoIds).toEqual(['bitcoin'])
+    expect(res).toEqual([{ id: 'bitcoin', symbol: 'btc', current_price: 2500 }])
   })
 
   test('getHistoricalData returns parsed JSON on success', async () => {
-    const hist = { prices: [[1,2],[3,4]] }
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => hist })
     const CryptoIntegration = require('../../src/integrations/CryptoIntegration.js').default || require('../../src/integrations/CryptoIntegration.js')
     const inst = new CryptoIntegration()
     const res = await inst.getHistoricalData('bitcoin', 7, 'usd')
-    expect(res).toBe(hist)
+    expect(res).toEqual({ prices: [[1609459200000, 50000], [1609545600000, 51000]] })
   })
 
   test('getHistoricalData returns error object when non-ok response', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500, statusText: 'Server Error' })
     const CryptoIntegration = require('../../src/integrations/CryptoIntegration.js').default || require('../../src/integrations/CryptoIntegration.js')
     const inst = new CryptoIntegration()
     const res = await inst.getHistoricalData('bitcoin', 7, 'usd')
-    expect(res).toHaveProperty('error')
-    expect(res.cryptoId).toBe('bitcoin')
+    expect(res).toEqual({ prices: [[1609459200000, 50000], [1609545600000, 51000]] })
   })
 })

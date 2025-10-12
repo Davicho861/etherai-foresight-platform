@@ -45,6 +45,9 @@ interface LiveData {
     social?: any;
     economic?: any;
   }>;
+  communityResilience?: any;
+  foodSecurity?: any;
+  ethicalAssessment?: any;
   global: {
     crypto?: any;
     seismic?: any;
@@ -131,6 +134,43 @@ const DemoPage: React.FC<DemoPageProps> = ({ plan }) => {
             { name: 'Argentina', code: 'ARG', lat: -38.4161, lon: -63.6167 },
             { name: 'Chile', code: 'CHL', lat: -35.6751, lon: -71.5430 }
           ],
+          communityResilience: {
+            data: {
+              resilienceAnalysis: {
+                'COL': { country: 'Colombia', socialEvents: 5, resilienceScore: 75, recommendations: ['Mejorar infraestructura social', 'Fortalecer redes comunitarias'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } },
+                'PER': { country: 'Perú', socialEvents: 8, resilienceScore: 68, recommendations: ['Implementar programas de apoyo social', 'Monitorear indicadores económicos'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } },
+                'BRA': { country: 'Brasil', socialEvents: 12, resilienceScore: 72, recommendations: ['Desarrollar estrategias de mitigación', 'Fomentar la participación ciudadana'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } },
+                'MEX': { country: 'México', socialEvents: 6, resilienceScore: 78, recommendations: ['Reforzar sistemas de alerta temprana', 'Invertir en educación comunitaria'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } },
+                'ARG': { country: 'Argentina', socialEvents: 9, resilienceScore: 65, recommendations: ['Estabilizar la economía local', 'Mejorar acceso a servicios básicos'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } },
+                'CHL': { country: 'Chile', socialEvents: 4, resilienceScore: 82, recommendations: ['Mantener políticas de inclusión', 'Fortalecer instituciones democráticas'], period: { startDate: '2025-01-01', endDate: '2025-10-11' } }
+              }
+            },
+            timestamp: now,
+            isMock: true
+          },
+          foodSecurity: {
+            data: [
+              { country: 'COL', year: 2024, prevalenceUndernourishment: 8.5, riskIndex: 45, volatilityIndex: 20 },
+              { country: 'PER', year: 2024, prevalenceUndernourishment: 12.2, riskIndex: 55, volatilityIndex: 25 },
+              { country: 'BRA', year: 2024, prevalenceUndernourishment: 6.8, riskIndex: 40, volatilityIndex: 18 },
+              { country: 'MEX', year: 2024, prevalenceUndernourishment: 9.1, riskIndex: 48, volatilityIndex: 22 },
+              { country: 'ARG', year: 2024, prevalenceUndernourishment: 11.5, riskIndex: 52, volatilityIndex: 24 },
+              { country: 'CHL', year: 2024, prevalenceUndernourishment: 5.2, riskIndex: 35, volatilityIndex: 15 }
+            ],
+            timestamp: now,
+            source: 'mock',
+            isMock: true
+          },
+          ethicalAssessment: {
+            success: true,
+            data: {
+              vector: [25, 70, 55],
+              overallScore: 50,
+              assessment: 'Medium Ethical Concern',
+              timestamp: now
+            },
+            isMock: true
+          },
           global: { crypto: { data: [{ id: 'bitcoin', current_price: 50000 }], isMock: true }, seismic: { events: [], isMock: true } },
           lastUpdated: now
         };
@@ -626,25 +666,25 @@ const DemoPage: React.FC<DemoPageProps> = ({ plan }) => {
             {/* Resiliencia Comunitaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🏛️ Resiliencia Comunitaria LATAM</h3>
-              {activeWidgets.community && <CommunityResilienceWidget />}
+              {activeWidgets.community && <CommunityResilienceWidget resilienceData={demoData.communityResilience} />}
             </div>
 
             {/* Monitoreo Sísmico */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌋 Monitoreo Sísmico en Tiempo Real</h3>
-              {activeWidgets.seismic && <SeismicMapWidget />}
+              {activeWidgets.seismic && <SeismicMapWidget seismicData={demoData.global.seismic} />}
             </div>
 
             {/* Seguridad Alimentaria */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">🌾 Seguridad Alimentaria Global</h3>
-              {activeWidgets.food && <FoodSecurityDashboard />}
+              {activeWidgets.food && <FoodSecurityDashboard foodSecurityData={demoData.foodSecurity} />}
             </div>
 
             {/* IA Ética */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-white mb-4">⚖️ Vector Ético - IA Explicable</h3>
-              {activeWidgets.ethical && <EthicalVectorDisplay />}
+              {activeWidgets.ethical && <EthicalVectorDisplay ethicalAssessment={demoData.ethicalAssessment} />}
             </div>
           </motion.div>
         </motion.div>

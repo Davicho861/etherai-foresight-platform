@@ -1,9 +1,18 @@
+import { server } from '../mocks/server.js';
 import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } from '../../src/utils/resilience.js';
 
 // Mock fetch globally
 global.fetch = jest.fn();
 
 describe('Resilience Utilities', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });

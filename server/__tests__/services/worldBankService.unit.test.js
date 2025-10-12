@@ -1,4 +1,14 @@
+import { server } from '../mocks/server.js';
+
 describe('worldBankService', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();

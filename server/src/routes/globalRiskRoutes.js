@@ -3,8 +3,10 @@ import { getFoodSecurityIndex } from '../services/worldBankService.js';
 import { getSeismicActivity } from '../services/usgsService.js';
 import { getClimateExtremesIndex } from '../services/climateService.js';
 import { getCommunityResilienceIndex } from '../services/communityResilienceService.js';
+import CryptoService from '../services/cryptoService.js';
 
 const router = express.Router();
+const cryptoService = new CryptoService();
 
 /**
  * @route GET /api/global-risk/food-security
@@ -16,15 +18,16 @@ router.get('/food-security', async (req, res) => {
     const data = await getFoodSecurityIndex();
     res.status(200).json({
       success: true,
-      source: 'Praevisio-Aion-Simulated-WorldBank',
+      source: data && data.source ? data.source : 'Praevisio-Aion-WorldBank',
       timestamp: new Date().toISOString(),
       data,
     });
   } catch (error) {
     console.error('Error fetching food security index:', error);
-    res.status(500).json({
+    res.status(502).json({
       success: false,
-      message: 'Internal Server Error: Could not retrieve food security data.',
+      message: 'Bad Gateway: upstream data source failed',
+      error: error && error.message ? error.message : String(error)
     });
   }
 });
@@ -76,10 +79,10 @@ router.get('/climate-extremes', async (req, res) => {
 });
 
 /**
- * @route GET /api/global-risk/community-resilience
- * @description Provides the latest community resilience analysis for LATAM countries.
- * @access Public
- */
+  * @route GET /api/global-risk/community-resilience
+  * @description Provides the latest community resilience analysis for LATAM countries.
+  * @access Public
+  */
 router.get('/community-resilience', async (req, res) => {
   try {
     const { countries = ['COL', 'PER', 'ARG'], days = 30 } = req.query;
@@ -96,6 +99,31 @@ router.get('/community-resilience', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Internal Server Error: Could not retrieve community resilience data.',
+    });
+  }
+});
+
+/**
+  * @route GET /api/global-risk/crypto-volatility
+  * @description Provides the latest cryptocurrency volatility risk index.
+  * @access Public
+  */
+router.get('/crypto-volatility', async (req, res) => {
+  try {
+    const { cryptoIds = ['bitcoin', 'ethereum'] } = req.query;
+    const cryptoIdsArray = Array.isArray(cryptoIds) ? cryptoIds : cryptoIds.split(',').map(c => c.trim().toLowerCase());
+    const data = await cryptoService.getCryptoMarketAnalysis(cryptoIdsArray);
+    res.status(200).json({
+      success: true,
+      source: 'Praevisio-Aion-CryptoService',
+      timestamp: new Date().toISOString(),
+      data,
+    });
+  } catch (error) {
+    console.error('Error fetching crypto volatility:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: Could not retrieve crypto volatility data.',
     });
   }
 });

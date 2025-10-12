@@ -1,3 +1,5 @@
+import safeFetch from '../lib/safeFetch.js';
+
 class CryptoIntegration {
   constructor() {
     this.baseUrl = 'https://api.coingecko.com/api/v3';
@@ -7,32 +9,30 @@ class CryptoIntegration {
     try {
       const ids = cryptoIds.join(',');
       const url = `${this.baseUrl}/coins/markets?ids=${ids}&vs_currency=${vsCurrency}&order=market_cap_desc&per_page=100&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30d`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.error('CryptoIntegration: returning FORCE_MOCKS mock for crypto data due to error:', error);
+        return { error: null, cryptoIds, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
+      }
       console.error('Error fetching crypto data:', error);
-      // No fallback to mock data - return error indication
-      return { error: error.message, cryptoIds, vsCurrency };
+      throw new Error(`CryptoIntegration failed: ${error && error.message ? error.message : String(error)}`);
     }
   }
 
   async getHistoricalData(cryptoId, days = 30, vsCurrency = 'usd') {
     try {
       const url = `${this.baseUrl}/coins/${cryptoId}/market_chart?vs_currency=${vsCurrency}&days=${days}&interval=daily`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.error('CryptoIntegration: returning FORCE_MOCKS mock for historical data due to error:', error);
+        return { error: null, cryptoId, days, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
+      }
       console.error('Error fetching historical crypto data:', error);
-      // No fallback to mock data - return error indication
-      return { error: error.message, cryptoId, days, vsCurrency };
+      throw new Error(`CryptoIntegration historical failed: ${error && error.message ? error.message : String(error)}`);
     }
   }
 

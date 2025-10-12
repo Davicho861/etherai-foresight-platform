@@ -87,8 +87,14 @@ async function fetchWithTimeout(url, options = {}, timeout = 10000) {
   });
 
   try {
+    // Provide conservative default headers to reduce chance of being blocked by upstream providers
+    const defaultHeaders = {
+      'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)',
+      'Accept': 'application/json, text/plain, */*'
+    };
+    const mergedOptions = { ...options, headers: { ...(options.headers || {}), ...defaultHeaders }, signal: controller.signal };
     const response = await Promise.race([
-      fetch(url, { ...options, signal: controller.signal }),
+      fetch(url, mergedOptions),
       timeoutPromise
     ]);
 

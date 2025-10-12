@@ -3,12 +3,14 @@ import WorldBankIntegration from '../../src/integrations/WorldBankIntegration.js
 import GdeltIntegration from '../../src/integrations/GdeltIntegration.js';
 import FMIIntegration from '../../src/integrations/FMIIntegration.js';
 import SatelliteIntegration from '../../src/integrations/SatelliteIntegration.js';
+import ClimateIntegration from '../../src/integrations/ClimateIntegration.js';
 
 // Mock the integrations
 jest.mock('../../src/integrations/WorldBankIntegration.js');
 jest.mock('../../src/integrations/GdeltIntegration.js');
 jest.mock('../../src/integrations/FMIIntegration.js');
 jest.mock('../../src/integrations/SatelliteIntegration.js');
+jest.mock('../../src/integrations/ClimateIntegration.js');
 
 describe('DataAcquisitionAgent', () => {
   let agent;
@@ -16,6 +18,7 @@ describe('DataAcquisitionAgent', () => {
   let mockGdelt;
   let mockFmi;
   let mockSatellite;
+  let mockClimate;
 
   beforeEach(() => {
     // Clear all mocks
@@ -34,12 +37,16 @@ describe('DataAcquisitionAgent', () => {
     mockSatellite = {
       getNDVIData: jest.fn()
     };
+    mockClimate = {
+      getCountryClimateData: jest.fn()
+    };
 
     // Mock the constructors
     WorldBankIntegration.mockImplementation(() => mockWorldBank);
     GdeltIntegration.mockImplementation(() => mockGdelt);
     FMIIntegration.mockImplementation(() => mockFmi);
     SatelliteIntegration.mockImplementation(() => mockSatellite);
+    ClimateIntegration.mockImplementation(() => mockClimate);
 
     agent = new MetatronAgent('DataAcquisitionAgent');
   });
@@ -62,6 +69,10 @@ describe('DataAcquisitionAgent', () => {
     mockSatellite.getNDVIData.mockResolvedValue({
       ndviData: [0.3, 0.4],
       isMock: false
+    });
+    mockClimate.getCountryClimateData.mockResolvedValue({
+      temperature: 25,
+      precipitation: 50
     });
 
     const input = {

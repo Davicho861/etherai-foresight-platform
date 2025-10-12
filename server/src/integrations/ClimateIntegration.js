@@ -1,3 +1,5 @@
+import safeFetch from '../lib/safeFetch.js';
+
 class ClimateIntegration {
   constructor() {
     this.baseUrl = 'https://power.larc.nasa.gov/api/temporal/daily/point';
@@ -33,17 +35,7 @@ class ClimateIntegration {
       });
 
       const url = `${this.baseUrl}?${params}`;
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent': 'PraevisioAI/1.0'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`NASA POWER API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await safeFetch(url, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)' } }, { timeout: 15000, retries: 2 });
 
       if (data && data.properties && data.properties.parameter) {
         return this.processClimateData(data.properties.parameter, country);
@@ -51,8 +43,12 @@ class ClimateIntegration {
         return this.getMockClimateData(country);
       }
     } catch (error) {
-      console.warn(`Failed to fetch climate data for ${country}:`, error.message);
-      return this.getMockClimateData(country);
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.warn(`ClimateIntegration: returning FORCE_MOCKS mock for ${country} due to error: ${error && error.message}`);
+        const mock = this.getMockClimateData(country);
+        return { ...mock, isMock: true, source: 'FORCE_MOCKS:Climate' };
+      }
+      throw new Error(`ClimateIntegration failed for ${country}: ${error && error.message ? error.message : String(error)}`);
     }
   }
 

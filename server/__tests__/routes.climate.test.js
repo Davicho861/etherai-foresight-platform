@@ -1,17 +1,19 @@
 import request from 'supertest';
 import { createApp } from '../src/index.js';
+import { server } from '../mocks/server.js';
 
 process.env.PRAEVISIO_BEARER_TOKEN = 'demo-token';
 
-jest.mock('../src/integrations/open-meteo.mock.js', () => ({
-  fetchRecentTemperature: async (lat, lon) => ({ lat, lon, temperature: 22 }),
-  fetchClimatePrediction: async (lat, lon, days) => ({ lat, lon, days, forecast: 'stable' })
-}));
-
 describe('Climate routes', () => {
   let app;
+
   beforeAll(async () => {
+    server.listen();
     app = await createApp({ disableBackgroundTasks: true, initializeServices: false });
+  });
+
+  afterAll(() => {
+    server.close();
   });
 
   it('GET /api/climate/current requires lat/lon', async () => {

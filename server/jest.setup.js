@@ -1,6 +1,6 @@
-// Hefesto's Forge: Global and Configurable Fetch Mock - REFORGED
-// This mock intercepts all fetch calls, ensuring no real network requests are made during tests.
-// It provides a clean, predictable, and fast testing environment.
+// Hefesto's Forge: Oráculo de Mocks - REFORGED con MSW
+// El Oráculo intercepta todas las llamadas de red, asegurando que ninguna solicitud real llegue a internet.
+// Proporciona un entorno de pruebas limpio, predecible y rápido.
 // Disable source-map-support mapping to avoid runtime errors parsing malformed source maps
 // Some dependencies may register source-map-support which can crash when encountering
 // a corrupted or unexpected source map. Uninstall it early in the Jest setup.
@@ -53,27 +53,14 @@ try {
   // ignore
 }
 
-// First, we mock the module. Jest will hoist this call.
-jest.mock('node-fetch');
+// Importar el Oráculo de Mocks (MSW Server)
+const { server } = require('./__tests__/mocks/server.js');
 
-// Now, we can safely require the modules.
-const fetch = require('node-fetch');
-const { Response } = jest.requireActual('node-fetch');
+// Proporcionar acceso global al servidor para casos especiales
+global.mswServer = server;
 
-// Create the mock implementation that will be used by the mocked fetch.
-const mockFetchImplementation = jest.fn();
-
-// Set the mocked fetch's implementation.
-fetch.mockImplementation(mockFetchImplementation);
-
-// Provide a way for tests to configure mock responses through the global scope.
-global.mockFetch = mockFetchImplementation;
-global.Response = Response;
-
-// Clean up mocks after each test to prevent contamination.
-afterEach(() => {
-  mockFetchImplementation.mockClear();
-});
+// Note: per-test cleanup (afterEach) is registered in `jest.setup.backend.js`
+// because `afterEach` is not available when this file runs as a setupFile.
 
 // Replace console methods with no-op wrappers during tests to avoid interleaved logs
 // that can trigger "Cannot log after tests are done" or cause lifecycle issues.
@@ -104,3 +91,31 @@ global.__silenceConsole = () => {
 // For backward compatibility, log a single startup message via the original console
 // (so maintainers know the mock was installed) but keep runtime output quiet.
 _origConsole.log("Hefesto's global fetch mock has been re-forged with proper initialization and is active.");
+
+// Ensure a global fetch mock exists for tests that call fetch.mockResolvedValue
+// If Node provides a native fetch (node 18+), wrap it; otherwise create a Jest mock.
+if (typeof global.fetch === 'undefined' || typeof global.fetch.mockResolvedValue === 'undefined') {
+  try {
+    // jest may not be defined outside tests; guard access
+    /* eslint-disable no-undef */
+    if (typeof jest !== 'undefined' && typeof jest.fn === 'function') {
+      // Ensure fetch is a Jest mock function
+      global.fetch = jest.fn();
+      // Provide a convenient alias used across older tests
+      global.mockFetch = global.fetch;
+    } else {
+      // Fallback: create a minimal mock function with mockResolvedValue API
+      const fn = (...args) => {
+        // default behavior: return a rejected promise to surface unexpected calls
+        return Promise.reject(new Error('global.fetch called in test without explicit mock'));
+      };
+      fn.mockResolvedValue = (val) => { fn._mockResolvedValue = val; return fn; };
+      fn.mockRejectedValue = (err) => { fn._mockRejectedValue = err; return fn; };
+      global.fetch = fn;
+    }
+  } catch (e) {
+    // ignore if we can't define jest mocks in this environment
+  }
+}
+// Defensive: if mockFetch is not set elsewhere, alias it to fetch to support older tests
+if (typeof global.mockFetch === 'undefined') global.mockFetch = global.fetch;

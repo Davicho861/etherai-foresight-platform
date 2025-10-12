@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import safeFetch from '../lib/safeFetch.js';
 
 class SatelliteIntegration {
   constructor() {
@@ -15,12 +15,7 @@ class SatelliteIntegration {
       // For demo, using Open-Meteo temperature as proxy for vegetation health
       const url = `${this.baseUrl}?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&start_date=${startDate}&end_date=${endDate}&timezone=UTC`;
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Satellite API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
 
       // Convert temperature data to mock NDVI values (0-1 scale)
       // Higher temperatures in growing season indicate better vegetation health
@@ -51,9 +46,12 @@ class SatelliteIntegration {
         source: 'Open-Meteo (proxy for satellite data)'
       };
     } catch (error) {
-      console.log(`Using mock NDVI data for location (${latitude}, ${longitude}) from ${startDate} to ${endDate}`);
-
-      // Fallback to mock NDVI data
+      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+        console.log(`SatelliteIntegration: returning FORCE_MOCKS mock for location (${latitude}, ${longitude})`);
+        // Fallback to mock NDVI data
+      } else {
+        throw new Error(`SatelliteIntegration failed: ${error && error.message ? error.message : String(error)}`);
+      }
       const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
       const ndviData = [];
 

@@ -1,31 +1,82 @@
 // Minimal safeFetch helper: timeout, retries, JSON parse guard
 import fetch from 'node-fetch';
 
+const USER_AGENTS = [
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Praevisio/1.0 (+https://praevisio.local)'
+];
+
 async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
     try {
-      const res = await fetch(url, { ...opts, signal: controller.signal });
+      const headers = { ...(opts.headers || {}), 'Accept': 'application/json, text/plain, */*', 'User-Agent': USER_AGENTS[attempt % USER_AGENTS.length] };
+      const res = await fetch(url, { ...opts, headers, signal: controller.signal });
       clearTimeout(id);
       if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`HTTP ${res.status}: ${text}`);
+          // Try to safely read body/text for error reporting. Some test mocks may not
+          // implement res.text(), so guard against that.
+          let errText = '';
+          if (res && typeof res.text === 'function') {
+            errText = await res.text().catch(() => '');
+          } else if (res && typeof res.json === 'function') {
+            try {
+              const j = await res.json();
+              errText = typeof j === 'string' ? j : JSON.stringify(j);
+            } catch (e) {
+              errText = '';
+            }
+          }
+          throw new Error(`HTTP ${res.status}: ${errText}`);
       }
-      const ct = res.headers.get('content-type') || '';
-      if (ct.includes('application/json')) {
+        // Detect content-type in a defensive way: test mocks may supply headers as a
+        // simple object without a .get() method. Prefer headers.get if available.
+        let ct = '';
         try {
-          return await res.json();
-        } catch {
-          throw new Error('Invalid JSON response');
+          if (res && res.headers) {
+            if (typeof res.headers.get === 'function') {
+              ct = res.headers.get('content-type') || '';
+            } else if (res.headers['content-type']) {
+              ct = res.headers['content-type'];
+            }
+          }
+        } catch (e) {
+          ct = '';
         }
-      }
-      return await res.text();
+
+        // Some mocks simply provide a json() method but no headers — assume JSON
+        if (!ct && res && typeof res.json === 'function') {
+          ct = 'application/json';
+        }
+
+        if (ct && ct.toLowerCase().includes('application/json')) {
+          try {
+            return await (typeof res.json === 'function' ? res.json() : Promise.resolve(null));
+          } catch (parseErr) {
+            throw new Error(`Invalid JSON response: ${parseErr && parseErr.message ? parseErr.message : String(parseErr)}`);
+          }
+        }
+
+        // If we received a non-JSON body (likely HTML blocking page), try to read text()
+        let bodyText = '';
+        if (res && typeof res.text === 'function') {
+          bodyText = await res.text().catch(() => '');
+        } else if (res && typeof res.json === 'function') {
+          try {
+            const j = await res.json();
+            bodyText = typeof j === 'string' ? j : JSON.stringify(j);
+          } catch (e) {
+            bodyText = '';
+          }
+        }
+        throw new Error(`Non-JSON response (content-type: ${ct}): ${bodyText.slice(0, 200)}`);
     } catch (err) {
       clearTimeout(id);
       if (attempt === retries) throw err;
-      // small backoff
-      await new Promise(r => setTimeout(r, 300 + attempt * 200));
+      // exponential-ish backoff with jitter
+      const delay = 300 + attempt * 500 + Math.floor(Math.random() * 200);
+      await new Promise(r => setTimeout(r, delay));
     }
   }
 }

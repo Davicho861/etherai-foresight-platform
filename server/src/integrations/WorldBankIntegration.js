@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import safeFetch from '../lib/safeFetch.js';
 
 class WorldBankIntegration {
   constructor() {
@@ -15,15 +15,29 @@ class WorldBankIntegration {
       for (const indicator of indicators) {
         const url = `${this.baseUrl}/country/${country.toLowerCase()}/indicator/${indicator}?format=json&date=${startYear}:${endYear}&per_page=1000`;
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.warn(`World Bank API error for ${indicator}: ${response.status}`);
-          results[indicator] = { error: `API error: ${response.status}` };
+        let data;
+        try {
+          data = await safeFetch(url, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)', Accept: 'application/json' } }, { timeout: 10000, retries: 3 });
+        } catch (err) {
+          console.warn(`World Bank API error for ${indicator}: ${err.message}`);
+          results[indicator] = { error: `API error: ${err.message}` };
           continue;
         }
+        // If no data for the requested year range, retry once with a broader window (safe fallback)
+        if (!(data && Array.isArray(data) && data[1] && data[1].length > 0)) {
+          try {
+            const broaderUrl = `${this.baseUrl}/country/${country.toLowerCase()}/indicator/${indicator}?format=json&date=2010:${endYear}&per_page=1000`;
+            const fallback = await safeFetch(broaderUrl, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)', Accept: 'application/json' } }, { timeout: 10000, retries: 2 });
+            if (fallback && Array.isArray(fallback) && fallback[1] && fallback[1].length > 0) {
+              data = fallback;
+            }
+          } catch (err) {
+            // swallow fallback error and continue with original empty result
+            console.warn(`World Bank fallback error for ${indicator}: ${err.message}`);
+          }
+        }
 
-        const data = await response.json();
-        if (data[1] && data[1].length > 0) {
+        if (data && data[1] && data[1].length > 0) {
           // Get the most recent value
           const sortedData = data[1].sort((a, b) => parseInt(b.date) - parseInt(a.date));
           const latest = sortedData[0];
@@ -33,7 +47,31 @@ class WorldBankIntegration {
             country: latest.country.value
           };
         } else {
-          results[indicator] = { value: null, note: 'No data available' };
+          // No data in requested range - attempt to report last available year/value if present in data[1]
+          let lastAvailable = null;
+          try {
+            if (data && data[1] && data[1].length === 0) {
+              // nothing
+            } else if (data && data[1]) {
+              const anyEntry = data[1].find(d => d && (d.value !== null && d.value !== undefined));
+              if (anyEntry) lastAvailable = anyEntry;
+            }
+          } catch (e) {
+            // ignore
+          }
+
+          if (lastAvailable) {
+            results[indicator] = {
+              value: lastAvailable.value,
+              year: lastAvailable.date,
+              country: lastAvailable.country ? lastAvailable.country.value : country,
+              note: 'No data for requested range — returning last available value'
+            };
+            console.warn(`WorldBank: no data in ${startYear}:${endYear} for ${indicator} (${country}), returning last available year ${lastAvailable.date}`);
+          } else {
+            results[indicator] = { value: null, note: 'No data available' };
+            console.warn(`WorldBank: no data in ${startYear}:${endYear} for ${indicator} (${country}) and no fallback available`);
+          }
         }
 
         // Rate limiting: small delay between requests
@@ -115,15 +153,27 @@ class WorldBankIntegration {
       for (const country of countries) {
         const url = `${this.baseUrl}/country/${country.toLowerCase()}/indicator/${indicator}?format=json&date=${startYear}:${endYear}&per_page=1000`;
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.warn(`World Bank API error for food security ${country}: ${response.status}`);
-          results[country] = { error: `API error: ${response.status}` };
+        let data;
+        try {
+          data = await safeFetch(url, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)', Accept: 'application/json' } }, { timeout: 10000, retries: 3 });
+        } catch (err) {
+          console.warn(`World Bank API error for food security ${country}: ${err.message}`);
+          results[country] = { error: `API error: ${err.message}` };
           continue;
         }
-
-        const data = await response.json();
-        if (data[1] && data[1].length > 0) {
+        // Retry with broader date range if no data found
+        if (!(data && Array.isArray(data) && data[1] && data[1].length > 0)) {
+          try {
+            const fallbackUrl = `${this.baseUrl}/country/${country.toLowerCase()}/indicator/${indicator}?format=json&date=2010:${endYear}&per_page=1000`;
+            const fallback = await safeFetch(fallbackUrl, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)', Accept: 'application/json' } }, { timeout: 10000, retries: 2 });
+            if (fallback && Array.isArray(fallback) && fallback[1] && fallback[1].length > 0) {
+              data = fallback;
+            }
+          } catch (err) {
+            console.warn(`World Bank fallback error for food security ${country}: ${err.message}`);
+          }
+        }
+        if (data && data[1] && data[1].length > 0) {
           // Get the most recent value
           const sortedData = data[1].sort((a, b) => parseInt(b.date) - parseInt(a.date));
           const latest = sortedData[0];

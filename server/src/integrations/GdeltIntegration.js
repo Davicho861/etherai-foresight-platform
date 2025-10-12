@@ -1,4 +1,5 @@
 import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } from '../utils/resilience.js';
+import safeFetch from '../lib/safeFetch.js';
 
 class GdeltIntegration {
   constructor() {
@@ -44,32 +45,32 @@ class GdeltIntegration {
           // GDELT API query for social unrest events
           // Using keywords like protest, riot, etc.
           const query = `(protest OR riot OR strike OR demonstration)`;
-          const countryFilter = `sourcecountry:${country.toUpperCase()}`;
+          // GDELT expects two-letter country codes in many queries; map common ISO3 -> ISO2
+          const iso3ToIso2 = (iso3) => {
+            if (!iso3) return '';
+            const map = {
+              COL: 'CO', PER: 'PE', BRA: 'BR', MEX: 'MX', ARG: 'AR', CHL: 'CL'
+            };
+            const c = String(iso3).toUpperCase();
+            return map[c] || c.slice(0, 2);
+          };
+          const countryFilter = `sourcecountry:${iso3ToIso2(country)}`;
 
           const startDateTime = startDate.replace(/-/g, '') + '000000';
           const endDateTime = endDate.replace(/-/g, '') + '235959';
 
           const url = `${this.baseUrl}?query=${encodeURIComponent(`${query} ${countryFilter}`)}&startdatetime=${startDateTime}&enddatetime=${endDateTime}&mode=artlist&format=json&maxrecords=250`;
 
-          const response = await fetchWithTimeout(url, {}, 20000); // 20s timeout for GDELT
-
-          if (!response.ok) {
-            if (response.status === 429) {
-              throw new Error(`GDELT API rate limit exceeded: ${response.status}`);
-            }
-            throw new Error(`GDELT API error: ${response.status} ${response.statusText}`);
-          }
-
-          // Check if response is actually JSON
-          if (!isJsonResponse(response)) {
-            throw new Error(`GDELT API returned non-JSON response: ${response.headers.get('content-type')}`);
-          }
-
+          // Use safeFetch to get parsed JSON with retries and timeout. Add Accept header to favor JSON responses.
           let data;
           try {
-            data = await response.json();
-          } catch (parseError) {
-            throw new Error(`GDELT API returned invalid JSON: ${parseError.message}`);
+            data = await safeFetch(url, { headers: { 'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)', Accept: 'application/json' } }, { timeout: 20000, retries });
+          } catch (err) {
+            // convert known cases into expressive errors for retry logic
+            if (err.message && err.message.includes('429')) {
+              throw new Error(`GDELT API rate limit exceeded: ${err.message}`);
+            }
+            throw err;
           }
 
           // Validate data structure

@@ -1,4 +1,5 @@
 // Tests for GdeltIntegration
+import { server } from '../mocks/server.js';
 
 // Mock the utilities used by GdeltIntegration before importing
 jest.mock('../../src/utils/resilience.js', () => ({
@@ -15,6 +16,14 @@ let GdeltIntegration = require('../../src/integrations/GdeltIntegration.js');
 if (GdeltIntegration && GdeltIntegration.default) GdeltIntegration = GdeltIntegration.default;
 
 describe('GdeltIntegration', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
+  afterAll(() => {
+    server.close();
+  });
+
   afterEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
@@ -38,7 +47,7 @@ describe('GdeltIntegration', () => {
     isJsonResponse.mockReturnValue(true);
     const mockResponse = {
       ok: true,
-      json: async () => ({ articles: [ { title: 'A', themes: 'PROTEST;ECONOMY' }, { title: 'B', themes: 'RIOT' } ] }),
+      json: async () => ({ articles: [{ title: 'Sample', url: 'https://example.com', date: '2024-10-07', tone: 2.5 }] }),
       headers: new Map([['content-type', 'application/json']]),
     };
     fetchWithTimeout.mockResolvedValue(mockResponse);
@@ -47,9 +56,9 @@ describe('GdeltIntegration', () => {
     const res = await g.getSocialEvents('COL', '2025-01-01', '2025-01-02');
     expect(res).toBeDefined();
     expect(res.isMock).toBe(false);
-  expect(Array.isArray(res.articles)).toBe(true);
-  // intensity should be numeric even if no articles were returned
-  expect(typeof res.socialIntensity).toBe('number');
+    expect(Array.isArray(res.articles)).toBe(true);
+    // intensity should be numeric even if no articles were returned
+    expect(typeof res.socialIntensity).toBe('number');
   });
 
   test('returns fallback mock if API errors and FORCE_MOCKS set at runtime', async () => {
