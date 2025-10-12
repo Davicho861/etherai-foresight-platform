@@ -1,0 +1,100 @@
+name: Aion Sovereign Cycle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  aion_sovereign_cycle:
+    name: Aion Sovereign Cycle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install jq (deterministic)
+        # Ensure jq is available on the runner in a reproducible way
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends jq
+
+      - name: Set up Git identity
+        run: |
+          git config user.name "Aion Sovereign"
+          git config user.email "aion-bot@example.com"
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh || true
+
+      - name: Compute timestamp
+        id: ts
+        run: |
+          ts=$(date -u +%Y%m%dT%H%M%SZ)
+          echo "ts=$ts" >> $GITHUB_OUTPUT
+
+      - name: Run Aion cycle (create branch & commit)
+        env:
+          TS: ${{ steps.ts.outputs.ts }}
+        run: |
+          set -euo pipefail
+          ts=${TS}
+          echo "Running scripts/aion_cycle.sh --no-dry-run (ts=${ts})"
+          bash scripts/aion_cycle.sh --no-dry-run
+
+      - name: Configure remote for push using GH_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          repo=${GITHUB_REPOSITORY}
+          echo "Configuring origin remote to use token for pushing"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${repo}.git"
+
+      - name: Push branch to origin
+        env:
+          TS: ${{ steps.ts.outputs.ts }}
+        run: |
+          set -euo pipefail
+          ts=${TS}
+          branch="aion/evolution-${ts}"
+          echo "Pushing branch $branch"
+          git push origin "$branch"
+
+      - name: Create Pull Request (via REST API)
+        id: create_pr
+        env:
+          TS: ${{ steps.ts.outputs.ts }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          ts=${TS}
+          branch="aion/evolution-${ts}"
+          title="Aion Cycle: ${ts}"
+          body="Auto-generated evolution report."
+          owner_repo=${GITHUB_REPOSITORY}
+          echo "Creating PR for ${branch} -> main"
+          response=$(curl -s -X POST -H "Authorization: token ${GH_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/repos/${owner_repo}/pulls -d "{\"title\": \"${title}\", \"head\": \"${branch}\", \"base\": \"main\", \"body\": \"${body}\"}")
+          pr_number=$(echo "$response" | jq -r .number)
+          pr_url=$(echo "$response" | jq -r .html_url)
+          if [[ "$pr_number" == "null" || -z "$pr_number" ]]; then
+            echo "Failed to create PR: $response" >&2
+            exit 2
+          fi
+          echo "PR created: $pr_url (#$pr_number)"
+          echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
+
+      - name: Merge Pull Request (via REST API)
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          pr_number=${{ steps.create_pr.outputs.pr_number }}
+          owner_repo=${GITHUB_REPOSITORY}
+          echo "Merging PR #${pr_number}"
+          merge_response=$(curl -s -X PUT -H "Authorization: token ${GH_TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/repos/${owner_repo}/pulls/${pr_number}/merge -d '{"merge_method":"merge"}')
+          merged=$(echo "$merge_response" | jq -r .merged)
+          if [[ "$merged" != "true" ]]; then
+            echo "Merge failed: $merge_response" >&2
+            exit 3
+          fi
+          echo "PR #${pr_number} merged successfully"
