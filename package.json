@@ -28,9 +28,13 @@
     "stop:container": "docker-compose down --volumes",
     "start:sdlc": "npm run start:native -- --open /sdlc-dashboard",
     "start:dashboard": "npm run start:native -- --open /dashboard",
-    "start:demo": "npm run start:native -- --open /demo"
+    "start:demo": "npm run start:native -- --open /demo",
+    "manifest": "bash scripts/manifest.sh"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^3.10.0",
     "@langchain/openai": "^0.2.5",
     "@radix-ui/react-accordion": "^1.2.11",
@@ -68,7 +72,7 @@
     "d3-selection": "^2.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.19",
+    "framer-motion": "^12.23.24",
     "input-otp": "^1.4.2",
     "langchain": "^0.2.11",
     "lucide-react": "^0.462.0",

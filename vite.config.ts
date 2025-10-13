@@ -27,6 +27,29 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       include: ['react', 'react-dom'],
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Code splitting by domain for better performance
+            'dashboard-cto': ['../components/dashboards/CTODashboard'],
+            'dashboard-cio': ['../components/dashboards/CIODashboard'],
+            'dashboard-cso': ['../components/dashboards/CSODashboard'],
+            'dashboard-ceo': ['../components/dashboards/CEODashboard'],
+            'dashboard-cfo': ['../components/dashboards/CFODashboard'],
+            'dashboard-cmo': ['../components/dashboards/CMODashboard'],
+            'dashboard-coo': ['../components/dashboards/COODashboard'],
+            // Vendor chunks for better caching
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-charts': ['recharts'],
+            'vendor-motion': ['framer-motion'],
+            'vendor-dnd': ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+          },
+        },
+      },
+      // Optimize chunk size limits
+      chunkSizeWarningLimit: 1000,
+    },
     plugins: [react()],
     resolve: {
       alias: {

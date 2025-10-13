@@ -24,3 +24,15 @@ model ModuleData {
   label     String
   timestamp DateTime @default(now())
 }
+
+model KanbanTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   // PLANNING, DESIGN, IMPLEMENTATION, TESTING, DEPLOYMENT
+  priority    String?  // Divine, High, Medium, Low
+  assignee    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  order       Int      @default(0)
+}

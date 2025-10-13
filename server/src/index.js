@@ -71,6 +71,8 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const providersRouter = await safeImport('./routes/providers.js', () => express.Router());
   const seismicRouter = await safeImport('./routes/seismic.js', () => express.Router().use((req, res) => res.status(501).json({ error: 'seismic unavailable' })));
   const communityResilienceRouter = await safeImport('./routes/community-resilience.js', () => express.Router());
+  const kanbanRouter = await safeImport('./routes/kanban.js', () => express.Router());
+  const oracleRouter = await safeImport('./routes/oracle.js', () => express.Router());
 
   // Register lightweight fallback mocks for internal endpoints (helps native dev)
   try {
@@ -131,8 +133,10 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
   app.use('/api/community-resilience', bearerAuth, communityResilienceRouter);
+  app.use('/api/kanban', kanbanRouter);
+  app.use('/api/oracle', oracleRouter);
 
-  // Ethical Assessment endpoint
+ // Ethical Assessment endpoint
   app.get('/api/ethical-assessment', bearerAuth, (req, res) => {
     try {
       const riskState = getRiskIndices();

@@ -18,6 +18,11 @@ const SolutionsPage = React.lazy(() => import("./pages/SolutionsPage"));
 const CommandCenterPage = React.lazy(() => import("./pages/CommandCenterPage"));
 const SdlcDashboardPage = React.lazy(() => import("./pages/SdlcDashboardPage"));
 
+// Lazy load heavy dashboard components for performance optimization
+const CTODashboard = React.lazy(() => import("./components/dashboards/CTODashboard"));
+const CIODashboard = React.lazy(() => import("./components/dashboards/CIODashboard"));
+const CSODashboard = React.lazy(() => import("./components/dashboards/CSODashboard"));
+
 const queryClient = new QueryClient();
 
 const App = () => {

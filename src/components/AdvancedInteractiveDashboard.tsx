@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,19 @@ const AdvancedInteractiveDashboard = () => {
   };
 
   const currentSector = sectorData[sector as keyof typeof sectorData];
-  const predictionValue = Math.round((variable1[0] * 0.6) + (variable2[0] * 0.4));
+
+  // Memoize expensive calculations for performance
+  const predictionValue = useMemo(() =>
+    Math.round((variable1[0] * 0.6) + (variable2[0] * 0.4)),
+    [variable1[0], variable2[0]]
+  );
+
+  const predictionFactors = useMemo(() => [
+    { factor: currentSector.variable1.name, value: variable1[0] },
+    { factor: currentSector.variable2.name, value: variable2[0] },
+    { factor: "Variables contextuales", value: Math.round(Math.random() * 30 + 20) },
+    { factor: "Tendencias históricas", value: Math.round(Math.random() * 25 + 15) }
+  ], [currentSector.variable1.name, currentSector.variable2.name, variable1[0], variable2[0]]);
 
   const getPredictionColor = (): string => {
     if (predictionValue >= 70) return "text-red-400";
@@ -57,13 +69,6 @@ const AdvancedInteractiveDashboard = () => {
       setIsAnalyzing(false);
     }, 2000);
   };
-
-  const predictionFactors = [
-    { factor: currentSector.variable1.name, value: variable1[0] },
-    { factor: currentSector.variable2.name, value: variable2[0] },
-    { factor: "Variables contextuales", value: Math.round(Math.random() * 30 + 20) },
-    { factor: "Tendencias históricas", value: Math.round(Math.random() * 25 + 15) }
-  ];
 
   const confidenceData = [
     { name: 'Confianza', value: 92, color: '#4ADE80' },
