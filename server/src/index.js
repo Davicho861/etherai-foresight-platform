@@ -67,9 +67,18 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const missionsRouter = await safeImport('./routes/missions.js', () => express.Router());
   const foodResilienceRouter = await safeImport('./routes/food-resilience.js', () => express.Router());
   const globalRiskRouter = await safeImport('./routes/globalRiskRoutes.js', () => express.Router());
+  const sdlcRouter = await safeImport('./routes/sdlc.js', () => express.Router());
   const providersRouter = await safeImport('./routes/providers.js', () => express.Router());
   const seismicRouter = await safeImport('./routes/seismic.js', () => express.Router().use((req, res) => res.status(501).json({ error: 'seismic unavailable' })));
   const communityResilienceRouter = await safeImport('./routes/community-resilience.js', () => express.Router());
+
+  // Register lightweight fallback mocks for internal endpoints (helps native dev)
+  try {
+    const fallbackMocks = await safeImport('./routes/fallbackMocks.js', () => express.Router());
+    if (fallbackMocks) app.use('/', fallbackMocks);
+  } catch (e) {
+    console.warn('Could not register fallback mocks:', e && e.message);
+  }
 
   // Simple Bearer token auth middleware for protected routes (supports async validation)
   async function bearerAuth(req, res, next) {
@@ -117,6 +126,7 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceTokenRouter);
   app.use('/api/demo', demoRouter);
   app.use('/api/missions', missionsRouter);
+  app.use('/api/sdlc', sdlcRouter);
   app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);

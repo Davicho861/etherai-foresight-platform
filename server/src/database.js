@@ -174,11 +174,8 @@ function getChromaClient() {
 async function getNeo4jDriver() {
   // Prevent Neo4j connections during unit tests to avoid external side effects
   if (process.env.NODE_ENV === 'test') return null;
-  // If running in native local mode, skip connecting to Neo4j and return null
-  // so callers can decide to operate in degraded/local mode.
-  if (process.env.NATIVE_DEV_MODE === 'true') {
-    return null;
-  }
+
+  // Always attempt to connect to Neo4j - no fallback to null
 
   if (!neo4jDriver) {
     const host = process.env.NEO4J_HOST || 'localhost';
@@ -210,7 +207,8 @@ async function getNeo4jDriver() {
           neo4jDriver = null;
         }
         if (attempt === maxRetries) {
-          throw new Error(`Failed to connect to Neo4j after ${maxRetries} attempts: ${error.message}`);
+          console.error(`Failed to connect to Neo4j after ${maxRetries} attempts: ${error.message}`);
+          process.exit(1);
         }
         await new Promise(resolve => setTimeout(resolve, retryDelay));
       }

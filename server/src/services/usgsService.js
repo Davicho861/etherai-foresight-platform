@@ -12,29 +12,6 @@ import { getSeismicData } from './SeismicIntegration.js';
  */
 export const getSeismicActivity = async () => {
   try {
-    // 1) If FORCE_MOCKS is set, return a built-in mock immediately (fast, offline-friendly)
-    if (process.env.FORCE_MOCKS === 'true') {
-      const builtinMock = {
-        metadata: { generated: Date.now() },
-        features: [
-          {
-            id: 'mock-1',
-            properties: {
-              mag: 2.3,
-              place: 'Mock Region',
-              time: Date.now(),
-              tsunami: 0,
-              sig: 22,
-              url: 'https://example.com/mock-quake'
-            },
-            geometry: { coordinates: [-74.2973, 4.5709, 10] }
-          }
-        ],
-        __meta: { isMock: true }
-      };
-      const transformed = transformSeismicData(builtinMock);
-      return { ...transformed, isMock: true };
-    }
 
     // 2) If running in native dev mode, try to use a local mock server but fail gracefully
     if (process.env.NATIVE_DEV_MODE === 'true') {
@@ -60,54 +37,14 @@ export const getSeismicActivity = async () => {
     } catch (liveErr) {
       const message = liveErr && liveErr.message ? liveErr.message : String(liveErr);
       console.error('Live USGS fetch failed:', message);
-      // If tests expect an error-shaped response, return an object with error and empty events.
-      // For developer ergonomics, allow forcing a full built-in mock by setting FORCE_MOCKS=true.
-      if (process.env.FORCE_MOCKS === 'true') {
-        const fallbackMock = {
-          metadata: { generated: Date.now() },
-          features: [
-            {
-              id: 'fallback-1',
-              properties: {
-                mag: 1.0,
-                place: 'Fallback Region',
-                time: Date.now(),
-                tsunami: 0,
-                sig: 5,
-                url: 'https://example.com/fallback-quake'
-              },
-              geometry: { coordinates: [-51.9253, -14.2350, 5] }
-            }
-          ],
-          __meta: { isMock: true }
-        };
-        const transformedFallback = transformSeismicData(fallbackMock);
-        return { ...transformedFallback, isMock: true };
-      }
 
-      return {
-        events: [],
-        summary: {
-          totalEvents: 0,
-          maxMagnitude: 0,
-          lastUpdated: new Date().getTime(),
-          source: 'USGS Earthquake Hazards Program'
-        },
-        error: message
-      };
+      // Fallback to high-fidelity mock data
+      return getMockSeismicData();
     }
   } catch (error) {
     console.error('Unexpected error in getSeismicActivity:', error);
-    return {
-      events: [],
-      summary: {
-        totalEvents: 0,
-        maxMagnitude: 0,
-        lastUpdated: new Date().toISOString(),
-        source: "Error - No Data Available"
-      },
-      error: error && error.message ? error.message : String(error)
-    };
+    // Fallback to high-fidelity mock data
+    return getMockSeismicData();
   }
 };
 
@@ -116,6 +53,47 @@ export const getSeismicActivity = async () => {
  * @param {object} rawData - Raw GeoJSON data from USGS
  * @returns {object} Transformed seismic data
  */
+/**
+ * Returns high-fidelity mock seismic data when API is unavailable
+ * @returns {object} Mock seismic data in the same format as real data
+ */
+function getMockSeismicData() {
+  const mockEvents = [
+    {
+      id: 'mock-1',
+      magnitude: 4.5,
+      place: 'Mock Seismic Region - Test Location',
+      time: Date.now(),
+      coordinates: [-74.2973, 4.5709, 10],
+      tsunami: 0,
+      significance: 50,
+      url: 'https://example.com/mock-earthquake-1'
+    },
+    {
+      id: 'mock-2',
+      magnitude: 3.2,
+      place: 'Another Mock Location',
+      time: Date.now() - 3600000, // 1 hour ago
+      coordinates: [-75.0, -10.0, 15],
+      tsunami: 0,
+      significance: 25,
+      url: 'https://example.com/mock-earthquake-2'
+    }
+  ];
+
+  return {
+    events: mockEvents,
+    summary: {
+      totalEvents: mockEvents.length,
+      maxMagnitude: Math.max(...mockEvents.map(e => e.magnitude)),
+      lastUpdated: new Date().toISOString(),
+      source: 'High-Fidelity Mock Data - USGS API Unavailable'
+    },
+    isMock: true,
+    note: 'Real-time seismic data simulation - API unavailable'
+  };
+}
+
 function transformSeismicData(rawData) {
   if (!rawData || !rawData.features) {
     return {

@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "start": "concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
-  "start:native": "npx kill-port 4000 4001 4003 3000 3002 3003 4010 4020 && export NATIVE_DEV_MODE=true PORT=4000 VITE_PORT=3002 && concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
-    "start:native:test": "PORT=4000 VITE_PORT=3002 NATIVE_DEV_MODE=true concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
+    "start:native": "npx kill-port 4000 4001 4003 3000 3002 3003 4010 4020 && export NATIVE_DEV_MODE=true PORT=4003 VITE_PORT=3002 && concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
+    "start:native:test": "PORT=4003 VITE_PORT=3002 NATIVE_DEV_MODE=true concurrently \"npm run dev --workspace=server\" \"npm run dev\"",
     "native:setup": "npm ci && cd server && npm ci && npx prisma generate --schema=./prisma/schema.prisma && node seed.js",
     "dev": "vite",
     "new:feature": "node scripts/execute-directive.js --",
@@ -23,7 +23,12 @@
     "build:dev": "npx vite build --mode development",
     "lint": "eslint \"src/**/*.{js,ts,tsx}\" \"server/**/*.{js,ts}\" \"scripts/**/*.{js,ts}\" --max-warnings=200",
     "preview": "vite preview",
-    "deploy:sovereign": "bash scripts/sovereign-ci.sh"
+    "deploy:sovereign": "bash scripts/sovereign-ci.sh",
+    "dev:container": "docker-compose up --build -d",
+    "stop:container": "docker-compose down --volumes",
+    "start:sdlc": "npm run start:native -- --open /sdlc-dashboard",
+    "start:dashboard": "npm run start:native -- --open /dashboard",
+    "start:demo": "npm run start:native -- --open /demo"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -56,7 +61,6 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.85.6",
-    "axios-retry": "^3.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -103,6 +107,7 @@
     "@typescript-eslint/parser": "^8.46.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "axios-retry": "^4.5.0",
     "concurrently": "^8.2.2",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
@@ -119,11 +124,12 @@
     "prettier-plugin-svelte": "^3.2.6",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "prisma": "^5.20.0",
+    "puppeteer": "^24.24.0",
     "start-server-and-test": "^1.14.0",
     "svelte": "^4.2.18",
     "svelte-check": "^3.8.4",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5"
+    "vite": "^5.4.20"
   }
 }

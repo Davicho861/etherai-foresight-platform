@@ -2,9 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Use DATABASE_URL from environment for CI/Prod (Postgres). Fallbacks can be
-// configured locally if needed.
-// For native local development we use PostgreSQL.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

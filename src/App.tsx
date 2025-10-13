@@ -16,6 +16,7 @@ const MetatronPanel = React.lazy(() => import("./components/MetatronPanel"));
 const DemoPage = React.lazy(() => import("./pages/DemoPage"));
 const SolutionsPage = React.lazy(() => import("./pages/SolutionsPage"));
 const CommandCenterPage = React.lazy(() => import("./pages/CommandCenterPage"));
+const SdlcDashboardPage = React.lazy(() => import("./pages/SdlcDashboardPage"));
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => {
             <Routes>
                <Route path="/" element={<Index />} />
                <Route path="/dashboard" element={<div className="min-h-screen flex items-center justify-center">Cargando dashboard...</div>} />
+               <Route path="/sdlc-dashboard" element={<SdlcDashboardPage />} />
                <Route path="/command-center" element={<CommandCenterPage />} />
                <Route path="/module/colombia" element={<ModuleColombia />} />
                <Route path="/food-resilience" element={<FoodResiliencePage />} />
