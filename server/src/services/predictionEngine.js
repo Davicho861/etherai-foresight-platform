@@ -57,6 +57,14 @@ const predictionState = {
       riskAssessment: 'Low',
       marketData: [],
     },
+    biodiversityRisk: {
+      value: null,
+      source: 'BiodiversityService',
+      confidence: 0.0,
+      riskIndex: 0,
+      riskAssessment: 'Low',
+      regions: [],
+    },
   },
   multiDomainRiskIndex: {
     value: null,
@@ -326,19 +334,47 @@ async function updateCryptoVolatilityRiskIndex() {
 }
 
 /**
+  * Updates the Biodiversity Risk Index based on global biodiversity data.
+  */
+async function updateBiodiversityRiskIndex() {
+  console.log('[PredictionEngine] Updating Biodiversity Risk Index...');
+  const biodiversityData = await fetchInternalData('/api/global-risk/biodiversity');
+
+  if (!biodiversityData || biodiversityData.riskIndex === undefined) {
+    console.error('[PredictionEngine] Invalid biodiversity data received.');
+    return;
+  }
+
+  const { riskIndex, analysis, biodiversityData: bioData } = biodiversityData;
+
+  // The risk index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, riskIndex));
+
+  predictionState.riskIndices.biodiversityRisk.value = riskValue;
+  predictionState.riskIndices.biodiversityRisk.confidence = 0.80;
+  predictionState.riskIndices.biodiversityRisk.riskIndex = riskIndex;
+  predictionState.riskIndices.biodiversityRisk.riskAssessment = analysis?.riskAssessment || 'Unknown';
+  predictionState.riskIndices.biodiversityRisk.regions = bioData?.regions ? Object.keys(bioData.regions) : [];
+
+  console.log(`[PredictionEngine] Biodiversity Risk Index updated to ${riskValue} (${analysis?.riskAssessment || 'Unknown'} risk) based on ${analysis?.totalRegions || 0} regions.`);
+}
+
+/**
   * Calculates the Multi-Domain Risk Index based on all individual risk indices.
   * This is a weighted average for demonstration.
   */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk, cryptoVolatilityRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk, cryptoVolatilityRisk, biodiversityRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.15;
-  const geoWeight = 0.15;
-  const supplyChainWeight = 0.15;
-  const climateWeight = 0.15;
-  const resilienceWeight = 0.15;
-  const cryptoWeight = 0.25; // Higher weight for crypto volatility as emerging risk
+  const famineWeight = 0.12;
+  const geoWeight = 0.12;
+  const supplyChainWeight = 0.12;
+  const climateWeight = 0.12;
+  const resilienceWeight = 0.12;
+  const cryptoWeight = 0.20; // Higher weight for crypto volatility as emerging risk
+  const biodiversityWeight = 0.20; // Higher weight for biodiversity as environmental risk
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
@@ -346,9 +382,10 @@ function updateMultiDomainRiskIndex() {
   const climateValue = climateExtremesRisk.value || 0;
   const resilienceValue = communityResilienceRisk.value || 0;
   const cryptoValue = cryptoVolatilityRisk.value || 0;
+  const biodiversityValue = biodiversityRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight) + (cryptoValue * cryptoWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight) + (cryptoVolatilityRisk.confidence * cryptoWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight) + (cryptoValue * cryptoWeight) + (biodiversityValue * biodiversityWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight) + (cryptoVolatilityRisk.confidence * cryptoWeight) + (biodiversityRisk.confidence * biodiversityWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -391,6 +428,7 @@ async function runProphecyCycle() {
       updateClimateExtremesRiskIndex(),
       updateCommunityResilienceRiskIndex(),
       updateCryptoVolatilityRiskIndex(),
+      updateBiodiversityRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

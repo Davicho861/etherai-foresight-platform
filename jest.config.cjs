@@ -9,5 +9,5 @@ module.exports = {
     '^.+\\.(png|jpg|jpeg|svg)$': '<rootDir>/__mocks__/fileMock.js'
   },
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '/playwright/', '/server/'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
 };

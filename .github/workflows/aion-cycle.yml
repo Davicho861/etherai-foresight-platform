@@ -1,0 +1,31 @@
+name: Aion Cycle
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-aion-cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Aion cycle
+        run: npm run aion:cycle
+
+      - name: Upload Immortal Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: immortal-reports
+          path: IMMORTAL_EVOLUTION_REPORT_*.md

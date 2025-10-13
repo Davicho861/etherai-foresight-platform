@@ -4,9 +4,11 @@ import { getSeismicActivity } from '../services/usgsService.js';
 import { getClimateExtremesIndex } from '../services/climateService.js';
 import { getCommunityResilienceIndex } from '../services/communityResilienceService.js';
 import CryptoService from '../services/cryptoService.js';
+import BiodiversityService from '../services/biodiversityService.js';
 
 const router = express.Router();
 const cryptoService = new CryptoService();
+const biodiversityService = new BiodiversityService();
 
 /**
  * @route GET /api/global-risk/food-security
@@ -207,6 +209,43 @@ router.get('/crypto-volatility', async (req, res) => {
         topic: 'crypto-volatility',
         timestamp: new Date().toISOString(),
         value: Math.round(Math.random() * 80 + 40),
+        unit: '%'
+      }
+    });
+  }
+});
+
+/**
+   * @route GET /api/global-risk/biodiversity
+   * @description Provides the latest global biodiversity risk index.
+   * @access Public
+   */
+router.get('/biodiversity', async (req, res) => {
+  try {
+    const { regions = ['americas', 'africa', 'asia', 'europe', 'oceania'] } = req.query;
+    const regionsArray = Array.isArray(regions) ? regions : regions.split(',').map(r => r.trim().toLowerCase());
+    const data = await biodiversityService.getBiodiversityAnalysis(regionsArray);
+    // Return data in the format expected by the frontend
+    // Use the risk index directly from the service
+    const biodiversityIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 40;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'biodiversity',
+        timestamp: new Date().toISOString(),
+        value: Math.round(biodiversityIndex),
+        unit: '%'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching biodiversity risk:', error);
+    // Return fallback mock data
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'biodiversity',
+        timestamp: new Date().toISOString(),
+        value: Math.round(Math.random() * 60 + 20),
         unit: '%'
       }
     });

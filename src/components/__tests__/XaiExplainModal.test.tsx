@@ -42,4 +42,27 @@ describe('XaiExplainModal', () => {
   fireEvent.click(screen.getByText(/Cerrar/i));
     expect(onClose).toHaveBeenCalled();
   });
+
+  test('muestra explanation, confidence y sources cuando la API responde con formato estructurado', async () => {
+    const mockExplain = { explanation: 'Explicación de prueba', confidence: 0.82, sources: ['DB:metrics-2025', 'Informe: Q3-resumen'] };
+    jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockExplain,
+    } as any);
+
+    const onClose = jest.fn();
+    render(<XaiExplainModal open={true} onClose={onClose} metric="test.metric" value={123} context="Contexto test" />);
+
+    await waitFor(() => expect(screen.getByText(/Explicación de prueba/)).toBeInTheDocument());
+
+    // Confianza y fuentes deben mostrarse
+    expect(screen.getByText(/Confianza estimada/i)).toBeInTheDocument();
+    expect(screen.getByText(/82%/)).toBeInTheDocument();
+    expect(screen.getByText(/DB:metrics-2025/)).toBeInTheDocument();
+    expect(screen.getByText(/Informe: Q3-resumen/)).toBeInTheDocument();
+
+    // cerrar
+    fireEvent.click(screen.getByText(/Cerrar/i));
+    expect(onClose).toHaveBeenCalled();
+  });
 });

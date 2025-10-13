@@ -1,156 +1,307 @@
 import React, { useState, useEffect } from 'react';
-import MissionGallery from '../components/MissionGallery';
-import CommunityResilienceWidget from '../components/CommunityResilienceWidget';
-import SeismicMapWidget from '../components/SeismicMapWidget';
-import FoodSecurityDashboard from '../components/FoodSecurityDashboard';
-import EthicalVectorDisplay from '../components/EthicalVectorDisplay';
-import TaskReplayViewer from '../components/TaskReplayViewer';
+import { motion, AnimatePresence } from 'framer-motion';
+import CEODashboard from '../components/dashboards/CEODashboard';
+import RiskAssessmentDashboard from '../components/dashboards/RiskAssessmentDashboard';
+import LogisticsDashboard from '../components/dashboards/LogisticsDashboard';
+import SystemStatusDashboard from '../components/dashboards/SystemStatusDashboard';
 
-type Plan = 'Starter' | 'Growth' | 'Panteón';
+// Tipos para el dashboard dinámico
+type DashboardView = 'predictive' | 'risk-assessment' | 'logistics' | 'system-status';
+
+interface SidebarItem {
+  id: DashboardView;
+  label: string;
+  icon: string;
+  description: string;
+}
+
+const sidebarItems: SidebarItem[] = [
+  {
+    id: 'predictive',
+    label: 'Análisis Predictivo',
+    icon: '🔮',
+    description: 'Predicciones de riesgo y evolución'
+  },
+  {
+    id: 'risk-assessment',
+    label: 'Evaluación de Riesgos',
+    icon: '🌍',
+    description: 'Mapa global de hotspots sísmicos'
+  },
+  {
+    id: 'logistics',
+    label: 'Optimización Logística',
+    icon: '🚛',
+    description: 'Cadenas de suministro de café'
+  },
+  {
+    id: 'system-status',
+    label: 'Estado del Sistema',
+    icon: '⚙️',
+    description: 'Dashboard de Meta-Gobernanza'
+  }
+];
 
 const DashboardPage: React.FC = () => {
-  const [selectedMissionId, setSelectedMissionId] = useState<string | null>(null);
-  const [plan, setPlan] = useState<Plan>('Starter');
+  const [currentView, setCurrentView] = useState<DashboardView>('predictive');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [liveState, setLiveState] = useState<any>(null);
 
-  const handleMissionSelect = (missionId: string | null) => {
-    setSelectedMissionId(missionId);
+  // Estados para datos de diferentes vistas (se poblarán desde liveState)
+  const [predictiveData, setPredictiveData] = useState<any>(null);
+  const [riskData, setRiskData] = useState<any>(null);
+  const [logisticsData, setLogisticsData] = useState<any>(null);
+  const [systemData, setSystemData] = useState<any>(null);
+
+  // XAI explanation modal
+  const [xaiOpen, setXaiOpen] = useState(false);
+  const [xaiContent, setXaiContent] = useState<any>(null); // puede ser string o objeto estructurado { explanation, confidence, sources }
+  const [xaiLoading, setXaiLoading] = useState(false);
+
+  // Hook-local: centraliza la llamada a /api/demo/live-state
+  const fetchLiveState = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/demo/live-state');
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ message: 'No details' }));
+        throw new Error(body.error || body.message || `HTTP ${res.status}`);
+      }
+      const live = await res.json();
+      // Propagar a sub-estados
+      setPredictiveData(live);
+      setRiskData(live.global?.seismic || null);
+      setLogisticsData(live.foodSecurity || live.foodSecurity || null);
+      setSystemData(live.sdlc || null);
+    } catch (err: any) {
+      console.error('Error fetching live-state:', err);
+      setError(err.message || 'Error al cargar live-state');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    let mounted = true;
-    const fetchLiveState = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch('/api/demo/live-state');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        if (mounted) setLiveState(data);
-      } catch (err: any) {
-        console.error('Error fetching live-state:', err);
-        if (mounted) setError(err.message || 'Error desconocido al obtener live-state');
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    };
-
     fetchLiveState();
-
-    // poll every 15 seconds for fresher data
-    const interval = setInterval(fetchLiveState, 15000);
-    return () => {
-      mounted = false;
-      clearInterval(interval);
-    };
+    const interval = setInterval(fetchLiveState, 15000); // poll cada 15s como dicta el manifiesto
+    return () => clearInterval(interval);
   }, []);
 
-  const renderWidgets = () => {
-    // Base widgets for Starter
-    const starterWidgets = (
-      <>
-        <CommunityResilienceWidget resilienceData={liveState?.communityResilience} />
-        <SeismicMapWidget seismicData={liveState?.global?.seismic} />
-        <FoodSecurityDashboard foodSecurityData={liveState?.foodSecurity} />
-        <EthicalVectorDisplay ethicalAssessment={liveState?.ethicalAssessment} />
-      </>
-    );
-
-    if (plan === 'Starter') return starterWidgets;
-
-    // Growth unlocks additional analytical features (we'll keep placeholders if data absent)
-    if (plan === 'Growth') {
-      return (
-        <>
-          {starterWidgets}
-          {/* Advanced widgets could be added here; placeholders will render until implemented */}
-          <div className="bg-gray-800/50 border-gray-700 rounded-lg p-6"> 
-            <h3 className="text-white text-lg font-semibold">Análisis Causal (Growth)</h3>
-            <p className="text-gray-400 text-sm">Componentes avanzados desbloqueados por Growth</p>
-          </div>
-        </>
-      );
+  // Helper: llamar al endpoint XAI para explicaciones
+  const requestXaiExplanation = async (metric: string, value: any, context: string) => {
+    setXaiLoading(true);
+    setXaiContent(null);
+    setXaiOpen(true);
+    try {
+      const res = await fetch('/api/xai/explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ metric, value, context })
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || 'XAI request failed');
+      setXaiContent(body);
+    } catch (err: any) {
+      console.error('XAI explain error:', err);
+      setXaiContent({ explanation: err.message || 'No se obtuvo explicación', confidence: 0, sources: [] });
+    } finally {
+      setXaiLoading(false);
     }
+  };
 
-    // Panteón - full experience
-    return (
-      <>
-        {starterWidgets}
-        <div className="bg-gradient-to-r from-purple-900 to-indigo-900 border-gray-700 rounded-lg p-6">
-          <h3 className="text-white text-lg font-semibold">Simulador de Escenarios Interactivos (Panteón)</h3>
-          <p className="text-gray-400 text-sm">Modo de élite: Modelos avanzados y visualizaciones profundas</p>
-        </div>
-      </>
-    );
+  const renderPredictiveAnalysis = () => <CEODashboard predictiveData={predictiveData} requestXaiExplanation={requestXaiExplanation} />;
+
+  const renderRiskAssessment = () => <RiskAssessmentDashboard riskData={riskData} />;
+  const renderLogisticsOptimization = () => <LogisticsDashboard logisticsData={logisticsData} />;
+  const renderSystemStatus = () => <SystemStatusDashboard systemData={systemData} />;
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'predictive':
+        return renderPredictiveAnalysis();
+      case 'risk-assessment':
+        return renderRiskAssessment();
+      case 'logistics':
+        return renderLogisticsOptimization();
+      case 'system-status':
+        return renderSystemStatus();
+      default:
+        return renderPredictiveAnalysis();
+    }
   };
 
   return (
-    <div className="min-h-screen bg-etherblue-dark text-white flex">
-      {/* Sidebar Izquierdo (~30%) */}
-      <div className="w-1/3 bg-etherblue-dark/80 border-r border-gray-700 p-6 overflow-y-auto">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold text-etherneon">Dashboard Soberano</h2>
-          <p className="text-sm text-gray-400">Selecciona experiencia de plan</p>
-          <div className="mt-3 flex space-x-2">
-            {(['Starter','Growth','Panteón'] as Plan[]).map(p => (
-              <button
-                key={p}
-                onClick={() => setPlan(p)}
-                className={`px-3 py-1 rounded-full text-sm font-semibold ${plan===p ? 'bg-etherneon text-black' : 'bg-gray-700 text-white'}`}
-              >{p}</button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      {/* Sidebar */}
+      <motion.div
+        initial={{ x: -320 }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="fixed left-0 top-0 h-full w-80 bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 shadow-2xl z-10 overflow-y-auto"
+      >
+        <div className="p-6">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-8"
+          >
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              🏛️ Oráculo Viviente
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">Dashboard Soberano Unificado</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="space-y-2"
+          >
+            {sidebarItems.map((item) => (
+              <motion.button
+                key={item.id}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setCurrentView(item.id)}
+                className={`w-full p-4 rounded-xl text-left transition-all duration-200 ${
+                  currentView === item.id
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-400/50 shadow-lg shadow-cyan-500/10'
+                    : 'bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600/30'
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">{item.icon}</span>
+                  <div>
+                    <div className={`font-semibold ${currentView === item.id ? 'text-cyan-300' : 'text-white'}`}>
+                      {item.label}
+                    </div>
+                    <div className="text-xs text-slate-400">{item.description}</div>
+                  </div>
+                </div>
+                {currentView === item.id && (
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                  </div>
+                )}
+              </motion.button>
             ))}
-          </div>
-        </div>
+          </motion.div>
 
-        <MissionGallery
-          onMissionSelect={handleMissionSelect}
-          selectedMissionId={selectedMissionId}
-        />
-      </div>
-
-      {/* Panel de Contenido Derecho (~70%) */}
-      <div className="w-2/3 flex flex-col">
-        {/* Panel Superior: Widgets */}
-        <div className="flex-1 p-6 bg-etherblue-dark/60 overflow-y-auto">
-          {loading ? (
-            <div className="w-full h-64 flex items-center justify-center text-gray-400">Cargando datos en vivo...</div>
-          ) : error ? (
-            <div className="w-full h-64 p-6 bg-red-900/20 rounded-lg text-red-200">Error cargando live-state: {error}</div>
-          ) : (
-            <div className="grid grid-cols-2 gap-6 h-full">
-              <div className="space-y-6">
-                {renderWidgets()}
+          {/* Estado del sistema en sidebar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-4 bg-slate-700/30 rounded-lg"
+          >
+            <h3 className="text-sm font-semibold text-slate-300 mb-3">Estado del Sistema</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Backend</span>
+                <span className="text-xs text-green-400">● Activo</span>
               </div>
-              <div className="space-y-6">
-                {/* Right column reserved for additional contextual widgets or details */}
-                <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-4 h-full">
-                  <h3 className="text-white font-semibold">KPIs</h3>
-                  <div className="mt-2 text-gray-300 text-sm">
-                    <pre className="text-xs">{JSON.stringify(liveState?.kpis || {}, null, 2)}</pre>
-                  </div>
-                </div>
-                <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-4 h-full">
-                  <h3 className="text-white font-semibold">Países</h3>
-                  <div className="mt-2 text-gray-300 text-sm">
-                    {(liveState?.countries || []).map((c: any) => (
-                      <div key={c.code} className="flex items-center justify-between">
-                        <div>{c.name}</div>
-                        <div className="text-xs text-gray-400">{c.code}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Frontend</span>
+                <span className="text-xs text-green-400">● Activo</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-slate-400">Base de Datos</span>
+                <span className="text-xs text-green-400">● Activo</span>
               </div>
             </div>
-          )}
+          </motion.div>
         </div>
+      </motion.div>
 
-        {/* Panel Inferior: TaskReplayViewer */}
-        <div className="flex-1 bg-etherblue-dark/40 border-t border-gray-700">
-          <TaskReplayViewer missionId={selectedMissionId} />
-        </div>
+      {/* Main content area */}
+      <div className="ml-80 min-h-screen">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="p-8"
+        >
+          {loading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center justify-center min-h-[60vh]"
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-slate-400">Cargando experiencia soberana...</p>
+              </div>
+            </motion.div>
+          ) : error ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-red-900/20 border border-red-700/50 rounded-2xl p-6 text-red-200 max-w-md mx-auto"
+            >
+              <div className="flex items-center mb-2">
+                <span className="text-red-400 mr-2">⚠️</span>
+                <span className="font-semibold">Error de carga</span>
+              </div>
+              <p className="text-sm">{error}</p>
+            </motion.div>
+          ) : (
+            <>
+              <AnimatePresence mode="wait">
+              <motion.div
+                key={currentView}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {renderCurrentView()}
+              </motion.div>
+              </AnimatePresence>
+
+              {/* XAI Modal simple */}
+              <AnimatePresence>
+                {xaiOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                  >
+                    <div className="absolute inset-0 bg-black/60" onClick={() => setXaiOpen(false)} />
+                    <motion.div className="bg-gray-800 rounded-lg p-6 z-60 max-w-2xl mx-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-bold">Explicación (XAI)</h3>
+                        <button onClick={() => setXaiOpen(false)} className="text-white">Cerrar</button>
+                      </div>
+                      {xaiLoading ? (
+                        <div>Generando explicación...</div>
+                      ) : (
+                        <div>
+                          {typeof xaiContent === 'string' && (
+                            <div className="text-slate-200 whitespace-pre-wrap">{xaiContent}</div>
+                          )}
+                          {typeof xaiContent === 'object' && xaiContent !== null && (
+                            <div className="space-y-3">
+                              <div className="text-slate-200 whitespace-pre-wrap">{xaiContent.explanation}</div>
+                              {xaiContent.confidence !== undefined && (
+                                <div className="text-sm text-slate-400">Confianza: <span className="font-medium text-white">{Math.round((xaiContent.confidence || 0) * 100)}%</span></div>
+                              )}
+                              {Array.isArray(xaiContent.sources) && xaiContent.sources.length > 0 && (
+                                <div className="text-sm text-slate-400">Fuentes: <span className="font-medium text-white">{xaiContent.sources.join(', ')}</span></div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
+          )}
+        </motion.div>
       </div>
     </div>
   );

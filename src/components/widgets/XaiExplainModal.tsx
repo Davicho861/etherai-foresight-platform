@@ -11,6 +11,8 @@ type Props = {
 const XaiExplainModal: React.FC<Props> = ({ open, onClose, metric, value, context }) => {
   const [loading, setLoading] = useState(false);
   const [explanation, setExplanation] = useState<string | null>(null);
+  const [confidence, setConfidence] = useState<number | null>(null);
+  const [sources, setSources] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,7 +31,10 @@ const XaiExplainModal: React.FC<Props> = ({ open, onClose, metric, value, contex
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         if (!mounted) return;
-        setExplanation(json.explanation || json.explain || 'El Oráculo no devolvió explicación.');
+  // Manejar formato estructurado
+  setExplanation(json.explanation || json.explain || 'El Oráculo no devolvió explicación.');
+  setConfidence(typeof json.confidence === 'number' ? json.confidence : null);
+  setSources(Array.isArray(json.sources) ? json.sources : null);
       } catch (err: any) {
         // Fallback: generar explicación local de alta fidelidad
         const fallback = `El Oráculo (fallback) interpreta que ${metric} = ${value} en ${context} sugiere cambios relevantes en las condiciones operativas; revise tendencias y alertas relacionadas.`;
@@ -59,7 +64,21 @@ const XaiExplainModal: React.FC<Props> = ({ open, onClose, metric, value, contex
         <div className="mt-4">
           {loading && <div className="text-gray-300">Generando interpretación del Oráculo…</div>}
           {!loading && explanation && (
-            <div className="prose prose-invert text-gray-200 leading-relaxed">{explanation}</div>
+            <div>
+              <div className="prose prose-invert text-gray-200 leading-relaxed">{explanation}</div>
+              {confidence !== null && (
+                <div className="mt-3 text-sm text-slate-400">Confianza estimada: <span className="font-medium text-white">{Math.round(confidence * 100)}%</span></div>
+              )}
+              {sources && sources.length > 0 && (
+                <div className="mt-2 text-sm text-slate-300">Fuentes:
+                  <ul className="list-disc list-inside ml-4">
+                    {sources.map((s, i) => (
+                      <li key={i} className="text-slate-200">{s}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
           {!loading && error && (
             <div className="mt-3 text-sm text-yellow-300">Nota: explicación desde fallback. ({error})</div>

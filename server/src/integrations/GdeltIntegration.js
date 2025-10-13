@@ -3,13 +3,16 @@ import safeFetch from '../lib/safeFetch.js';
 
 class GdeltIntegration {
   constructor() {
-    const native = process.env.NATIVE_DEV_MODE === 'true';
+  const native = process.env.NATIVE_DEV_MODE === 'true' || process.env.FORCE_MOCKS === 'true';
     const gdeltMockPort = process.env.GDELT_MOCK_PORT || 4020;
     this.baseUrl = native
       ? `http://localhost:${gdeltMockPort}/gdelt/events`
       : (process.env.TEST_MODE === 'true'
         ? 'http://mock-api-server:3001/gdelt' // internal mock server used in CI
         : 'https://api.gdeltproject.org/api/v2/doc/doc');
+    // Debug: log which baseUrl is being used to help troubleshoot native dev mode
+    // eslint-disable-next-line no-console
+    console.log(`[GdeltIntegration] NATIVE_DEV_MODE=${process.env.NATIVE_DEV_MODE}; using baseUrl=${this.baseUrl}`);
     // Use shorter circuit breaker window in tests to avoid long waits/logs
     const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';
     this.circuitBreaker = new CircuitBreaker(isTest ? 1 : 5, isTest ? 1000 : 600000); // failures, recovery ms
@@ -94,7 +97,8 @@ class GdeltIntegration {
       console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}.`);
 
       // If FORCE_MOCKS is enabled, return mock. Otherwise propagate the error
-        if (forceMocksEnabled()) {
+      const forceMocks = process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1' || process.env.NODE_ENV === 'test';
+      if (forceMocks) {
         const mockData = this.getMockSocialEvents(country, startDate, endDate);
         return mockData;
       }

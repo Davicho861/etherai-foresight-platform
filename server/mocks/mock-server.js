@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
 
 const app = express();
 app.use(cors());
@@ -77,3 +78,44 @@ app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Mock server listening on http://localhost:${PORT}`);
 });
+
+// Crear un servidor adicional para simular GDELT en el puerto 4020
+const gdeltApp = express();
+gdeltApp.use(cors());
+
+gdeltApp.get('/gdelt/events', (req, res) => {
+  // Simular respuesta de GDELT API con estructura correcta
+  // La integración espera una respuesta con 'articles' array
+  const articles = [
+    {
+      id: 'g1',
+      title: 'Mock protest article',
+      themes: 'PROTEST;DEMONSTRATION',
+      url: 'https://example.com/g1',
+      seendate: '20251013000000',
+      socialimage: '',
+      domain: 'example.com',
+      language: 'English',
+      sourcecountry: 'US'
+    },
+    {
+      id: 'g2',
+      title: 'Mock strike article',
+      themes: 'STRIKE;LABOR',
+      url: 'https://example.com/g2',
+      seendate: '20251013000000',
+      socialimage: '',
+      domain: 'example.com',
+      language: 'English',
+      sourcecountry: 'US'
+    }
+  ];
+  res.json({ articles });
+});
+
+gdeltApp.get('/gdelt/*', (req, res) => {
+  res.json({ articles: [] });
+});
+
+const GDELT_PORT = process.env.GDELT_MOCK_PORT || 4020;
+http.createServer(gdeltApp).listen(GDELT_PORT, () => console.log(`GDELT mock listening on port ${GDELT_PORT}`));

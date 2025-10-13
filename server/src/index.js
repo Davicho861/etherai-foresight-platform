@@ -73,6 +73,8 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const communityResilienceRouter = await safeImport('./routes/community-resilience.js', () => express.Router());
   const kanbanRouter = await safeImport('./routes/kanban.js', () => express.Router());
   const oracleRouter = await safeImport('./routes/oracle.js', () => express.Router());
+  const authRouter = await safeImport('./routes/auth.js', () => express.Router());
+  const { verifyJWT } = await safeImport('./routes/auth.js', () => ({ verifyJWT: (req, res, next) => next() }));
 
   // Register lightweight fallback mocks for internal endpoints (helps native dev)
   try {
@@ -81,6 +83,9 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   } catch (e) {
     console.warn('Could not register fallback mocks:', e && e.message);
   }
+
+  // JWT verification middleware for protected routes
+  const jwtAuth = verifyJWT;
 
   // Simple Bearer token auth middleware for protected routes (supports async validation)
   async function bearerAuth(req, res, next) {
@@ -135,6 +140,7 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   app.use('/api/community-resilience', bearerAuth, communityResilienceRouter);
   app.use('/api/kanban', kanbanRouter);
   app.use('/api/oracle', oracleRouter);
+  app.use('/api/auth', authRouter);
 
  // Ethical Assessment endpoint
   app.get('/api/ethical-assessment', bearerAuth, (req, res) => {
