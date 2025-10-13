@@ -297,9 +297,12 @@ const CTODashboard: React.FC = () => {
         </motion.div>
       </div>
     </div>
+  );
 
-    {/* Security Radar */}
-    <motion.div
+  return (
+    <div className="flex-1 space-y-6 p-6 relative overflow-hidden">
+      {/* Security Radar */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}

@@ -1,4 +1,5 @@
 import express from 'express';
+import cache from '../cache.js';
 
 const router = express.Router();
 
@@ -40,7 +41,20 @@ router.post('/', (req, res) => {
     return res.status(400).json({ error: 'country and parameters are required' });
   }
 
+  // Create cache key based on prediction parameters
+  const cacheKey = `prediction:${country}:${JSON.stringify(parameters)}`;
+
+  // Check cache first (TTL: 10 minutes for predictions)
+  const cachedResult = cache.get(cacheKey);
+  if (cachedResult) {
+    return res.status(200).json(cachedResult);
+  }
+
   const result = computePrediction(country, parameters);
+
+  // Cache result for 10 minutes
+  cache.set(cacheKey, result, 600000);
+
   return res.status(200).json(result);
 });
 
