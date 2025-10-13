@@ -93,9 +93,15 @@ class GdeltIntegration {
     } catch (error) {
       console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}.`);
 
-      // Fallback to high-fidelity mock data
-      const mockData = this.getMockSocialEvents(country, startDate, endDate);
-      return mockData;
+      // If FORCE_MOCKS is enabled, return mock. Otherwise propagate the error
+        if (forceMocksEnabled()) {
+        const mockData = this.getMockSocialEvents(country, startDate, endDate);
+        return mockData;
+      }
+
+      // In native dev mode (no forced mocks), surface the error so callers can
+      // choose to fail loudly or handle it explicitly.
+      throw new Error(`GDELT API failure: ${error.message}`);
     }
   }
 

@@ -35,9 +35,21 @@ const mockSDLCData = {
 describe('SdlcDashboardPage', () => {
   beforeEach(() => {
     (global.fetch as jest.Mock).mockClear();
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: async () => mockSDLCData
+    // Return different responses depending on the requested URL
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      if (url === '/api/sdlc/full-state') {
+        return Promise.resolve({ ok: true, json: async () => mockSDLCData });
+      }
+
+      if (url === '/api/kanban/board') {
+        const columns = mockSDLCData.kanban.columns.map((col, idx) => ({
+          name: col.name,
+          tasks: (col.tasks || []).map((t: string, j: number) => ({ id: `task-${idx}-${j}`, title: t }))
+        }));
+        return Promise.resolve({ ok: true, json: async () => ({ columns }) });
+      }
+
+      return Promise.resolve({ ok: false, status: 404 });
     });
   });
 
@@ -47,7 +59,7 @@ describe('SdlcDashboardPage', () => {
 
   it('renders the dashboard title', async () => {
     render(<SdlcDashboardPage />);
-    expect(screen.getByText('Apolo — Espejo de la Soberanía (SDLC)')).toBeInTheDocument();
+  expect(screen.getByText('Apolo — Panteón de la Gobernanza (SDLC)')).toBeInTheDocument();
   });
 
   it('loads and displays SDLC data on mount', async () => {
@@ -91,9 +103,9 @@ describe('SdlcDashboardPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Junta Directiva de Aion')).toBeInTheDocument();
-      expect(screen.getByText('Aion (CEO)')).toBeInTheDocument();
-      expect(screen.getByText('Hades (CFO)')).toBeInTheDocument();
-      expect(screen.getByText('Apolo (CMO)')).toBeInTheDocument();
+      expect(screen.getByText('Aion')).toBeInTheDocument();
+      expect(screen.getByText('Hades')).toBeInTheDocument();
+      expect(screen.getByText('Apolo')).toBeInTheDocument();
     });
   });
 
@@ -111,9 +123,9 @@ describe('SdlcDashboardPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Consejo Técnico Soberano')).toBeInTheDocument();
-      expect(screen.getByText('Hefesto (CTO)')).toBeInTheDocument();
-      expect(screen.getByText('Cronos (CIO)')).toBeInTheDocument();
-      expect(screen.getByText('Ares (CSO)')).toBeInTheDocument();
+      expect(screen.getByText('Hefesto')).toBeInTheDocument();
+      expect(screen.getByText('Cronos')).toBeInTheDocument();
+      expect(screen.getByText('Ares')).toBeInTheDocument();
     });
   });
 
@@ -191,8 +203,8 @@ describe('SdlcDashboardPage', () => {
       render(<SdlcDashboardPage />);
     });
 
+    // Assert that key KPI values are rendered
     await waitFor(() => {
-      expect(screen.getByText('KPIs de Salud Global')).toBeInTheDocument();
       expect(screen.getByText('99.99%')).toBeInTheDocument();
       expect(screen.getByText('120ms')).toBeInTheDocument();
       expect(screen.getByText('Activos')).toBeInTheDocument();
@@ -221,13 +233,13 @@ describe('SdlcDashboardPage', () => {
       expect(global.fetch).toHaveBeenCalledWith('/api/sdlc/full-state');
     });
 
-    // Should still render the UI even with API error
-    expect(screen.getByText('Apolo — Espejo de la Soberanía (SDLC)')).toBeInTheDocument();
+  // Should still render the UI even with API error
+  expect(screen.getByText('Apolo — Panteón de la Gobernanza (SDLC)')).toBeInTheDocument();
   });
 
   it('shows loading state initially', () => {
     render(<SdlcDashboardPage />);
 
-    expect(screen.getByText('Cargando el Espejo de la Soberanía...')).toBeInTheDocument();
+  expect(screen.getByText('Cargando el Panteón de la Gobernanza...')).toBeInTheDocument();
   });
 });

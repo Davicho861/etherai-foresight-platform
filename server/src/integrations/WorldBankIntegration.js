@@ -84,9 +84,15 @@ class WorldBankIntegration {
       };
     } catch (error) {
       console.error('Error fetching World Bank data:', error);
-      // Fallback to high-fidelity mock data
-      const mockData = this.getMockEconomicIndicators(country, indicators, startYear, endYear);
-      return mockData;
+      // Only return mock data when explicitly forced (tests or demo). Otherwise
+      // propagate the error so callers can handle the failure and we don't silently
+      // pretend we have real data.
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
+        const mockData = this.getMockEconomicIndicators(country, indicators, startYear, endYear);
+        return mockData;
+      }
+      throw new Error(`WorldBank API failure: ${error && error.message ? error.message : String(error)}`);
     }
   }
 

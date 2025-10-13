@@ -18,30 +18,54 @@ const AnimatedMetric: React.FC<AnimatedMetricProps> = ({
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // If IntersectionObserver is unavailable (JSDOM tests, older browsers),
+    // start the animation immediately to keep UI functional.
+    if (typeof IntersectionObserver === 'undefined') {
+      if (!isVisible) setIsVisible(true);
+      const startTime = Date.now();
+      setTimeout(() => {
+        const animateValue = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+          const current = Math.floor(easeOutQuart * value);
+          setCurrentValue(current);
+          if (progress < 1) {
+            requestAnimationFrame(animateValue);
+          } else {
+            setCurrentValue(value);
+          }
+        };
+        animateValue();
+      }, delay);
+
+      return () => {};
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !isVisible) {
           setIsVisible(true);
           setTimeout(() => {
             const startTime = Date.now();
-            
+
             const animateValue = () => {
               const elapsed = Date.now() - startTime;
               const progress = Math.min(elapsed / duration, 1);
-              
+
               // Easing function for smooth animation
               const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-              
+
               const current = Math.floor(easeOutQuart * value);
               setCurrentValue(current);
-              
+
               if (progress < 1) {
                 requestAnimationFrame(animateValue);
               } else {
                 setCurrentValue(value);
               }
             };
-            
+
             animateValue();
           }, delay);
         }

@@ -1,0 +1,21 @@
+:root{
+  --etherblue-dark: #0b1220;
+  --etherblue-700: #0f1724;
+  --etherneon: #00D4FF;
+  --accent-1: #FF6B00;
+  --muted-1: #9CA3AF;
+}
+
+.praevisio-card{
+  background: linear-gradient(180deg,var(--etherblue-700),var(--etherblue-dark));
+  border: 1px solid rgba(148,163,184,0.06);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
+.praevisio-title{ color: var(--etherneon); font-weight:600; }
+.praevisio-sub{ color: #cbd5e1; }
+.praevisio-cta{ background: var(--etherneon); color: #000; padding:6px 10px; border-radius:8px; font-weight:600 }
+
+.praevisio-small{ color: var(--muted-1); font-size: 0.85rem }

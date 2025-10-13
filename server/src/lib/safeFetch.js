@@ -1,5 +1,7 @@
 // Minimal safeFetch helper: timeout, retries, JSON parse guard
 import fetch from 'node-fetch';
+import fs from 'fs';
+import path from 'path';
 
 const USER_AGENTS = [
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -28,6 +30,15 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
               errText = '';
             }
           }
+          // Log raw error response for debugging
+          try {
+            const logPath = path.resolve(process.cwd(), 'tmp', 'integration_errors.log');
+            fs.mkdirSync(path.dirname(logPath), { recursive: true });
+            const entry = `[${new Date().toISOString()}] HTTP ${res.status} GET ${url} \n${errText.slice(0,200)}\n\n`;
+            fs.appendFileSync(logPath, entry);
+          } catch (e) {
+            // ignore logging errors
+          }
           throw new Error(`HTTP ${res.status}: ${errText}`);
       }
         // Detect content-type in a defensive way: test mocks may supply headers as a
@@ -54,6 +65,13 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
           try {
             return await (typeof res.json === 'function' ? res.json() : Promise.resolve(null));
           } catch (parseErr) {
+            // Log invalid JSON parse for debugging
+            try {
+              const logPath = path.resolve(process.cwd(), 'tmp', 'integration_errors.log');
+              fs.mkdirSync(path.dirname(logPath), { recursive: true });
+              const entry = `[${new Date().toISOString()}] Invalid JSON GET ${url} \nparseError: ${parseErr && parseErr.message ? parseErr.message : String(parseErr)}\n\n`;
+              fs.appendFileSync(logPath, entry);
+            } catch (e) {}
             throw new Error(`Invalid JSON response: ${parseErr && parseErr.message ? parseErr.message : String(parseErr)}`);
           }
         }
@@ -70,6 +88,13 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
             bodyText = '';
           }
         }
+        // Log non-JSON body for debugging (first 2000 chars)
+        try {
+          const logPath = path.resolve(process.cwd(), 'tmp', 'integration_errors.log');
+          fs.mkdirSync(path.dirname(logPath), { recursive: true });
+          const entry = `[${new Date().toISOString()}] Non-JSON GET ${url} \ncontent-type: ${ct} \nbody: ${bodyText.slice(0,2000)}\n\n`;
+          fs.appendFileSync(logPath, entry);
+        } catch (e) {}
         throw new Error(`Non-JSON response (content-type: ${ct}): ${bodyText.slice(0, 200)}`);
     } catch (err) {
       clearTimeout(id);
