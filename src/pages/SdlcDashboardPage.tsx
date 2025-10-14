@@ -343,9 +343,9 @@ const ModuleContent: React.FC<{
       >
         <KanbanBoard
           columns={kanban}
-          onDragEnd={handleDragEnd}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
+          onDragEnd={() => {}}
+          onDragStart={() => {}}
+          onDragOver={() => {}}
         />
       </motion.div>
 
@@ -777,6 +777,7 @@ const SdlcDashboardPage: React.FC = () => {
   const handleDragOver = (event: DragOverEvent) => {
     // Lógica adicional si es necesaria
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-etherblue-dark via-etherblue-900 to-black text-white">

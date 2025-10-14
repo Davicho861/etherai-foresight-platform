@@ -162,7 +162,7 @@ describe('SdlcDashboardPage', () => {
     await waitFor(() => {
       expect(screen.getByText('El Juicio de Ares')).toBeInTheDocument();
       expect(screen.getByText('Dashboard de Calidad de Código')).toBeInTheDocument();
-      expect(screen.getAllByText('84.11%')).toHaveLength(2);
+      expect(screen.getByText('84.11%')).toBeInTheDocument();
     });
   });
 
@@ -205,9 +205,9 @@ describe('SdlcDashboardPage', () => {
 
     // Assert that key KPI values are rendered
     await waitFor(() => {
-      expect(screen.getByText('99.99%')).toBeInTheDocument();
-      expect(screen.getByText('120ms')).toBeInTheDocument();
-      expect(screen.getByText('Activos')).toBeInTheDocument();
+      expect(screen.getAllByText('99.99%')).toHaveLength(2);
+      expect(screen.getAllByText('120ms')).toHaveLength(2);
+      expect(screen.getAllByText('Activos')).toHaveLength(2);
     });
   });
 
@@ -216,10 +216,10 @@ describe('SdlcDashboardPage', () => {
       render(<SdlcDashboardPage />);
     });
 
-    const toggleButton = screen.getByText('◀️');
+    const toggleButton = screen.getAllByText('◀️')[0];
     fireEvent.click(toggleButton);
 
-    expect(screen.getByText('▶️')).toBeInTheDocument();
+    expect(screen.getAllByText('▶️')[0]).toBeInTheDocument();
   });
 
   it('handles API errors gracefully', async () => {

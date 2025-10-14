@@ -241,8 +241,11 @@ class MetatronAgent {
   }
 
   assessRiskLevel(volatility, change) {
-    if (volatility > 1 || Math.abs(change) > 100) return 'high';
-    if (volatility > 0.5 || Math.abs(change) > 50) return 'medium';
+    const volScore = Math.min(20, volatility * 10); // Scale volatility to 0-20
+    const changeScore = Math.abs(change) / 5; // Scale change to score
+    const totalScore = volScore + changeScore;
+    if (totalScore > 20) return 'high';
+    if (totalScore > 10) return 'medium';
     return 'low';
   }
 

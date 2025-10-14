@@ -146,6 +146,10 @@ describe('Resilience Utilities', () => {
 
       expect(result).toBe(mockResponse);
       expect(fetch).toHaveBeenCalledWith('http://example.com', {
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'User-Agent': 'Praevisio/1.0 (+https://praevisio.local)',
+        },
         signal: expect.any(AbortSignal)
       });
     });

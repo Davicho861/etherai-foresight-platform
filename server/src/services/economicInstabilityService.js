@@ -10,6 +10,15 @@ class EconomicInstabilityService {
   }
 
   /**
+   * Gets economic instability risk index (alias for getEconomicInstabilityIndex)
+   * @param {Array<string>} regions - Array of regions to analyze
+   * @returns {Promise<number>} Risk index between 0-100 (0 = low risk, 100 = high risk)
+   */
+  async getEconomicInstabilityRiskIndex(regions = ['global']) {
+    return this.getEconomicInstabilityIndex(regions);
+  }
+
+  /**
    * Calculates economic instability risk index based on global economic indicators
    * @param {Array<string>} regions - Array of regions to analyze
    * @returns {Promise<number>} Risk index between 0-100 (0 = low risk, 100 = high risk)

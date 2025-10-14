@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
+import { createRequire } from 'module';
+import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -16,12 +18,29 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   // providing lightweight fallbacks so tests can import createApp without
   // failing when optional integrations are missing or use top-level ESM
   // features.
+  const _require = (typeof require !== 'undefined') ? require : createRequire(process.cwd() + '/package.json');
   async function safeImport(modPath, fallback) {
+    const isJest = process.env.JEST_WORKER_ID !== undefined || process.env.NODE_ENV === 'test';
+    if (isJest) {
+      try {
+        // resolve modules relative to server/src so jest.doMock mocks are matched
+        let resolved = null;
+        try {
+          resolved = _require.resolve(modPath, { paths: [path.join(process.cwd(), 'server', 'src')] });
+        } catch (e) {
+          // fall back to direct require if resolve fails
+        }
+        const mod = resolved ? _require(resolved) : _require(modPath);
+        return mod && (mod.default || mod);
+      } catch (err) {
+        console.warn(`safeImport(require): failed to require ${modPath}, falling back to dynamic import. Error: ${err && err.message}`);
+      }
+    }
     try {
       const mod = await import(modPath);
       return mod && (mod.default || mod);
     } catch (err) {
-      console.warn(`safeImport: failed to import ${modPath}, using fallback. Error: ${err && err.message}`);
+      console.warn(`safeImport(import): failed to import ${modPath}, using fallback. Error: ${err && err.message}`);
       return fallback();
     }
   }
@@ -79,9 +98,12 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const { verifyJWT } = await safeImport('./routes/auth.js', () => ({ verifyJWT: (req, res, next) => next() }));
 
   // Register lightweight fallback mocks for internal endpoints (helps native dev)
+  // Do NOT mount fallback mocks when running under Jest - they override route wiring
+  // and break tests that expect middleware (auth) to run.
   try {
     const fallbackMocks = await safeImport('./routes/fallbackMocks.js', () => express.Router());
-    if (fallbackMocks) app.use('/', fallbackMocks);
+    const isJest = process.env.JEST_WORKER_ID !== undefined || process.env.NODE_ENV === 'test';
+    if (fallbackMocks && !isJest) app.use('/', fallbackMocks);
   } catch (e) {
     console.warn('Could not register fallback mocks:', e && e.message);
   }

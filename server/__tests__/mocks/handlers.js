@@ -201,83 +201,29 @@ const handlers = [
     ]
   })),
 
-  // Generic API fallback for any unmatched requests (returns mock data)
-  http.get('*', ({ request }) => {
-    console.log(`MSW: Unhandled request to ${request.url}`);
-    return HttpResponse.json({ error: 'Mock not implemented', url: request.url });
-  }),
+  // (moved) Generic API fallback for any unmatched requests is at the end of this file
 
-  // Health endpoint
-  http.get('http://127.0.0.1:3000/api/health', () => HttpResponse.json({ status: 'ok', timestamp: new Date().toISOString() })),
+  // Local app endpoints are intentionally NOT mocked here so route handlers inside
+  // the app can be exercised directly by tests. External integrations remain mocked above.
 
-  // Platform status
-  http.get('http://127.0.0.1:3000/api/platform-status', () => HttpResponse.json({ status: 'active', version: '1.0.0' })),
+  // Internal app endpoints should be handled by the express app during tests.
+  // Keep external integration handlers above; do NOT mock internal routes here.
 
-  // Ethical assessment
-  http.get('http://127.0.0.1:3000/api/ethical-assessment', () => HttpResponse.json({ success: true, assessment: 'Low Ethical Concern' })),
-
-  // Module test endpoint
-  http.get('http://127.0.0.1:3000/api/module/test', () => HttpResponse.json({ ok: true })),
-
-  // LLM endpoint
-  http.post('http://127.0.0.1:3000/api/llm', () => HttpResponse.json({ response: 'Mock LLM response' })),
-
-  // Dashboard overview
-  http.get('http://127.0.0.1:3000/api/dashboard/overview', () => HttpResponse.json({
-    kpis: { modelAccuracy: 0.95, predictionCount: 100 },
-    analysisModules: [],
-    predictiveInsights: [],
-    criticalSignals: []
-  })),
-
-  // Eternal vigilance state
-  http.get('http://127.0.0.1:3000/api/eternal-vigilance/state', () => HttpResponse.json({
-    indices: { globalRisk: 0.5, ethicalScore: 0.8 },
-    activeModules: []
-  })),
-
-  // Consciousness
-  http.get('http://127.0.0.1:3000/api/consciousness', () => HttpResponse.json({
-    source: 'local',
-    items: []
-  })),
-
-  // Demo full-state
-  http.get('http://127.0.0.1:3000/api/demo/full-state', () => HttpResponse.json({
-    kpis: { totalPredictions: 100 },
-    countries: [],
-    chartData: []
-  })),
-
-  // Demo live-state
-  http.get('http://127.0.0.1:3000/api/demo/live-state', () => HttpResponse.json({
-    kpis: { activePredictions: 50 },
-    countries: [],
-    communityResilience: {},
-    foodSecurity: {},
-    global: { crypto: {}, seismic: {} }
-  })),
-
-  // Mission replays
-  http.get('http://127.0.0.1:3000/api/demo/mission-replays', () => HttpResponse.json({
-    taskReplays: [{ id: '1', status: 'completed' }]
-  })),
-
-  // Seismic activity
-  http.get('http://127.0.0.1:3000/api/seismic/activity', () => HttpResponse.json([
+  // Seismic activity (match any host/port)
+  http.get('*/api/seismic/activity', () => HttpResponse.json([
     { id: 'test1', magnitude: 5.2, location: 'Test Location', riskScore: 0.8 }
   ])),
 
-  // Seismic risk
-  http.get('http://127.0.0.1:3000/api/seismic/risk', () => HttpResponse.json({
+  // Seismic risk (match any host/port)
+  http.get('*/api/seismic/risk', () => HttpResponse.json({
     overallRisk: 0.5,
     eventCount: 1,
     maxMagnitude: 6.0,
     highRiskZones: []
   })),
 
-  // Food resilience prices
-  http.get('http://127.0.0.1:3000/api/food-resilience/prices', () => HttpResponse.json({
+  // Food resilience prices (match any host/port)
+  http.get('*/api/food-resilience/prices', () => HttpResponse.json({
     country: 'Peru',
     prices: [
       { product: 'rice', price: 4.5, volatility: 0.1 },
@@ -288,8 +234,8 @@ const handlers = [
     summary: { averageVolatility: 0.1125 }
   })),
 
-  // Food resilience supply chain
-  http.get('http://127.0.0.1:3000/api/food-resilience/supply-chain', () => HttpResponse.json({
+  // Food resilience supply chain (match any host/port)
+  http.get('*/api/food-resilience/supply-chain', () => HttpResponse.json({
     country: 'Peru',
     routes: [
       { origin: 'Lima', destination: 'Cusco', cost: 100, time: 5 },
@@ -300,22 +246,22 @@ const handlers = [
     optimization: { recommendedRoutes: [] }
   })),
 
-  // Global risk food security
-  http.get('http://127.0.0.1:3000/api/global-risk/food-security', () => HttpResponse.json({
+  // Global risk food security (match any host/port)
+  http.get('*/api/global-risk/food-security', () => HttpResponse.json({
     success: true,
     source: 'Praevisio-Aion-Simulated-WorldBank',
     data: { countries: ['COL', 'PER', 'ARG', 'BRA', 'CHL', 'ECU'] }
   })),
 
-  // Global risk climate extremes
-  http.get('http://127.0.0.1:3000/api/global-risk/climate-extremes', () => HttpResponse.json({
+  // Global risk climate extremes (match any host/port)
+  http.get('*/api/global-risk/climate-extremes', () => HttpResponse.json({
     success: true,
     source: 'Praevisio-Aion-NASA-POWER-Integration',
     data: { extremes: [] }
   })),
 
-  // GDELT events
-  http.get('http://127.0.0.1:3000/api/gdelt/events', ({ request }) => {
+  // GDELT events (match any host/port)
+  http.get('*/api/gdelt/events', ({ request }) => {
     const url = new URL(request.url);
     const country = url.searchParams.get('country') || 'COL';
     const startDate = url.searchParams.get('startDate') || '2025-01-01';
@@ -327,25 +273,22 @@ const handlers = [
   }),
 
   // Eternal vigilance stream (SSE)
-  http.get('http://127.0.0.1:3000/api/eternal-vigilance/stream', () => {
-    return new HttpResponse(
-      'data: {"event":"init","data":{"indices":{"globalRisk":0.5}}}\n\n',
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/event-stream',
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive'
-        }
+  http.get('*/api/eternal-vigilance/stream', () => {
+    return new HttpResponse('data: {"event":"init","data":{"indices":{"globalRisk":0.5}}}\n\n', {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive'
       }
-    );
+    });
   }),
 
-  // Eternal vigilance token
-  http.post('http://127.0.0.1:3000/api/eternal-vigilance/token', () => HttpResponse.json({ token: 'temp-token-123' })),
+  // Eternal vigilance token (match any host/port)
+  http.post('*/api/eternal-vigilance/token', () => HttpResponse.json({ token: 'temp-token-123' })),
 
-  // Pricing plans
-  http.get('http://127.0.0.1:3000/api/pricing-plans', () => HttpResponse.json({
+  // Pricing plans (match any host/port)
+  http.get('*/api/pricing-plans', () => HttpResponse.json({
     currency: 'EUR',
     segments: {
       default: {
@@ -354,8 +297,8 @@ const handlers = [
     }
   })),
 
-  // Pricing
-  http.get('http://127.0.0.1:3000/api/pricing', () => HttpResponse.json({
+  // Pricing (match any host/port)
+  http.get('*/api/pricing', () => HttpResponse.json({
     currency: 'USD',
     segments: {
       default: { name: 'Default' }
@@ -367,6 +310,22 @@ const handlers = [
     type: 'FeatureCollection',
     features: [{ properties: { mag: 5.2, place: 'Test Location' }, geometry: { coordinates: [-75.0, -10.0, 10.0] } }]
   }))
+
+  // Generic API fallback for any unmatched requests (returns mock data)
+  , http.get('*', ({ request }) => {
+    try {
+      const u = new URL(request.url);
+      const host = u.hostname;
+      if (host === '127.0.0.1' || host === 'localhost' || host === '::1') {
+        // do not mock requests to the local app - let them hit the real Express server
+        return undefined;
+      }
+    } catch (e) {
+      // if URL parsing fails, fall through to logging
+    }
+    console.log(`MSW: Unhandled external request to ${request.url}`);
+    return HttpResponse.json({ error: 'Mock not implemented', url: request.url });
+  })
 ];
 
 module.exports = { handlers };

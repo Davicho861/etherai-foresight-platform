@@ -58,7 +58,7 @@ jest.mock('recharts', () => {
 // - Geographies llamará a children como función con { geographies: [...] }
 // - ComposableMap y Geography son implementaciones mínimas para JSDOM
 jest.mock('react-simple-maps', () => {
-   
+
   const React = require('react');
 
   // Mock geographies que cubren los códigos ISO_A3 usados en los datos de demo
@@ -73,16 +73,16 @@ jest.mock('react-simple-maps', () => {
 
   return {
     __esModule: true,
-    ComposableMap: ({ children }: any) => React.createElement('svg', { width: 800, height: 600 }, children),
-    Geographies: ({ children }: any) => {
+    ComposableMap: ({ children, ...props }: any) => React.createElement('svg', { width: 800, height: 600, ...props }, children),
+    Geographies: ({ children, ...props }: any) => {
       // Si children es una función (API habitual), invocarla con el shape esperado
       if (typeof children === 'function') {
         return children({ geographies: mockGeographies });
       }
       // Si no, renderizar directamente como contenedor
-      return React.createElement('g', {}, children);
+      return React.createElement('g', props, children);
     },
-    Geography: ({ geography }: any) => React.createElement('path', { d: geography?.properties?.d || '' }),
+    Geography: ({ geography, ...props }: any) => React.createElement('path', { d: geography?.properties?.d || '', ...props }),
     // También exportamos un useGeographies sencillo por compatibilidad
     useGeographies: () => ({ geographies: mockGeographies }),
   } as any;
@@ -90,6 +90,12 @@ jest.mock('react-simple-maps', () => {
 
 // Mock para scrollIntoView en HTMLElement.prototype
 Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
+  writable: true,
+  value: jest.fn(),
+});
+
+// Mock para Element.prototype.scrollIntoView (para compatibilidad adicional)
+Object.defineProperty(window.Element.prototype, 'scrollIntoView', {
   writable: true,
   value: jest.fn(),
 });

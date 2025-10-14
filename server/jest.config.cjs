@@ -14,7 +14,8 @@ module.exports = {
   // Per-test lifecycle hooks and additional backend setup
   setupFilesAfterEnv: ['./jest.setup.backend.js'],
   transformIgnorePatterns: [
-    '/node_modules/(?!(some-esm-dep|another-esm-dep|msw|@mswjs|until-async)/)'
+    // Allow transpiling a few ESM packages (nanoid, msw, @mswjs) so Jest/Babel can handle them.
+    '/node_modules/(?!(nanoid|some-esm-dep|another-esm-dep|msw|@mswjs|until-async)/)'
   ],
 };
 
