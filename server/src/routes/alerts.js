@@ -1,4 +1,5 @@
 import express from 'express';
+import cache from '../cache.js';
 const router = express.Router();
 
 // Mock data for alerts - in production, this would come from database
@@ -25,9 +26,18 @@ const mockAlerts = [
   }
 ];
 
-// GET /api/alerts - List all alerts
+// GET /api/alerts - List all alerts with caching optimization
 router.get('/', (req, res) => {
   const { region, severity, type } = req.query;
+
+  // Create cache key based on query parameters
+  const cacheKey = `alerts:${region || 'all'}:${severity || 'all'}:${type || 'all'}`;
+
+  // Check cache first
+  const cachedResult = cache.get(cacheKey);
+  if (cachedResult) {
+    return res.json(cachedResult);
+  }
 
   let filteredAlerts = mockAlerts;
 
@@ -41,11 +51,16 @@ router.get('/', (req, res) => {
     filteredAlerts = filteredAlerts.filter(alert => alert.type === type);
   }
 
-  res.json({
+  const result = {
     alerts: filteredAlerts,
     total: filteredAlerts.length,
     filters: { region, severity, type }
-  });
+  };
+
+  // Cache result for 5 minutes (300,000 ms)
+  cache.set(cacheKey, result, 300000);
+
+  res.json(result);
 });
 
 // GET /api/alerts/:id - Get specific alert

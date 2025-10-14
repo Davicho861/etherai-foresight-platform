@@ -5,7 +5,7 @@
 // Some dependencies may register source-map-support which can crash when encountering
 // a corrupted or unexpected source map. Uninstall it early in the Jest setup.
 try {
-  // eslint-disable-next-line global-require
+   
   const sms = require('source-map-support');
   if (sms && typeof sms.uninstall === 'function') sms.uninstall();
 } catch (e) {
@@ -15,7 +15,7 @@ try {
 // Defensive patch: if source-map-support is present, override its mapping functions
 // to safe no-ops to avoid crashes when encountering malformed source maps.
 try {
-  // eslint-disable-next-line global-require
+   
   const sms2 = require('source-map-support');
   if (sms2) {
     try {
@@ -97,7 +97,7 @@ _origConsole.log("Hefesto's global fetch mock has been re-forged with proper ini
 if (typeof global.fetch === 'undefined' || typeof global.fetch.mockResolvedValue === 'undefined') {
   try {
     // jest may not be defined outside tests; guard access
-    /* eslint-disable no-undef */
+     
     if (typeof jest !== 'undefined' && typeof jest.fn === 'function') {
       // Ensure fetch is a Jest mock function
       global.fetch = jest.fn();

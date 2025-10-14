@@ -2,7 +2,7 @@
 # Smoke test / health check for native dev stack
 set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-BACKEND_URL=${BACKEND_URL:-http://localhost:4001}
+BACKEND_URL=${BACKEND_URL:-http://localhost:4000}
 FRONTEND_URL=${FRONTEND_URL:-http://localhost:3002}
 
 echo "Health check for Praevisio native dev"

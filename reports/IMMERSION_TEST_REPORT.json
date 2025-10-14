@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-10-12T23:59:24.921Z",
+  "phase": "III.1 - Prueba de Inmersión Total",
+  "results": [
+    {
+      "name": "sdlc-dashboard",
+      "success": false,
+      "issues": [
+        "No se encontraron datos reales en la página"
+      ],
+      "screenshot": "/home/davicho/etherai-foresight-platform-main/reports/sdlc-dashboard.png"
+    },
+    {
+      "name": "dashboard",
+      "success": false,
+      "issues": [
+        "No se encontraron datos reales en la página"
+      ],
+      "screenshot": "/home/davicho/etherai-foresight-platform-main/reports/dashboard.png"
+    },
+    {
+      "name": "demo",
+      "success": false,
+      "issues": [
+        "No se pudo seleccionar el plan Panteón",
+        "No se encontraron datos reales en la página"
+      ],
+      "screenshot": "/home/davicho/etherai-foresight-platform-main/reports/demo.png"
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "failed": 3
+  }
+}

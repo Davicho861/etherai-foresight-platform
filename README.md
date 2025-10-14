@@ -94,6 +94,27 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Kanban migration (PROJECT_KANBAN.md)
+
+There is a helper to convert the markdown kanban into structured JSON and optionally import it to the running backend.
+
+Generate JSON from `docs/PROJECT_KANBAN.md`:
+
+```bash
+npm run generate:kanban
+```
+
+This writes `data/kanban.json`.
+
+To import the tasks into the backend (default http://localhost:4000):
+
+```bash
+npm run import:kanban
+# or with a custom API base
+API_BASE=http://localhost:4000 npm run import:kanban
+```
+
+
 ## Prompt Maestro
 
 See `PROMPT_MAESTRO.md` for the full "prompt maestro" that defines the product vision, landing page requirements and the LATAM security module scope. Use it to brief dev teams or automate feature generation.

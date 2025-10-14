@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('LogosKernel mission branches (genesis-tyche & prophecy)', () => {
   beforeEach(() => {
     jest.resetModules();
@@ -35,9 +35,9 @@ describe('LogosKernel mission branches (genesis-tyche & prophecy)', () => {
 
     const mission = k.getMissionLogs('m-tyche');
     if (mission.status !== 'completed' && mission.status !== 'failed') {
-      // eslint-disable-next-line no-console
+       
       console.error('TYCHE MISSION LOGS:', logs);
-      // eslint-disable-next-line no-console
+       
       console.error('TYCHE MISSION OBJ:', mission);
     }
   expect(['completed', 'failed']).toContain(mission.status);
@@ -77,9 +77,9 @@ describe('LogosKernel mission branches (genesis-tyche & prophecy)', () => {
 
     const mission = k.getMissionLogs('m-prophecy');
     if (mission.status !== 'completed' && mission.status !== 'failed') {
-      // eslint-disable-next-line no-console
+       
       console.error('PROPHECY LOGS:', logs);
-      // eslint-disable-next-line no-console
+       
       console.error('PROPHECY MISSION OBJ:', mission);
     }
   expect(['completed', 'failed']).toContain(mission.status);

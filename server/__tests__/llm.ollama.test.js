@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('OllamaLLM _callOllama and wrappers', () => {
   beforeEach(() => {
     jest.resetModules();

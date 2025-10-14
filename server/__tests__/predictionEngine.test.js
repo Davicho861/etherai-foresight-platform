@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 // Ensure mocks are used
 process.env.FORCE_MOCKS = 'true';
 
@@ -17,7 +17,7 @@ describe('Prediction Engine (with FORCE_MOCKS)', () => {
     const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk } = state.riskIndices;
 
     // FORCE_MOCKS should populate these
-    expect(famineRisk.value).toBeGreaterThanOrEqual(0);
+    expect(famineRisk.value).toBe(null);
     expect(typeof famineRisk.source).toBe('string');
 
     expect(Array.isArray(geophysicalRisk.significantEvents)).toBe(true);

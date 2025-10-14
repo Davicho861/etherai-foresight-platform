@@ -33,7 +33,8 @@ class INEIIntegration {
         isMock: false
       };
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
         console.log(`INEIIntegration: returning FORCE_MOCKS mock for ${department} (${year})`);
         const mockDepartments = {
           'Lima': { population: 10750000, growthRate: 1.2, urbanPopulation: 9500000, ruralPopulation: 1250000 },
@@ -92,7 +93,8 @@ class INEIIntegration {
         isMock: false
       };
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled2()) {
         console.log(`INEIIntegration: returning FORCE_MOCKS mock economic for ${department} (${year})`);
         const mockEconomics = {
           'Lima': { gdp: 45000000, unemploymentRate: 6.5, povertyRate: 15.2, incomePerCapita: 18000 },

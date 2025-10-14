@@ -1,0 +1,29 @@
+FROM node:18-bullseye-slim
+
+WORKDIR /app
+
+# Instalar dependencias del sistema necesarias para Prisma (OpenSSL)
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends ca-certificates curl libssl1.1 openssl && \
+	rm -rf /var/lib/apt/lists/*
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+
+# Instalar dependencias de Node.js
+RUN npm install
+
+# Copiar directorio prisma antes de generar cliente
+COPY prisma ./prisma
+
+# Generar cliente Prisma
+RUN npx prisma generate
+
+# Copiar el resto del código fuente
+COPY . .
+
+# Exponer puerto 4000
+EXPOSE 4000
+
+# Comando para desarrollo con hot-reloading
+CMD ["npm", "run", "dev"]

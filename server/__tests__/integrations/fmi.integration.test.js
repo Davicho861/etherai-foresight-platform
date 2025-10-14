@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('FMIIntegration', () => {
   beforeEach(() => {
     jest.resetModules();

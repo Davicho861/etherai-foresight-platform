@@ -12,7 +12,8 @@ class CryptoIntegration {
       const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
         console.error('CryptoIntegration: returning FORCE_MOCKS mock for crypto data due to error:', error);
         return { error: null, cryptoIds, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
       }
@@ -27,7 +28,8 @@ class CryptoIntegration {
       const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled2()) {
         console.error('CryptoIntegration: returning FORCE_MOCKS mock for historical data due to error:', error);
         return { error: null, cryptoId, days, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
       }

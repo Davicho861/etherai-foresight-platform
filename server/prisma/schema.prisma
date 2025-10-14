@@ -2,9 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Use DATABASE_URL from environment for CI/Prod (Postgres). Fallbacks can be
-// configured locally if needed.
-// For native local development we use PostgreSQL.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -26,4 +23,16 @@ model ModuleData {
   value     Float
   label     String
   timestamp DateTime @default(now())
+}
+
+model KanbanTask {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   // PLANNING, DESIGN, IMPLEMENTATION, TESTING, DEPLOYMENT
+  priority    String?  // Divine, High, Medium, Low
+  assignee    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  order       Int      @default(0)
 }

@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: praevisio_db
+    environment:
+      POSTGRES_DB: praevisio_db
+      POSTGRES_USER: praevisio_user
+      POSTGRES_PASSWORD: praevisio_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U praevisio_user -d praevisio_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5.23
+    container_name: praevisio_neo4j
+    environment:
+      NEO4J_AUTH: neo4j/praevisio_password
+      NEO4J_PLUGINS: '["graph-data-science"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "praevisio_password", "MATCH () RETURN count(*) limit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  backend:
+    build:
+      context: server
+      dockerfile: ../Dockerfile.backend
+    container_name: praevisio_backend
+    environment:
+      DATABASE_URL: postgresql://praevisio_user:praevisio_password@db:5432/praevisio_db
+      NEO4J_URI: neo4j://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: praevisio_password
+      PRAEVISIO_BEARER_TOKEN: demo-token
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/platform-status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: praevisio_frontend
+    environment:
+      VITE_API_BASE_URL: http://backend:4000
+      VITE_PRAEVISIO_TOKEN: demo-token
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:

@@ -43,8 +43,8 @@ describe('MetatronAgent helpers and CryptoVolatilityAgent', () => {
     const MetatronAgent = require('../src/agents.js').default
     const agent = new MetatronAgent('Test')
 
-    // Make totalScore > 15 => high
-    const high = agent.assessRiskLevel(0.2, 60) // volScore = min(20,10)=10, changeScore=6 => 16
+    // Make totalScore > 20 => high
+    const high = agent.assessRiskLevel(0.2, 60) // volScore = min(20,10)=10, changeScore=12 => 22
     expect(high).toBe('high')
 
     // Medium

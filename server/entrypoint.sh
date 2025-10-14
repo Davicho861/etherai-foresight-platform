@@ -34,7 +34,22 @@ echo "[ENTRYPOINT] Migraciones aplicadas. Ejecutando seed..."
 # Ejecutar seed
 npx prisma db seed --schema=./prisma/schema.prisma
 
-echo "[ENTRYPOINT] Seed completado. Iniciando servidor..."
+echo "[ENTRYPOINT] Seed completado. Verificando conexiones de base de datos..."
+
+# Verificar conexión a Neo4j si está configurado
+if [ -n "$NEO4J_HOST" ] && [ -n "$NEO4J_USER" ] && [ -n "$NEO4J_PASSWORD" ]; then
+  echo "[ENTRYPOINT] Verificando conexión a Neo4j..."
+  # Intentar una conexión simple a Neo4j
+  if ! timeout 10 bash -c "</dev/tcp/$NEO4J_HOST/$NEO4J_PORT" 2>/dev/null; then
+    echo "[ENTRYPOINT] Error: No se puede conectar a Neo4j en $NEO4J_HOST:$NEO4J_PORT"
+    exit 1
+  fi
+  echo "[ENTRYPOINT] Neo4j disponible."
+else
+  echo "[ENTRYPOINT] Neo4j no configurado, omitiendo verificación."
+fi
+
+echo "[ENTRYPOINT] Todas las conexiones verificadas. Iniciando servidor..."
 
 # Iniciar el servidor Node.js
 exec node src/index.js

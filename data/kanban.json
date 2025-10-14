@@ -1,0 +1,104 @@
+{
+  "columns": [
+    {
+      "name": "PLANNING",
+      "tasks": [
+        {
+          "title": "MIS-018: Expansión de Dominios de Datos",
+          "link": "docs/contracts/MIS-018_DATA_DOMAINS_EXPANSION_CONTRACT.md"
+        },
+        {
+          "title": "Documentos comerciales para pilotos",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/16"
+        },
+        {
+          "title": "Crear guía de contribución",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/1"
+        },
+        {
+          "title": "**[Backlog de la Conciencia]**<br/>*Propuestas pendientes de evaluación soberana*"
+        }
+      ]
+    },
+    {
+      "name": "DESIGN",
+      "tasks": [
+        {
+          "title": "MIS-017: Expansión Ética",
+          "link": "docs/contracts/MIS-017_ETHICS_EXPANSION_CONTRACT.md"
+        },
+        {
+          "title": "Arquitectura de Seguridad Soberana",
+          "link": "docs/sdlc/02_DESIGN_CTO_CIO_CSO.md"
+        },
+        {
+          "title": "Diseño de APIs Soberanas",
+          "link": "docs/sdlc/02_DESIGN_CTO_CIO_CSO.md"
+        },
+        {
+          "title": "Mejoras UI/UX",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/17"
+        }
+      ]
+    },
+    {
+      "name": "IMPLEMENTATION",
+      "tasks": [
+        {
+          "title": "MIS-007: Cobertura Tests Unitarios",
+          "link": "docs/contracts/MIS-007_UNIT_TESTS_COVERAGE_CONTRACT.md"
+        },
+        {
+          "title": "Motor de agentes - orquestación (90%)",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/8"
+        },
+        {
+          "title": "Pipeline de ingest (90%)",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/13"
+        },
+        {
+          "title": "Dashboard - visualización de alertas",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/3"
+        }
+      ]
+    },
+    {
+      "name": "TESTING",
+      "tasks": [
+        {
+          "title": "Tests E2E - Playwright para flujo de alertas",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/4"
+        },
+        {
+          "title": "PR para endpoints auditados",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/9"
+        },
+        {
+          "title": "Cobertura tests unitarios (50%)",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/18"
+        },
+        {
+          "title": "PR dashboard accesibilidad",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/14"
+        }
+      ]
+    },
+    {
+      "name": "DEPLOYMENT",
+      "tasks": [
+        {
+          "title": "Definir infra para staging",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/6"
+        },
+        {
+          "title": "CI pipeline - lint/test/build",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/7"
+        },
+        {
+          "title": "Plan de gestión de secretos",
+          "link": "https://github.com/Davicho861/etherai-foresight-platform/issues/11"
+        }
+      ]
+    }
+  ]
+}

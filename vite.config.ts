@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
       allowedHosts: ['frontend', 'localhost', '127.0.0.1', '0.0.0.0', 'host.docker.internal'],
       proxy: {
         '/api': {
-          target: isTestMode ? 'http://localhost:3001' : (isNativeMode ? (process.env.BACKEND_URL || 'http://localhost:4000') : 'http://backend:4000'),
+          target: isTestMode ? 'http://localhost:3001' : (isNativeMode ? (process.env.BACKEND_URL || 'http://localhost:4003') : 'http://localhost:4000'),
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, '/api'),
@@ -26,6 +26,16 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       include: ['react', 'react-dom'],
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          // manualChunks intentionally left empty to avoid resolution issues during CI/build.
+          manualChunks: {},
+        },
+      },
+      // Optimize chunk size limits
+      chunkSizeWarningLimit: 1000,
     },
     plugins: [react()],
     resolve: {

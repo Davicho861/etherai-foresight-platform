@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
+import { createRequire } from 'module';
+import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -16,12 +18,29 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   // providing lightweight fallbacks so tests can import createApp without
   // failing when optional integrations are missing or use top-level ESM
   // features.
+  const _require = (typeof require !== 'undefined') ? require : createRequire(process.cwd() + '/package.json');
   async function safeImport(modPath, fallback) {
+    const isJest = process.env.JEST_WORKER_ID !== undefined || process.env.NODE_ENV === 'test';
+    if (isJest) {
+      try {
+        // resolve modules relative to server/src so jest.doMock mocks are matched
+        let resolved = null;
+        try {
+          resolved = _require.resolve(modPath, { paths: [path.join(process.cwd(), 'server', 'src')] });
+        } catch (e) {
+          // fall back to direct require if resolve fails
+        }
+        const mod = resolved ? _require(resolved) : _require(modPath);
+        return mod && (mod.default || mod);
+      } catch (err) {
+        console.warn(`safeImport(require): failed to require ${modPath}, falling back to dynamic import. Error: ${err && err.message}`);
+      }
+    }
     try {
       const mod = await import(modPath);
       return mod && (mod.default || mod);
     } catch (err) {
-      console.warn(`safeImport: failed to import ${modPath}, using fallback. Error: ${err && err.message}`);
+      console.warn(`safeImport(import): failed to import ${modPath}, using fallback. Error: ${err && err.message}`);
       return fallback();
     }
   }
@@ -67,9 +86,30 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const missionsRouter = await safeImport('./routes/missions.js', () => express.Router());
   const foodResilienceRouter = await safeImport('./routes/food-resilience.js', () => express.Router());
   const globalRiskRouter = await safeImport('./routes/globalRiskRoutes.js', () => express.Router());
+  const xaiRouter = await safeImport('./routes/xai.js', () => express.Router());
+  const sdlcRouter = await safeImport('./routes/sdlc.js', () => express.Router());
   const providersRouter = await safeImport('./routes/providers.js', () => express.Router());
   const seismicRouter = await safeImport('./routes/seismic.js', () => express.Router().use((req, res) => res.status(501).json({ error: 'seismic unavailable' })));
   const communityResilienceRouter = await safeImport('./routes/community-resilience.js', () => express.Router());
+  const logisticsRouter = await safeImport('./routes/logistics.js', () => express.Router());
+  const kanbanRouter = await safeImport('./routes/kanban.js', () => express.Router());
+  const oracleRouter = await safeImport('./routes/oracle.js', () => express.Router());
+  const authRouter = await safeImport('./routes/auth.js', () => express.Router());
+  const { verifyJWT } = await safeImport('./routes/auth.js', () => ({ verifyJWT: (req, res, next) => next() }));
+
+  // Register lightweight fallback mocks for internal endpoints (helps native dev)
+  // Do NOT mount fallback mocks when running under Jest - they override route wiring
+  // and break tests that expect middleware (auth) to run.
+  try {
+    const fallbackMocks = await safeImport('./routes/fallbackMocks.js', () => express.Router());
+    const isJest = process.env.JEST_WORKER_ID !== undefined || process.env.NODE_ENV === 'test';
+    if (fallbackMocks && !isJest) app.use('/', fallbackMocks);
+  } catch (e) {
+    console.warn('Could not register fallback mocks:', e && e.message);
+  }
+
+  // JWT verification middleware for protected routes
+  const jwtAuth = verifyJWT;
 
   // Simple Bearer token auth middleware for protected routes (supports async validation)
   async function bearerAuth(req, res, next) {
@@ -116,13 +156,19 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   // token issuance endpoint (protected)
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceTokenRouter);
   app.use('/api/demo', demoRouter);
+  app.use('/api/xai', xaiRouter);
   app.use('/api/missions', missionsRouter);
+  app.use('/api/sdlc', sdlcRouter);
   app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
   app.use('/api/community-resilience', bearerAuth, communityResilienceRouter);
+  app.use('/api/logistics', logisticsRouter);
+  app.use('/api/kanban', kanbanRouter);
+  app.use('/api/oracle', oracleRouter);
+  app.use('/api/auth', authRouter);
 
-  // Ethical Assessment endpoint
+ // Ethical Assessment endpoint
   app.get('/api/ethical-assessment', bearerAuth, (req, res) => {
     try {
       const riskState = getRiskIndices();

@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 const request = require('supertest');
 
 describe('createApp bearerAuth and initialization', () => {

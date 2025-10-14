@@ -55,9 +55,14 @@ class FMIIntegration {
       return result;
 
     } catch (error) {
-      console.log(`IMF API failed for ${country} (${startYear}-${endYear}): ${error.message}. Using mock data.`);
+      console.log(`IMF API failed for ${country} (${startYear}-${endYear}): ${error.message}.`);
 
-      // Fallback to mock data
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (!forceMocksEnabled()) {
+        throw new Error(`FMIIntegration failure: ${error && error.message ? error.message : String(error)}`);
+      }
+
+      // Fallback to mock data (only when FORCE_MOCKS is enabled)
       const baseDebtLevels = {
         'COL': 55, // Colombia ~55% GDP
         'PER': 35, // Peru ~35% GDP

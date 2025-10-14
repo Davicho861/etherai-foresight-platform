@@ -1,0 +1,16 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# Ensure curl is available for the docker-compose healthcheck
+# and keep image minimal using apk
+RUN apk add --no-cache curl && \
+	npm install
+
+COPY vite.config.ts tsconfig.json tailwind.config.ts ./
+
+EXPOSE 3002
+
+CMD ["npm", "run", "dev"]

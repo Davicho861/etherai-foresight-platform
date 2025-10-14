@@ -13,8 +13,13 @@ class ClimateIntegration {
       return results;
     } catch (error) {
       console.error('Error fetching climate extremes data:', error);
-      // Fallback to mock data
-      return countries.map(country => this.getMockClimateData(country));
+      // Only return mock data when explicitly forced (tests/demo). Otherwise
+      // propagate the error so the caller knows real data couldn't be fetched.
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
+        return countries.map(country => this.getMockClimateData(country));
+      }
+      throw new Error(`ClimateIntegration failure: ${error && error.message ? error.message : String(error)}`);
     }
   }
 
@@ -43,7 +48,8 @@ class ClimateIntegration {
         return this.getMockClimateData(country);
       }
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
         console.warn(`ClimateIntegration: returning FORCE_MOCKS mock for ${country} due to error: ${error && error.message}`);
         const mock = this.getMockClimateData(country);
         return { ...mock, isMock: true, source: 'FORCE_MOCKS:Climate' };

@@ -33,7 +33,8 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled()) {
         console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for ${product} (${year})`);
         const mockProductions = {
           'rice': 2200000, // tonnes
@@ -82,7 +83,8 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      if (process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1') {
+      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
+      if (forceMocksEnabled2()) {
         console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for supply chain ${region}`);
         const mockRegions = {
           'Lima': { capacity: 85, distance: 0, cost: 1.2 },

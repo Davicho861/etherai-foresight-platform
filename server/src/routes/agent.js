@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import * as kernelModule from '../orchestrator.js';
 const kernel = kernelModule.kernel || (kernelModule.default && kernelModule.default.kernel) || kernelModule;
 import { subscribe } from '../eventHub.js';
+import cache from '../cache.js';
 
 const router = express.Router();
 
@@ -94,10 +95,23 @@ router.get('/mission/:id/stream', (req, res) => {
   });
 });
 
-// GET /api/agent/vigilance/status -> Get eternal vigilance status
+// GET /api/agent/vigilance/status -> Get eternal vigilance status with caching
 router.get('/vigilance/status', (req, res) => {
   try {
+    // Cache key for vigilance status (short TTL since this is dynamic data)
+    const cacheKey = 'vigilance:status';
+
+    // Check cache first (TTL: 30 seconds)
+    const cachedStatus = cache.get(cacheKey);
+    if (cachedStatus) {
+      return res.json(cachedStatus);
+    }
+
     const status = kernel.getVigilanceStatus();
+
+    // Cache result for 30 seconds
+    cache.set(cacheKey, status, 30000);
+
     return res.json(status);
   } catch (err) {
     console.error('Error getting vigilance status', err);

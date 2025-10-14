@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('LogosKernel (orchestrator)', () => {
   beforeEach(() => {
     jest.resetModules();

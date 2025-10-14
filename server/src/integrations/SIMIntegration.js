@@ -35,7 +35,11 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
+      console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
+      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      if (!forceMocksEnabled()) {
+        throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
+      }
       const mockPrices = {
         'rice': { current: 4.50, min: 4.20, max: 4.80, avg: 4.45 },
         'potatoes': { current: 2.20, min: 1.80, max: 2.60, avg: 2.25 },
@@ -89,7 +93,11 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
+      console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
+      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
+      if (!forceMocksEnabled2()) {
+        throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
+      }
       // Generate mock historical data
       const historyData = [];
       const basePrice = { rice: 4.50, potatoes: 2.20, corn: 3.10, beans: 5.80 }[product.toLowerCase()] || 3.00;
@@ -132,7 +140,11 @@ class SIMIntegration {
         isMock: false
       };
     } catch (error) {
-      console.log(`SIMIntegration: API failed for ${product} in ${region}, returning fallback mock`);
+      console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
+      const { forceMocksEnabled: forceMocksEnabled3 } = await import('../lib/force-mocks.js');
+      if (!forceMocksEnabled3()) {
+        throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
+      }
       const volatilities = {
         'rice': 0.12,
         'potatoes': 0.18,
