@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NativeModeBanner from "./components/NativeModeBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useServiceWorker } from "./hooks/useServiceWorker";
+import { usePrefetch } from "./hooks/usePrefetch";
 
 // Lazy load pages for code splitting
 const Index = React.lazy(() => import("./pages/Index"));
@@ -25,10 +27,40 @@ const CTODashboard = React.lazy(() => import("./components/dashboards/CTODashboa
 const CIODashboard = React.lazy(() => import("./components/dashboards/CIODashboard"));
 const CSODashboard = React.lazy(() => import("./components/dashboards/CSODashboard"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      retry: (failureCount, error) => {
+        // Don't retry on 4xx errors
+        if (error instanceof Error && 'status' in error && typeof error.status === 'number') {
+          if (error.status >= 400 && error.status < 500) {
+            return false;
+          }
+        }
+        return failureCount < 3;
+      },
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+    },
+  },
+});
 
 const App = () => {
   console.log('App render');
+
+  // Initialize service worker
+  const { isSupported, isRegistered, updateAvailable, skipWaiting } = useServiceWorker();
+
+  // Initialize prefetching
+  const { prefetchSDLCData } = usePrefetch();
+
+  // Prefetch critical data on app start
+  React.useEffect(() => {
+    prefetchSDLCData();
+  }, [prefetchSDLCData]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -38,21 +70,21 @@ const App = () => {
         <HashRouter>
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-etherblue-dark text-etherneon"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-etherneon"></div></div>}>
             <Routes>
-               <Route path="/" element={<Index />} />
-               <Route path="/dashboard" element={<DashboardPage />} />
-               <Route path="/login" element={<LoginPage />} />
-               <Route path="/sdlc-dashboard" element={<SdlcDashboardPage />} />
-               <Route path="/command-center" element={<CommandCenterPage />} />
-               <Route path="/module/colombia" element={<ModuleColombia />} />
-               <Route path="/food-resilience" element={<FoodResiliencePage />} />
-               <Route path="/pricing" element={<PricingPage />} />
-               <Route path="/demo" element={<DemoPage />} />
-               <Route path="/solutions" element={<SolutionsPage />} />
-               <Route path="/metatron-panel" element={<MetatronPanel />} />
-               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-               <Route path="*" element={<NotFound />} />
-             </Routes>
-          </Suspense>
+                <Route path="/" element={<Index />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/sdlc-dashboard" element={<SdlcDashboardPage />} />
+                <Route path="/command-center" element={<CommandCenterPage />} />
+                <Route path="/module/colombia" element={<ModuleColombia />} />
+                <Route path="/food-resilience" element={<FoodResiliencePage />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/demo" element={<DemoPage />} />
+                <Route path="/solutions" element={<SolutionsPage />} />
+                <Route path="/metatron-panel" element={<MetatronPanel />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+           </Suspense>
         </HashRouter>
       </TooltipProvider>
     </QueryClientProvider>
