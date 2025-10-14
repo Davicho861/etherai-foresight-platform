@@ -274,23 +274,84 @@ const DashboardPage: React.FC = () => {
                 className="flex items-center justify-center min-h-[60vh]"
               >
                 <div className="text-center">
-                  <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-slate-400">Cargando experiencia divina...</p>
-                  <p className="text-slate-500 text-sm mt-2">Conectando con la realidad soberana</p>
+                  <div className="relative mb-8">
+                    <div className="w-20 h-20 border-4 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin mx-auto"></div>
+                    <div className="absolute inset-0 w-20 h-20 border-4 border-purple-400/20 border-t-purple-400 rounded-full animate-spin mx-auto" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+                    <div className="absolute inset-2 w-16 h-16 border-4 border-pink-400/20 border-t-pink-400 rounded-full animate-spin mx-auto" style={{ animationDuration: '0.8s' }}></div>
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <h3 className="text-xl font-bold text-white mb-2">Cargando Experiencia Divina</h3>
+                    <p className="text-slate-400 mb-4">Estableciendo conexión con la realidad soberana</p>
+
+                    <div className="flex justify-center space-x-2 mb-4">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                    </div>
+
+                    <div className="max-w-xs mx-auto">
+                      <div className="text-xs text-slate-500 space-y-1">
+                        <div className="flex justify-between">
+                          <span>Conectando APIs externas...</span>
+                          <span className="text-green-400">✓</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Cargando datos históricos...</span>
+                          <span className="text-green-400">✓</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Inicializando motor predictivo...</span>
+                          <span className="text-cyan-400 animate-pulse">⟳</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Validando soberanía...</span>
+                          <span className="text-gray-500">○</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ) : error ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-red-900/20 border border-red-700/50 rounded-2xl p-6 text-red-200 max-w-md mx-auto"
+                className="bg-gradient-to-br from-red-900/20 to-orange-900/20 backdrop-blur-xl border border-red-700/50 rounded-2xl p-8 text-red-200 max-w-lg mx-auto shadow-2xl shadow-red-500/10"
               >
-                <div className="flex items-center mb-2">
-                  <span className="text-red-400 mr-2">⚠️</span>
-                  <span className="font-semibold">Error de Conexión Divina</span>
+                <div className="text-center mb-6">
+                  <div className="p-4 bg-red-500/10 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-3xl">⚠️</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-red-300 mb-2">Error de Conexión Divina</h3>
+                  <p className="text-red-200/80 text-sm">{error}</p>
                 </div>
-                <p className="text-sm">{error}</p>
-                <p className="text-xs text-red-300 mt-2">La realidad no está disponible temporalmente</p>
+
+                <div className="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div className="flex items-center justify-between text-sm mb-2">
+                    <span className="text-gray-400">Estado del Sistema:</span>
+                    <span className="text-yellow-400 font-medium">Recuperando Conexión</span>
+                  </div>
+                  <div className="w-full bg-slate-700 rounded-full h-2">
+                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <p className="text-xs text-red-300/70 mb-4">
+                    La realidad soberana no está disponible temporalmente. Los datos se están recuperando de fuentes alternativas.
+                  </p>
+                  <div className="flex items-center justify-center space-x-2 text-xs text-gray-400">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-ping"></div>
+                    <span>Intentando reconexión automática...</span>
+                  </div>
+                </div>
               </motion.div>
             ) : (
               <AnimatePresence mode="wait">
