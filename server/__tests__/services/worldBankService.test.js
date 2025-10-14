@@ -1,182 +1,245 @@
-import { server } from '../mocks/server.js';
-
-describe('worldBankService.getFoodSecurityIndex', () => {
-  beforeAll(() => {
-    server.listen();
-  });
-
-  afterAll(() => {
-    server.close();
-  });
-
-  afterEach(() => {
-    jest.resetModules()
-    delete process.env.NATIVE_DEV_MODE
-    delete process.env.API_BASE
-  })
-
-  test('transforms WorldBankIntegration response correctly', async () => {
-    const mockData = { data: [{ countryCode: 'COL', value: 5.2, year: '2024', country: 'Colombia' }], countries: ['COL'], period: { endYear: '2024' }, summary: { averageValue: 5.2 } }
-    // Mock integration module path
-  const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => ({ getFoodSecurityData: async () => mockData }))
-    })
-
-  const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
-    expect(out).toHaveProperty('countries')
-    expect(out.countries).toContain('COL')
-    expect(out).toHaveProperty('data')
-    expect(out.data.COL.value).toBeCloseTo(5.2)
-  })
-
-  test('uses serverless endpoint when integration throws and transforms response', async () => {
-    jest.resetModules()
-    // Make getWorldBankInstance throw by mocking integration to throw in constructor
-  const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => { throw new Error('init fail') })
-    })
-
-    // Mock fetch to serverless endpoint
-    const fetchMock = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ data: [{ countryCode: 'PER', value: 7.1, year: '2024', country: 'Peru' }], summary: { averageValue: 7.1 } }) })
-    global.fetch = fetchMock
-    process.env.API_BASE = 'http://localhost:4000'
-
-  const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
-    expect(out.countries).toContain('PER')
-    expect(out.globalAverage).toBeCloseTo(7.1)
-    delete global.fetch
-  })
-
-  test('falls back to mock when everything fails', async () => {
-    jest.resetModules()
-  const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => { throw new Error('init fail') })
-    })
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 })
-
-  const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
-    expect(out).toHaveProperty('countries')
-    expect(out.source).toMatch(/Fallback Mock Data|Mock/)
-    delete global.fetch
-  })
-})
-import { getFoodSecurityIndex } from '../../src/services/worldBankService.js';
+const { getFoodSecurityIndex } = require('../../src/services/worldBankService');
 
 // Mock the WorldBankIntegration
-// Tests for worldBankService.getFoodSecurityIndex
-describe('worldBankService.getFoodSecurityIndex', () => {
+jest.mock('../../src/integrations/WorldBankIntegration.js', () => {
+  return jest.fn().mockImplementation(() => ({
+    getFoodSecurityData: jest.fn(),
+  }));
+});
+
+// Mock fetch globally
+global.fetch = jest.fn();
+
+describe('worldBankService', () => {
+  let mockWorldBankIntegration;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    // Get the mock constructor and instance
+    const MockWorldBankIntegration = require('../../src/integrations/WorldBankIntegration.js');
+    mockWorldBankIntegration = new MockWorldBankIntegration();
+  });
+
   afterEach(() => {
-    // Ensure each test gets a fresh module cache and environment
-    jest.resetModules()
-    delete process.env.NATIVE_DEV_MODE
-    delete process.env.API_BASE
-    delete process.env.WORLDBANK_MOCK_PORT
-    if (global.fetch && global.fetch._isMock) delete global.fetch
-  })
+    // Clear the cached instance
+    jest.resetModules();
+  });
 
-  test('transforms WorldBankIntegration response correctly', async () => {
-    const mockData = { data: [{ countryCode: 'COL', value: 5.2, year: '2024', country: 'Colombia' }], countries: ['COL'], period: { endYear: '2024' }, summary: { averageValue: 5.2 } }
-    const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => ({ getFoodSecurityData: async () => mockData }))
-    })
+  describe('getFoodSecurityIndex', () => {
+    it('should return data from WorldBankIntegration when available', async () => {
+      const mockApiData = {
+        data: [
+          { countryCode: 'COL', value: 15.5, year: '2024', country: 'Colombia' },
+          { countryCode: 'PER', value: 12.3, year: '2024', country: 'Peru' },
+        ],
+        countries: ['COL', 'PER'],
+        period: { endYear: 2024 },
+        source: 'World Bank API',
+        summary: { averageValue: 13.9 },
+      };
 
-    const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
+      mockWorldBankIntegration.getFoodSecurityData.mockResolvedValue(mockApiData);
 
-    expect(out).toHaveProperty('countries')
-    expect(out.countries).toContain('COL')
-    expect(out).toHaveProperty('data')
-    expect(out.data.COL.value).toBeCloseTo(5.2)
-  })
+      const result = await getFoodSecurityIndex();
 
-  test('uses serverless endpoint when integration throws and transforms response', async () => {
-    jest.resetModules()
-    const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    // Make constructor throw to force the service to use the serverless endpoint
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => { throw new Error('init fail') })
-    })
+      expect(mockWorldBankIntegration.getFoodSecurityData).toHaveBeenCalledWith(
+        ['COL', 'PER'],
+        '2020',
+        '2024'
+      );
 
-    // Mock fetch to serverless endpoint
-    const serverlessResponse = { data: [{ countryCode: 'PER', value: 7.1, year: '2024', country: 'Peru' }], summary: { averageValue: 7.1 } }
-    const fetchMock = jest.fn().mockResolvedValue({ ok: true, json: async () => serverlessResponse })
-    fetchMock._isMock = true
-    global.fetch = fetchMock
-    process.env.API_BASE = 'http://localhost:4000'
+      expect(result).toEqual({
+        countries: ['COL', 'PER'],
+        year: 2024,
+        source: 'World Bank Integration',
+        data: {
+          COL: { value: 15.5, year: '2024', country: 'Colombia' },
+          PER: { value: 12.3, year: '2024', country: 'Peru' },
+        },
+        globalAverage: 13.9,
+      });
+    });
 
-    const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
+    it('should handle WorldBankIntegration errors and fallback to serverless endpoint', async () => {
+      mockWorldBankIntegration.getFoodSecurityData.mockRejectedValue(
+        new Error('Integration failed')
+      );
 
-    expect(out.countries).toContain('PER')
-    expect(out.globalAverage).toBeCloseTo(7.1)
-    delete global.fetch
-  })
+      const mockServerlessData = {
+        data: [
+          { countryCode: 'COL', value: 16.0, year: '2024', country: 'Colombia' },
+        ],
+        countries: ['COL'],
+        period: { endYear: 2024 },
+        source: 'Serverless API',
+        summary: { averageValue: 16.0 },
+      };
 
-  test('falls back to mock when everything fails', async () => {
-    jest.resetModules()
-    const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      return jest.fn().mockImplementation(() => { throw new Error('init fail') })
-    })
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockServerlessData),
+      });
 
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500 })
+      const result = await getFoodSecurityIndex();
 
-    const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
+      expect(global.fetch).toHaveBeenCalledWith(
+        'http://localhost:4010/api/global-risk/food-security'
+      );
 
-    expect(out).toHaveProperty('countries')
-    expect(out.source).toMatch(/Fallback Mock Data|Mock/)
-    delete global.fetch
-  })
+      expect(result).toEqual({
+        countries: ['COL'],
+        year: 2024,
+        source: 'World Bank Serverless',
+        data: {
+          COL: { value: 16.0, year: '2024', country: 'Colombia' },
+        },
+        globalAverage: 16.0,
+      });
+    });
 
-  test('uses NATIVE_DEV_MODE local mock when set', async () => {
-    jest.resetModules()
-    process.env.NATIVE_DEV_MODE = 'true'
-    process.env.WORLDBANK_MOCK_PORT = '45123'
+    it('should handle serverless endpoint failure and return fallback data', async () => {
+      mockWorldBankIntegration.getFoodSecurityData.mockRejectedValue(
+        new Error('Integration failed')
+      );
 
-    const serverMock = { data: [{ country: 'Chile', value: 3.5, year: '2024' }], summary: { averageValue: 3.5 } }
-    const fetchMock = jest.fn().mockResolvedValue({ ok: true, json: async () => serverMock })
-    fetchMock._isMock = true
-    global.fetch = fetchMock
+      global.fetch.mockRejectedValue(new Error('Network error'));
 
-    const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
+      const result = await getFoodSecurityIndex();
 
-    expect(out.countries).toContain('CHI')
-    expect(out.globalAverage).toBeCloseTo(3.5)
+      expect(result).toEqual({
+        countries: ['COL', 'PER'],
+        year: 2024,
+        source: 'Fallback Mock Data - WorldBank',
+        data: {
+          COL: { value: 0, year: '2024', country: 'Colombia' },
+          PER: { value: 0, year: '2024', country: 'Peru' },
+        },
+        globalAverage: null,
+      });
+    });
 
-    delete global.fetch
-    delete process.env.NATIVE_DEV_MODE
-    delete process.env.WORLDBANK_MOCK_PORT
-  })
+    it('should handle malformed API data gracefully', async () => {
+      const malformedData = {
+        data: null, // Invalid data structure
+        countries: undefined,
+      };
 
-  test('prefers a pre-instantiated WorldBankIntegration mock instance', async () => {
-    jest.resetModules()
-    const worldMockPath = require.resolve('../../src/integrations/WorldBankIntegration.js')
-    jest.doMock(worldMockPath, () => {
-      const fn = jest.fn().mockImplementation(() => ({
-        getFoodSecurityData: jest.fn().mockResolvedValue({ data: [{ countryCode: 'ARG', value: 4.8, year: '2024', country: 'Argentina' }], countries: ['ARG'], period: { endYear: '2024' }, summary: { averageValue: 4.8 } })
-      }))
-      return fn
-    })
+      mockWorldBankIntegration.getFoodSecurityData.mockResolvedValue(malformedData);
 
-    // Require the mocked constructor and instantiate it so mock.instances is populated
-    const WorldBankIntegration = require('../../src/integrations/WorldBankIntegration.js')
-    const instance = new WorldBankIntegration()
-    expect(WorldBankIntegration.mock.instances.length).toBeGreaterThan(0)
+      const result = await getFoodSecurityIndex();
 
-    const svc = require('../../src/services/worldBankService.js')
-    const out = await svc.getFoodSecurityIndex()
+      expect(result).toEqual({
+        countries: [],
+        year: 2024,
+        source: 'World Bank Integration',
+        data: {},
+        globalAverage: null,
+      });
+    });
 
-    expect(out.countries).toContain('ARG')
-    // ensure the pre-instantiated instance's method was used
-    expect(instance.getFoodSecurityData).toBeDefined()
-  })
-})
+    it('should handle null values in data correctly', async () => {
+      const dataWithNulls = {
+        data: [
+          { countryCode: 'COL', value: null, year: '2024', country: 'Colombia' },
+          { countryCode: 'PER', value: 10.5, year: '2024', country: 'Peru' },
+        ],
+        countries: ['COL', 'PER'],
+        period: { endYear: 2024 },
+      };
+
+      mockWorldBankIntegration.getFoodSecurityData.mockResolvedValue(dataWithNulls);
+
+      const result = await getFoodSecurityIndex();
+
+      expect(result.data).toEqual({
+        COL: { value: null, year: '2024', country: 'Colombia' },
+        PER: { value: 10.5, year: '2024', country: 'Peru' },
+      });
+      expect(result.globalAverage).toBe(10.5); // Should exclude null values
+    });
+
+    it('should handle different country code formats', async () => {
+      const mixedFormatData = {
+        data: [
+          { countryCode: 'col', value: 15.0, year: '2024', country: 'Colombia' }, // lowercase
+          { countryCode: 'Per', value: 12.0, year: '2024', country: 'Peru' }, // mixed case
+        ],
+        countries: ['col', 'Per'],
+        period: { endYear: 2024 },
+      };
+
+      mockWorldBankIntegration.getFoodSecurityData.mockResolvedValue(mixedFormatData);
+
+      const result = await getFoodSecurityIndex();
+
+      expect(result.data).toEqual({
+        COL: { value: 15.0, year: '2024', country: 'Colombia' },
+        PER: { value: 12.0, year: '2024', country: 'Peru' },
+      });
+    });
+
+    it('should calculate global average correctly', async () => {
+      const testData = {
+        data: [
+          { countryCode: 'COL', value: 10, year: '2024', country: 'Colombia' },
+          { countryCode: 'PER', value: 20, year: '2024', country: 'Peru' },
+          { countryCode: 'ARG', value: 30, year: '2024', country: 'Argentina' },
+        ],
+        countries: ['COL', 'PER', 'ARG'],
+        period: { endYear: 2024 },
+      };
+
+      mockWorldBankIntegration.getFoodSecurityData.mockResolvedValue(testData);
+
+      const result = await getFoodSecurityIndex();
+
+      expect(result.globalAverage).toBe(20); // (10 + 20 + 30) / 3
+    });
+
+    it('should throw error when all integrations fail and no fallback available', async () => {
+      mockWorldBankIntegration.getFoodSecurityData.mockRejectedValue(
+        new Error('Integration failed')
+      );
+
+      global.fetch.mockRejectedValue(new Error('Network error'));
+
+      // Mock process.env to remove WORLDBANK_SERVERLESS_URL
+      const originalEnv = process.env;
+      delete process.env.WORLDBANK_SERVERLESS_URL;
+
+      try {
+        await getFoodSecurityIndex();
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error.message).toContain('Integration failed');
+      } finally {
+        process.env = originalEnv;
+      }
+    });
+
+    it('should use custom serverless URL from environment', async () => {
+      mockWorldBankIntegration.getFoodSecurityData.mockRejectedValue(
+        new Error('Integration failed')
+      );
+
+      const customUrl = 'https://custom-api.example.com/food-security';
+      process.env.WORLDBANK_SERVERLESS_URL = customUrl;
+
+      global.fetch.mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({
+          data: [{ countryCode: 'COL', value: 15.0, year: '2024', country: 'Colombia' }],
+          countries: ['COL'],
+          period: { endYear: 2024 },
+        }),
+      });
+
+      await getFoodSecurityIndex();
+
+      expect(global.fetch).toHaveBeenCalledWith(customUrl);
+
+      delete process.env.WORLDBANK_SERVERLESS_URL;
+    });
+  });
+});

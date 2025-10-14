@@ -11,35 +11,9 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Robust repository root resolver - walks upwards from cwd until it finds a
-// recognizable project marker (package.json, .git, or docs folder). If none
-// found, and we're running inside a `server` subfolder, pick the parent dir.
-function findRepoRoot(start = __dirname) {
-  let dir = path.resolve(start);
-  while (true) {
-    try {
-      if (fsSync.existsSync(path.join(dir, 'package.json')) ||
-          fsSync.existsSync(path.join(dir, '.git')) ||
-          fsSync.existsSync(path.join(dir, 'docs'))) {
-        return dir;
-      }
-    } catch (e) {
-      // ignore and continue walking up
-    }
-
-    const parent = path.dirname(dir);
-    if (parent === dir) break; // reached filesystem root
-    dir = parent;
-  }
-
-  // Fallbacks: prefer parent of __dirname (i.e., project root when running
-  // from server/), otherwise fall back to process.cwd().
-  if (path.basename(__dirname) === 'server') return path.dirname(__dirname);
-  if (path.basename(process.cwd()) === 'server') return path.dirname(process.cwd());
-  return path.resolve(process.cwd());
-}
-
-const repoRootPath = findRepoRoot();
+// Absolute repository root resolver using __dirname for ESM
+// Builds an infallible path from the current file location to project root
+const repoRootPath = path.resolve(__dirname, '..', '..', '..');
 
 // Utility: simple markdown parser that extracts headings and paragraphs
 function parseMarkdownSections(md) {

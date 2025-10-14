@@ -148,12 +148,13 @@ async function fetchInternalData(endpoint) {
  */
 async function updateFamineRiskIndex() {
   console.log('[PredictionEngine] Updating Famine Risk Index...');
-  const foodSecurityData = await fetchInternalData('/api/global-risk/food-security');
+  try {
+    const foodSecurityData = await fetchInternalData('/api/global-risk/food-security');
 
-  if (!foodSecurityData || !foodSecurityData.data) {
-    console.error('[PredictionEngine] Invalid food security data received.');
-    return;
-  }
+    if (!foodSecurityData || !foodSecurityData.data) {
+      console.warn('[PredictionEngine] Invalid food security data received. Skipping update.');
+      return;
+    }
 
   // Calculate risk based on prevalence of undernourishment
   // Higher undernourishment = higher famine risk
@@ -183,6 +184,9 @@ async function updateFamineRiskIndex() {
     countries: Object.keys(foodSecurityData.data)
   };
   console.log(`[PredictionEngine] Famine Risk Index updated to ${riskValue} based on average undernourishment of ${averageUndernourishment.toFixed(2)}%.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Famine Risk Index:', error.message);
+  }
 }
 
 /**
@@ -190,12 +194,13 @@ async function updateFamineRiskIndex() {
  */
 async function updateGeophysicalRiskIndex() {
   console.log('[PredictionEngine] Updating Geophysical Risk Index...');
-  const seismicEvents = await fetchInternalData('/api/seismic/activity');
+  try {
+    const seismicEvents = await fetchInternalData('/api/seismic/activity');
 
-  if (!Array.isArray(seismicEvents)) {
-    console.error('[PredictionEngine] Invalid seismic data received.');
-    return;
-  }
+    if (!Array.isArray(seismicEvents)) {
+      console.warn('[PredictionEngine] Invalid seismic data received. Skipping update.');
+      return;
+    }
 
   predictionState.riskIndices.geophysicalRisk.significantEvents = seismicEvents;
 
@@ -215,6 +220,9 @@ async function updateGeophysicalRiskIndex() {
   predictionState.riskIndices.geophysicalRisk.confidence = 0.90; // Static confidence
 
   console.log(`[PredictionEngine] Geophysical Risk Index updated to ${riskValue} based on max magnitude of ${maxMagnitude}.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Geophysical Risk Index:', error.message);
+  }
 }
 
 /**
@@ -222,12 +230,13 @@ async function updateGeophysicalRiskIndex() {
  */
 async function updateSupplyChainRiskIndex() {
   console.log('[PredictionEngine] Updating Supply Chain Risk Index...');
-  const seismicEvents = await fetchInternalData('/api/seismic/activity');
+  try {
+    const seismicEvents = await fetchInternalData('/api/seismic/activity');
 
-  if (!Array.isArray(seismicEvents)) {
-    console.error('[PredictionEngine] Invalid seismic data received for supply chain analysis.');
-    return;
-  }
+    if (!Array.isArray(seismicEvents)) {
+      console.warn('[PredictionEngine] Invalid seismic data received for supply chain analysis. Skipping update.');
+      return;
+    }
 
   if (seismicEvents.length === 0) {
     predictionState.riskIndices.supplyChainRisk.value = 0;
@@ -261,6 +270,9 @@ async function updateSupplyChainRiskIndex() {
   predictionState.riskIndices.supplyChainRisk.affectedRegions = affectedRegions;
 
   console.log(`[PredictionEngine] Supply Chain Risk Index updated to ${riskValue} based on ${affectedRegions.length} significant seismic events.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Supply Chain Risk Index:', error.message);
+  }
 }
 
 /**
@@ -268,12 +280,13 @@ async function updateSupplyChainRiskIndex() {
  */
 async function updateClimateExtremesRiskIndex() {
   console.log('[PredictionEngine] Updating Climate Extremes Risk Index...');
-  const climateData = await fetchInternalData('/api/global-risk/climate-extremes');
+  try {
+    const climateData = await fetchInternalData('/api/global-risk/climate-extremes');
 
-  if (!climateData || !climateData.data || !Array.isArray(climateData.data)) {
-    console.error('[PredictionEngine] Invalid climate extremes data received.');
-    return;
-  }
+    if (!climateData || !climateData.data || !Array.isArray(climateData.data)) {
+      console.warn('[PredictionEngine] Invalid climate extremes data received. Skipping update.');
+      return;
+    }
 
   const data = climateData.data;
   const extremeEvents = data.filter(item => item.extremeEvents > 0);
@@ -304,19 +317,23 @@ async function updateClimateExtremesRiskIndex() {
   predictionState.riskIndices.climateExtremesRisk.affectedCountries = affectedCountries;
 
   console.log(`[PredictionEngine] Climate Extremes Risk Index updated to ${riskValue} based on ${totalExtremeEvents} extreme events, ${highRiskCountries} high-risk countries, and ${mediumRiskCountries} medium-risk countries.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Climate Extremes Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Community Resilience Risk Index based on community resilience data.
-  */
+   * Updates the Community Resilience Risk Index based on community resilience data.
+   */
 async function updateCommunityResilienceRiskIndex() {
   console.log('[PredictionEngine] Updating Community Resilience Risk Index...');
-  const resilienceData = await fetchInternalData('/api/global-risk/community-resilience');
+  try {
+    const resilienceData = await fetchInternalData('/api/global-risk/community-resilience');
 
-  if (!resilienceData || !resilienceData.resilienceAnalysis) {
-    console.error('[PredictionEngine] Invalid community resilience data received.');
-    return;
-  }
+    if (!resilienceData || !resilienceData.resilienceAnalysis) {
+      console.warn('[PredictionEngine] Invalid community resilience data received. Skipping update.');
+      return;
+    }
 
   const { globalResilienceAssessment, resilienceAnalysis } = resilienceData;
 
@@ -336,19 +353,23 @@ async function updateCommunityResilienceRiskIndex() {
   predictionState.riskIndices.communityResilienceRisk.averageResilience = averageResilience;
 
   console.log(`[PredictionEngine] Community Resilience Risk Index updated to ${riskValue} based on average resilience of ${averageResilience.toFixed(1)}. Low resilience countries: ${lowResilienceCountries.join(', ')}`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Community Resilience Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Crypto Volatility Risk Index based on cryptocurrency market data.
-  */
+   * Updates the Crypto Volatility Risk Index based on cryptocurrency market data.
+   */
 async function updateCryptoVolatilityRiskIndex() {
   console.log('[PredictionEngine] Updating Crypto Volatility Risk Index...');
-  const cryptoData = await fetchInternalData('/api/global-risk/crypto-volatility');
+  try {
+    const cryptoData = await fetchInternalData('/api/global-risk/crypto-volatility');
 
-  if (!cryptoData || cryptoData.volatilityIndex === undefined) {
-    console.error('[PredictionEngine] Invalid crypto volatility data received.');
-    return;
-  }
+    if (!cryptoData || cryptoData.volatilityIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid crypto volatility data received. Skipping update.');
+      return;
+    }
 
   const { volatilityIndex, analysis, marketData } = cryptoData;
 
@@ -363,19 +384,23 @@ async function updateCryptoVolatilityRiskIndex() {
   predictionState.riskIndices.cryptoVolatilityRisk.marketData = marketData || [];
 
   console.log(`[PredictionEngine] Crypto Volatility Risk Index updated to ${riskValue} (${analysis?.riskAssessment || 'Unknown'} risk) based on ${analysis?.totalCryptos || 0} cryptocurrencies.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Crypto Volatility Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Biodiversity Risk Index based on global biodiversity data.
-  */
+   * Updates the Biodiversity Risk Index based on global biodiversity data.
+   */
 async function updateBiodiversityRiskIndex() {
   console.log('[PredictionEngine] Updating Biodiversity Risk Index...');
-  const biodiversityData = await fetchInternalData('/api/global-risk/biodiversity');
+  try {
+    const biodiversityData = await fetchInternalData('/api/global-risk/biodiversity');
 
-  if (!biodiversityData || biodiversityData.riskIndex === undefined) {
-    console.error('[PredictionEngine] Invalid biodiversity data received.');
-    return;
-  }
+    if (!biodiversityData || biodiversityData.riskIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid biodiversity data received. Skipping update.');
+      return;
+    }
 
   const { riskIndex, analysis, biodiversityData: bioData } = biodiversityData;
 
@@ -390,19 +415,23 @@ async function updateBiodiversityRiskIndex() {
   predictionState.riskIndices.biodiversityRisk.regions = bioData?.regions ? Object.keys(bioData.regions) : [];
 
   console.log(`[PredictionEngine] Biodiversity Risk Index updated to ${riskValue} (${analysis?.riskAssessment || 'Unknown'} risk) based on ${analysis?.totalRegions || 0} regions.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Biodiversity Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Pandemics Risk Index based on global health data.
-  */
+   * Updates the Pandemics Risk Index based on global health data.
+   */
 async function updatePandemicsRiskIndex() {
   console.log('[PredictionEngine] Updating Pandemics Risk Index...');
-  const pandemicsData = await fetchInternalData('/api/global-risk/pandemics');
+  try {
+    const pandemicsData = await fetchInternalData('/api/global-risk/pandemics');
 
-  if (!pandemicsData || pandemicsData.riskIndex === undefined) {
-    console.error('[PredictionEngine] Invalid pandemics data received.');
-    return;
-  }
+    if (!pandemicsData || pandemicsData.riskIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid pandemics data received. Skipping update.');
+      return;
+    }
 
   const { riskIndex, analysis, regions } = pandemicsData;
 
@@ -417,19 +446,23 @@ async function updatePandemicsRiskIndex() {
   predictionState.riskIndices.pandemicsRisk.regions = regions || [];
 
   console.log(`[PredictionEngine] Pandemics Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Pandemics Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Cybersecurity Risk Index based on global cyber threat data.
-  */
+   * Updates the Cybersecurity Risk Index based on global cyber threat data.
+   */
 async function updateCybersecurityRiskIndex() {
   console.log('[PredictionEngine] Updating Cybersecurity Risk Index...');
-  const cybersecurityData = await fetchInternalData('/api/global-risk/cybersecurity');
+  try {
+    const cybersecurityData = await fetchInternalData('/api/global-risk/cybersecurity');
 
-  if (!cybersecurityData || cybersecurityData.riskIndex === undefined) {
-    console.error('[PredictionEngine] Invalid cybersecurity data received.');
-    return;
-  }
+    if (!cybersecurityData || cybersecurityData.riskIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid cybersecurity data received. Skipping update.');
+      return;
+    }
 
   const { riskIndex, analysis, sectors } = cybersecurityData;
 
@@ -444,19 +477,23 @@ async function updateCybersecurityRiskIndex() {
   predictionState.riskIndices.cybersecurityRisk.sectors = sectors || [];
 
   console.log(`[PredictionEngine] Cybersecurity Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${sectors?.length || 0} sectors.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Cybersecurity Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Economic Instability Risk Index based on global economic data.
-  */
+   * Updates the Economic Instability Risk Index based on global economic data.
+   */
 async function updateEconomicInstabilityRiskIndex() {
   console.log('[PredictionEngine] Updating Economic Instability Risk Index...');
-  const economicData = await fetchInternalData('/api/global-risk/economic-instability');
+  try {
+    const economicData = await fetchInternalData('/api/global-risk/economic-instability');
 
-  if (!economicData || economicData.riskIndex === undefined) {
-    console.error('[PredictionEngine] Invalid economic instability data received.');
-    return;
-  }
+    if (!economicData || economicData.riskIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid economic instability data received. Skipping update.');
+      return;
+    }
 
   const { riskIndex, analysis, regions } = economicData;
 
@@ -471,19 +508,23 @@ async function updateEconomicInstabilityRiskIndex() {
   predictionState.riskIndices.economicInstabilityRisk.regions = regions || [];
 
   console.log(`[PredictionEngine] Economic Instability Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Economic Instability Risk Index:', error.message);
+  }
 }
 
 /**
-  * Updates the Geopolitical Instability Risk Index based on global conflict data.
-  */
+   * Updates the Geopolitical Instability Risk Index based on global conflict data.
+   */
 async function updateGeopoliticalInstabilityRiskIndex() {
   console.log('[PredictionEngine] Updating Geopolitical Instability Risk Index...');
-  const geopoliticalData = await fetchInternalData('/api/global-risk/geopolitical-instability');
+  try {
+    const geopoliticalData = await fetchInternalData('/api/global-risk/geopolitical-instability');
 
-  if (!geopoliticalData || geopoliticalData.riskIndex === undefined) {
-    console.error('[PredictionEngine] Invalid geopolitical instability data received.');
-    return;
-  }
+    if (!geopoliticalData || geopoliticalData.riskIndex === undefined) {
+      console.warn('[PredictionEngine] Invalid geopolitical instability data received. Skipping update.');
+      return;
+    }
 
   const { riskIndex, analysis, regions } = geopoliticalData;
 
@@ -498,6 +539,9 @@ async function updateGeopoliticalInstabilityRiskIndex() {
   predictionState.riskIndices.geopoliticalInstabilityRisk.regions = regions || [];
 
   console.log(`[PredictionEngine] Geopolitical Instability Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+  } catch (error) {
+    console.warn('[PredictionEngine] Error updating Geopolitical Instability Risk Index:', error.message);
+  }
 }
 
 /**
