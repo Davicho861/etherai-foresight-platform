@@ -42,7 +42,7 @@ describe('E2E backend with mock-server (spawn)', () => {
 
     // Import createApp and create an app instance with background tasks disabled
     // to avoid timers during tests.
-    // eslint-disable-next-line global-require
+     
   const { createApp } = await import('../src/index.js');
   backendApp = await createApp({ disableBackgroundTasks: true });
   }, 30000);

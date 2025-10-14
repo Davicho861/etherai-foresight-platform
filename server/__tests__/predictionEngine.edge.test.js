@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 jest.mock('axios');
 import axios from 'axios';
 

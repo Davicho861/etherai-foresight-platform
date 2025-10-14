@@ -78,9 +78,9 @@ describe('LogosKernel core flows', () => {
     const mission = kernel.getMissionLogs('m-success');
     if (mission.status !== 'completed') {
       // Debug output to understand failure cause
-      // eslint-disable-next-line no-console
+       
       console.error('MISSION LOGS:', logs);
-      // eslint-disable-next-line no-console
+       
       console.error('MISSION OBJ:', mission);
     }
     expect(mission.status).toBe('completed');

@@ -75,7 +75,7 @@ app.get('/v1/forecast', (req, res) => {
 app.get('/', (req, res) => res.send(`Mock server running (USGS/Open-Meteo) on port ${PORT}`));
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
+   
   console.log(`Mock server listening on http://localhost:${PORT}`);
 });
 

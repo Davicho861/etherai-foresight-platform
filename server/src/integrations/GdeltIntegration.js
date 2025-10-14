@@ -11,7 +11,7 @@ class GdeltIntegration {
         ? 'http://mock-api-server:3001/gdelt' // internal mock server used in CI
         : 'https://api.gdeltproject.org/api/v2/doc/doc');
     // Debug: log which baseUrl is being used to help troubleshoot native dev mode
-    // eslint-disable-next-line no-console
+     
     console.log(`[GdeltIntegration] NATIVE_DEV_MODE=${process.env.NATIVE_DEV_MODE}; using baseUrl=${this.baseUrl}`);
     // Use shorter circuit breaker window in tests to avoid long waits/logs
     const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';

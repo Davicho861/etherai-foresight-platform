@@ -67,10 +67,12 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   const missionsRouter = await safeImport('./routes/missions.js', () => express.Router());
   const foodResilienceRouter = await safeImport('./routes/food-resilience.js', () => express.Router());
   const globalRiskRouter = await safeImport('./routes/globalRiskRoutes.js', () => express.Router());
+  const xaiRouter = await safeImport('./routes/xai.js', () => express.Router());
   const sdlcRouter = await safeImport('./routes/sdlc.js', () => express.Router());
   const providersRouter = await safeImport('./routes/providers.js', () => express.Router());
   const seismicRouter = await safeImport('./routes/seismic.js', () => express.Router().use((req, res) => res.status(501).json({ error: 'seismic unavailable' })));
   const communityResilienceRouter = await safeImport('./routes/community-resilience.js', () => express.Router());
+  const logisticsRouter = await safeImport('./routes/logistics.js', () => express.Router());
   const kanbanRouter = await safeImport('./routes/kanban.js', () => express.Router());
   const oracleRouter = await safeImport('./routes/oracle.js', () => express.Router());
   const authRouter = await safeImport('./routes/auth.js', () => express.Router());
@@ -132,12 +134,14 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   // token issuance endpoint (protected)
   app.use('/api/eternal-vigilance', bearerAuth, eternalVigilanceTokenRouter);
   app.use('/api/demo', demoRouter);
+  app.use('/api/xai', xaiRouter);
   app.use('/api/missions', missionsRouter);
   app.use('/api/sdlc', sdlcRouter);
   app.use('/api/food-resilience', bearerAuth, foodResilienceRouter);
   app.use('/api/global-risk', bearerAuth, globalRiskRouter);
   app.use('/api/seismic', bearerAuth, seismicRouter);
   app.use('/api/community-resilience', bearerAuth, communityResilienceRouter);
+  app.use('/api/logistics', logisticsRouter);
   app.use('/api/kanban', kanbanRouter);
   app.use('/api/oracle', oracleRouter);
   app.use('/api/auth', authRouter);

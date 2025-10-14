@@ -65,6 +65,38 @@ const predictionState = {
       riskAssessment: 'Low',
       regions: [],
     },
+    pandemicsRisk: {
+      value: null,
+      source: 'PandemicsService',
+      confidence: 0.0,
+      riskIndex: 0,
+      riskLevel: 'Low',
+      regions: [],
+    },
+    cybersecurityRisk: {
+      value: null,
+      source: 'CybersecurityService',
+      confidence: 0.0,
+      riskIndex: 0,
+      riskLevel: 'Low',
+      sectors: [],
+    },
+    economicInstabilityRisk: {
+      value: null,
+      source: 'EconomicInstabilityService',
+      confidence: 0.0,
+      riskIndex: 0,
+      riskLevel: 'Low',
+      regions: [],
+    },
+    geopoliticalInstabilityRisk: {
+      value: null,
+      source: 'GeopoliticalInstabilityService',
+      confidence: 0.0,
+      riskIndex: 0,
+      riskLevel: 'Low',
+      regions: [],
+    },
   },
   multiDomainRiskIndex: {
     value: null,
@@ -361,20 +393,132 @@ async function updateBiodiversityRiskIndex() {
 }
 
 /**
+  * Updates the Pandemics Risk Index based on global health data.
+  */
+async function updatePandemicsRiskIndex() {
+  console.log('[PredictionEngine] Updating Pandemics Risk Index...');
+  const pandemicsData = await fetchInternalData('/api/global-risk/pandemics');
+
+  if (!pandemicsData || pandemicsData.riskIndex === undefined) {
+    console.error('[PredictionEngine] Invalid pandemics data received.');
+    return;
+  }
+
+  const { riskIndex, analysis, regions } = pandemicsData;
+
+  // The risk index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, riskIndex));
+
+  predictionState.riskIndices.pandemicsRisk.value = riskValue;
+  predictionState.riskIndices.pandemicsRisk.confidence = 0.75;
+  predictionState.riskIndices.pandemicsRisk.riskIndex = riskIndex;
+  predictionState.riskIndices.pandemicsRisk.riskLevel = analysis?.riskLevel || 'Unknown';
+  predictionState.riskIndices.pandemicsRisk.regions = regions || [];
+
+  console.log(`[PredictionEngine] Pandemics Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+}
+
+/**
+  * Updates the Cybersecurity Risk Index based on global cyber threat data.
+  */
+async function updateCybersecurityRiskIndex() {
+  console.log('[PredictionEngine] Updating Cybersecurity Risk Index...');
+  const cybersecurityData = await fetchInternalData('/api/global-risk/cybersecurity');
+
+  if (!cybersecurityData || cybersecurityData.riskIndex === undefined) {
+    console.error('[PredictionEngine] Invalid cybersecurity data received.');
+    return;
+  }
+
+  const { riskIndex, analysis, sectors } = cybersecurityData;
+
+  // The risk index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, riskIndex));
+
+  predictionState.riskIndices.cybersecurityRisk.value = riskValue;
+  predictionState.riskIndices.cybersecurityRisk.confidence = 0.85;
+  predictionState.riskIndices.cybersecurityRisk.riskIndex = riskIndex;
+  predictionState.riskIndices.cybersecurityRisk.riskLevel = analysis?.riskLevel || 'Unknown';
+  predictionState.riskIndices.cybersecurityRisk.sectors = sectors || [];
+
+  console.log(`[PredictionEngine] Cybersecurity Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${sectors?.length || 0} sectors.`);
+}
+
+/**
+  * Updates the Economic Instability Risk Index based on global economic data.
+  */
+async function updateEconomicInstabilityRiskIndex() {
+  console.log('[PredictionEngine] Updating Economic Instability Risk Index...');
+  const economicData = await fetchInternalData('/api/global-risk/economic-instability');
+
+  if (!economicData || economicData.riskIndex === undefined) {
+    console.error('[PredictionEngine] Invalid economic instability data received.');
+    return;
+  }
+
+  const { riskIndex, analysis, regions } = economicData;
+
+  // The risk index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, riskIndex));
+
+  predictionState.riskIndices.economicInstabilityRisk.value = riskValue;
+  predictionState.riskIndices.economicInstabilityRisk.confidence = 0.80;
+  predictionState.riskIndices.economicInstabilityRisk.riskIndex = riskIndex;
+  predictionState.riskIndices.economicInstabilityRisk.riskLevel = analysis?.riskLevel || 'Unknown';
+  predictionState.riskIndices.economicInstabilityRisk.regions = regions || [];
+
+  console.log(`[PredictionEngine] Economic Instability Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+}
+
+/**
+  * Updates the Geopolitical Instability Risk Index based on global conflict data.
+  */
+async function updateGeopoliticalInstabilityRiskIndex() {
+  console.log('[PredictionEngine] Updating Geopolitical Instability Risk Index...');
+  const geopoliticalData = await fetchInternalData('/api/global-risk/geopolitical-instability');
+
+  if (!geopoliticalData || geopoliticalData.riskIndex === undefined) {
+    console.error('[PredictionEngine] Invalid geopolitical instability data received.');
+    return;
+  }
+
+  const { riskIndex, analysis, regions } = geopoliticalData;
+
+  // The risk index is already calculated by the service (0-100 scale)
+  // We use it directly as the risk value
+  const riskValue = Math.min(100, Math.max(0, riskIndex));
+
+  predictionState.riskIndices.geopoliticalInstabilityRisk.value = riskValue;
+  predictionState.riskIndices.geopoliticalInstabilityRisk.confidence = 0.75;
+  predictionState.riskIndices.geopoliticalInstabilityRisk.riskIndex = riskIndex;
+  predictionState.riskIndices.geopoliticalInstabilityRisk.riskLevel = analysis?.riskLevel || 'Unknown';
+  predictionState.riskIndices.geopoliticalInstabilityRisk.regions = regions || [];
+
+  console.log(`[PredictionEngine] Geopolitical Instability Risk Index updated to ${riskValue} (${analysis?.riskLevel || 'Unknown'} risk) based on ${regions?.length || 0} regions.`);
+}
+
+/**
   * Calculates the Multi-Domain Risk Index based on all individual risk indices.
   * This is a weighted average for demonstration.
   */
 function updateMultiDomainRiskIndex() {
   console.log('[PredictionEngine] Calculating Multi-Domain Risk Index...');
-  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk, cryptoVolatilityRisk, biodiversityRisk } = predictionState.riskIndices;
+  const { famineRisk, geophysicalRisk, supplyChainRisk, climateExtremesRisk, communityResilienceRisk, cryptoVolatilityRisk, biodiversityRisk, pandemicsRisk, cybersecurityRisk, economicInstabilityRisk, geopoliticalInstabilityRisk } = predictionState.riskIndices;
 
-  const famineWeight = 0.12;
-  const geoWeight = 0.12;
-  const supplyChainWeight = 0.12;
-  const climateWeight = 0.12;
-  const resilienceWeight = 0.12;
-  const cryptoWeight = 0.20; // Higher weight for crypto volatility as emerging risk
-  const biodiversityWeight = 0.20; // Higher weight for biodiversity as environmental risk
+  const famineWeight = 0.08;
+  const geoWeight = 0.08;
+  const supplyChainWeight = 0.08;
+  const climateWeight = 0.08;
+  const resilienceWeight = 0.08;
+  const cryptoWeight = 0.10; // Adjusted weight for crypto volatility
+  const biodiversityWeight = 0.10; // Adjusted weight for biodiversity
+  const pandemicsWeight = 0.10; // New weight for pandemics risk
+  const cybersecurityWeight = 0.10; // New weight for cybersecurity risk
+  const economicInstabilityWeight = 0.10; // New weight for economic instability
+  const geopoliticalInstabilityWeight = 0.10; // New weight for geopolitical instability
 
   const famineValue = famineRisk.value || 0;
   const geoValue = geophysicalRisk.value || 0;
@@ -383,9 +527,13 @@ function updateMultiDomainRiskIndex() {
   const resilienceValue = communityResilienceRisk.value || 0;
   const cryptoValue = cryptoVolatilityRisk.value || 0;
   const biodiversityValue = biodiversityRisk.value || 0;
+  const pandemicsValue = pandemicsRisk.value || 0;
+  const cybersecurityValue = cybersecurityRisk.value || 0;
+  const economicInstabilityValue = economicInstabilityRisk.value || 0;
+  const geopoliticalInstabilityValue = geopoliticalInstabilityRisk.value || 0;
 
-  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight) + (cryptoValue * cryptoWeight) + (biodiversityValue * biodiversityWeight);
-  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight) + (cryptoVolatilityRisk.confidence * cryptoWeight) + (biodiversityRisk.confidence * biodiversityWeight);
+  const totalRisk = (famineValue * famineWeight) + (geoValue * geoWeight) + (supplyChainValue * supplyChainWeight) + (climateValue * climateWeight) + (resilienceValue * resilienceWeight) + (cryptoValue * cryptoWeight) + (biodiversityValue * biodiversityWeight) + (pandemicsValue * pandemicsWeight) + (cybersecurityValue * cybersecurityWeight) + (economicInstabilityValue * economicInstabilityWeight) + (geopoliticalInstabilityValue * geopoliticalInstabilityWeight);
+  const weightedConfidence = (famineRisk.confidence * famineWeight) + (geophysicalRisk.confidence * geoWeight) + (supplyChainRisk.confidence * supplyChainWeight) + (climateExtremesRisk.confidence * climateWeight) + (communityResilienceRisk.confidence * resilienceWeight) + (cryptoVolatilityRisk.confidence * cryptoWeight) + (biodiversityRisk.confidence * biodiversityWeight) + (pandemicsRisk.confidence * pandemicsWeight) + (cybersecurityRisk.confidence * cybersecurityWeight) + (economicInstabilityRisk.confidence * economicInstabilityWeight) + (geopoliticalInstabilityRisk.confidence * geopoliticalInstabilityWeight);
 
   predictionState.multiDomainRiskIndex = {
     value: parseFloat(totalRisk.toFixed(2)),
@@ -429,6 +577,10 @@ async function runProphecyCycle() {
       updateCommunityResilienceRiskIndex(),
       updateCryptoVolatilityRiskIndex(),
       updateBiodiversityRiskIndex(),
+      updatePandemicsRiskIndex(),
+      updateCybersecurityRiskIndex(),
+      updateEconomicInstabilityRiskIndex(),
+      updateGeopoliticalInstabilityRiskIndex(),
     ]);
 
     updateMultiDomainRiskIndex();

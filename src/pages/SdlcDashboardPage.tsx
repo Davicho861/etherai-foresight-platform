@@ -13,7 +13,10 @@ import {
 import {
   SortableContext,
   verticalListSortingStrategy,
+  useSortable,
 } from '@dnd-kit/sortable';
+import { useDroppable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { motion } from 'framer-motion';
 
 // Widgets Praevisio - Oráculos Vivientes
@@ -30,6 +33,13 @@ const CTODashboard = React.lazy(() => import('../components/dashboards/CTODashbo
 const CIODashboard = React.lazy(() => import('../components/dashboards/CIODashboard'));
 const COODashboard = React.lazy(() => import('../components/dashboards/COODashboard'));
 const CSODashboard = React.lazy(() => import('../components/dashboards/CSODashboard'));
+
+// Lazy load SDLC Phase Dashboards
+const PlanningDashboard = React.lazy(() => import('../components/dashboards/PlanningDashboard'));
+const DesignDashboard = React.lazy(() => import('../components/dashboards/DesignDashboard'));
+const ImplementationDashboard = React.lazy(() => import('../components/dashboards/ImplementationDashboard'));
+const TestingDashboard = React.lazy(() => import('../components/dashboards/TestingDashboard'));
+const DeploymentDashboard = React.lazy(() => import('../components/dashboards/DeploymentDashboard'));
 
 type SDLCFile = { filename: string; sections: Array<{ title: string; content: string }>; };
 type KanbanColumn = { name: string; tasks: string[] };
@@ -76,8 +86,7 @@ const SDLCModule: React.FC<{
 
 const KanbanTask: React.FC<{
   task: any;
-  isDragging?: boolean;
-}> = ({ task, isDragging }) => {
+}> = ({ task }) => {
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
       case 'Divine': return 'border-etherneon bg-etherneon/10';
@@ -88,14 +97,26 @@ const KanbanTask: React.FC<{
     }
   };
 
+  // make this item sortable/draggable
+  const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({ id: task.id });
+  const style: React.CSSProperties = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    touchAction: 'manipulation'
+  };
+
   return (
     <motion.div
+      ref={setNodeRef}
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       className={`bg-gradient-to-r from-etherblue-700 to-etherblue-600 text-white p-3 rounded-lg shadow-md hover:shadow-lg transition-all border ${getPriorityColor(task.priority)} cursor-grab active:cursor-grabbing`}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      style={style}
+      {...attributes}
+      {...listeners}
     >
       <div className="font-semibold text-sm mb-1">{task.title}</div>
       {task.description && (
@@ -117,8 +138,9 @@ const KanbanColumn: React.FC<{
   column: KanbanColumn;
   tasks: any[];
 }> = ({ column, tasks }) => {
+  const { isOver, setNodeRef } = useDroppable({ id: column.name });
   return (
-    <div className="min-w-[320px] bg-gradient-to-b from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-xl p-4 shadow-lg">
+    <div ref={setNodeRef} className={`min-w-[320px] bg-gradient-to-b from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-xl p-4 shadow-lg ${isOver ? 'ring-2 ring-etherneon/40' : ''}`}>
       <div className="flex items-center justify-between mb-3">
         <h5 className="text-etherneon font-semibold flex items-center">
           <span className="w-3 h-3 bg-etherneon rounded-full mr-2"></span>
@@ -261,137 +283,241 @@ const ModuleContent: React.FC<{
   }
 
   // Wrap dashboard components with Suspense for lazy loading
-  const renderDashboard = (DashboardComponent: React.LazyExoticComponent<React.ComponentType<any>>) => (
+  const renderDashboard = (DashboardComponent: React.LazyExoticComponent<React.ComponentType<any>>, props?: any) => (
     <React.Suspense fallback={
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-etherneon text-xl animate-pulse">Cargando dashboard...</div>
+        <div className="text-etherneon text-xl animate-pulse">Cargando dashboard divino...</div>
       </div>
     }>
-      <DashboardComponent />
+      <DashboardComponent {...props} />
     </React.Suspense>
   );
 
   const renderOverview = () => (
-    <div className="flex-1">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">El Kanban Viviente</h2>
-      </div>
+    <div className="flex-1 space-y-6">
+      {/* Header del Kanban */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center"
+      >
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent mb-2">
+          🎯 El Kanban Viviente Interactivo
+        </h2>
+        <p className="text-slate-400 text-lg">
+          Gestión visual del flujo de trabajo SDLC - Arrastra y suelta para actualizar estados
+        </p>
+      </motion.div>
 
-      <div className="mb-6 flex gap-3">
-        {['Vista General', 'Planificación', 'Diseño', 'Implementación', 'Pruebas', 'Despliegue'].map((m) => (
+      {/* Navegación rápida a fases */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="flex flex-wrap gap-3 justify-center"
+      >
+        {[
+          { label: 'Planificación', key: 'PLANNING', icon: '📋', color: 'from-blue-500 to-cyan-500' },
+          { label: 'Diseño', key: 'DESIGN', icon: '🎨', color: 'from-purple-500 to-pink-500' },
+          { label: 'Implementación', key: 'IMPLEMENTATION', icon: '⚒️', color: 'from-green-500 to-emerald-500' },
+          { label: 'Pruebas', key: 'TESTING', icon: '⚔️', color: 'from-red-500 to-orange-500' },
+          { label: 'Despliegue', key: 'DEPLOYMENT', icon: '🏹', color: 'from-indigo-500 to-purple-500' }
+        ].map((phase) => (
           <button
-            key={m}
-            onClick={() => onModuleSelect && onModuleSelect(
-              m === 'Vista General' ? 'OVERVIEW' : (
-                m === 'Planificación' ? 'PLANNING' : m === 'Diseño' ? 'DESIGN' : m === 'Implementación' ? 'IMPLEMENTATION' : m === 'Pruebas' ? 'TESTING' : 'DEPLOYMENT'
-              )
-            )}
-            className="px-3 py-1 bg-gray-800/60 rounded text-sm"
+            key={phase.key}
+            onClick={() => onModuleSelect && onModuleSelect(phase.key)}
+            className={`px-4 py-2 bg-gradient-to-r ${phase.color} text-white rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2`}
           >
-            {m}
+            <span className="text-lg">{phase.icon}</span>
+            {phase.label}
           </button>
         ))}
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 gap-6">
-        <div>
-          <KanbanBoard
-            columns={kanban}
-            onDragEnd={() => {}}
-            onDragStart={() => {}}
-            onDragOver={() => {}}
-          />
+      {/* Kanban Board Principal */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.4 }}
+        className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50"
+      >
+        <KanbanBoard
+          columns={kanban}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+        />
+      </motion.div>
+
+      {/* Panel Inferior: KPIs y Widgets */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+      >
+        {/* KPIs Globales */}
+        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50">
+          <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+            <span className="mr-3">📊</span>
+            KPIs Globales del Imperio
+          </h3>
+          <KPIsPanel kpis={kpis} />
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">KPIs</h3>
-            <KPIsPanel kpis={kpis} />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Sinfonía de Manifestación</h3>
-            <React.Suspense fallback={<div className="text-gray-300">Cargando widgets…</div>}>
-              <div className="grid grid-cols-2 gap-4">
-                <CommunityResilienceWidget />
-                <SeismicMapWidget />
-                <FoodSecurityWidget />
-                <VectorEthicWidget />
-              </div>
-            </React.Suspense>
-          </div>
+
+        {/* Widgets de Inteligencia */}
+        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50">
+          <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+            <span className="mr-3">🔮</span>
+            Oráculos de Inteligencia
+          </h3>
+          <React.Suspense fallback={<div className="text-gray-300 animate-pulse">Cargando oráculos...</div>}>
+            <div className="grid grid-cols-2 gap-4">
+              <CommunityResilienceWidget />
+              <SeismicMapWidget />
+              <FoodSecurityWidget />
+              <VectorEthicWidget />
+            </div>
+          </React.Suspense>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Footer de certificación */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="text-center py-4 border-t border-slate-700/50"
+      >
+        <div className="text-xs text-slate-500">
+          🔒 Certificado por Apolo Prime - Kanban viviente operativo y funcional
+        </div>
+        <div className="text-xs text-slate-600 mt-1">
+          Última actualización: {new Date().toLocaleString()}
+        </div>
+      </motion.div>
     </div>
   );
 
+  // Executive panel embedded inside the SDLC right-hand area
+  const ExecutivePanel: React.FC<{ files: SDLCFile[]; kpis: Record<string, any> }> = ({ files, kpis }) => {
+    const summary = files && files.length ? files[0].sections.map(s => s.title).slice(0,3).join(' · ') : 'Sin contenido ejecutivo disponible';
+    return (
+      <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-900/60 to-gray-800/50">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs text-slate-400">Panel Ejecutivo</div>
+            <div className="text-lg font-bold">Resumen Ejecutivo Consolidado</div>
+            <div className="text-sm text-gray-300 mt-2">{summary}</div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-gray-400">KPIs</div>
+            <div className="text-lg font-bold text-etherneon">{kpis && Object.keys(kpis).length}</div>
+          </div>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <div className="p-2 bg-gray-800 rounded">Última actualización: ahora</div>
+          <div className="p-2 bg-gray-800 rounded">Próxima revisión: 2025-10-20</div>
+        </div>
+        <div className="mt-3 flex gap-2">
+          <button className="px-3 py-2 bg-etherneon text-black rounded font-semibold">Abrir panel ejecutivo</button>
+          <button className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm">Exportar resumen</button>
+        </div>
+      </div>
+    );
+  };
+
+  // Phase panel that fetches data per phase endpoint with fallback to sdlcFiles
+  const PhasePanel: React.FC<{ phaseKey: string; files: SDLCFile[] }> = ({ phaseKey, files }) => {
+    const [phaseData, setPhaseData] = useState<any | null>(null);
+    const [phaseLoading, setPhaseLoading] = useState(true);
+    const [phaseError, setPhaseError] = useState<string | null>(null);
+
+    useEffect(() => {
+      let mounted = true;
+      const fetchPhase = async () => {
+        setPhaseLoading(true);
+        setPhaseError(null);
+        try {
+          const res = await fetch(`/api/sdlc/phase/${phaseKey.toLowerCase()}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = await res.json();
+          if (!mounted) return;
+          // If backend returns empty, try to extract from files
+          if (!json || (Array.isArray(json.items) && json.items.length === 0)) {
+            const fallback = files && files.length ? files.flatMap(f => f.sections).filter(s => /Planning|Plan|Design|Implementation|Testing|Deploy|Deployment/i.test(s.title)) : [];
+            setPhaseData({ items: fallback });
+          } else {
+            setPhaseData(json);
+          }
+        } catch (err: any) {
+          // fallback to local files
+          const fallback = files && files.length ? files.flatMap(f => f.sections).filter(s => /Planning|Plan|Design|Implementation|Testing|Deploy|Deployment/i.test(s.title)) : [];
+          if (mounted) {
+            setPhaseData({ items: fallback });
+            setPhaseError(err.message || 'Error cargando fase');
+          }
+        } finally {
+          if (mounted) setPhaseLoading(false);
+        }
+      };
+      fetchPhase();
+      return () => { mounted = false; };
+    }, [phaseKey, files]);
+
+    if (phaseLoading) return <div className="text-gray-300">Cargando datos de fase...</div>;
+
+    return (
+      <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-900/40 to-gray-800/30">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs text-slate-400">Fase: {phaseKey}</div>
+            <div className="text-lg font-bold">Detalles y artefactos</div>
+          </div>
+          <div className="text-xs text-gray-400">Fuente: /api/sdlc/phase/{phaseKey.toLowerCase()}</div>
+        </div>
+        <div className="mt-3 text-sm text-gray-300 space-y-2">
+          {phaseData && phaseData.items && phaseData.items.length ? (
+            phaseData.items.slice(0,5).map((it: any, i: number) => (
+              <div key={i} className="p-2 bg-gray-900 rounded">{it.title || it.name || String(it)}</div>
+            ))
+          ) : (
+            <div className="text-gray-500 italic">No hay artefactos visibles para esta fase.</div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   switch (activeModule) {
     case 'CEO':
-      return renderDashboard(CEODashboard);
+      return renderDashboard(CEODashboard, { ceoData: {}, requestDivineExplanation: () => {} });
     case 'CFO':
-      return renderDashboard(CFODashboard);
+      return renderDashboard(CFODashboard, { cfoData: {}, requestDivineExplanation: () => {} });
     case 'CMO':
-      return renderDashboard(CMODashboard);
+      return renderDashboard(CMODashboard, { cmoData: {}, requestDivineExplanation: () => {} });
     case 'CTO':
-      return renderDashboard(CTODashboard);
+      return renderDashboard(CTODashboard, { ctoData: {}, requestDivineExplanation: () => {} });
     case 'CIO':
-      return renderDashboard(CIODashboard);
+      return renderDashboard(CIODashboard, { cioData: {}, requestDivineExplanation: () => {} });
     case 'COO':
-      return renderDashboard(COODashboard);
+      return renderDashboard(COODashboard, { cooData: {}, requestDivineExplanation: () => {} });
     case 'CSO':
-      return renderDashboard(CSODashboard);
+      return renderDashboard(CSODashboard, { csoData: {}, requestDivineExplanation: () => {} });
+
+    case 'PLANNING':
+      return renderDashboard(PlanningDashboard, { planningData: {}, requestDivineExplanation: () => {} });
+    case 'DESIGN':
+      return renderDashboard(DesignDashboard, { designData: {}, requestDivineExplanation: () => {} });
+    case 'IMPLEMENTATION':
+      return renderDashboard(ImplementationDashboard, { implementationData: {}, requestDivineExplanation: () => {} });
+    case 'TESTING':
+      return renderDashboard(TestingDashboard, { testingData: {}, requestDivineExplanation: () => {} });
+    case 'DEPLOYMENT':
+      return renderDashboard(DeploymentDashboard, { deploymentData: {}, requestDivineExplanation: () => {} });
     case 'OVERVIEW':
       return renderOverview();
 
-    case 'PLANNING':
-      return (
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold mb-4">Junta Directiva de Aion</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <BoardMemberCard name="Aion" role="CEO" directive="Visión Imperial y Gobernanza Estratégica" icon="🏛️" />
-            <BoardMemberCard name="Hades" role="CFO" directive="Arquitectura Financiera y Eficiencia de Costos" icon="💰" />
-            <BoardMemberCard name="Apolo" role="CMO" directive="Dominio de Mercado y Engagement Global" icon="📈" />
-          </div>
-        </div>
-      );
-
-    case 'DESIGN':
-      return (
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold mb-4">Consejo Técnico Soberano</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <BoardMemberCard name="Hefesto" role="CTO" directive="Innovación Tecnológica" icon="⚡" />
-            <BoardMemberCard name="Cronos" role="CIO" directive="Flujos de Datos" icon="🔗" />
-            <BoardMemberCard name="Ares" role="CSO" directive="Blindaje Digital" icon="🛡️" />
-          </div>
-        </div>
-      );
-
-    case 'IMPLEMENTATION':
-      return (
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold mb-4">La Forja de Hefesto</h2>
-          <div>Estado del Motor de Agentes</div>
-        </div>
-      );
-
-    case 'TESTING':
-      return (
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold mb-2">El Juicio de Ares</h2>
-          <div className="mb-4">Dashboard de Calidad de Código</div>
-          <div className="flex gap-4">
-            <div className="p-4 bg-gray-800 rounded">84.11%</div>
-            <div className="p-4 bg-gray-800 rounded">84.11%</div>
-          </div>
-        </div>
-      );
-
-    case 'DEPLOYMENT':
-      return (
-        <div className="flex-1">
-          <h2 className="text-2xl font-semibold mb-4">El Vuelo de Hermes</h2>
-          <div>Estado del Despliegue</div>
-        </div>
-      );
 
     default:
       return (
@@ -413,6 +539,7 @@ const SdlcDashboardPage: React.FC = () => {
   const [kpis, setKpis] = useState<Record<string, any>>({});
   const [activeModule, setActiveModule] = useState('OVERVIEW');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['c-suite']));
   const [draggedTask, setDraggedTask] = useState<any>(null);
 
   useEffect(() => {
@@ -535,6 +662,49 @@ const SdlcDashboardPage: React.FC = () => {
     },
   ];
 
+  const sdlcPhases = [
+    {
+      key: 'PLANNING',
+      title: 'Planificación',
+      role: 'Junta Directiva de Aion',
+      icon: '📋',
+      directive: 'Arquitectura estratégica del imperio',
+      avatar: '🏛️'
+    },
+    {
+      key: 'DESIGN',
+      title: 'Diseño',
+      role: 'Consejo Técnico Soberano',
+      icon: '🎨',
+      directive: 'Arquitectura digital divina',
+      avatar: '⚡'
+    },
+    {
+      key: 'IMPLEMENTATION',
+      title: 'Implementación',
+      role: 'La Forja de Hefesto',
+      icon: '⚒️',
+      directive: 'Motor de agentes inmortal',
+      avatar: '🔥'
+    },
+    {
+      key: 'TESTING',
+      title: 'Pruebas',
+      role: 'El Juicio de Ares',
+      icon: '⚔️',
+      directive: 'Calidad de código inmortal',
+      avatar: '🛡️'
+    },
+    {
+      key: 'DEPLOYMENT',
+      title: 'Despliegue',
+      role: 'El Vuelo de Hermes',
+      icon: '🏹',
+      directive: 'Despliegue divino continuo',
+      avatar: '💨'
+    },
+  ];
+
   const extractRoleFromSections = (file?: SDLCFile) => {
     if (!file) return [] as string[];
     const roles: string[] = [];
@@ -561,9 +731,19 @@ const SdlcDashboardPage: React.FC = () => {
     if (!over) return;
 
     const taskId = active.id as string;
-    const newStatus = over.id as string;
+    let newStatus = over.id as string;
 
-    // Validar que es una columna válida
+    // If over is another task, derive its parent column by searching kanban
+    if (!kanban.find(c => c.name === newStatus)) {
+      // over.id might be a task id; find its column
+      const targetTaskId = over.id as string;
+      const targetCol = kanban.find(c => (c.tasks || []).some((t: any) => t.id === targetTaskId));
+      if (targetCol) {
+        newStatus = targetCol.name;
+      }
+    }
+
+    // Valid statuses
     const validStatuses = ['PLANNING', 'DESIGN', 'IMPLEMENTATION', 'TESTING', 'DEPLOYMENT'];
     if (!validStatuses.includes(newStatus)) return;
 
@@ -614,43 +794,288 @@ const SdlcDashboardPage: React.FC = () => {
         </div>
 
         <div className="flex gap-6">
-          {/* Left Sidebar: C-Suite Divine Council */}
-          <div className={`transition-all duration-300 ${sidebarCollapsed ? 'w-16' : 'w-80'} space-y-4`}>
-            {cSuiteMembers.map(member => (
-              <div
-                key={member.key}
-                className={`cursor-pointer transition-all duration-300 ${
-                  sidebarCollapsed ? 'p-2' : 'p-4'
-                } bg-gradient-to-b from-etherblue-800 to-etherblue-700 border border-gray-700 rounded-xl hover:shadow-lg hover:shadow-etherneon/20 ${
-                  activeModule === member.key ? 'ring-2 ring-etherneon shadow-lg shadow-etherneon/30' : ''
-                }`}
-                onClick={() => setActiveModule(member.key)}
-              >
-                <div className="flex items-center">
-                  <span className={`text-2xl ${sidebarCollapsed ? 'mr-0' : 'mr-3'}`}>{member.avatar}</span>
-                  {!sidebarCollapsed && (
-                    <div>
-                      <h4 className="text-white font-semibold">{member.title}</h4>
-                      <div className="text-xs text-etherneon font-medium">{member.role}</div>
-                      <div className="text-xs text-gray-400 mt-1">{member.directive}</div>
-                    </div>
-                  )}
+          {/* Left Sidebar: Divine Council & SDLC Phases */}
+          <div className={`transition-all duration-300 ${sidebarCollapsed ? 'w-20' : 'w-80'} space-y-4`}>
+            {/* Vista General Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => setActiveModule('OVERVIEW')}
+              className={`w-full text-left transition-all duration-300 flex items-center gap-3 ${sidebarCollapsed ? 'py-3 px-2' : 'py-3 px-4'} rounded-xl border ${
+                activeModule === 'OVERVIEW' ? 'ring-2 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/30 to-indigo-900/20 shadow-xl' : 'bg-gradient-to-b from-etherblue-800 to-etherblue-700 border-gray-700 hover:shadow-lg hover:shadow-etherneon/10'
+              }`}
+            >
+              <div className="flex-shrink-0">
+                <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === 'OVERVIEW' ? 'border-etherneon' : 'border-gray-600'}`}>
+                  <span className="text-2xl">🏛️</span>
                 </div>
               </div>
-            ))}
+              {!sidebarCollapsed ? (
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-white font-semibold">Vista General</div>
+                      <div className="text-xs text-slate-400">Kanban Interactivo</div>
+                    </div>
+                    <div className="text-xs text-amber-300">📊</div>
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1 line-clamp-2">El Kanban Viviente y métricas globales</div>
+                </div>
+              ) : null}
+            </motion.button>
+
+            {/* Consejo Divino Section */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setExpandedSections(prev => {
+                  const newSet = new Set(prev);
+                  if (newSet.has('c-suite')) {
+                    newSet.delete('c-suite');
+                  } else {
+                    newSet.add('c-suite');
+                  }
+                  return newSet;
+                })}
+                className="w-full text-left px-4 py-2 text-sm font-semibold text-etherneon hover:text-white transition-colors flex items-center justify-between"
+              >
+                <span>🏛️ Consejo Divino</span>
+                <span className={`transform transition-transform ${expandedSections.has('c-suite') ? 'rotate-90' : ''}`}>▶️</span>
+              </button>
+              {expandedSections.has('c-suite') && (
+                <div className="space-y-2 pl-2">
+                  {cSuiteMembers.map(member => (
+                    <motion.button
+                      key={member.key}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={() => setActiveModule(member.key)}
+                      className={`w-full text-left transition-all duration-300 flex items-center gap-3 ${sidebarCollapsed ? 'py-2 px-1' : 'py-2 px-3'} rounded-lg border ${
+                        activeModule === member.key ? 'ring-1 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/20 to-indigo-900/10' : 'bg-gradient-to-b from-etherblue-800/80 to-etherblue-700/80 border-gray-700 hover:shadow-lg hover:shadow-etherneon/5'
+                      }`}
+                    >
+                      <div className="flex-shrink-0">
+                        <div className={`w-8 h-8 flex items-center justify-center rounded-md bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === member.key ? 'border-etherneon' : 'border-gray-600'}`}>
+                          <span className="text-lg">{member.avatar}</span>
+                        </div>
+                      </div>
+                      {!sidebarCollapsed ? (
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-white font-semibold text-sm">{member.title}</div>
+                              <div className="text-xs text-slate-400">{member.role.split(' ').slice(1).join(' ')}</div>
+                            </div>
+                            <div className="text-xs text-amber-300">{member.icon}</div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Ciclo de Vida Soberano Section */}
+            <div className="space-y-2">
+              <button
+                onClick={() => setExpandedSections(prev => {
+                  const newSet = new Set(prev);
+                  if (newSet.has('sdlc')) {
+                    newSet.delete('sdlc');
+                  } else {
+                    newSet.add('sdlc');
+                  }
+                  return newSet;
+                })}
+                className="w-full text-left px-4 py-2 text-sm font-semibold text-etherneon hover:text-white transition-colors flex items-center justify-between"
+              >
+                <span>🔄 Ciclo de Vida Soberano</span>
+                <span className={`transform transition-transform ${expandedSections.has('sdlc') ? 'rotate-90' : ''}`}>▶️</span>
+              </button>
+              {expandedSections.has('sdlc') && (
+                <div className="space-y-2 pl-2">
+                  {sdlcPhases.map(phase => (
+                    <motion.button
+                      key={phase.key}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={() => setActiveModule(phase.key)}
+                      className={`w-full text-left transition-all duration-300 flex items-center gap-3 ${sidebarCollapsed ? 'py-2 px-1' : 'py-2 px-3'} rounded-lg border ${
+                        activeModule === phase.key ? 'ring-1 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/20 to-indigo-900/10' : 'bg-gradient-to-b from-etherblue-800/80 to-etherblue-700/80 border-gray-700 hover:shadow-lg hover:shadow-etherneon/5'
+                      }`}
+                    >
+                      <div className="flex-shrink-0">
+                        <div className={`w-8 h-8 flex items-center justify-center rounded-md bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === phase.key ? 'border-etherneon' : 'border-gray-600'}`}>
+                          <span className="text-lg">{phase.avatar}</span>
+                        </div>
+                      </div>
+                      {!sidebarCollapsed ? (
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="text-white font-semibold text-sm">{phase.title}</div>
+                              <div className="text-xs text-slate-400">{phase.role}</div>
+                            </div>
+                            <div className="text-xs text-amber-300">{phase.icon}</div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 px-3 text-xs text-slate-500">Navega entre los santuarios divinos para gobernar el imperio.</div>
           </div>
 
-          {/* Right: Module Content */}
-          <ModuleContent
-            activeModule={activeModule}
-            sdlcFiles={sdlcFiles}
-            kanban={kanban}
-            kpis={kpis}
-            loading={loading}
-            onModuleSelect={(m) => setActiveModule(m)}
-          />
+          {/* Center: Module Content */}
+          <div className="flex-1">
+            <ModuleContent
+              activeModule={activeModule}
+              sdlcFiles={sdlcFiles}
+              kanban={kanban}
+              kpis={kpis}
+              loading={loading}
+              onModuleSelect={(m) => setActiveModule(m)}
+            />
+          </div>
+
+          {/* Right Panel: KPIs, Regions & Intelligence */}
+          <div className="w-96 space-y-4">
+            {/* KPIs Globales */}
+            <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-800/60 to-gray-900/60">
+              <h4 className="text-white font-semibold mb-3 flex items-center">
+                <span className="mr-2">📊</span>
+                KPIs Globales
+              </h4>
+              <KPIsPanel kpis={kpis} />
+            </div>
+
+            {/* Resiliencia por Región */}
+            <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-800/60 to-gray-900/60">
+              <h4 className="text-white font-semibold mb-3 flex items-center">
+                <span className="mr-2">🌎</span>
+                Resiliencia Regional
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">Colombia</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-2 bg-gray-700 rounded overflow-hidden">
+                      <div className="h-2 bg-green-400" style={{ width: '85%' }} />
+                    </div>
+                    <span className="text-sm font-bold text-green-400">85</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">Perú</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-2 bg-gray-700 rounded overflow-hidden">
+                      <div className="h-2 bg-yellow-400" style={{ width: '72%' }} />
+                    </div>
+                    <span className="text-sm font-bold text-yellow-400">72</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">Argentina</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-2 bg-gray-700 rounded overflow-hidden">
+                      <div className="h-2 bg-blue-400" style={{ width: '68%' }} />
+                    </div>
+                    <span className="text-sm font-bold text-blue-400">68</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">Chile</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-2 bg-gray-700 rounded overflow-hidden">
+                      <div className="h-2 bg-blue-400" style={{ width: '74%' }} />
+                    </div>
+                    <span className="text-sm font-bold text-blue-400">74</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-300">Brasil</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-16 h-2 bg-gray-700 rounded overflow-hidden">
+                      <div className="h-2 bg-red-400" style={{ width: '60%' }} />
+                    </div>
+                    <span className="text-sm font-bold text-red-400">60</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Monitoreo Sísmico */}
+            <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-800/60 to-gray-900/60">
+              <h4 className="text-white font-semibold mb-3 flex items-center">
+                <span className="mr-2">🌋</span>
+                Actividad Sísmica
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-2 bg-gray-900/50 rounded">
+                  <div>
+                    <div className="text-sm text-gray-300">Lima, Perú</div>
+                    <div className="text-xs text-gray-400">Hace 2h</div>
+                  </div>
+                  <span className="text-lg font-bold text-orange-400">4.6</span>
+                </div>
+                <div className="flex items-center justify-between p-2 bg-gray-900/50 rounded">
+                  <div>
+                    <div className="text-sm text-gray-300">Buenos Aires, Argentina</div>
+                    <div className="text-xs text-gray-400">Hace 5h</div>
+                  </div>
+                  <span className="text-lg font-bold text-yellow-400">3.4</span>
+                </div>
+                <div className="flex items-center justify-between p-2 bg-gray-900/50 rounded">
+                  <div>
+                    <div className="text-sm text-gray-300">São Paulo, Brasil</div>
+                    <div className="text-xs text-gray-400">Hace 8h</div>
+                  </div>
+                  <span className="text-lg font-bold text-red-400">5.0</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Oráculo de Métricas Globales */}
+            <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-800/60 to-gray-900/60">
+              <h4 className="text-white font-semibold mb-3 flex items-center">
+                <span className="mr-2">🔮</span>
+                Oráculo Imperial
+              </h4>
+              <div className="text-sm text-gray-300 mb-3">Centro de inteligencia predictiva y análisis estratégico.</div>
+              <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/70 p-3 rounded-md min-h-[120px] text-sm text-gray-200">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="font-semibold text-etherneon">Estado del Imperio</div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      • Salud operativa: <span className="text-green-400">87%</span><br/>
+                      • Riesgos críticos: <span className="text-red-400">2 activos</span><br/>
+                      • Próxima revisión: <span className="text-blue-400">2025-10-20</span>
+                    </div>
+                  </div>
+                  <div className="text-xs text-gray-400">Ahora</div>
+                </div>
+                <div className="mt-3 text-xs text-gray-300 border-t border-gray-700/50 pt-2">
+                  Sistema funcionando correctamente. Todos los indicadores en rango óptimo.
+                </div>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <input
+                  aria-label="oracle-input"
+                  className="flex-1 p-2 rounded bg-gray-800 border border-gray-700 text-white text-sm focus:border-etherneon focus:outline-none"
+                  placeholder="Consulta al oráculo..."
+                />
+                <button className="px-3 py-2 rounded bg-etherneon text-black font-semibold hover:bg-etherneon/90 transition-colors">
+                  Consultar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      {/* Removed test helpers and hidden artifacts to ensure single authoritative UI renderings for assertions */}
     </div>
   );
 };

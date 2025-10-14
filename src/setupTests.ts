@@ -1,7 +1,7 @@
 // setupTests: mocks y helpers para el entorno de testing
 // Cargar matchers de jest-dom (compatible con versiones recientes)
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   require('@testing-library/jest-dom');
 } catch (e) {
   // no-op si no está presente
@@ -12,7 +12,7 @@ try {
 if (typeof (global as any).fetch === 'undefined') {
   // Proveer un mock por defecto que devuelve un body vacío; los tests individuales
   // pueden sobrescribirlo con jest.spyOn(global, 'fetch').mockResolvedValueOnce(...)
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const jestRequire = require('jest-mock');
   (global as any).fetch = jestRequire.fn(() => Promise.resolve({ ok: true, json: async () => ({}) }));
 }
@@ -43,7 +43,7 @@ jest.mock('recharts', () => {
   const original = jest.requireActual('recharts');
   // require React inside the factory to avoid referencing out-of-scope variables
   // (jest restricts access to outer scope in module factories)
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const React = require('react');
   return {
     __esModule: true,
@@ -58,7 +58,7 @@ jest.mock('recharts', () => {
 // - Geographies llamará a children como función con { geographies: [...] }
 // - ComposableMap y Geography son implementaciones mínimas para JSDOM
 jest.mock('react-simple-maps', () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const React = require('react');
 
   // Mock geographies que cubren los códigos ISO_A3 usados en los datos de demo

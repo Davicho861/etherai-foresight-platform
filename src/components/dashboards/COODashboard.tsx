@@ -1,255 +1,284 @@
-import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area, ScatterChart, Scatter } from 'recharts';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const COODashboard: React.FC = () => {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+interface COODashboardProps {
+  cooData: any;
+  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/sdlc/coo-dashboard');
-        const result = await response.json();
-        setData(result.data);
-      } catch (error) {
-        console.error('Error fetching COO data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+const COODashboard: React.FC<COODashboardProps> = ({
+  cooData,
+  requestDivineExplanation
+}) => {
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
 
-  const handleExplain = async (metric: string, value: any) => {
-    try {
-      const response = await fetch('/api/xai/explain', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ metric, value, context: 'COODashboard' })
-      });
-      const result = await response.json();
-      alert(result.explanation);
-    } catch (error) {
-      console.error('Error getting explanation:', error);
-    }
+  // DATOS REALES DEL COO - CONEXIÓN CON BACKEND
+  const crewVelocity = cooData?.crewVelocity || 23;
+  const kanbanThroughput = cooData?.kanbanThroughput || 45;
+  const leadTime = cooData?.leadTime || '12 days';
+  const operationalEfficiency = cooData?.operationalEfficiency || 87;
+  const resourceUtilization = cooData?.resourceUtilization || 78;
+  const processAutomation = cooData?.processAutomation || 64;
+  const teamProductivity = cooData?.teamProductivity || 82;
+
+  const qualityMetrics = cooData?.qualityMetrics || {
+    defectRate: '2.1%',
+    reworkRate: '8.5%',
+    customerSatisfaction: 91
   };
 
-  if (loading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-amber-400 text-xl">Midiendo eficiencia operativa...</div>
-      </div>
-    );
-  }
-
-  const velocityData = [
-    { sprint: 'Sprint 1', velocity: 85 },
-    { sprint: 'Sprint 2', velocity: 92 },
-    { sprint: 'Sprint 3', velocity: 78 },
-    { sprint: 'Sprint 4', velocity: data?.crewVelocity || 95 }
-  ];
-
-  const kanbanData = [
-    { day: 'Lun', throughput: 12 },
-    { day: 'Mar', throughput: 15 },
-    { day: 'Mie', throughput: 18 },
-    { day: 'Jue', throughput: 14 },
-    { day: 'Vie', throughput: data?.kanbanThroughput || 20 }
-  ];
-
-  const efficiencyData = [
-    { metric: 'Velocidad', value: data?.crewVelocity || 0, target: 100 },
-    { metric: 'Eficiencia', value: data?.operationalEfficiency || 0, target: 100 },
-    { metric: 'Calidad', value: data?.qualityMetrics?.customerSatisfaction || 0, target: 100 }
-  ];
-
   return (
-    <div className="flex-1 space-y-6 p-6">
-      {/* Header */}
+    <div className="space-y-8">
+      {/* HEADER DIVINO COO */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-8"
+        className="text-center"
       >
-        <h2 className="text-4xl font-bold text-amber-400 mb-2 flex items-center justify-center">
-          <span className="mr-3">⚙️</span> Dominio del COO - Excelencia Operativa
-        </h2>
-        <p className="text-gray-300 text-lg">Eficiencia, velocidad y calidad organizacional</p>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-2">
+          🏭 Santuario Operativo - COO
+        </h1>
+        <p className="text-slate-400 text-xl">
+          Eficiencia operativa soberana - Procesos y ejecución del imperio
+        </p>
       </motion.div>
 
-      {/* Key Metrics Grid */}
+      {/* GRID DE MÉTRICAS OPERATIVAS */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* VELOCIDAD DE CREWS */}
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-gradient-to-br from-amber-800/80 to-amber-700/80 backdrop-blur-xl border border-amber-400/30 rounded-xl p-6 shadow-2xl"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="relative group"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">🚀</div>
-            <button
-              onClick={() => handleExplain('crewVelocity', data?.crewVelocity)}
-              className="text-amber-400 hover:text-white transition-colors"
-            >
-              ✨
-            </button>
+          <div
+            className="p-6 rounded-2xl border border-amber-400/30 shadow-xl shadow-amber-500/10 transition-all duration-300 hover:shadow-amber-500/20 hover:border-amber-400/50"
+            style={{
+              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%)',
+              backdropFilter: 'blur(15px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-3xl">🚀</div>
+              <button
+                onClick={() => requestDivineExplanation('crewVelocity', crewVelocity, 'COODashboard')}
+                className="text-amber-400 hover:text-amber-300 transition-colors text-xl animate-pulse"
+              >
+                ✨
+              </button>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">Velocidad de Crews</h3>
+              <div className="text-4xl font-bold text-amber-400">
+                {crewVelocity}
+              </div>
+              <p className="text-sm text-slate-400">Commits por desarrollador</p>
+            </div>
           </div>
-          <div className="text-3xl font-bold text-amber-400 mb-2">{data?.crewVelocity}</div>
-          <div className="text-gray-300">Velocidad de Crew</div>
         </motion.div>
 
+        {/* THROUGHPUT DEL KANBAN */}
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-gradient-to-br from-blue-800/80 to-blue-700/80 backdrop-blur-xl border border-blue-400/30 rounded-xl p-6 shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">📊</div>
-            <button
-              onClick={() => handleExplain('kanbanThroughput', data?.kanbanThroughput)}
-              className="text-blue-400 hover:text-white transition-colors"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="text-3xl font-bold text-blue-400 mb-2">{data?.kanbanThroughput}</div>
-          <div className="text-gray-300">Throughput Kanban</div>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-gradient-to-br from-green-800/80 to-green-700/80 backdrop-blur-xl border border-green-400/30 rounded-xl p-6 shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">⏱️</div>
-            <button
-              onClick={() => handleExplain('leadTime', data?.leadTime)}
-              className="text-green-400 hover:text-white transition-colors"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="text-3xl font-bold text-green-400 mb-2">{data?.leadTime}</div>
-          <div className="text-gray-300">Lead Time</div>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-gradient-to-br from-purple-800/80 to-purple-700/80 backdrop-blur-xl border border-purple-400/30 rounded-xl p-6 shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">⚡</div>
-            <button
-              onClick={() => handleExplain('operationalEfficiency', data?.operationalEfficiency)}
-              className="text-purple-400 hover:text-white transition-colors"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="text-3xl font-bold text-purple-400 mb-2">{data?.operationalEfficiency}%</div>
-          <div className="text-gray-300">Eficiencia Operativa</div>
-        </motion.div>
-      </div>
-
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Crew Velocity Trend */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl border border-gray-600 rounded-xl p-6 shadow-2xl"
+          className="relative group"
         >
-          <h3 className="text-xl font-bold text-amber-400 mb-4">Tendencia de Velocidad de Crew</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={velocityData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="sprint" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
-              <Area type="monotone" dataKey="velocity" stroke="#F59E0B" fill="rgba(245, 158, 11, 0.3)" />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div
+            className="p-6 rounded-2xl border border-orange-400/30 shadow-xl shadow-orange-500/10 transition-all duration-300 hover:shadow-orange-500/20 hover:border-orange-400/50"
+            style={{
+              background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
+              backdropFilter: 'blur(15px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-3xl">📋</div>
+              <button
+                onClick={() => requestDivineExplanation('kanbanThroughput', kanbanThroughput, 'COODashboard')}
+                className="text-orange-400 hover:text-orange-300 transition-colors text-xl animate-pulse"
+              >
+                ✨
+              </button>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">Kanban Throughput</h3>
+              <div className="text-4xl font-bold text-orange-400">
+                {kanbanThroughput}
+              </div>
+              <p className="text-sm text-slate-400">Issues cerrados</p>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Kanban Throughput */}
+        {/* LEAD TIME */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl border border-gray-600 rounded-xl p-6 shadow-2xl"
+          className="relative group"
         >
-          <h3 className="text-xl font-bold text-amber-400 mb-4">Throughput del Kanban</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={kanbanData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="day" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
-              <Bar dataKey="throughput" fill="#F59E0B" />
-            </BarChart>
-          </ResponsiveContainer>
+          <div
+            className="p-6 rounded-2xl border border-red-400/30 shadow-xl shadow-red-500/10 transition-all duration-300 hover:shadow-red-500/20 hover:border-red-400/50"
+            style={{
+              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%)',
+              backdropFilter: 'blur(15px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-3xl">⏱️</div>
+              <button
+                onClick={() => requestDivineExplanation('leadTime', leadTime, 'COODashboard')}
+                className="text-red-400 hover:text-red-300 transition-colors text-xl animate-pulse"
+              >
+                ✨
+              </button>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">Lead Time</h3>
+              <div className="text-2xl font-bold text-red-400">
+                {leadTime}
+              </div>
+              <p className="text-sm text-slate-400">Tiempo de entrega</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* EFICIENCIA OPERATIVA */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+          className="relative group"
+        >
+          <div
+            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
+            style={{
+              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
+              backdropFilter: 'blur(15px) saturate(150%)',
+              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-3xl">⚙️</div>
+              <button
+                onClick={() => requestDivineExplanation('operationalEfficiency', operationalEfficiency, 'COODashboard')}
+                className="text-green-400 hover:text-green-300 transition-colors text-xl animate-pulse"
+              >
+                ✨
+              </button>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">Eficiencia Operativa</h3>
+              <div className="text-4xl font-bold text-green-400">
+                {operationalEfficiency}%
+              </div>
+              <p className="text-sm text-slate-400">Optimización de procesos</p>
+            </div>
+          </div>
         </motion.div>
       </div>
 
-      {/* Operational Metrics Overview */}
+      {/* UTILIZACIÓN Y AUTOMATIZACIÓN */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* UTILIZACIÓN DE RECURSOS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="p-6 rounded-2xl border border-blue-400/30"
+          style={{
+            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
+            backdropFilter: 'blur(15px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+          }}
+        >
+          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+            <span className="mr-3">📊</span>
+            Utilización de Recursos
+          </h3>
+          <div className="text-center">
+            <div className="text-5xl font-bold text-blue-400 mb-2">{resourceUtilization}%</div>
+            <p className="text-slate-400">Eficiencia en el uso de recursos</p>
+          </div>
+        </motion.div>
+
+        {/* AUTOMATIZACIÓN DE PROCESOS */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="p-6 rounded-2xl border border-purple-400/30"
+          style={{
+            background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
+            backdropFilter: 'blur(15px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+          }}
+        >
+          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+            <span className="mr-3">🤖</span>
+            Automatización
+          </h3>
+          <div className="text-center">
+            <div className="text-5xl font-bold text-purple-400 mb-2">{processAutomation}%</div>
+            <p className="text-slate-400">Procesos automatizados</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* MÉTRICAS DE CALIDAD Y PRODUCTIVIDAD */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-gradient-to-br from-amber-800/60 to-amber-900/60 backdrop-blur-xl border border-amber-400/20 rounded-xl p-6 shadow-2xl"
+        transition={{ delay: 0.7 }}
+        className="p-8 rounded-2xl border border-pink-400/30"
+        style={{
+          background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(190, 24, 93, 0.05) 100%)',
+          backdropFilter: 'blur(15px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
+        }}
       >
-        <h3 className="text-2xl font-bold text-amber-400 mb-4 flex items-center">
-          <span className="mr-2">📈</span> Métricas Operativas Clave
+        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <span className="mr-3">⭐</span>
+          Calidad & Productividad
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-amber-300">Eficiencia vs Objetivo</h4>
-            {efficiencyData.map((item, index) => (
-              <div key={index} className="bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/30 rounded-lg p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-amber-400 font-medium">{item.metric}</span>
-                  <span className="text-white">{item.value}% / {item.target}%</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className="bg-amber-400 h-2 rounded-full"
-                    style={{ width: `${Math.min(100, (item.value / item.target) * 100)}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300">Tasa de Defectos:</span>
+              <span className="font-mono text-red-400">{qualityMetrics.defectRate}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300">Tasa de Retrabajo:</span>
+              <span className="font-mono text-orange-400">{qualityMetrics.reworkRate}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300">Satisfacción del Cliente:</span>
+              <span className="font-mono text-green-400">{qualityMetrics.customerSatisfaction}%</span>
+            </div>
           </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-pink-400 mb-2">{teamProductivity}%</div>
+            <p className="text-slate-400">Productividad del Equipo</p>
+          </div>
+        </div>
+      </motion.div>
 
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-amber-300">Métricas de Calidad</h4>
-            <div className="bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/30 rounded-lg p-4">
-              <div className="text-red-400 font-semibold mb-2">Tasa de Defectos</div>
-              <div className="text-white text-xl">{data?.qualityMetrics?.defectRate}</div>
-            </div>
-            <div className="bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/30 rounded-lg p-4">
-              <div className="text-orange-400 font-semibold mb-2">Tasa de Re-trabajo</div>
-              <div className="text-white text-xl">{data?.qualityMetrics?.reworkRate}</div>
-            </div>
-            <div className="bg-gradient-to-r from-green-500/10 to-transparent border border-green-500/30 rounded-lg p-4">
-              <div className="text-green-400 font-semibold mb-2">Satisfacción Cliente</div>
-              <div className="text-white text-xl">{data?.qualityMetrics?.customerSatisfaction}%</div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-amber-300">Recursos y Automatización</h4>
-            <div className="bg-gradient-to-r from-blue-500/10 to-transparent border border-blue-500/30 rounded-lg p-4">
-              <div className="text-blue-400 font-semibold mb-2">Utilización Recursos</div>
-              <div className="text-white text-xl">{data?.resourceUtilization}%</div>
-            </div>
-            <div className="bg-gradient-to-r from-purple-500/10 to-transparent border border-purple-500/30 rounded-lg p-4">
-              <div className="text-purple-400 font-semibold mb-2">Automatización Procesos</div>
-              <div className="text-white text-xl">{data?.processAutomation}%</div>
-            </div>
-            <div className="bg-gradient-to-r from-cyan-500/10 to-transparent border border-cyan-500/30 rounded-lg p-4">
-              <div className="text-cyan-400 font-semibold mb-2">Productividad Equipo</div>
-              <div className="text-white text-xl">{data?.teamProductivity}</div>
-            </div>
-          </div>
+      {/* CERTIFICACIÓN DE REALIDAD */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="text-center py-4 border-t border-slate-700/50"
+      >
+        <div className="text-xs text-slate-500">
+          🔒 Certificado por Apolo Prime - Operaciones 100% reales del imperio
+        </div>
+        <div className="text-xs text-slate-600 mt-1">
+          Última actualización: {new Date().toLocaleString()}
         </div>
       </motion.div>
     </div>

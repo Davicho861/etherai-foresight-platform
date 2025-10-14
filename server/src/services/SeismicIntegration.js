@@ -71,7 +71,7 @@ async function getSeismicData() {
       console.warn(`getSeismicData attempt ${attempt} failed: ${error?.message || error}. Retrying in ${delay}ms`);
       if (attempt >= maxAttempts) break;
       // small sleep
-      // eslint-disable-next-line no-await-in-loop
+       
       await new Promise((r) => setTimeout(r, delay));
     }
   }

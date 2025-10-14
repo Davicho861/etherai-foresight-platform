@@ -36,12 +36,12 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
         } else {
           // Prefer synchronous require so jest.mock at top of tests is honored
           try {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+             
             protocol = require('../../GLOBAL_OFFERING_PROTOCOL.json');
             protocol = (protocol && protocol.default) ? protocol.default : protocol;
           } catch (reqErr) {
             // Fallback to dynamic import if require isn't available
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+             
             const protocolModule = await import('../../GLOBAL_OFFERING_PROTOCOL.json');
             protocol = (protocolModule && protocolModule.default) ? protocolModule.default : protocolModule;
           }

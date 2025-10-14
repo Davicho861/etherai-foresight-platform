@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('LogosKernel additional flows', () => {
   test('generateSovereigntyManifest writes manifest using fs', async () => {
     jest.resetModules();

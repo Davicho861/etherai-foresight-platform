@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 // Ensure mocks are used
 process.env.FORCE_MOCKS = 'true';
 

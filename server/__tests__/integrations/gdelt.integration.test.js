@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+ 
 describe('GdeltIntegration', () => {
   beforeEach(() => {
     jest.resetModules();

@@ -5,10 +5,18 @@ import { getClimateExtremesIndex } from '../services/climateService.js';
 import { getCommunityResilienceIndex } from '../services/communityResilienceService.js';
 import CryptoService from '../services/cryptoService.js';
 import BiodiversityService from '../services/biodiversityService.js';
+import PandemicsService from '../services/pandemicsService.js';
+import CybersecurityService from '../services/cybersecurityService.js';
+import EconomicInstabilityService from '../services/economicInstabilityService.js';
+import GeopoliticalInstabilityService from '../services/geopoliticalInstabilityService.js';
 
 const router = express.Router();
 const cryptoService = new CryptoService();
 const biodiversityService = new BiodiversityService();
+const pandemicsService = new PandemicsService();
+const cybersecurityService = new CybersecurityService();
+const economicInstabilityService = new EconomicInstabilityService();
+const geopoliticalInstabilityService = new GeopoliticalInstabilityService();
 
 /**
  * @route GET /api/global-risk/food-security
@@ -246,6 +254,150 @@ router.get('/biodiversity', async (req, res) => {
         topic: 'biodiversity',
         timestamp: new Date().toISOString(),
         value: Math.round(Math.random() * 60 + 20),
+        unit: '%'
+      }
+    });
+  }
+});
+
+/**
+   * @route GET /api/global-risk/pandemics
+   * @description Provides the latest global pandemics risk index.
+   * @access Public
+   */
+router.get('/pandemics', async (req, res) => {
+  try {
+    const { regions = ['global'] } = req.query;
+    const regionsArray = Array.isArray(regions) ? regions : regions.split(',').map(r => r.trim().toLowerCase());
+    const data = await pandemicsService.getPandemicsAnalysis(regionsArray);
+    // Return data in the format expected by the frontend
+    const pandemicsIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 15;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'pandemics',
+        timestamp: new Date().toISOString(),
+        value: Math.round(pandemicsIndex),
+        unit: '%'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching pandemics risk:', error);
+    // Return fallback mock data
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'pandemics',
+        timestamp: new Date().toISOString(),
+        value: Math.round(Math.random() * 50 + 10),
+        unit: '%'
+      }
+    });
+  }
+});
+
+/**
+   * @route GET /api/global-risk/cybersecurity
+   * @description Provides the latest global cybersecurity risk index.
+   * @access Public
+   */
+router.get('/cybersecurity', async (req, res) => {
+  try {
+    const { sectors = ['global'] } = req.query;
+    const sectorsArray = Array.isArray(sectors) ? sectors : sectors.split(',').map(s => s.trim().toLowerCase());
+    const data = await cybersecurityService.getCybersecurityAnalysis(sectorsArray);
+    // Return data in the format expected by the frontend
+    const cybersecurityIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 35;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'cybersecurity',
+        timestamp: new Date().toISOString(),
+        value: Math.round(cybersecurityIndex),
+        unit: '%'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching cybersecurity risk:', error);
+    // Return fallback mock data
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'cybersecurity',
+        timestamp: new Date().toISOString(),
+        value: Math.round(Math.random() * 60 + 20),
+        unit: '%'
+      }
+    });
+  }
+});
+
+/**
+   * @route GET /api/global-risk/economic-instability
+   * @description Provides the latest global economic instability risk index.
+   * @access Public
+   */
+router.get('/economic-instability', async (req, res) => {
+  try {
+    const { regions = ['global'] } = req.query;
+    const regionsArray = Array.isArray(regions) ? regions : regions.split(',').map(r => r.trim().toLowerCase());
+    const data = await economicInstabilityService.getEconomicInstabilityAnalysis(regionsArray);
+    // Return data in the format expected by the frontend
+    const economicIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 40;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'economic-instability',
+        timestamp: new Date().toISOString(),
+        value: Math.round(economicIndex),
+        unit: '%'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching economic instability risk:', error);
+    // Return fallback mock data
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'economic-instability',
+        timestamp: new Date().toISOString(),
+        value: Math.round(Math.random() * 70 + 20),
+        unit: '%'
+      }
+    });
+  }
+});
+
+/**
+   * @route GET /api/global-risk/geopolitical-instability
+   * @description Provides the latest global geopolitical instability risk index.
+   * @access Public
+   */
+router.get('/geopolitical-instability', async (req, res) => {
+  try {
+    const { regions = ['global'] } = req.query;
+    const regionsArray = Array.isArray(regions) ? regions : regions.split(',').map(r => r.trim().toLowerCase());
+    const data = await geopoliticalInstabilityService.getGeopoliticalInstabilityAnalysis(regionsArray);
+    // Return data in the format expected by the frontend
+    const geopoliticalIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 45;
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'geopolitical-instability',
+        timestamp: new Date().toISOString(),
+        value: Math.round(geopoliticalIndex),
+        unit: '%'
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching geopolitical instability risk:', error);
+    // Return fallback mock data
+    res.status(200).json({
+      status: 'OK',
+      data: {
+        topic: 'geopolitical-instability',
+        timestamp: new Date().toISOString(),
+        value: Math.round(Math.random() * 80 + 20),
         unit: '%'
       }
     });

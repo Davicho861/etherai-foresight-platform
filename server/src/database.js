@@ -8,7 +8,7 @@ try {
   // When running as ESM, fileURLToPath(import.meta.url) gives accurate dirname
   // but in some test runners import.meta may not be supported in transformed code.
   // Guard it with a try/catch to remain robust.
-  // eslint-disable-next-line no-undef
+   
   // Note: fileURLToPath may not be available when tests transform modules; fallback above
   // keeps behavior stable across environments.
   // ...existing code...
