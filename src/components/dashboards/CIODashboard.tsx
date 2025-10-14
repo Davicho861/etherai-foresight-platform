@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 
 interface CIODashboardProps {
   cioData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const CIODashboard: React.FC<CIODashboardProps> = ({
   cioData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
 
   // DATOS REALES DEL CIO - CONEXIÓN CON BACKEND
   const dataFlowHealth = cioData?.dataFlowHealth || 92;

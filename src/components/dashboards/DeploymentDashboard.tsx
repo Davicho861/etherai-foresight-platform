@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 interface DeploymentDashboardProps {
   deploymentData?: any;
@@ -11,7 +11,7 @@ const DeploymentDashboard: React.FC<DeploymentDashboardProps> = ({
   deploymentData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  useState<string | null>(null);
 
   // DATOS REALES DE DEPLOYMENT - CONEXIÓN CON BACKEND
   const deploymentStatus = deploymentData?.deploymentStatus || 'SUCCESS';

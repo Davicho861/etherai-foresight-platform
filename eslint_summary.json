@@ -1,0 +1,402 @@
+[
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/index-DD2N8caR.js",
+    {
+      "errors": 352,
+      "warnings": 0,
+      "total": 352
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/PantheonDemoDashboard-C4wqD9k9.js",
+    {
+      "errors": 170,
+      "warnings": 0,
+      "total": 170
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/CategoricalChart-DNr-BDju.js",
+    {
+      "errors": 93,
+      "warnings": 0,
+      "total": 93
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/proxy-BMTUnxb4.js",
+    {
+      "errors": 93,
+      "warnings": 0,
+      "total": 93
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/Index-3kGgJxd4.js",
+    {
+      "errors": 45,
+      "warnings": 0,
+      "total": 45
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/SdlcDashboardPage-B8Y3rE2r.js",
+    {
+      "errors": 42,
+      "warnings": 0,
+      "total": 42
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/src/agents.js",
+    {
+      "errors": 35,
+      "warnings": 5,
+      "total": 40
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/sw.js",
+    {
+      "errors": 32,
+      "warnings": 0,
+      "total": 32
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/src/routes/globalRiskRoutes.js",
+    {
+      "errors": 15,
+      "warnings": 12,
+      "total": 27
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/DemoSection.tsx",
+    {
+      "errors": 9,
+      "warnings": 9,
+      "total": 18
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/DemoPage-CFaK4xH4.js",
+    {
+      "errors": 17,
+      "warnings": 0,
+      "total": 17
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/Tooltip-BqBTCuZR.js",
+    {
+      "errors": 17,
+      "warnings": 0,
+      "total": 17
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/scripts/capture-dashboard-puppeteer.cjs",
+    {
+      "errors": 17,
+      "warnings": 0,
+      "total": 17
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/src/routes/sdlc.js",
+    {
+      "errors": 8,
+      "warnings": 8,
+      "total": 16
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/App.tsx",
+    {
+      "errors": 8,
+      "warnings": 8,
+      "total": 16
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/DeploymentDashboard.tsx",
+    {
+      "errors": 9,
+      "warnings": 6,
+      "total": 15
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/ImplementationDashboard.tsx",
+    {
+      "errors": 9,
+      "warnings": 6,
+      "total": 15
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/__tests__/integrations/fmiIntegration.test.js",
+    {
+      "errors": 7,
+      "warnings": 7,
+      "total": 14
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/src/lib/safeFetch.js",
+    {
+      "errors": 8,
+      "warnings": 6,
+      "total": 14
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/BarChart-BZq_Ju8P.js",
+    {
+      "errors": 13,
+      "warnings": 0,
+      "total": 13
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/__tests__/mocks/handlers.js",
+    {
+      "errors": 6,
+      "warnings": 6,
+      "total": 12
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/src/routes/oracle.js",
+    {
+      "errors": 6,
+      "warnings": 6,
+      "total": 12
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/CartesianChart-C1DOA1n7.js",
+    {
+      "errors": 11,
+      "warnings": 0,
+      "total": 11
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/PricingPage-BE2E_hzh.js",
+    {
+      "errors": 11,
+      "warnings": 0,
+      "total": 11
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/__tests__/routes.consciousness.test.js",
+    {
+      "errors": 6,
+      "warnings": 5,
+      "total": 11
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/pages/DashboardPage.tsx",
+    {
+      "errors": 5,
+      "warnings": 5,
+      "total": 10
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/MetatronPanel-CuTjUNy4.js",
+    {
+      "errors": 9,
+      "warnings": 0,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/__tests__/routes/eternalVigilance.routes.test.js",
+    {
+      "errors": 5,
+      "warnings": 4,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/DesignDashboard.tsx",
+    {
+      "errors": 6,
+      "warnings": 3,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/PlanningDashboard.tsx",
+    {
+      "errors": 6,
+      "warnings": 3,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/TestingDashboard.tsx",
+    {
+      "errors": 6,
+      "warnings": 3,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/pages/PricingPage.tsx",
+    {
+      "errors": 5,
+      "warnings": 4,
+      "total": 9
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/SolutionsPage-B5YTiSig.js",
+    {
+      "errors": 8,
+      "warnings": 0,
+      "total": 8
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/CommandCenterLayout.tsx",
+    {
+      "errors": 4,
+      "warnings": 4,
+      "total": 8
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/__tests__/DemoSection.props.test.tsx",
+    {
+      "errors": 4,
+      "warnings": 4,
+      "total": 8
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/hooks/usePrefetch.ts",
+    {
+      "errors": 4,
+      "warnings": 4,
+      "total": 8
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/TestimonialCarousel-DLkA5Q1C.js",
+    {
+      "errors": 7,
+      "warnings": 0,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/VectorEthicWidget-Bhs2CCJU.js",
+    {
+      "errors": 7,
+      "warnings": 0,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/__tests__/routes.demo.test.js",
+    {
+      "errors": 6,
+      "warnings": 1,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/server/jest.setup.backend.js",
+    {
+      "errors": 4,
+      "warnings": 3,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/CEODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/CFODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/CIODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/CMODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/COODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/src/components/dashboards/CTODashboard.tsx",
+    {
+      "errors": 5,
+      "warnings": 2,
+      "total": 7
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/api/auto-preservation.js",
+    {
+      "errors": 3,
+      "warnings": 3,
+      "total": 6
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/CommandCenterPage-C2P_EZGC.js",
+    {
+      "errors": 6,
+      "warnings": 0,
+      "total": 6
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/DashboardPage-DVYK7Lie.js",
+    {
+      "errors": 6,
+      "warnings": 0,
+      "total": 6
+    }
+  ],
+  [
+    "/home/davicho/etherai-foresight-platform-main/dist/assets/Footer-D27VSTlh.js",
+    {
+      "errors": 6,
+      "warnings": 0,
+      "total": 6
+    }
+  ]
+]

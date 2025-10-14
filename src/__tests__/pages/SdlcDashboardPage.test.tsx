@@ -98,14 +98,13 @@ describe('SdlcDashboardPage', () => {
       expect(screen.getByText('El Kanban Viviente')).toBeInTheDocument();
     });
 
-    const planningModule = screen.getByText('Planificación');
-    fireEvent.click(planningModule);
+  const planningModule = screen.getAllByRole('button', { name: /Planificación/ })[0];
+  fireEvent.click(planningModule);
 
     await waitFor(() => {
-      expect(screen.getByText('Junta Directiva de Aion')).toBeInTheDocument();
-      expect(screen.getByText('Aion')).toBeInTheDocument();
-      expect(screen.getByText('Hades')).toBeInTheDocument();
-      expect(screen.getByText('Apolo')).toBeInTheDocument();
+      // The planning module renders the PlanningDashboard header and metrics
+      expect(screen.getByText(/Santuario de la Planificación/)).toBeInTheDocument();
+      expect(screen.getByText(/Progreso de Planificación/)).toBeInTheDocument();
     });
   });
 
@@ -118,14 +117,13 @@ describe('SdlcDashboardPage', () => {
       expect(screen.getByText('El Kanban Viviente')).toBeInTheDocument();
     });
 
-    const designModule = screen.getByText('Diseño');
-    fireEvent.click(designModule);
+  const designModule = screen.getAllByRole('button', { name: /Diseño/ })[0];
+  fireEvent.click(designModule);
 
     await waitFor(() => {
-      expect(screen.getByText('Consejo Técnico Soberano')).toBeInTheDocument();
-      expect(screen.getByText('Hefesto')).toBeInTheDocument();
-      expect(screen.getByText('Cronos')).toBeInTheDocument();
-      expect(screen.getByText('Ares')).toBeInTheDocument();
+      // The design module renders the DesignDashboard header
+      expect(screen.getByText(/Santuario del Diseño/)).toBeInTheDocument();
+      expect(screen.getByText(/Completitud del Diseño/)).toBeInTheDocument();
     });
   });
 
@@ -138,12 +136,13 @@ describe('SdlcDashboardPage', () => {
       expect(screen.getByText('El Kanban Viviente')).toBeInTheDocument();
     });
 
-    const implementationModule = screen.getByText('Implementación');
-    fireEvent.click(implementationModule);
+  const implementationModule = screen.getAllByRole('button', { name: /Implementación/ })[0];
+  fireEvent.click(implementationModule);
 
     await waitFor(() => {
-      expect(screen.getByText('La Forja de Hefesto')).toBeInTheDocument();
-      expect(screen.getByText('Estado del Motor de Agentes')).toBeInTheDocument();
+      // Implementation dashboard contains forge header and agent engine status
+      expect(screen.getByText(/Santuario de la Forja/)).toBeInTheDocument();
+      expect(screen.getByText(/Estado del Motor de Agentes/)).toBeInTheDocument();
     });
   });
 
@@ -156,13 +155,13 @@ describe('SdlcDashboardPage', () => {
       expect(screen.getByText('El Kanban Viviente')).toBeInTheDocument();
     });
 
-    const testingModule = screen.getByText('Pruebas');
-    fireEvent.click(testingModule);
+  const testingModule = screen.getAllByRole('button', { name: /Pruebas/ })[0];
+  fireEvent.click(testingModule);
 
     await waitFor(() => {
-      expect(screen.getByText('El Juicio de Ares')).toBeInTheDocument();
-      expect(screen.getByText('Dashboard de Calidad de Código')).toBeInTheDocument();
-      expect(screen.getByText('84.11%')).toBeInTheDocument();
+      // Testing dashboard shows judgement header and quality dashboard
+      expect(screen.getByText(/Santuario del Juicio/)).toBeInTheDocument();
+      expect(screen.getByText(/Dashboard de Calidad de Código/)).toBeInTheDocument();
     });
   });
 
@@ -175,8 +174,8 @@ describe('SdlcDashboardPage', () => {
       expect(screen.getByText('El Kanban Viviente')).toBeInTheDocument();
     });
 
-    const deploymentModule = screen.getByText('Despliegue');
-    fireEvent.click(deploymentModule);
+  const deploymentModule = screen.getAllByRole('button', { name: /Despliegue/ })[0];
+  fireEvent.click(deploymentModule);
 
     await waitFor(() => {
       expect(screen.getByText('El Vuelo de Hermes')).toBeInTheDocument();

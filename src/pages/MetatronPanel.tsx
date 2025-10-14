@@ -6,7 +6,7 @@ let FlowsStatus: any = () => <div>FlowsStatus no disponible</div>;
 let MetatronPanelWidget: any = () => <div>MetatronPanelWidget no disponible</div>;
 let startSimulator: (() => void) | null = null;
 let stopSimulator: (() => void) | null = null;
-// eslint-disable-next-line no-unused-vars
+ 
 let subscribeEvents: ((_: (_: string) => void) => void) | null = null;
 let getCurrentState: (() => any) | null = null;
 let downloadReport: (() => void) | null = null;

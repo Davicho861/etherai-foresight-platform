@@ -16,8 +16,8 @@ const ModuleColombia: React.FC = () => {
       .catch(err => setError(err.message || 'error'));
   }, []);
 
-  if (error) return <div className="p-8">Error cargando datos del módulo: {error}</div>;
-  if (!data) return <div className="p-8">Cargando datos del módulo para Colombia...</div>;
+  if (error) return <div className="p-8">Error cargando datos del módulo Colombia: {error}</div>;
+  if (!data) return <div className="p-8">Cargando datos del módulo Colombia...</div>;
 
   return (
     <div className="min-h-screen p-8 bg-etherblue-dark text-white" data-testid="colombia-module">

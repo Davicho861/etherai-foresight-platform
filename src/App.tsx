@@ -3,8 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NativeModeBanner from "./components/NativeModeBanner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { useServiceWorker } from "./hooks/useServiceWorker";
 import { usePrefetch } from "./hooks/usePrefetch";
 
@@ -22,36 +22,11 @@ const SolutionsPage = React.lazy(() => import("./pages/SolutionsPage"));
 const CommandCenterPage = React.lazy(() => import("./pages/CommandCenterPage"));
 const SdlcDashboardPage = React.lazy(() => import("./pages/SdlcDashboardPage"));
 
-// Lazy load heavy dashboard components for performance optimization
-const CTODashboard = React.lazy(() => import("./components/dashboards/CTODashboard"));
-const CIODashboard = React.lazy(() => import("./components/dashboards/CIODashboard"));
-const CSODashboard = React.lazy(() => import("./components/dashboards/CSODashboard"));
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
-      retry: (failureCount, error) => {
-        // Don't retry on 4xx errors
-        if (error instanceof Error && 'status' in error && typeof error.status === 'number') {
-          if (error.status >= 400 && error.status < 500) {
-            return false;
-          }
-        }
-        return failureCount < 3;
-      },
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: true,
-    },
-  },
-});
-
 const App = () => {
   console.log('App render');
 
   // Initialize service worker
-  const { isSupported, isRegistered, updateAvailable, skipWaiting } = useServiceWorker();
+  useServiceWorker();
 
   // Initialize prefetching
   const { prefetchSDLCData } = usePrefetch();
@@ -62,7 +37,7 @@ const App = () => {
   }, [prefetchSDLCData]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <ErrorBoundary>
       <TooltipProvider>
         <NativeModeBanner />
         <Toaster />
@@ -84,10 +59,10 @@ const App = () => {
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-           </Suspense>
+            </Suspense>
         </HashRouter>
       </TooltipProvider>
-    </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

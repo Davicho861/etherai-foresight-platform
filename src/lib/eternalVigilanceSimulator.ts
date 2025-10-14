@@ -1,6 +1,6 @@
 // Simulador muy ligero para emular flujos perpetuos en el frontend
 
-// eslint-disable-next-line no-unused-vars
+ 
 type EventHandler = (_event: string) => void;
 let handlers: EventHandler[] = [];
 let intervalIds: number[] = [];

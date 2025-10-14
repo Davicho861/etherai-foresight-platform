@@ -17,7 +17,7 @@ describe('Consciousness route', () => {
     try {
       const db = await import('../src/database.js');
       if (db) db.getChromaClient = () => null;
-    } catch (e) {}
+  } catch {}
     app = await createApp({ disableBackgroundTasks: true, initializeServices: false });
   });
 

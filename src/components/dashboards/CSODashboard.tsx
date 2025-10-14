@@ -4,14 +4,14 @@ import { useEffect } from 'react';
 
 interface CSODashboardProps {
   csoData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const CSODashboard: React.FC<CSODashboardProps> = ({
   csoData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
   const [xaiLoading, setXaiLoading] = useState(false);
   const [xaiError, setXaiError] = useState<string | null>(null);
   const [xaiContent, setXaiContent] = useState<string | null>(null);
@@ -80,7 +80,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
               <div className="text-3xl">🚨</div>
               <button
                 onClick={async () => {
-                  setSelectedMetric('vulnerabilityCount');
+                  _setSelectedMetric('vulnerabilityCount');
                   setXaiLoading(true);
                   setXaiError(null);
                   setXaiContent(null);
@@ -132,7 +132,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
               <div className="text-3xl">🛡️</div>
               <button
                 onClick={async () => {
-                  setSelectedMetric('securityPosture');
+                  _setSelectedMetric('securityPosture');
                   setXaiLoading(true);
                   setXaiError(null);
                   setXaiContent(null);
@@ -183,7 +183,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
               <div className="text-3xl">📋</div>
               <button
                 onClick={async () => {
-                  setSelectedMetric('auditCompliance');
+                  _setSelectedMetric('auditCompliance');
                   setXaiLoading(true);
                   setXaiError(null);
                   setXaiContent(null);
@@ -234,7 +234,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
               <div className="text-3xl">🔍</div>
               <button
                 onClick={async () => {
-                  setSelectedMetric('threatDetection');
+                  _setSelectedMetric('threatDetection');
                   setXaiLoading(true);
                   setXaiError(null);
                   setXaiContent(null);
@@ -365,7 +365,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
         </div>
       </motion.div>
       {/* XAI Modal */}
-      {selectedMetric && (
+  {_selectedMetric && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => { setSelectedMetric(null); setXaiContent(null); setXaiError(null); }} />
           <motion.div
@@ -374,8 +374,8 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
             className="relative max-w-2xl w-full p-6 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl"
           >
             <div className="flex items-start justify-between mb-4">
-              <h4 className="text-lg font-bold">Explicación XAI — {selectedMetric}</h4>
-              <button className="text-slate-400" onClick={() => { setSelectedMetric(null); setXaiContent(null); setXaiError(null); }}>Cerrar</button>
+              <h4 className="text-lg font-bold">Explicación XAI — {_selectedMetric}</h4>
+              <button className="text-slate-400" onClick={() => { _setSelectedMetric(null); setXaiContent(null); setXaiError(null); }}>Cerrar</button>
             </div>
 
             <div className="min-h-[120px]">

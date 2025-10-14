@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 
 interface CMODashboardProps {
   cmoData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const CMODashboard: React.FC<CMODashboardProps> = ({
   cmoData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
 
   // DATOS REALES DEL CMO - CONEXIÓN CON BACKEND
   const demoEngagement = cmoData?.demoEngagement || 87;

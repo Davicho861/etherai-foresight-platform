@@ -1,64 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useLiveState from '../hooks/useLiveState';
 import useXaiExplain from '../hooks/useXaiExplain';
 import XaiExplainModal from '../components/widgets/XaiExplainModal';
 
-// SANTUARIOS SOBERANOS DE LA WEB APP
-import PredictiveAnalysisDashboard from '../components/dashboards/PredictiveAnalysisDashboard';
-import RiskAssessmentDashboard from '../components/dashboards/RiskAssessmentDashboard';
-import LogisticsOptimizationDashboard from '../components/dashboards/LogisticsOptimizationDashboard';
-import SystemStatusDashboard from '../components/dashboards/SystemStatusDashboard';
+// DASHBOARDS UNIFICADOS POR PLANES SOBERANOS
+import StarterDemoDashboard from '../components/demos/StarterDemoDashboard';
+import GrowthDemoDashboard from '../components/demos/GrowthDemoDashboard';
+import PantheonDemoDashboard from '../components/demos/PantheonDemoDashboard';
 
-// Tipos para los cuatro santuarios soberanos
-type SovereignSanctuary = 'overview' | 'predictive-analysis' | 'risk-assessment' | 'logistics-optimization';
+// SDLC PARA PLAN PANTHEÓN
+import SdlcDashboardPage from './SdlcDashboardPage';
 
-interface SovereignSidebarItem {
-  id: SovereignSanctuary;
+// GLOBAL OFFERING PROTOCOL - PRECIOS Y CARACTERÍSTICAS
+import globalOffering from '../../GLOBAL_OFFERING_PROTOCOL.json';
+
+// Tipos para los planes soberanos
+type SovereignPlan = 'starter' | 'growth' | 'pantheon';
+
+interface SovereignPlanConfig {
+  id: SovereignPlan;
   label: string;
   icon: string;
   description: string;
-  domain: string;
+  price: number;
+  features: string[];
+  color: string;
   priority: number;
 }
 
-const sovereignSidebarItems: SovereignSidebarItem[] = [
-  {
-    id: 'overview',
-    label: 'Visión General',
-    icon: '🔮',
-    description: 'Dashboard de bienvenida con KPIs élite',
-    domain: 'Inteligencia Soberana',
-    priority: 1
-  },
-  {
-    id: 'predictive-analysis',
-    label: 'Análisis Predictivo',
-    icon: '📈',
-    description: 'Oráculo de tendencias y predicciones',
-    domain: 'Inteligencia Artificial',
-    priority: 2
-  },
-  {
-    id: 'risk-assessment',
-    label: 'Evaluación de Riesgos',
-    icon: '🌍',
-    description: 'Mapa global de hotspots y amenazas',
-    domain: 'Geopolítica',
-    priority: 3
-  },
-  {
-    id: 'logistics-optimization',
-    label: 'Optimización Logística',
-    icon: '🚛',
-    description: 'Cadenas de suministro y resiliencia',
-    domain: 'Supply Chain',
-    priority: 4
-  }
-];
+// CONFIGURACIÓN DE PLANES CON PRECIOS REALES DEL GLOBAL_OFFERING_PROTOCOL
+const sovereignPlanConfigs: SovereignPlanConfig[] = globalOffering.plans.map(plan => ({
+  id: plan.id as SovereignPlan,
+  label: plan.name,
+  icon: plan.id === 'starter' ? '🌱' : plan.id === 'growth' ? '🚀' : '🏛️',
+  description: plan.id === 'starter' ? 'KPIs esenciales y monitoreo básico' :
+               plan.id === 'growth' ? 'Análisis causal y simulaciones avanzadas' :
+               'SDLC completo y gobernanza total',
+  price: plan.price_monthly,
+  features: plan.features,
+  color: plan.id === 'starter' ? 'from-green-500 to-emerald-500' :
+          plan.id === 'growth' ? 'from-blue-500 to-cyan-500' :
+          'from-purple-500 to-pink-500',
+  priority: plan.id === 'starter' ? 1 : plan.id === 'growth' ? 2 : 3
+}));
 
 const DashboardPage: React.FC = () => {
-  const [currentSovereignView, setCurrentSovereignView] = useState<SovereignSanctuary>('overview');
+  const [currentSovereignPlan, setCurrentSovereignPlan] = useState<SovereignPlan>('starter');
   // Hook centralizado para datos 100% reales
   const { data: liveState, loading, error, refresh } = useLiveState();
   const { explain: requestDivineExplanation, loading: xaiLoading, last: xaiContent } = useXaiExplain();
@@ -66,273 +54,77 @@ const DashboardPage: React.FC = () => {
   const [xaiContext, setXaiContext] = useState<{ metric: string; value: any; context: string } | null>(null);
 
   // CONEXIÓN CON LA REALIDAD - Hook centralizado para datos 100% reales
-  // Distribuir segmentos para cada santuario a partir de liveState
-  const predictiveData = liveState || null;
-  const riskData = liveState?.global?.seismic || null;
-  const logisticsData = liveState?.foodSecurity || liveState?.communityResilience || null;
-  const overviewData = liveState || null;
-
-  // RENDERERS PARA LOS CUATRO SANTUARIOS SOBERANOS
-  const renderOverview = () => (
-    <div className="space-y-8">
-      {/* HEADER SOBERANO */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center"
-      >
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent mb-2">
-          🏛️ Praevisio AI - Visión General
-        </h1>
-        <p className="text-slate-400 text-lg">
-          Dashboard soberano con KPIs élite - 100% datos reales
-        </p>
-      </motion.div>
-
-      {/* KPIs ÉLITE */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* PRECISIÓN PREDICTIVA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">🎯</div>
-            <button
-              onClick={() => requestDivineExplanation('precisionPromedio', overviewData?.kpis?.precisionPromedio || 0, 'Overview')}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors text-lg"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">Precisión Predictiva</h3>
-            <div className="text-3xl font-bold text-cyan-400">
-              {overviewData?.kpis?.precisionPromedio || 0}%
-            </div>
-            <p className="text-sm text-slate-400">Accuracy de modelos predictivos</p>
-          </div>
-        </motion.div>
-
-        {/* PREDICCIONES ACTIVAS */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">📊</div>
-            <button
-              onClick={() => requestDivineExplanation('prediccionesDiarias', overviewData?.kpis?.prediccionesDiarias || 0, 'Overview')}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors text-lg"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">Predicciones Activas</h3>
-            <div className="text-3xl font-bold text-blue-400">
-              {overviewData?.kpis?.prediccionesDiarias || 0}
-            </div>
-            <p className="text-sm text-slate-400">Señales críticas procesadas</p>
-          </div>
-        </motion.div>
-
-        {/* COBERTURA GLOBAL */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl">🌍</div>
-            <button
-              onClick={() => requestDivineExplanation('coberturaGlobal', overviewData?.countries?.length || 0, 'Overview')}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors text-lg"
-            >
-              ✨
-            </button>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">Cobertura Global</h3>
-            <div className="text-3xl font-bold text-purple-400">
-              {overviewData?.countries?.length || 0}
-            </div>
-            <p className="text-sm text-slate-400">Países LATAM monitoreados</p>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ESTADO DEL IMPERIO SIMPLIFICADO */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
-      >
-        <h2 className="text-2xl font-bold text-white mb-6">⚡ Estado del Imperio</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex justify-between items-center">
-            <span className="text-slate-400">Realidad</span>
-            <span className="text-green-400">● 100% Real</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-slate-400">IA Explicativa</span>
-            <span className="text-green-400">● Activa</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-slate-400">Santuarios</span>
-            <span className="text-green-400">● Cargados</span>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-
-  const renderPredictiveAnalysis = () => (
-    <PredictiveAnalysisDashboard
-      divineData={predictiveData}
-      requestDivineExplanation={(metric: string, value: any, context: string) => { setXaiContext({ metric, value, context }); setXaiOpen(true); }}
-    />
-  );
-
-  const renderRiskAssessment = () => (
-    <RiskAssessmentDashboard
-      riskData={riskData}
-      requestDivineExplanation={(metric: string, value: any, context: string) => { setXaiContext({ metric, value, context }); setXaiOpen(true); }}
-    />
-  );
-
-  const renderLogisticsOptimization = () => (
-    <LogisticsOptimizationDashboard
-      logisticsData={logisticsData}
-      requestDivineExplanation={(metric: string, value: any, context: string) => { setXaiContext({ metric, value, context }); setXaiOpen(true); }}
-    />
-  );
-
-  const renderCurrentSovereignView = () => {
-    switch (currentSovereignView) {
-      case 'overview':
-        return renderOverview();
-      case 'predictive-analysis':
-        return renderPredictiveAnalysis();
-      case 'risk-assessment':
-        return renderRiskAssessment();
-      case 'logistics-optimization':
-        return renderLogisticsOptimization();
+  // Distribuir datos según el plan soberano seleccionado
+  const getPlanData = (plan: SovereignPlan) => {
+    const baseData = liveState || null;
+    switch (plan) {
+      case 'starter':
+        return {
+          kpis: baseData?.kpis || { precisionPromedio: 90, prediccionesDiarias: 120, monitoreoContinuo: 24, coberturaRegional: 6 },
+          countries: baseData?.countries || []
+        };
+      case 'growth':
+        return {
+          kpis: baseData?.kpis || { precisionPromedio: 90, prediccionesDiarias: 120, monitoreoContinuo: 24, coberturaRegional: 6 },
+          countries: baseData?.countries || [],
+          communityResilience: baseData?.communityResilience || null,
+          foodSecurity: baseData?.foodSecurity || null
+        };
+      case 'pantheon':
+        return {
+          kpis: baseData?.kpis || { precisionPromedio: 90, prediccionesDiarias: 120, monitoreoContinuo: 24, coberturaRegional: 6 },
+          countries: baseData?.countries || [],
+          communityResilience: baseData?.communityResilience || null,
+          foodSecurity: baseData?.foodSecurity || null,
+          ethicalAssessment: baseData?.ethicalAssessment || null,
+          global: baseData?.global || null
+        };
       default:
-        return renderOverview();
+        return baseData || null;
+    }
+  };
+
+  const currentPlanData = getPlanData(currentSovereignPlan);
+
+  // RENDERERS PARA LOS PLANES SOBERANOS UNIFICADOS
+  const renderCurrentSovereignPlan = () => {
+    switch (currentSovereignPlan) {
+      case 'starter':
+        return <StarterDemoDashboard data={currentPlanData} />;
+      case 'growth':
+        return <GrowthDemoDashboard data={currentPlanData} />;
+      case 'pantheon':
+        return (
+          <div className="space-y-8">
+            <PantheonDemoDashboard data={currentPlanData} />
+            {/* SDLC INTEGRADO COMO MÓDULO */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
+            >
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <span className="mr-3">🔄</span>
+                SDLC - Ciclo de Vida Soberano
+              </h2>
+              <p className="text-slate-400 mb-4">
+                Gobernanza completa del desarrollo de software con métricas en tiempo real
+              </p>
+              <div className="bg-slate-900/50 rounded-xl p-4">
+                <SdlcDashboardPage />
+              </div>
+            </motion.div>
+          </div>
+        );
+      default:
+        return <StarterDemoDashboard data={currentPlanData} />;
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-      {/* SIDEBAR SOBERANO - NAVEGADOR ENTRE SANTUARIOS */}
-      <motion.div
-        initial={{ x: -320 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="fixed left-0 top-0 h-full w-80 bg-gradient-to-br from-slate-900/90 via-slate-800/95 to-slate-900/90 backdrop-blur-2xl border-r border-cyan-400/20 shadow-2xl shadow-cyan-500/10 z-10 overflow-y-auto"
-        style={{
-          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.98) 50%, rgba(15, 23, 42, 0.95) 100%)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)'
-        }}
-      >
-        <div className="p-6">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mb-8"
-          >
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              🏛️ Praevisio AI
-            </h2>
-            <p className="text-slate-400 text-sm mt-1">Web App Soberana</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="space-y-2"
-          >
-            {sovereignSidebarItems.map((item) => (
-              <motion.button
-                key={item.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setCurrentSovereignView(item.id)}
-                className={`w-full p-4 rounded-xl text-left transition-all duration-300 group ${
-                  currentSovereignView === item.id
-                    ? 'bg-gradient-to-r from-cyan-500/30 via-blue-600/25 to-purple-600/30 border border-cyan-400/60 shadow-xl shadow-cyan-500/20 backdrop-blur-sm'
-                    : 'bg-slate-700/40 hover:bg-slate-600/60 border border-slate-600/40 hover:border-cyan-400/30 backdrop-blur-sm'
-                }`}
-                style={{
-                  background: currentSovereignView === item.id
-                    ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.12) 50%, rgba(147, 51, 234, 0.15) 100%)'
-                    : 'linear-gradient(135deg, rgba(71, 85, 105, 0.3) 0%, rgba(51, 65, 85, 0.4) 100%)',
-                  backdropFilter: 'blur(8px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(8px) saturate(150%)'
-                }}
-              >
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl">{item.icon}</span>
-                  <div>
-                    <div className={`font-semibold ${currentSovereignView === item.id ? 'text-cyan-300' : 'text-white'}`}>
-                      {item.label}
-                    </div>
-                    <div className="text-xs text-slate-400">{item.description}</div>
-                    <div className="text-xs text-slate-500 mt-1">{item.domain}</div>
-                  </div>
-                </div>
-                {currentSovereignView === item.id && (
-                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                  </div>
-                )}
-              </motion.button>
-            ))}
-          </motion.div>
-
-          {/* ESTADO DE LA WEB APP EN SIDEBAR */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-8 p-4 rounded-xl border border-cyan-400/20"
-            style={{
-              background: 'linear-gradient(135deg, rgba(71, 85, 105, 0.2) 0%, rgba(51, 65, 85, 0.3) 100%)',
-              backdropFilter: 'blur(10px) saturate(120%)',
-              WebkitBackdropFilter: 'blur(10px) saturate(120%)'
-            }}
-          >
-            <h3 className="text-sm font-semibold text-slate-300 mb-3">Estado de la Web App</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-slate-400">Realidad</span>
-                <span className="text-xs text-green-400">● 100% Real</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-slate-400">IA Explicativa</span>
-                <span className="text-xs text-green-400">● Activa</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-slate-400">Santuarios</span>
-                <span className="text-xs text-green-400">● Cargados</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* CONTENIDO PRINCIPAL DIVINO */}
-      <div className="ml-80 min-h-screen relative">
+      {/* CONTENIDO PRINCIPAL DEL PANTEÓN DE VALOR */}
+      <div className="min-h-screen relative">
         {/* FONDO CUÁNTICO GLASSMORPHISM */}
         <div
           className="absolute inset-0 opacity-30"
@@ -349,55 +141,180 @@ const DashboardPage: React.FC = () => {
           transition={{ delay: 0.5 }}
           className="p-8 relative z-10"
         >
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center justify-center min-h-[60vh]"
-            >
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-slate-400">Cargando experiencia divina...</p>
-                <p className="text-slate-500 text-sm mt-2">Conectando con la realidad soberana</p>
-              </div>
-            </motion.div>
-          ) : error ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-red-900/20 border border-red-700/50 rounded-2xl p-6 text-red-200 max-w-md mx-auto"
-            >
-              <div className="flex items-center mb-2">
-                <span className="text-red-400 mr-2">⚠️</span>
-                <span className="font-semibold">Error de Conexión Divina</span>
-              </div>
-              <p className="text-sm">{error}</p>
-              <p className="text-xs text-red-300 mt-2">La realidad no está disponible temporalmente</p>
-            </motion.div>
-          ) : (
-            <>
+          {/* SECCIÓN SUPERIOR: PANTEÓN DE PLANES CON PRECIOS */}
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-12"
+          >
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent mb-4">
+                🏛️ Panteón de Valor - Praevisio AI
+              </h1>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                Elige tu camino hacia la previsión soberana. Cada plan revela capas más profundas de la realidad predictiva.
+              </p>
+            </div>
+
+            {/* TARJETAS DE PRECIOS GLASSMORPHISM */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {sovereignPlanConfigs.map((plan, index) => (
+                <motion.div
+                  key={plan.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  className={`relative group cursor-pointer ${
+                    currentSovereignPlan === plan.id ? 'ring-2 ring-cyan-400/50' : ''
+                  }`}
+                  onClick={() => setCurrentSovereignPlan(plan.id)}
+                >
+                  <div
+                    className={`relative overflow-hidden rounded-2xl p-8 h-full transition-all duration-500 ${
+                      currentSovereignPlan === plan.id
+                        ? 'bg-gradient-to-br from-cyan-500/20 via-blue-600/15 to-purple-600/20 border border-cyan-400/40 shadow-2xl shadow-cyan-500/20'
+                        : 'bg-gradient-to-br from-slate-800/60 via-slate-700/50 to-slate-800/60 border border-slate-600/30 hover:border-cyan-400/30 shadow-xl hover:shadow-cyan-500/10'
+                    }`}
+                    style={{
+                      backdropFilter: 'blur(20px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                      background: currentSovereignPlan === plan.id
+                        ? `linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.12) 50%, rgba(147, 51, 234, 0.15) 100%)`
+                        : `linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(51, 65, 85, 0.5) 50%, rgba(30, 41, 59, 0.6) 100%)`
+                    }}
+                  >
+                    {/* EFECTO GLASSMORPHISM ANIMADO */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${plan.color} opacity-10 animate-pulse`}
+                        style={{
+                          animation: 'shimmer 3s ease-in-out infinite',
+                          backgroundSize: '200% 200%'
+                        }}
+                      />
+                    </div>
+
+                    <div className="relative z-10">
+                      {/* HEADER CON ICONO Y NOMBRE */}
+                      <div className="text-center mb-6">
+                        <div className="text-5xl mb-3">{plan.icon}</div>
+                        <h3 className={`text-2xl font-bold mb-2 ${
+                          currentSovereignPlan === plan.id ? 'text-cyan-300' : 'text-white'
+                        }`}>
+                          {plan.label}
+                        </h3>
+                        <p className="text-slate-400 text-sm">{plan.description}</p>
+                      </div>
+
+                      {/* PRECIO PROMINENTE */}
+                      <div className="text-center mb-6">
+                        <div className={`text-4xl font-bold mb-1 ${
+                          currentSovereignPlan === plan.id ? 'text-cyan-200' : 'text-white'
+                        }`}>
+                          ${plan.price}
+                        </div>
+                        <div className="text-slate-400 text-sm">por mes</div>
+                      </div>
+
+                      {/* CARACTERÍSTICAS */}
+                      <div className="space-y-3">
+                        {plan.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-center space-x-3">
+                            <div className={`w-2 h-2 rounded-full ${
+                              currentSovereignPlan === plan.id ? 'bg-cyan-400' : 'bg-slate-500'
+                            }`} />
+                            <span className={`text-sm ${
+                              currentSovereignPlan === plan.id ? 'text-slate-200' : 'text-slate-400'
+                            }`}>
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* INDICADOR DE SELECCIÓN */}
+                      {currentSovereignPlan === plan.id && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute top-4 right-4 w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center"
+                        >
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                        </motion.div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* SECCIÓN INFERIOR: ORÁCULO VIVIENTE - WIDGETS DINÁMICOS */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="relative"
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-white mb-2">
+                🔮 Oráculo Viviente - {sovereignPlanConfigs.find(p => p.id === currentSovereignPlan)?.label}
+              </h2>
+              <p className="text-slate-400">
+                Experimenta el poder predictivo de tu plan seleccionado
+              </p>
+            </div>
+
+            {loading ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center justify-center min-h-[60vh]"
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-slate-400">Cargando experiencia divina...</p>
+                  <p className="text-slate-500 text-sm mt-2">Conectando con la realidad soberana</p>
+                </div>
+              </motion.div>
+            ) : error ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-red-900/20 border border-red-700/50 rounded-2xl p-6 text-red-200 max-w-md mx-auto"
+              >
+                <div className="flex items-center mb-2">
+                  <span className="text-red-400 mr-2">⚠️</span>
+                  <span className="font-semibold">Error de Conexión Divina</span>
+                </div>
+                <p className="text-sm">{error}</p>
+                <p className="text-xs text-red-300 mt-2">La realidad no está disponible temporalmente</p>
+              </motion.div>
+            ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={currentSovereignView}
+                  key={currentSovereignPlan}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {renderCurrentSovereignView()}
+                  {renderCurrentSovereignPlan()}
                 </motion.div>
               </AnimatePresence>
+            )}
+          </motion.div>
 
-              {/* MODAL XAI DIVINO */}
-              <XaiExplainModal
-                open={xaiOpen && !!xaiContext}
-                onClose={() => { setXaiOpen(false); setXaiContext(null); }}
-                metric={xaiContext?.metric || ''}
-                value={xaiContext?.value ?? ''}
-                context={xaiContext?.context || ''}
-              />
-            </>
-          )}
+          {/* MODAL XAI DIVINO */}
+          <XaiExplainModal
+            open={xaiOpen && !!xaiContext}
+            onClose={() => { setXaiOpen(false); setXaiContext(null); }}
+            metric={xaiContext?.metric || ''}
+            value={xaiContext?.value ?? ''}
+            context={xaiContext?.context || ''}
+          />
         </motion.div>
       </div>
     </div>

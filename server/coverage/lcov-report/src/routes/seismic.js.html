@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.9% </span>
+                <span class="strong">13.63% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/22</span>
+                <span class='fraction'>3/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.47% </span>
+                <span class="strong">15.78% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/19</span>
+                <span class='fraction'>3/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,39 +116,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,14 +172,14 @@ const router = express.Router();
  * @description Provides a stream of processed real-time seismic activity.
  * @access Protected
  */
-router.get('/activity', async (req, res) =&gt; {
-  try {
-    const rawData = await getSeismicData();
-    const processedData = analyzeSeismicActivity(rawData);
-    res.json(processedData);
+router.get('/activity', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const rawData = <span class="cstat-no" title="statement not covered" >await getSeismicData();</span>
+    const processedData = <span class="cstat-no" title="statement not covered" >analyzeSeismicActivity(rawData);</span>
+<span class="cstat-no" title="statement not covered" >    res.json(processedData);</span>
   } catch (error) {
-    console.error('Error in seismic activity route:', error);
-    res.status(500).json({ error: 'Failed to retrieve seismic activity.' });
+<span class="cstat-no" title="statement not covered" >    console.error('Error in seismic activity route:', error);</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Failed to retrieve seismic activity.' });</span>
   }
 });
 &nbsp;
@@ -188,16 +188,16 @@ router.get('/activity', async (req, res) =&gt; {
  * @description Provides geophysical risk assessment based on seismic activity.
  * @access Protected
  */
-router.get('/risk', async (req, res) =&gt; {
-  try {
-    const rawData = await getSeismicData();
-    const events = analyzeSeismicActivity(rawData);
-    const eventCount = events.length;
-    const maxMagnitude = eventCount &gt; 0 ? Math.max(...events.map(e =&gt; e.magnitude)) : 0;
-    const overallRisk = eventCount &gt; 0 ? (maxMagnitude * eventCount) / 10 : 0; // Simple risk calculation
-    const highRiskZones = events.filter(e =&gt; e.magnitude &gt;= 5.0).map(e =&gt; e.place);
+router.get('/risk', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const rawData = <span class="cstat-no" title="statement not covered" >await getSeismicData();</span>
+    const events = <span class="cstat-no" title="statement not covered" >analyzeSeismicActivity(rawData);</span>
+    const eventCount = <span class="cstat-no" title="statement not covered" >events.length;</span>
+    const maxMagnitude = <span class="cstat-no" title="statement not covered" >eventCount &gt; 0 ? Math.max(...events.map(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.magnitude)</span>) : 0;</span>
+    const overallRisk = <span class="cstat-no" title="statement not covered" >eventCount &gt; 0 ? (maxMagnitude * eventCount) / 10 : 0;</span> // Simple risk calculation
+    const highRiskZones = <span class="cstat-no" title="statement not covered" >events.filter(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.magnitude &gt;= 5.0)</span>.map(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >e.place)</span>;</span>
 &nbsp;
-    res.json({
+<span class="cstat-no" title="statement not covered" >    res.json({</span>
       overallRisk,
       eventCount,
       maxMagnitude,
@@ -217,7 +217,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-11T18:29:50.116Z
+                at 2025-10-14T17:21:16.091Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 
 interface CFODashboardProps {
   cfoData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const CFODashboard: React.FC<CFODashboardProps> = ({
   cfoData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
 
   // DATOS REALES DEL CFO - CONEXIÓN CON BACKEND
   const costZeroEfficiency = cfoData?.costZeroEfficiency || 78;

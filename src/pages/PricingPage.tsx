@@ -85,8 +85,8 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
     setDemoModalOpen(true);
   };
 
-  if (error) return <div className="p-8">Error cargando planes: {error}</div>;
-  if (!Object.keys(segments).length) return <div className="p-8">Cargando planes...</div>;
+  if (error) return <div className="p-8">Error cargando planes de precios: {error}</div>;
+  if (!Object.keys(segments).length) return <div className="p-8">Cargando planes de precios...</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-etherblue-dark via-gray-900 to-purple-900 text-white relative overflow-hidden">

@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 
 interface COODashboardProps {
   cooData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const COODashboard: React.FC<COODashboardProps> = ({
   cooData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
 
   // DATOS REALES DEL COO - CONEXIÓN CON BACKEND
   const crewVelocity = cooData?.crewVelocity || 23;

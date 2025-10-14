@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import Sidebar from '@/components/Sidebar';
 import MissionGallery from '@/components/MissionGallery';
 import AnimatedMetric from '@/components/AnimatedMetrics';

@@ -3,14 +3,16 @@ import { motion } from 'framer-motion';
 
 interface CEODashboardProps {
   ceoData: any;
-  requestDivineExplanation: (metric: string, value: any, context: string) => void;
+  // parameter names prefixed with '_' to avoid unused-var lint in type positions
+  requestDivineExplanation: (_metric: string, _value: any, _context: string) => void;
 }
 
 const CEODashboard: React.FC<CEODashboardProps> = ({
   ceoData,
   requestDivineExplanation
 }) => {
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  // selectedMetric not used yet; prefix with '_' to satisfy linter
+  const [_selectedMetric, _setSelectedMetric] = useState<string | null>(null);
 
   // DATOS REALES DEL CEO - CONEXIÓN CON BACKEND
   const empireHealth = ceoData?.empireHealth || 87;
@@ -23,23 +25,23 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
   const stakeholderSatisfaction = ceoData?.stakeholderSatisfaction || 89;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-8">
       {/* HEADER DIVINO CEO */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-6xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
           👑 Santuario Ejecutivo - CEO
         </h1>
-        <p className="text-slate-400 text-xl">
+        <p className="text-slate-400 text-2xl font-light">
           Visión soberana del imperio - Gobernanza divina
         </p>
       </motion.div>
 
       {/* GRID DE MÉTRICAS EJECUTIVAS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* SALUD DEL IMPERIO */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -48,7 +50,7 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
+            className="p-8 rounded-3xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
             style={{
               background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
               backdropFilter: 'blur(15px) saturate(150%)',
@@ -64,12 +66,12 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
                 ✨
               </button>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Salud del Imperio</h3>
-              <div className="text-4xl font-bold text-green-400">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-white">Salud del Imperio</h3>
+              <div className="text-5xl font-bold text-green-400">
                 {empireHealth}%
               </div>
-              <p className="text-sm text-slate-400">Estado general operativo</p>
+              <p className="text-base text-slate-400">Estado general operativo</p>
             </div>
           </div>
         </motion.div>

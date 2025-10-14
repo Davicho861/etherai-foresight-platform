@@ -26,7 +26,7 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
             try {
               const j = await res.json();
               errText = typeof j === 'string' ? j : JSON.stringify(j);
-            } catch (e) {
+            } catch (_e) {
               errText = '';
             }
           }
@@ -84,7 +84,7 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
           try {
             const j = await res.json();
             bodyText = typeof j === 'string' ? j : JSON.stringify(j);
-          } catch (e) {
+          } catch (_e) {
             bodyText = '';
           }
         }

@@ -22,7 +22,7 @@ describe('Demo routes', () => {
       if (Gdelt && Gdelt.default) {
         Gdelt.default.prototype.getSocialEvents = async () => [];
       }
-    } catch (e) {
+    } catch {
       // ignore if integration missing
     }
 
@@ -31,14 +31,14 @@ describe('Demo routes', () => {
       if (WB && WB.default) {
         WB.default.prototype.getKeyEconomicData = async () => ({ gdp: 1000 });
       }
-    } catch (e) {}
+  } catch {}
 
     try {
       const Crypto = await import('../src/integrations/CryptoIntegration.js');
       if (Crypto && Crypto.default) {
         Crypto.default.prototype.getCryptoData = async () => [{ id: 'bitcoin', current_price: 50000 }];
       }
-    } catch (e) {}
+  } catch {}
 
     try {
       const open = await import('../src/integrations/open-meteo.mock.js');
@@ -46,7 +46,7 @@ describe('Demo routes', () => {
         open.fetchRecentTemperature = async () => ({ temperature: 25 });
         open.fetchClimatePrediction = async () => ({ forecast: 'stable' });
       }
-    } catch (e) {}
+  } catch {}
 
     // Mock seismic service
     try {
@@ -54,7 +54,7 @@ describe('Demo routes', () => {
       if (usgs) {
         usgs.getSeismicActivity = async () => ({ events: [], summary: { totalEvents: 0 } });
       }
-    } catch (e) {}
+  } catch {}
 
     // Mock database Chroma client to force fallback or return a small collection
     try {
@@ -62,7 +62,7 @@ describe('Demo routes', () => {
       if (db) {
         db.getChromaClient = () => ({ mock: true, getOrCreateCollection: async () => ({ get: async () => ({ documents: [], metadatas: [], ids: [] }) }) });
       }
-    } catch (e) {}
+  } catch {}
 
     // Configure global fetch mock to return deterministic responses for internal endpoints
     if (global.mockFetch && typeof global.mockFetch.mockImplementation === 'function') {

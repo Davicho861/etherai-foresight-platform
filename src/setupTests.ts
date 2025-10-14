@@ -3,7 +3,7 @@
 try {
    
   require('@testing-library/jest-dom');
-} catch (e) {
+} catch {
   // no-op si no está presente
 }
 
