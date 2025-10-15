@@ -23,7 +23,7 @@ const AnimatedMetric: React.FC<AnimatedMetricProps> = ({
         if (entry.isIntersecting && !isVisible) {
           setIsVisible(true);
           setTimeout(() => {
-            let start = 0;
+            const start = 0;
             const startTime = Date.now();
             
             const animateValue = () => {
