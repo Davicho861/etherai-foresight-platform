@@ -1,3 +1,28 @@
+/* Shim para compatibilidad: reexporta el tema Google como si fuera gemini.css */
+@import './google-theme.css';
+
+/* Nota: este archivo existe para mantener compatibilidad con imports antiguos y tests que
+  referencian '../styles/gemini.css'. Reemplázalo gradualmente en componentes si deseas. */
+
+/* Compatibilidad: mapear clases gemini-* usadas ampliamente en la base de código */
+.bg-gemini-background { background: var(--g-bg) !important; }
+.bg-gemini-background-secondary { background: var(--g-surface) !important; }
+.text-gemini-text-primary { color: var(--g-text-primary) !important; }
+.text-gemini-text-secondary { color: var(--g-text-secondary) !important; }
+.text-gemini-muted { color: var(--g-text-secondary) !important; }
+.bg-gemini-primary { background: var(--g-primary) !important; color: var(--g-on-primary) !important; }
+.bg-gemini-primary-hover { background: var(--g-primary-variant) !important; }
+.bg-gemini-accent-yellow { background: #FBBB00 !important; }
+.bg-gemini-accent-yellow-hover { background: #F5A300 !important; }
+.bg-gemini-accent-red { background: #EA4335 !important; }
+.bg-gemini-accent-red-hover { background: #D93025 !important; }
+.border-gemini-border { border-color: var(--g-border) !important; }
+.shadow-gemini-primary\/50 { box-shadow: 0 6px 20px rgba(26,115,232,0.12) !important; }
+.rounded-gemini { border-radius: var(--radius) !important; }
+[/* Utilities to preserve previous class names that include 'gemini' prefix */]
+[class*="gemini-"] { transition: background-color var(--transition-fast) ease, color var(--transition-fast) ease; }
+[class*="gemini-"] { transition: background-color var(--transition-fast) ease, color var(--transition-fast) ease; }
+
 /* PRAEVISIO HEPHAESTUS GEMINI SOUL FORGE - PALETA DE COLORES GEMINI */
 /* La esencia pura de Google Gemini manifestada en CSS */
 

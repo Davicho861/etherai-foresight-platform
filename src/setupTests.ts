@@ -38,23 +38,34 @@ if (typeof (global as any).ResizeObserver === 'undefined') {
 }
 
 // Mock IntersectionObserver for tests that use it (prefetchOnVisible)
+// Provide a test-friendly IntersectionObserver mock with spies so tests
+// can assert constructor/observe calls. If a global is already present,
+// don't override it.
 if (typeof (global as any).IntersectionObserver === 'undefined') {
+  const mockObserve = jest.fn();
+  const mockUnobserve = jest.fn();
+  const mockDisconnect = jest.fn();
   class IntersectionObserverMock {
     callback: any;
     constructor(cb: any) {
       this.callback = cb;
+      (IntersectionObserverMock as any).mockConstructor();
     }
-    observe() {
-      // no-op
+    observe(...args: any[]) {
+      mockObserve(...args);
     }
-    unobserve() {
-      // no-op
+    unobserve(...args: any[]) {
+      mockUnobserve(...args);
     }
-    disconnect() {
-      // no-op
+    disconnect(...args: any[]) {
+      mockDisconnect(...args);
+    }
+    static mockConstructor = jest.fn();
+    static getMocks() {
+      return { mockObserve, mockUnobserve, mockDisconnect, mockConstructor: IntersectionObserverMock.mockConstructor };
     }
   }
-  (global as any).IntersectionObserver = IntersectionObserverMock;
+  (global as any).IntersectionObserver = IntersectionObserverMock as any;
 }
 
 // Silenciar warnings repetitivos de Recharts en JSDOM (ResponsiveContainer width/height = 0)
@@ -113,6 +124,101 @@ Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
   writable: true,
   value: jest.fn(),
 });
+
+// Allow tests to redefine navigator.serviceWorker safely. Some test setups
+// define this property; ensure it is configurable so Object.defineProperty
+// in tests won't throw. If it's already defined and non-configurable, replace it.
+try {
+  const existing = Object.getOwnPropertyDescriptor(navigator, 'serviceWorker');
+  if (!existing || existing.configurable) {
+    Object.defineProperty(navigator, 'serviceWorker', {
+      configurable: true,
+      writable: true,
+      value: (navigator as any).serviceWorker || undefined,
+    });
+  } else {
+    // Replace by creating a new descriptor (best-effort)
+    delete (navigator as any).serviceWorker;
+    Object.defineProperty(navigator, 'serviceWorker', {
+      configurable: true,
+      writable: true,
+      value: undefined,
+    });
+  }
+} catch (e) {
+  // ignore; some environments won't allow modification
+}
+
+// Provide a safe, test-friendly mock for navigator.serviceWorker when absent.
+// This mock exposes:
+// - addEventListener/removeEventListener
+// - ready (Promise resolving to a mock registration)
+// - controller (with postMessage)
+// - a helper __trigger(event, payload) to simulate SW events in tests
+// - __mocks containing the underlying mock objects so tests can inspect them
+(function setupServiceWorkerMock() {
+  try {
+    const existing = (navigator as any).serviceWorker;
+    if (existing) {
+      // Expose existing mock for tests to use
+      (global as any).__TEST_SERVICE_WORKER_MOCK = existing;
+      return;
+    }
+
+    const handlers: Record<string, Function[]> = {};
+    const mockRegistration = {
+      waiting: { postMessage: jest.fn() },
+      installing: null,
+      active: null,
+      scope: '/',
+    } as any;
+
+    const mockController = { postMessage: jest.fn() } as any;
+
+    const swMock: any = {
+      addEventListener: jest.fn((event: string, cb: Function) => {
+        handlers[event] = handlers[event] || [];
+        handlers[event].push(cb);
+      }),
+      removeEventListener: jest.fn((event: string, cb: Function) => {
+        handlers[event] = (handlers[event] || []).filter((fn: Function) => fn !== cb);
+      }),
+      ready: Promise.resolve(mockRegistration),
+      controller: mockController,
+      // Helper for tests to programmatically trigger service worker events
+      __trigger(event: string, payload?: any) {
+        (handlers[event] || []).forEach((cb) => {
+          try {
+            cb(payload);
+          } catch (err) {
+            // swallow test callback errors here; tests should catch them
+          }
+        });
+      },
+      __mocks: { mockRegistration, mockController, handlers },
+    };
+
+    try {
+      Object.defineProperty(navigator, 'serviceWorker', {
+        configurable: true,
+        writable: true,
+        value: swMock,
+      });
+    } catch (err) {
+      // Fallback assignment if defineProperty is not allowed
+      try {
+        (navigator as any).serviceWorker = swMock;
+      } catch (e) {
+        // ignore silently
+      }
+    }
+
+    // Expose globally for tests to import/access
+    (global as any).__TEST_SERVICE_WORKER_MOCK = swMock;
+  } catch (e) {
+    // ignore any errors during setup in constrained environments
+  }
+})();
 
 // Mock para Element.prototype.scrollIntoView (para compatibilidad adicional)
 Object.defineProperty(window.Element.prototype, 'scrollIntoView', {

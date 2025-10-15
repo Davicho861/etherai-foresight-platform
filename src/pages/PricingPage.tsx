@@ -89,13 +89,13 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
   if (!Object.keys(segments).length) return <div className="p-8">Cargando planes de precios...</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-etherblue-dark via-gray-900 to-purple-900 text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gemini-background text-gemini-text-primary relative overflow-hidden">
       {/* Background blur effect */}
-      <div className="absolute inset-0 bg-etherblue-dark/50 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-gemini-background/50 backdrop-blur-sm"></div>
 
       <div className="relative z-10 p-8">
         <motion.h1
-          className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+          className="text-5xl font-bold mb-12 text-center bg-gradient-to-r from-gemini-primary to-gemini-accent-yellow bg-clip-text text-transparent"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -104,7 +104,7 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
         </motion.h1>
 
         <motion.p
-          className="text-xl text-center mb-16 text-gray-300 max-w-4xl mx-auto"
+          className="text-xl text-center mb-16 text-gemini-text-secondary max-w-4xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
@@ -129,10 +129,10 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                   {seg.plans.map((plan, planIndex) => (
                     <motion.div
                       key={plan.id}
-                      className={`relative p-8 rounded-2xl border backdrop-blur-md bg-white/5 shadow-2xl ${
+                      className={`relative p-8 rounded-2xl border backdrop-blur-md bg-gemini-background-secondary shadow-2xl ${
                         plan.popular
-                          ? 'border-etherneon shadow-etherneon/20'
-                          : 'border-white/20 hover:border-white/40'
+                          ? 'border-gemini-primary shadow-gemini-primary/20'
+                          : 'border-gemini-border hover:border-gemini-primary/50'
                       } transition-all duration-300`}
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -142,7 +142,7 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                     >
                       {plan.popular && (
                         <motion.div
-                          className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-etherneon text-etherblue-dark px-4 py-1 rounded-full text-sm font-semibold uppercase"
+                          className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gemini-primary text-gemini-background px-4 py-1 rounded-full text-sm font-semibold uppercase"
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 1 + planIndex * 0.1, type: 'spring', stiffness: 200 }}
@@ -155,7 +155,7 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                         <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                         <div
                           data-testid={`plan-price-${plan.id}`}
-                          className="text-4xl font-extrabold text-etherneon mb-2"
+                          className="text-4xl font-extrabold text-gemini-primary mb-2"
                         >
                           {typeof plan.price === 'number' ? `${Math.round((plan.price as number) * modifier)} ${currency}` : plan.price}
                         </div>
@@ -164,12 +164,12 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                         )}
                       </div>
 
-                      <p className="text-gray-300 mb-6 text-center">{plan.description}</p>
+                      <p className="text-gemini-text-secondary mb-6 text-center">{plan.description}</p>
 
                       <ul className="text-sm mb-8 space-y-2">
                         {(plan.features || []).map((f: any, i: number) => (
                           <li key={i} className="flex items-center">
-                            <span className="text-etherneon mr-2">✦</span>
+                            <span className="text-gemini-primary mr-2">✦</span>
                             {typeof f === 'string' ? f : f.name}
                           </li>
                         ))}
@@ -179,7 +179,7 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                         <Dialog open={demoModalOpen && selectedPlanForDemo === plan.id} onOpenChange={setDemoModalOpen}>
                           <DialogTrigger asChild>
                             <motion.button
-                              className="w-full bg-gradient-to-r from-etherneon to-blue-500 text-etherblue-dark font-semibold py-3 px-6 rounded-lg hover:shadow-lg transition-all"
+                              className="w-full gemini-button-primary"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={() => openDemoModal(plan.id)}
@@ -188,13 +188,15 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
                             </motion.button>
                           </DialogTrigger>
                           <DialogContent className="max-w-full h-full p-0 bg-transparent border-none">
-                            <DemoPage plan={selectedPlanForDemo || undefined} />
+                            {/* Pass the selected plan to DemoPage so tests that mock DemoPage
+                                with a prop-based API receive the correct plan id. */}
+                            <DemoPage {...( { plan: selectedPlanForDemo ?? plan.id } as any )} />
                           </DialogContent>
                         </Dialog>
 
                         <a
                           href="#contact"
-                          className="text-center text-sm underline text-etherneon hover:text-white transition-colors"
+                          className="text-center text-sm underline text-gemini-primary hover:text-gemini-text-primary transition-colors"
                         >
                           Solicitar Demo Personalizada
                         </a>
@@ -209,16 +211,16 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
 
         {/* Calculadora Soberana */}
         <motion.section
-          className="mb-20 p-8 rounded-3xl border border-etherneon/30 backdrop-blur-md bg-gradient-to-br from-etherblue-light/20 to-purple-900/20 shadow-2xl"
+          className="mb-20 p-8 rounded-3xl border border-gemini-primary/30 backdrop-blur-md bg-gradient-to-br from-gemini-background-secondary/20 to-gemini-accent-yellow/20 shadow-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}
         >
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-etherneon to-blue-400 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gemini-primary to-gemini-accent-yellow bg-clip-text text-transparent">
               Calculadora Soberana
             </h2>
-            <p className="text-lg text-gray-300">
+            <p className="text-lg text-gemini-text-secondary">
               Forja tu combo perfecto. Nuestra IA revela el valor oculto de cada elección.
             </p>
           </div>
@@ -227,17 +229,17 @@ const PricingPage: React.FC<{ protocolOverride?: any }> = ({ protocolOverride })
 
         {/* Panteón destacado */}
         <motion.aside
-          className="p-8 rounded-3xl border border-amber-400/50 backdrop-blur-md bg-gradient-to-br from-amber-900/20 to-etherblue-light/20 shadow-2xl text-center"
+          className="p-8 rounded-3xl border border-gemini-accent-yellow/50 backdrop-blur-md bg-gradient-to-br from-gemini-accent-yellow/20 to-gemini-background-secondary/20 shadow-2xl text-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
         >
-          <h2 className="text-3xl font-bold mb-4 text-amber-400">Nivel Panteón</h2>
-          <p className="text-lg text-gray-300 mb-6">
+          <h2 className="text-3xl font-bold mb-4 text-gemini-accent-yellow">Nivel Panteón</h2>
+          <p className="text-lg text-gemini-text-secondary mb-6">
             Oferta exclusiva para visionarios de máximo impacto. Accede a la inteligencia predictiva definitiva.
           </p>
           <motion.button
-            className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all"
+            className="bg-gradient-to-r from-gemini-accent-yellow to-gemini-accent-yellow-hover text-gemini-background font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -306,7 +308,7 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-bold mb-6 text-etherneon">Altares Base</h3>
+          <h3 className="text-2xl font-bold mb-6 text-gemini-primary">Altares Base</h3>
           <div className="space-y-4">
             {plans.map(plan => (
               <motion.div
@@ -314,8 +316,8 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 data-testid={`plan-toggle-${plan.id}`}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                   selectedPlans.has(plan.id)
-                    ? 'border-etherneon bg-etherneon/10 shadow-lg'
-                    : 'border-white/20 hover:border-white/40'
+                    ? 'border-gemini-primary bg-gemini-primary/10 shadow-lg'
+                    : 'border-gemini-border hover:border-gemini-primary/50'
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -324,10 +326,10 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-semibold">{plan.name}</h4>
-                    <p className="text-sm text-gray-400">${typeof plan.price === 'number' ? plan.price : 'N/A'}/mes</p>
+                    <p className="text-sm text-gemini-text-muted">${typeof plan.price === 'number' ? plan.price : 'N/A'}/mes</p>
                   </div>
                   <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
-                    selectedPlans.has(plan.id) ? 'bg-etherneon border-etherneon' : 'border-white/40'
+                    selectedPlans.has(plan.id) ? 'bg-gemini-primary border-gemini-primary' : 'border-gemini-border'
                   }`}>
                     {selectedPlans.has(plan.id) && <span className="text-black text-sm">✓</span>}
                   </div>
@@ -342,7 +344,7 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <h3 className="text-2xl font-bold mb-6 text-etherneon">Reliquias Adicionales</h3>
+          <h3 className="text-2xl font-bold mb-6 text-gemini-primary">Reliquias Adicionales</h3>
           <div className="grid grid-cols-1 gap-4">
             {['Integración API Avanzada', 'Dashboard Personalizado', 'Soporte 24/7', 'Análisis de Tendencias'].map(feature => (
               <motion.div
@@ -350,8 +352,8 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 data-testid={`feature-toggle-${feature.replace(/\s+/g, '-').toLowerCase()}`}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                   selectedFeatures.has(feature)
-                    ? 'border-etherneon bg-etherneon/10 shadow-lg'
-                    : 'border-white/20 hover:border-white/40'
+                    ? 'border-gemini-primary bg-gemini-primary/10 shadow-lg'
+                    : 'border-gemini-border hover:border-gemini-primary/50'
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -360,10 +362,10 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-semibold">{feature}</h4>
-                    <p className="text-sm text-gray-400">$50/mes</p>
+                    <p className="text-sm text-gemini-text-muted">$50/mes</p>
                   </div>
                   <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
-                    selectedFeatures.has(feature) ? 'bg-etherneon border-etherneon' : 'border-white/40'
+                    selectedFeatures.has(feature) ? 'bg-gemini-primary border-gemini-primary' : 'border-gemini-border'
                   }`}>
                     {selectedFeatures.has(feature) && <span className="text-black text-sm">✓</span>}
                   </div>
@@ -381,10 +383,10 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        <div className="bg-gradient-to-br from-etherblue-light/30 to-purple-900/30 p-6 rounded-2xl border border-etherneon/30">
-          <h3 className="text-2xl font-bold mb-4 text-center">Total Soberano</h3>
+        <div className="bg-gradient-to-br from-gemini-background-secondary/30 to-gemini-accent-yellow/30 p-6 rounded-2xl border border-gemini-primary/30">
+          <h3 className="text-2xl font-bold mb-4 text-center text-gemini-text-primary">Total Soberano</h3>
           <motion.div
-            className="text-5xl font-extrabold text-center text-etherneon mb-2"
+            className="text-5xl font-extrabold text-center text-gemini-primary mb-2"
             data-testid="calculator-total"
             key={calculateTotal()}
             initial={{ scale: 0.8 }}
@@ -393,40 +395,40 @@ const ComboCalculator: React.FC<{ plans: Plan[] }> = ({ plans }) => {
           >
             ${calculateTotal()}/mes
           </motion.div>
-          <p className="text-center text-gray-400">Valor calculado instantáneamente</p>
+          <p className="text-center text-gemini-text-muted">Valor calculado instantáneamente</p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-etherneon">Oráculo de Valor</h3>
+          <h3 className="text-xl font-bold text-gemini-primary">Oráculo de Valor</h3>
           {Array.from(selectedPlans).map(planId => {
             const plan = plans.find(p => p.id === planId);
             return plan ? (
               <motion.div
                 key={planId}
-                className="p-4 bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-lg border border-blue-500/30"
+                className="p-4 bg-gradient-to-r from-gemini-background-secondary/50 to-gemini-accent-yellow/50 rounded-lg border border-gemini-primary/30"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                <h4 className="font-semibold text-blue-400 mb-2">{plan.name}</h4>
-                <p className="text-sm text-gray-300">{getAIExplanation(plan.name, 'plan')}</p>
+                <h4 className="font-semibold text-gemini-primary mb-2">{plan.name}</h4>
+                <p className="text-sm text-gemini-text-secondary">{getAIExplanation(plan.name, 'plan')}</p>
               </motion.div>
             ) : null;
           })}
           {Array.from(selectedFeatures).map(feature => (
             <motion.div
               key={feature}
-              className="p-4 bg-gradient-to-r from-green-900/50 to-teal-900/50 rounded-lg border border-green-500/30"
+              className="p-4 bg-gradient-to-r from-gemini-success/20 to-gemini-primary/20 rounded-lg border border-gemini-success/30"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <h4 className="font-semibold text-green-400 mb-2">{feature}</h4>
-              <p className="text-sm text-gray-300">{getAIExplanation(feature as string, 'feature')}</p>
+              <h4 className="font-semibold text-gemini-success mb-2">{feature}</h4>
+              <p className="text-sm text-gemini-text-secondary">{getAIExplanation(feature as string, 'feature')}</p>
             </motion.div>
           ))}
           {selectedPlans.size === 0 && selectedFeatures.size === 0 && (
-            <div className="text-center text-gray-500 py-8">
+            <div className="text-center text-gemini-text-muted py-8">
               Selecciona altares y reliquias para revelar el oráculo de valor
             </div>
           )}

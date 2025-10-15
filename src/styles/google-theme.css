@@ -1,0 +1,104 @@
+/* Google-inspired theme for Praevisio AI - Hefesto Forge */
+:root {
+  /* Typography */
+  --font-sans: 'Google Sans', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+
+  /* Palette (sober, Google-like) */
+  --g-bg:  #ffffff;
+  --g-surface: #ffffff;
+  --g-primary: #1a73e8; /* Google blue */
+  --g-primary-variant: #174ea6;
+  --g-on-primary: #ffffff;
+  --g-text-primary: #202124;
+  --g-text-secondary: #5f6368;
+  --g-border: #e0e0e0;
+  --g-shadow: 0 1px 2px rgba(60,64,67,0.08), 0 2px 6px rgba(60,64,67,0.06);
+
+  /* Spacing baseline */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  /* Radii */
+  --radius: 12px;
+
+  /* Motion */
+  --transition-fast: 160ms;
+  --transition-medium: 280ms;
+}
+
+/* Font-face fallback to Roboto if Google Fonts not available */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+html, body {
+  font-family: var(--font-sans);
+  color: var(--g-text-primary);
+  background: var(--g-bg);
+}
+
+/* Card */
+.g-card {
+  background: var(--g-surface);
+  border-radius: calc(var(--radius));
+  box-shadow: var(--g-shadow);
+  border: 1px solid var(--g-border);
+  padding: var(--space-md);
+}
+
+/* Primary button (Material-like) */
+.g-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--g-primary);
+  color: var(--g-on-primary);
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.g-btn:active { transform: translateY(1px); }
+
+/* Subtle ripple effect */
+.g-ripple { position: relative; overflow: hidden; }
+.g-ripple::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 300ms ease, height 300ms ease, opacity 300ms ease;
+  opacity: 0;
+}
+.g-ripple:active::after { width: 200px; height: 200px; opacity: 1; }
+
+/* Input styles */
+.g-input {
+  padding: 10px 12px;
+  border: 1px solid var(--g-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--g-text-primary);
+  outline: none;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+.g-input:focus { box-shadow: 0 0 0 4px rgba(26,115,232,0.08); border-color: var(--g-primary); }
+
+/* Sidebar minimal */
+.g-sidebar { background: #fff; border-right: 1px solid var(--g-border); min-width: 240px; }
+
+/* Utility helpers */
+.g-muted { color: var(--g-text-secondary); }
+.g-ink { color: var(--g-primary); }
+
+/* Ensure Tailwind-compatible CSS variables mapping used by tailwind.config.ts */
+:root {
+  --primary: 26 115 232; /* hsl-ish values may be derived as needed */
+  --background: 255 255 255;
+  --foreground: 32 33 36;
+  --card: 255 255 255;
+}

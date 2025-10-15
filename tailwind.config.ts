@@ -168,6 +168,7 @@ export default {
 			},
 			fontFamily: {
 				'inter': ['Inter', 'Roboto', 'sans-serif'],
+				'google-sans': ['Google Sans', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
 			},
 			backgroundImage: {
 				'grid-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%232D3748' fill-opacity='0.05'%3E%3Cpath d='M0 0h60v60H0V0z M30 30h30v30H30V30z M0 30h30v30H0V30z'/%3E%3C/g%3E%3C/svg%3E\")",

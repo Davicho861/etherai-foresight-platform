@@ -110,14 +110,14 @@ const CommandCenterLayout: React.FC = () => {
   const globalMockActive = (getEnvFlagTop('FORCE_MOCKS') === 'true') || isMockMode;
 
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 g-layout">
       {/* Global mock/banner indicator */}
       {globalMockActive && (
         <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-50">
           <div className="px-3 py-1 rounded-full bg-yellow-600 text-black text-sm font-semibold">MODO SIMULADO</div>
         </div>
       )}
-      <aside className={`flex flex-col ${collapsed ? 'w-16' : 'w-64'} bg-etherblue-dark/80 text-white border-r border-gray-800 transition-all`} data-testid="sidebar-nav">
+  <aside className={`flex flex-col ${collapsed ? 'w-16' : 'w-64'} bg-etherblue-dark/80 text-white border-r border-gray-800 transition-all g-sidebar`} data-testid="sidebar">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-white/10 rounded">

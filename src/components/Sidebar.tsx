@@ -13,10 +13,10 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="w-64 bg-gray-900 text-white h-full">
-      <div className="p-6">
+    <div className="w-64 bg-gray-900 text-white h-full g-sidebar" data-testid="sidebar">
+      <div className="p-6 g-header">
         <h2 className="text-xl font-bold mb-8">Praevisio AI</h2>
-        <nav className="space-y-2" data-testid="sidebar-nav">
+        <nav className="space-y-2 g-nav" data-testid="sidebar-nav">
           {menuItems.map((item, index) => (
             <Link
               key={index}

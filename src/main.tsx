@@ -1,4 +1,6 @@
 import { createRoot } from 'react-dom/client'
+// Import global theme shim (re-exports google-theme) to ensure styles are present in tests and runtime
+import './styles/gemini.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import './styles/praevisio.css'
