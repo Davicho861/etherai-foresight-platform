@@ -6,16 +6,15 @@ import { cn } from "@/lib/utils"
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
-export type ChartConfig = Record<
-  string,
-  {
+export type ChartConfig = {
+  [k in string]: {
     label?: React.ReactNode
     icon?: React.ComponentType
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
   )
->
+}
 
 type ChartContextProps = {
   config: ChartConfig
@@ -67,8 +66,8 @@ const ChartContainer = React.forwardRef<
 ChartContainer.displayName = "Chart"
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([, itemConfig]) =>
-    itemConfig.theme || itemConfig.color
+  const colorConfig = Object.entries(config).filter(
+    ([_, config]) => config.theme || config.color
   )
 
   if (!colorConfig.length) {

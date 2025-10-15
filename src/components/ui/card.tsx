@@ -9,8 +9,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      /* g-card base class for Google theme compatibility */
-      "g-card rounded-lg border border-[color:var(--border)] bg-[color:var(--card)] text-[color:var(--text-primary)] shadow-sm",
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}

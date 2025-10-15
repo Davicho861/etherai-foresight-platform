@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Building, Briefcase, Users, Check } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
 const SolutionsSection: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("gobiernos");
+  
   return (
     <section id="solutions" className="py-20 md:py-28 bg-etherblue">
       <div className="container mx-auto px-4">
@@ -19,7 +21,8 @@ const SolutionsSection: React.FC = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="gobiernos" className="w-full max-w-4xl mx-auto">
+        <Tabs defaultValue="gobiernos" className="w-full max-w-4xl mx-auto" 
+          onValueChange={(value) => setActiveTab(value)}>
           <TabsList className="w-full grid grid-cols-3 mb-8 bg-etherblue-dark">
             <TabsTrigger 
               value="gobiernos" 

@@ -6,16 +6,9 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 
-type Factor = {
-  name?: string;
-  factor?: string;
-  value?: number;
-  weight?: number;
-};
-
-type PredictionResponse = {
-  confidence: number;
-  factors: Factor[];
+type PredictionData = {
+  factor: string;
+  value: number;
 };
 
 const InteractiveDashboard: React.FC = () => {
@@ -23,8 +16,6 @@ const InteractiveDashboard: React.FC = () => {
   const [variable1, setVariable1] = useState(50);
   const [variable2, setVariable2] = useState(30);
   const [showPrediction, setShowPrediction] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [remotePrediction, setRemotePrediction] = useState<PredictionResponse | null>(null);
 
   // Datos para los diferentes sectores con mejores ejemplos específicos
   const sectorData = {
@@ -78,43 +69,6 @@ const InteractiveDashboard: React.FC = () => {
   
   // Calcular el resultado basado en las variables (simulado)
   const predictionValue = Math.round((variable1 * 0.6) + (variable2 * 0.4));
-
-  let apiBase = 'http://localhost:4000';
-  // runtime env resolution compatible with tests (no import.meta)
-  // prefer VITE_API_BASE_URL set by Vite, otherwise fallback to process.env
-  apiBase = (globalThis as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL || process.env.VITE_API_BASE_URL || apiBase;
-
-  async function fetchPrediction() {
-    setLoading(true);
-    setRemotePrediction(null);
-    try {
-      const payload = {
-        country: 'Colombia',
-        parameters: {
-          infectionRate: variable1,
-          protestIndex: variable2,
-          economicIndex: 40
-        }
-      };
-
-      const res = await fetch(`${apiBase}/api/predict`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || 'Error en la API');
-      }
-      const data = await res.json();
-      setRemotePrediction(data);
-      setShowPrediction(true);
-    } catch (err: unknown) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
   
   // Ajustar los colores basados en la predicción
   const getPredictionColor = () => {
@@ -181,10 +135,9 @@ const InteractiveDashboard: React.FC = () => {
         <div className="flex justify-center mb-8">
           <Button 
             className="bg-etherneon hover:bg-etherneon/80 text-etherblue-dark"
-            onClick={() => fetchPrediction()}
-            disabled={loading}
+            onClick={() => setShowPrediction(true)}
           >
-            {loading ? 'Generando...' : 'Generar Predicción'}
+            Generar Predicción
           </Button>
         </div>
         
@@ -195,9 +148,9 @@ const InteractiveDashboard: React.FC = () => {
                 <h4 className="text-lg font-bold mb-1">{currentSector.title}</h4>
                 <p className="text-sm text-ethergray-light">{currentSector.result}</p>
               </div>
-                <div className="mt-4 md:mt-0">
+              <div className="mt-4 md:mt-0">
                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-etherneon/10 text-etherneon text-sm">
-                  Confianza: {remotePrediction ? Math.round(remotePrediction.confidence * 100) + '%' : currentSector.confidence + '%'}
+                  Confianza: {currentSector.confidence}%
                 </span>
               </div>
             </div>
@@ -230,19 +183,19 @@ const InteractiveDashboard: React.FC = () => {
                   <div className="mb-3">
                     <h6 className="text-xs font-medium text-ethergray-light mb-2">Factores de predicción</h6>
                     <div className="space-y-2">
-                      {(remotePrediction ? remotePrediction.factors : currentSector.data).map((item: Factor, index: number) => (
+                      {currentSector.data.map((item, index) => (
                         <div key={index} className="flex items-center">
-                          <span className="w-20 text-xs">{item.name || item.factor}</span>
+                          <span className="w-20 text-xs">{item.factor}</span>
                           <div className="flex-1 h-2 bg-ethergray-light/20 rounded-full ml-2">
                             <div 
                               className={`h-full rounded-full ${
                                 index % 3 === 0 ? 'bg-blue-400' : 
                                 index % 3 === 1 ? 'bg-purple-400' : 'bg-orange-400'
                               }`}
-                              style={{width: `${(item.value ?? (item.weight*100))}%`}}
+                              style={{width: `${item.value}%`}}
                             ></div>
                           </div>
-                          <span className="ml-2 text-xs">{(item.value ?? (item.weight*100)).toFixed ? (item.value ?? (item.weight*100)).toFixed(0) : (item.value ?? (item.weight*100))}%</span>
+                          <span className="ml-2 text-xs">{item.value}%</span>
                         </div>
                       ))}
                     </div>

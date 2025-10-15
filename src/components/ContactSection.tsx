@@ -22,7 +22,7 @@ const ContactSection: React.FC = () => {
               No Esperes a la <span className="text-transparent bg-clip-text bg-gradient-to-r from-etherneon to-etherneon/70">Próxima Crisis</span>
             </h2>
             <p className="text-lg text-ethergray-light max-w-2xl mx-auto">
-              Únete a los líderes que ya están transformando el futuro con Praevisio AI. 
+              Únete a los líderes que ya están transformando el futuro con EtherAI Labs. 
               Solicita tu demo personalizada hoy y descubre cómo anticipar y actuar a tiempo.
             </p>
           </div>
@@ -64,46 +64,30 @@ const ContactSection: React.FC = () => {
                     <label htmlFor="organization" className="text-sm font-medium">
                       Organización
                     </label>
-                    <Input
-                      id="organization"
-                      placeholder="Nombre de tu organización"
-                      className="bg-etherblue-dark border-ethergray-light/20 focus:border-etherneon"
-                      aria-describedby="organization-help"
+                    <Input 
+                      id="organization" 
+                      placeholder="Nombre de tu organización" 
+                      className="bg-etherblue-dark border-ethergray-light/20 focus:border-etherneon" 
                     />
-                    <p id="organization-help" className="text-xs text-ethergray-light/70">Opcional: para contextualizar mejor tu solicitud</p>
                   </div>
-
+                  
                   <div className="space-y-2">
-                    <label htmlFor="phone" className="text-sm font-medium">
-                      Teléfono
+                    <label htmlFor="sector" className="text-sm font-medium">
+                      Sector
                     </label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+57 300 123 4567"
-                      className="bg-etherblue-dark border-ethergray-light/20 focus:border-etherneon"
-                      aria-describedby="phone-help"
-                    />
-                    <p id="phone-help" className="text-xs text-ethergray-light/70">Para coordinar la demo personalizada</p>
+                    <Select>
+                      <SelectTrigger className="bg-etherblue-dark border-ethergray-light/20 focus:border-etherneon">
+                        <SelectValue placeholder="Selecciona tu sector" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-etherblue border border-white/10">
+                        <SelectItem value="gobierno">Gobierno / Sector Público</SelectItem>
+                        <SelectItem value="empresa">Empresa / Sector Privado</SelectItem>
+                        <SelectItem value="ong">ONG / Organización Internacional</SelectItem>
+                        <SelectItem value="academia">Academia / Investigación</SelectItem>
+                        <SelectItem value="otro">Otro</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="sector" className="text-sm font-medium">
-                    Sector
-                  </label>
-                  <Select>
-                    <SelectTrigger className="bg-etherblue-dark border-ethergray-light/20 focus:border-etherneon" aria-label="Selecciona tu sector">
-                      <SelectValue placeholder="Selecciona tu sector" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-etherblue border border-white/10">
-                      <SelectItem value="gobierno">Gobierno / Sector Público</SelectItem>
-                      <SelectItem value="empresa">Empresa / Sector Privado</SelectItem>
-                      <SelectItem value="ong">ONG / Organización Internacional</SelectItem>
-                      <SelectItem value="academia">Academia / Investigación</SelectItem>
-                      <SelectItem value="otro">Otro</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
                 
                 <div className="space-y-2">
@@ -118,14 +102,9 @@ const ContactSection: React.FC = () => {
                 </div>
                 
                 <div className="pt-4">
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full md:w-auto bg-etherneon hover:bg-etherneon/80 text-etherblue-dark transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-etherneon/25 group"
-                    aria-label="Enviar solicitud de demo personalizada"
-                  >
+                  <Button type="submit" size="lg" className="w-full md:w-auto bg-etherneon hover:bg-etherneon/80 text-etherblue-dark">
                     Solicitar Demo Personalizada
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               </form>

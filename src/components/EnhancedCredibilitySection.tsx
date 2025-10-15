@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Users, Clock, Award } from 'lucide-react';
+import { Play, Users, DollarSign, Clock, Award } from 'lucide-react';
 import AnimatedMetric from './AnimatedMetrics';
 
 const EnhancedCredibilitySection = () => {

@@ -1,45 +1,45 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 const ComparisonSection = () => {
-  const features = useMemo(() => [
+  const features = [
     {
       feature: "Precisión en Predicciones",
-  etherAI: "90%",
+      etherAI: "90%",
       traditional: "65%",
       highlight: true
     },
     {
       feature: "IA Explicable",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: true
     },
     {
       feature: "Tiempo de Implementación",
-  etherAI: "2-4 semanas",
+      etherAI: "2-4 semanas",
       traditional: "6-12 meses",
       highlight: false
     },
     {
       feature: "Capacidad Multi-sector",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: false
     },
     {
       feature: "Análisis en Tiempo Real",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: false
     },
     {
       feature: "Soporte 24/7",
-  etherAI: true,
+      etherAI: true,
       traditional: "Limitado",
       highlight: false
     }
-  ], []);
+  ];
 
   return (
     <section className="py-20 md:py-28 bg-etherblue-medium/30 relative">

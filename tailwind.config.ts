@@ -53,55 +53,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Praevisio AI custom colors
+				// Praevisio AI custom colors - using HSL semantic tokens
 				etherblue: {
-					dark: "#1A1F2C",
-					DEFAULT: "#2D3748",
-					light: "#4A5568",
+					dark: 'hsl(var(--etherblue-dark))',
+					DEFAULT: 'hsl(var(--etherblue))',
+					medium: 'hsl(var(--etherblue-medium))',
+					light: 'hsl(var(--etherblue-light))',
 				},
 				ethergray: {
-					DEFAULT: "#718096",
-					light: "#A0AEC0",
+					DEFAULT: 'hsl(var(--ethergray))',
+					light: 'hsl(var(--ethergray-light))',
 				},
 				etherneon: {
-					DEFAULT: "#4ADE80",
-					light: "#86EFAC",
-				},
-				// Google Material Design palette for SDLC Dashboard
-				google: {
-					background: '#202124', // Dark gray background
-					surface: '#303134', // Slightly lighter gray for cards
-					primary: '#89b4fa', // Google blue
-					'text-primary': '#e8eaed', // Soft white for primary text
-					'text-secondary': '#bdc1c6', // Light gray for secondary text
-				},
-				// SDLC aliases (convenience shortcuts to the Google palette)
-				sdlc: {
-					background: '#202124',
-					surface: '#303134',
-					primary: '#89b4fa',
-					'text-primary': '#e8eaed',
-					'text-secondary': '#bdc1c6',
-				},
-				// Gemini soul palette (mapped to CSS variables in global CSS)
-				gemini: {
-					background: 'var(--background)',
-					'background-secondary': 'var(--background-secondary)',
-					primary: 'var(--primary)',
-					'primary-hover': 'var(--primary-hover)',
-					'primary-dark': 'var(--primary-dark)',
-					'accent-yellow': 'var(--accent-yellow)',
-					'accent-yellow-hover': 'var(--accent-yellow-hover)',
-					'accent-red': 'var(--accent-red)',
-					'accent-red-hover': 'var(--accent-red-hover)',
-					'text-primary': 'var(--text-primary)',
-					'text-secondary': 'var(--text-secondary)',
-					'text-muted': 'var(--text-muted)',
-					border: 'var(--border)',
-					'border-light': 'var(--border-light)',
-					success: 'var(--success)',
-					error: 'var(--error)',
-					warning: 'var(--warning)',
+					DEFAULT: 'hsl(var(--etherneon))',
+					light: 'hsl(var(--etherneon-light))',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -167,8 +132,8 @@ export default {
 				'float': 'float 6s ease-in-out infinite'
 			},
 			fontFamily: {
-				'inter': ['Inter', 'Roboto', 'sans-serif'],
-				'google-sans': ['Google Sans', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'sf-pro': ['SF Pro Display', 'Inter', 'sans-serif'],
 			},
 			backgroundImage: {
 				'grid-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%232D3748' fill-opacity='0.05'%3E%3Cpath d='M0 0h60v60H0V0z M30 30h30v30H30V30z M0 30h30v30H0V30z'/%3E%3C/g%3E%3C/svg%3E\")",

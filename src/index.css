@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
 @tailwind base;
 @tailwind components;
@@ -7,47 +8,68 @@
 
 @layer base {
   :root {
-    /* Gemini Soul Palette (H S% L%) */
-    --background: 230 7% 4%; /* approx #0c0c0f */
-    --primary: 219 100% 64%; /* #4f80ff */
-    --accent-yellow: 42 100% 50%; /* #ffab00 */
-    --accent-red: 3 67% 50%; /* #e53935 */
-    --text-primary: 0 0% 100%;
-    --text-secondary: 220 6% 70%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    /* Surfaces */
-    --card: 230 9% 6%;
-    --card-foreground: var(--text-primary);
-    --popover: 230 9% 6%;
-    --popover-foreground: var(--text-primary);
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
 
-    /* Semantic tokens */
-    --primary-foreground: 230 7% 4%;
-    --secondary: 220 6% 12%;
-    --secondary-foreground: var(--text-primary);
-    --muted: 220 6% 14%;
-    --muted-foreground: 220 6% 70%;
-    --accent: var(--primary);
-    --accent-foreground: var(--text-primary);
-    --destructive: var(--accent-red);
-    --destructive-foreground: var(--text-primary);
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
 
-    --border: 220 6% 12%;
-    --input: 220 6% 12%;
-    --ring: 219 100% 75%;
-    --radius: 0.5rem;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 142 70% 56%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.75rem;
+
+    /* EtherAI Foresight Global Cosmic Palette 2025 */
+    --cosmic-primary: 205 100% 16%;     /* #0A2540 - LATAM Trust Blue */
+    --cosmic-secondary: 258 70% 52%;    /* #7C3AED - Global Innovation Purple */
+    --cosmic-accent-latam: 152 69% 52%; /* #34D399 - Emerging LATAM Cyan */
+    --cosmic-accent-global: 186 89% 57%; /* #34EDF3 - Global Neon */
+    --cosmic-gradient-start: 237 72% 71%; /* #667eea */
+    --cosmic-gradient-end: 273 51% 56%;   /* #764ba2 */
+    
+    /* Legacy aliases for backward compatibility */
+    --etherblue-dark: 205 100% 16%;
+    --etherblue: 215 25% 27%;
+    --etherblue-medium: 215 20% 35%;
+    --etherblue-light: 215 15% 40%;
+    --ethergray: 214 14% 53%;
+    --ethergray-light: 214 12% 65%;
+    --etherneon: 152 69% 52%;
+    --etherneon-light: 142 68% 70%;
+    
+    /* Glassmorphism & Effects */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-cosmic: 0 10px 40px rgba(124, 58, 237, 0.25);
+    --shadow-pulse: 0 0 40px rgba(52, 211, 153, 0.4);
   }
 }
 
 @layer base {
   * {
-    /* @apply border-border; */
+    @apply border-border;
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--text-primary));
-    font-family: 'Inter', 'Roboto', sans-serif;
+    @apply bg-etherblue-dark text-foreground font-inter;
     scroll-behavior: smooth;
   }
   

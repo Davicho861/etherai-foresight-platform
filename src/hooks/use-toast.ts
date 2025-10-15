@@ -15,13 +15,6 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement
 }
 
-let count = 0
-
-function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER
-  return count.toString()
-}
-
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
@@ -29,21 +22,30 @@ const actionTypes = {
   REMOVE_TOAST: "REMOVE_TOAST",
 } as const
 
+let count = 0
+
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  return count.toString()
+}
+
+type ActionType = typeof actionTypes
+
 type Action =
   | {
-      type: (typeof actionTypes)["ADD_TOAST"]
+      type: ActionType["ADD_TOAST"]
       toast: ToasterToast
     }
   | {
-      type: (typeof actionTypes)["UPDATE_TOAST"]
+      type: ActionType["UPDATE_TOAST"]
       toast: Partial<ToasterToast>
     }
   | {
-      type: (typeof actionTypes)["DISMISS_TOAST"]
+      type: ActionType["DISMISS_TOAST"]
       toastId?: ToasterToast["id"]
     }
   | {
-      type: (typeof actionTypes)["REMOVE_TOAST"]
+      type: ActionType["REMOVE_TOAST"]
       toastId?: ToasterToast["id"]
     }
 
@@ -124,12 +126,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 }
 
-// listeners are callbacks subscribed by components; the parameter is used by callers.
- 
-/* eslint-disable no-unused-vars */
 const listeners: Array<(state: State) => void> = []
-/* eslint-enable no-unused-vars */
- 
 
 let memoryState: State = { toasts: [] }
 
@@ -172,7 +169,7 @@ function toast({ ...props }: Toast) {
 }
 
 function useToast() {
-  const [_state, setState] = React.useState<State>(memoryState)
+  const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
     listeners.push(setState)
@@ -182,10 +179,10 @@ function useToast() {
         listeners.splice(index, 1)
       }
     }
-  }, [])
+  }, [state])
 
   return {
-    ..._state,
+    ...state,
     toast,
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   }
