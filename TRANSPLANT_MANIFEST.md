@@ -53,5 +53,24 @@ Se realizó un trasplante completo (rip & replace) del frontend.
 - Si se desea restaurar la versión anterior, mover manualmente los contenidos desde el backup al root.
 - Revisar KPIs/widgets en entorno real; la verificación automática encontró 0 elementos, lo cual puede ser normal en modo demo.
 
+## Resultados de validación adicional
+
+- Build de producción (`npm run build`): OK. El build generó `dist/` correctamente. Advertencia: algunos chunks son mayores de 500 KB después de minificación (considerar code-splitting/manualChunks si se desea optimizar).
+- Lint (`npm run lint`): Se detectaron múltiples errores y warnings (total: 298 problemas: 267 errores, 31 warnings). Muchos errores provienen del backup (`src_backup_1760555893`) y de archivos TypeScript con usos de `any`, `require()` y reglas de hooks. Recomendación: ejecutar correcciones puntuales o limitar el scope del lint si se quiere ignorar el backup.
+
+## Siguientes pasos recomendados (opcionales)
+
+1. Comprimir y archivar `src_backup_1760555893` (ya realizado y colocado en `artifacts/`).
+2. Revisar y corregir los errores de lint críticos en `src/` del nuevo frontend si se desea pasar lint en CI.
+3. Abrir un Pull Request desde la rama `hephaestus/transplant_1760556380` para revisión humana y despliegue.
+
+## Artifacts y PR
+
+- Artifact del build (dist) creado: `artifacts/dist_release_1760556596.tar.gz`
+- Pull Request sugerido (rama remota creada):
+  https://github.com/Davicho861/etherai-foresight-platform/pull/new/hephaestus/transplant_1760556380
+
+Se recomienda revisar la PR, ejecutar pruebas en CI y, si todo está bien, proceder con el merge.
+
 ---
 Manifest generado automáticamente por el agente "Hefesto" para certificar que la nueva fachada está implantada y funcionando.
