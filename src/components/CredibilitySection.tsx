@@ -11,7 +11,7 @@ const CredibilitySection: React.FC = () => {
             Confiado por <span className="text-transparent bg-clip-text bg-gradient-to-r from-etherneon to-etherneon/70">Líderes Globales</span>
           </h2>
           <p className="text-lg text-ethergray-light max-w-3xl mx-auto">
-            Más de 50 organizaciones ya confían en Praevisio AI para anticipar eventos críticos y tomar decisiones informadas.
+            Más de 50 organizaciones ya confían en EtherAI Labs para anticipar eventos críticos y tomar decisiones informadas.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ const CredibilitySection: React.FC = () => {
               </div>
               
               <blockquote className="text-lg mb-6 italic text-ethergray-light">
-                "Praevisio AI nos ayudó a prever un brote de dengue en 2023, permitiéndonos implementar medidas preventivas que salvaron miles de vidas y optimizaron nuestros recursos sanitarios."
+                "EtherAI Labs nos ayudó a prever un brote de dengue en 2023, permitiéndonos implementar medidas preventivas que salvaron miles de vidas y optimizaron nuestros recursos sanitarios."
               </blockquote>
               
               <div className="flex flex-wrap gap-3">
@@ -88,7 +88,7 @@ const CredibilitySection: React.FC = () => {
               </div>
               
               <blockquote className="text-lg mb-6 italic text-ethergray-light">
-                "La capacidad predictiva de Praevisio AI transformó nuestra planificación estratégica. Anticipamos una crisis migratoria con 5 meses de antelación, permitiéndonos preparar adecuadamente recursos y coordinar esfuerzos internacionales."
+                "La capacidad predictiva de EtherAI Labs transformó nuestra planificación estratégica. Anticipamos una crisis migratoria con 5 meses de antelación, permitiéndonos preparar adecuadamente recursos y coordinar esfuerzos internacionales."
               </blockquote>
               
               <div className="flex flex-wrap gap-3">

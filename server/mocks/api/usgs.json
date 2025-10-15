@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": 1696627200000,
+    "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson",
+    "title": "USGS Significant Earthquakes, Past Day",
+    "status": 200
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "mag": 5.6,
+        "place": "100km S of Lima, Peru",
+        "time": 1696610000000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-76.5, -12.0, 10]
+      }
+    }
+  ]
+}

@@ -53,19 +53,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Praevisio AI custom colors
+				// Praevisio AI custom colors - using HSL semantic tokens
 				etherblue: {
-					dark: "#1A1F2C",
-					DEFAULT: "#2D3748",
-					light: "#4A5568",
+					dark: 'hsl(var(--etherblue-dark))',
+					DEFAULT: 'hsl(var(--etherblue))',
+					medium: 'hsl(var(--etherblue-medium))',
+					light: 'hsl(var(--etherblue-light))',
 				},
 				ethergray: {
-					DEFAULT: "#718096",
-					light: "#A0AEC0",
+					DEFAULT: 'hsl(var(--ethergray))',
+					light: 'hsl(var(--ethergray-light))',
 				},
 				etherneon: {
-					DEFAULT: "#4ADE80",
-					light: "#86EFAC",
+					DEFAULT: 'hsl(var(--etherneon))',
+					light: 'hsl(var(--etherneon-light))',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -132,6 +133,7 @@ export default {
 			},
 			fontFamily: {
 				'inter': ['Inter', 'sans-serif'],
+				'sf-pro': ['SF Pro Display', 'Inter', 'sans-serif'],
 			},
 			backgroundImage: {
 				'grid-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%232D3748' fill-opacity='0.05'%3E%3Cpath d='M0 0h60v60H0V0z M30 30h30v30H30V30z M0 30h30v30H0V30z'/%3E%3C/g%3E%3C/svg%3E\")",

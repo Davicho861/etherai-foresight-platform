@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "protocolName": "Protocolo de Saneamiento 'Logos-Prime-Purification-v1'",
+  "description": "Un protocolo de saneamiento auto-generado para eliminar vulnerabilidades, errores de linting y otras imperfecciones del sistema, basado en la auditoría soberana.",
+  "cognitiveBudget": "Bajo-Medio",
+  "actions": [
+    {
+      "id": "VULN_FIX",
+      "crew": "Ares",
+      "description": "Erradicar todas las vulnerabilidades de dependencias conocidas ejecutando el comando de saneamiento automatizado.",
+      "type": "COMMAND",
+      "command": "npm audit fix --force",
+      "estimatedEffort": "Bajo"
+    },
+    {
+      "id": "LINT_FIX_UNUSED_VARS",
+      "crew": "Atenea",
+      "description": "Eliminar todas las variables no utilizadas ('no-unused-vars') en todo el código base para reducir el ruido y mejorar la claridad.",
+      "type": "CODE_MODIFICATION",
+      "files": [
+        "playwright/eternal-vigilance.smoke.spec.ts",
+        "server/src/agents.js",
+        "server/src/eternalVigilanceService.js",
+        "server/src/routes/eternalVigilance.js",
+        "server/src/routes/eternalVigilanceToken.js",
+        "server/src/sseTokenService.js",
+        "src/components/__tests__/MetatronPanel.test.tsx",
+        "src/lib/eternalVigilanceSimulator.ts",
+        "src/pages/MetatronPanel.tsx"
+      ],
+      "estimatedEffort": "Medio"
+    },
+    {
+      "id": "LINT_FIX_REACT_HOOKS",
+      "crew": "Atenea",
+      "description": "Corregir advertencias de 'react-hooks/exhaustive-deps' añadiendo las dependencias que faltan a los hooks useEffect.",
+      "type": "CODE_MODIFICATION",
+      "files": [
+        "src/components/ClimateWidget.tsx"
+      ],
+      "estimatedEffort": "Bajo"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "indices": {
+    "globalRisk": 5,
+    "stability": 95
+  },
+  "flows": {
+    "preservation": {
+      "status": "IDLE",
+      "lastCheck": null
+    },
+    "knowledge": {
+      "status": "IDLE",
+      "opportunities": 0
+    },
+    "prophecy": {
+      "status": "IDLE",
+      "alerts": 0
+    }
+  },
+  "events": [
+    "2025-10-05T15:19:48.811Z - Prueba de evento manual desde curl",
+    "2025-10-05T15:18:26.622Z - Vigilia detenida: Cronos en reposo (server)"
+  ]
+}

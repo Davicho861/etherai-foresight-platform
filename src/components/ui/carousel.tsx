@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -18,11 +16,12 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
-  _setApi?: (api: CarouselApi) => void
+  setApi?: (api: CarouselApi) => void
 }
 
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
+  api: ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void
   scrollNext: () => void
   canScrollPrev: boolean
@@ -49,7 +48,7 @@ const Carousel = React.forwardRef<
     {
       orientation = "horizontal",
       opts,
-      _setApi,
+      setApi,
       plugins,
       className,
       children,
@@ -57,7 +56,7 @@ const Carousel = React.forwardRef<
     },
     ref
   ) => {
-  const [carouselRef, _api] = useEmblaCarousel(
+    const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
@@ -77,12 +76,12 @@ const Carousel = React.forwardRef<
     }, [])
 
     const scrollPrev = React.useCallback(() => {
-      _api?.scrollPrev()
-    }, [_api])
+      api?.scrollPrev()
+    }, [api])
 
     const scrollNext = React.useCallback(() => {
-      _api?.scrollNext()
-    }, [_api])
+      api?.scrollNext()
+    }, [api])
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -98,31 +97,32 @@ const Carousel = React.forwardRef<
     )
 
     React.useEffect(() => {
-      if (!_api || !_setApi) {
+      if (!api || !setApi) {
         return
       }
 
-      _setApi(_api)
-    }, [_api, _setApi])
+      setApi(api)
+    }, [api, setApi])
 
     React.useEffect(() => {
-      if (!_api) {
+      if (!api) {
         return
       }
 
-      onSelect(_api)
-      _api.on("reInit", onSelect)
-      _api.on("select", onSelect)
+      onSelect(api)
+      api.on("reInit", onSelect)
+      api.on("select", onSelect)
 
       return () => {
-        _api?.off("select", onSelect)
+        api?.off("select", onSelect)
       }
-    }, [_api, onSelect])
+    }, [api, onSelect])
 
     return (
       <CarouselContext.Provider
         value={{
           carouselRef,
+          api: api,
           opts,
           orientation:
             orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),

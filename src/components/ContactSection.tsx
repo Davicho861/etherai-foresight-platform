@@ -22,7 +22,7 @@ const ContactSection: React.FC = () => {
               No Esperes a la <span className="text-transparent bg-clip-text bg-gradient-to-r from-etherneon to-etherneon/70">Próxima Crisis</span>
             </h2>
             <p className="text-lg text-ethergray-light max-w-2xl mx-auto">
-              Únete a los líderes que ya están transformando el futuro con Praevisio AI. 
+              Únete a los líderes que ya están transformando el futuro con EtherAI Labs. 
               Solicita tu demo personalizada hoy y descubre cómo anticipar y actuar a tiempo.
             </p>
           </div>

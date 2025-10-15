@@ -1,0 +1,10 @@
+{
+  "poblacion": 10750000,
+  "tasa_crecimiento": 1.2,
+  "poblacion_urbana": 9500000,
+  "poblacion_rural": 1250000,
+  "pib": 45000000,
+  "tasa_desempleo": 6.5,
+  "tasa_pobreza": 15.2,
+  "ingreso_per_capita": 18000
+}

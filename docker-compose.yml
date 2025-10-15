@@ -2,133 +2,88 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     container_name: praevisio_db
     environment:
-      POSTGRES_USER: praevisio
-      POSTGRES_PASSWORD: praevisio
-      POSTGRES_DB: praevisio
+      POSTGRES_DB: praevisio_db
+      POSTGRES_USER: praevisio_user
+      POSTGRES_PASSWORD: praevisio_password
+    ports:
+      - "5433:5432"
     volumes:
-      - praevisio_db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U praevisio -d praevisio"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U praevisio_user -d praevisio_db"]
+      interval: 10s
       timeout: 5s
-      retries: 12
+      retries: 5
+
+  neo4j:
+    image: neo4j:5.23
+    container_name: praevisio_neo4j
+    environment:
+      NEO4J_AUTH: neo4j/praevisio_password
+      NEO4J_PLUGINS: '["graph-data-science"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "praevisio_password", "MATCH () RETURN count(*) limit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile.backend
+      context: server
+      dockerfile: ../Dockerfile.backend
     container_name: praevisio_backend
-    ports:
-      - '4000:4000'
     environment:
-      PRAEVISIO_BEARER_TOKEN: ${PRAEVISIO_BEARER_TOKEN:-demo-token}
-      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
-      PORT: '4000'
-      # Point to the mock Ollama service in the Docker network
-      OLLAMA_URL: 'http://ollama-mock:11434/api/generate'
+      DATABASE_URL: postgresql://praevisio_user:praevisio_password@db:5432/praevisio_db
+      NEO4J_URI: neo4j://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: praevisio_password
+      PRAEVISIO_BEARER_TOKEN: demo-token
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     depends_on:
       db:
+        condition: service_healthy
+      neo4j:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4000/api/platform-status -H \"Authorization: Bearer ${PRAEVISIO_BEARER_TOKEN:-demo-token}\" || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-    volumes:
-      - backend_node_modules:/app/server/node_modules
-
-  prisma-seed:
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
-    container_name: praevisio_prisma_seed
-    # Do not mount the host workspace to avoid node_modules conflicts during npm install
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://praevisio:praevisio@db:5432/praevisio?schema=public}
-    depends_on:
-      db:
-        condition: service_healthy
-    # Run migrations and seed using the built backend image, then sleep to keep the container alive
-    command: sh -c "npx prisma migrate deploy --schema=./prisma/schema.prisma && npx prisma db seed --schema=./prisma/schema.prisma && sleep infinity"
-    restart: 'no'
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/platform-status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-      args:
-        # Use internal Docker hostname so the built frontend points to the backend container
-        VITE_API_BASE_URL: 'http://backend:4000'
     container_name: praevisio_frontend
-    ports:
-      - '3002:3002'
-    depends_on:
-      backend:
-        condition: service_healthy
     environment:
-      VITE_API_BASE_URL: 'http://backend:4000'
+      VITE_API_BASE_URL: http://backend:4000
+      VITE_PRAEVISIO_TOKEN: demo-token
+    ports:
+      - "3002:3002"
+    volumes:
+      - .:/app
+      - /app/node_modules
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
-      interval: 10s
+      test: ["CMD", "curl", "-f", "http://localhost:3002"]
+      interval: 30s
       timeout: 10s
-      retries: 12
-      start_period: 30s
-    restart: 'no'
-
-  e2e-tester:
-    image: node:20-bullseye-slim
-    container_name: praevisio_e2e_tester
-    # Run the container processes as root so the container can install packages
-    # into the named volume without permission errors. We intentionally use root
-    # here for the E2E runner to avoid EACCES on npm install; outputs are
-    # collected and adjusted by the orchestrator script.
-    user: root
-    working_dir: /app
-    volumes:
-      - ./:/app:cached
-      # Use a named docker volume for server/node_modules so the container can
-      # install and remove packages without colliding with the host bind mount.
-      - e2e_tester_node_modules:/app/server/node_modules
-    depends_on:
-      frontend:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
-    environment:
-      # Ensure Playwright uses the internal Docker hostname for frontend
-      FRONTEND_URL: 'http://frontend:3002'
-    # Remove potentially conflicting node_modules from mounted host before installing
-    # Install dependencies, install Playwright browsers (with required system deps), then run tests
-    command: >
-      sh -c "cd /app && rm -rf node_modules || true && rm -rf server/node_modules || true && npm ci --no-audit --no-fund --prefer-offline && npx playwright install --with-deps && export FRONTEND_URL='http://localhost:3002' && export API_BASE='http://localhost:4000' && export PRAEVISIO_BEARER_TOKEN='demo-token' && npx playwright test --config=playwright.config.ts"
-    network_mode: host
-    restart: 'no'
-
-  ollama-mock:
-    image: node:20-bullseye-slim
-    container_name: praevisio_ollama_mock
-    working_dir: /app
-    volumes:
-      - ./:/app:cached
-    command: sh -c "node ./scripts/mock_ollama.js"
-    ports:
-      - '11434:11434'
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:11434/ || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 12
-      start_period: 5s
-    restart: 'no'
+      retries: 3
 
 volumes:
-  praevisio_db_data:
-  backend_node_modules:
-  e2e_tester_node_modules:
-
-networks:
-  default:
-    name: praevisio_network
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:

@@ -1,36 +1,16 @@
-FROM node:20-alpine AS builder
+FROM node:18-alpine
+
 WORKDIR /app
 
-# Allow injecting API base URL at build time
-ARG VITE_API_BASE_URL
-ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
-
-# Install deps and build
 COPY package*.json ./
-COPY tsconfig*.json ./
-COPY vite.config.ts ./
-COPY postcss.config.js ./
-COPY tailwind.config.ts ./
-COPY public ./public
-COPY index.html ./
-COPY src ./src
 
-RUN npm ci --no-audit --no-fund --prefer-offline
-RUN npm run build
+# Ensure curl is available for the docker-compose healthcheck
+# and keep image minimal using apk
+RUN apk add --no-cache curl && \
+	npm install
 
-FROM node:20-alpine AS runner
-WORKDIR /app
-
-# Runtime: serve the built static files on port 3002
-ENV NODE_ENV=production
-COPY --from=builder /app/dist ./dist
-
-# Install a tiny static server
-RUN npm install -g http-server --no-audit --no-fund
-# Ensure curl is available for healthchecks
-RUN apk add --no-cache curl ca-certificates
+COPY vite.config.ts tsconfig.json tailwind.config.ts ./
 
 EXPOSE 3002
 
-# If NODE_ENV=development is passed, fall back to running Vite dev server
-CMD ["sh", "-c", "if [ \"${NODE_ENV:-production}\" = 'development' ]; then npx vite --host 0.0.0.0 --port 3002; else npx http-server dist -p 3002 -a 0.0.0.0; fi"]
+CMD ["npm", "run", "dev"]

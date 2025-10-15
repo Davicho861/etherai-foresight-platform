@@ -1,0 +1,4 @@
+
+> praevisio-ai-landing@0.0.0 lint
+> eslint "src/**/*.{js,ts,tsx}" "server/**/*.{js,ts}" "scripts/**/*.{js,ts}" "playwright/**/*.{ts,js}" --max-warnings=7 --format json
+

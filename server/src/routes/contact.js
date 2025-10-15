@@ -2,7 +2,7 @@ import express from 'express';
 let prisma;
 try {
   prisma = (await import('../prisma.js')).default;
-} catch (e) {
+} catch {
   // prisma may not be available yet (before install); fallback to memory
 }
 

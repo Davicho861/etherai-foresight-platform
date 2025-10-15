@@ -1,76 +1,52 @@
-import js from "@eslint/js";
 import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
+import js from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
 
-// Base config: apply to source files only. Heavy directories (node_modules, build,
-// prisma, server databases and test-results) are excluded via .eslintignore.
 export default [
-  js.configs.recommended,
-  // General JS/TSX files
   {
-    ignores: ["dist"],
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "backend_stdout.log",
+      "reports/**",
+      "**/generated/**",
+      ".wrangler/**",
+      "server/coverage/**",
+    ],
+  },
+  {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       parser: tsParser,
-      ecmaVersion: 2024,
+      ecmaVersion: "latest",
       sourceType: "module",
-      globals: { ...globals.browser, ...globals.node },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
+        ...globals.jest,
+      },
     },
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
       "@typescript-eslint": tsPlugin,
+      "import": importPlugin,
     },
     rules: {
-      // NOTE: Temporarily relaxed rules to allow staged sanitation. These will be
-      // progressively re-enabled as files are fixed.
-      ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      // Many legacy files reference globals or have unused placeholders. Disable
-      // these checks temporarily to allow the reforge process to continue.
-      "no-undef": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-    },
-  },
-  // Server and scripts (Node environment)
-  {
-    files: ["server/**", "scripts/**", "jest.setup.js"],
-    languageOptions: {
-      globals: globals.node,
-      parser: tsParser,
-      ecmaVersion: 2024,
-      sourceType: "module",
-    },
-    rules: {
-      "no-undef": "off",
-    },
-  },
-  // Tests and playwright (node+browser env)
-  {
-    files: ["**/__tests__/**", "**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js", "**/*.test.*", "playwright/**"],
-    languageOptions: {
-      globals: { ...globals.node, ...globals.browser },
-      parser: tsParser,
-      ecmaVersion: 2024,
-    },
-    rules: {
-      "no-undef": "off",
-    },
-  },
-  // TypeScript React specific
-  {
-    files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 2024,
-      sourceType: "module",
-      globals: globals.browser,
-    },
-    rules: {
-      "@typescript-eslint/explicit-module-boundary-types": "off",
+      ...js.configs.recommended.rules,
+      // Allow intentional dynamic require patterns that support Jest mocking
+      "import/no-dynamic-require": "off",
+      "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+      "no-prototype-builtins": "warn",
+      "no-cond-assign": "warn",
+      "no-useless-escape": "warn",
+      "no-case-declarations": "warn",
+      "no-empty": "warn",
+      "no-undef": "off", // Temporalmente desactivado para la purga inicial
+      "no-useless-catch": "warn",
+      "no-duplicate-case": "warn"
     },
   },
 ];

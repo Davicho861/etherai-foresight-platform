@@ -1,5 +1,9 @@
 # Praevisio AI — Demo Landing & Prototype
 
+## ⚡ Manifiesto Local First
+
+Lee el [Manifiesto Local First](00_LOCAL_FIRST_MANIFESTO.md) - la ley inmutable que rige nuestro dominio y garantiza la soberanía local absoluta.
+
 ## Project info
 
 **Project**: Praevisio AI (demo)
@@ -37,6 +41,35 @@ npm i
 npm run dev
 ```
 
+## Quickstart: Live development (Docker)
+
+Si quieres un entorno reproducible que ejecute frontend, backend, base de datos y un mock LLM dentro de Docker, usa el siguiente flujo. Está diseñado para que el "stack vivo" mantenga servicios en estado healthy y deje las pruebas E2E como una acción explícita.
+
+1. (Sólo la primera vez) Preparar volúmenes y permisos:
+
+```sh
+./scripts/bootstrap.sh
+```
+
+2. Iniciar el ecosistema vivo:
+
+```sh
+npm run dev:live
+# Equivalente a: docker-compose up -d --build
+```
+
+Notas:
+- `prisma-seed` se ejecuta como job de una sola ejecución durante el arranque (migra y seed) y sale con código 0 en éxito, permitiendo que `backend` dependa de su finalización.
+- El runner E2E no está corriendo permanentemente en el compose principal; ejecuta las pruebas con `npm run validate` (desde el host o en un contenedor efímero).
+
+3. Ejecutar validaciones (E2E + unit + linters):
+
+```sh
+npm run validate
+```
+
+`npm run validate` levantará los servicios necesarios y ejecutará Playwright desde el host (preferido) o en un contenedor temporal si no hay `npx`.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).
@@ -60,6 +93,27 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+
+## Kanban migration (PROJECT_KANBAN.md)
+
+There is a helper to convert the markdown kanban into structured JSON and optionally import it to the running backend.
+
+Generate JSON from `docs/PROJECT_KANBAN.md`:
+
+```bash
+npm run generate:kanban
+```
+
+This writes `data/kanban.json`.
+
+To import the tasks into the backend (default http://localhost:4000):
+
+```bash
+npm run import:kanban
+# or with a custom API base
+API_BASE=http://localhost:4000 npm run import:kanban
+```
+
 
 ## Prompt Maestro
 

@@ -1,0 +1,44 @@
+{
+  "missions_logs": [
+    {
+      "id": "m-reject-mgnxyhoh-7127",
+      "missionId": "m-reject",
+      "log": {
+        "taskId": "ethics-council",
+        "description": "Consultando al Consejo de Ética...",
+        "status": "in_progress"
+      },
+      "embedding": [
+        0.8100558659217877,
+        0.7430167597765364,
+        1,
+        0.6778398510242085,
+        0.7914338919925512,
+        0.7932960893854749,
+        0.515828677839851,
+        0.5772811918063314
+      ],
+      "ts": 1760287886122
+    },
+    {
+      "id": "m-reject-mgnxyhol-5097",
+      "missionId": "m-reject",
+      "log": {
+        "taskId": "error",
+        "description": "Error: Misión rechazada por el Consejo de Ética: not aligned",
+        "status": "error"
+      },
+      "embedding": [
+        0.7640918580375783,
+        0.8413361169102297,
+        1,
+        0.9822546972860126,
+        0.6941544885177453,
+        0.6315240083507306,
+        0.534446764091858,
+        0.5636743215031316
+      ],
+      "ts": 1760287886123
+    }
+  ]
+}

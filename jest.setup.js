@@ -1,34 +1,31 @@
-// Polyfills for Jest environment
-// Provide TextEncoder/TextDecoder for some node modules that expect Web APIs
-const { TextEncoder, TextDecoder } = require('util');
-if (typeof global.TextEncoder === 'undefined') global.TextEncoder = TextEncoder;
-if (typeof global.TextDecoder === 'undefined') global.TextDecoder = TextDecoder;
+import '@testing-library/jest-dom';
+import fetchMock from 'jest-fetch-mock';
 
-// Minimal ResizeObserver polyfill for jsdom tests (some Radix components rely on it)
-class ResizeObserver {
-  constructor(cb) { this.cb = cb; }
+// Mock ResizeObserver for tests
+global.ResizeObserver = class ResizeObserver {
   observe() { /* no-op */ }
   unobserve() { /* no-op */ }
   disconnect() { /* no-op */ }
-}
-if (typeof global.ResizeObserver === 'undefined') global.ResizeObserver = ResizeObserver;
+};
 
-// Optional: global fetch for server-side tests (node 18+ has fetch, but ensure availability)
-if (typeof global.fetch === 'undefined') {
-  try {
-    // prefer undici or node-fetch if available
-    global.fetch = require('node-fetch');
-  } catch (e) {
-    // leave it undefined if not installed
-  }
-}
-
-// Silence act() warnings by setting a default timeout smaller if desired
+// Silence act() warnings by setting a default timeout
 jest.setTimeout(10000);
 
-// Extend expect with jest-dom matchers (toBeInTheDocument, etc.)
-try {
-  require('@testing-library/jest-dom');
-} catch (e) {
-  // devDependency might not be installed in some environments
+// Enable fetch mocks
+fetchMock.enableMocks();
+
+// Stub scrollIntoView used by some UI libs (Radix / floating-ui) in JSDOM
+if (typeof Element !== 'undefined' && !Element.prototype.scrollIntoView) {
+  // @ts-ignore
+  Element.prototype.scrollIntoView = function() { /* no-op for tests */ };
 }
+
+// Mock react-simple-maps to run in JSDOM tests without fetching or parsing topojson
+jest.mock('react-simple-maps', () => {
+  const React = require('react');
+  return {
+    ComposableMap: ({ children, ...props }) => React.createElement('div', { 'data-testid': 'composable-map' }, children),
+    Geographies: ({ children }) => React.createElement('div', { 'data-testid': 'geographies' }, children({ geographies: [] })),
+    Geography: ({ geography, ...props }) => React.createElement('div', { 'data-testid': `geography-${(geography && geography.properties && geography.properties.ISO_A3) || 'mock'}` }),
+  };
+});

@@ -1,0 +1,19 @@
+name: Deploy Backend to Railway
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Railway CLI
+        run: npm install -g @railway/cli
+      - name: Sovereign Deployment
+        run: railway up --service praevisio-backend --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          DATABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}

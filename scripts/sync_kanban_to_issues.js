@@ -36,7 +36,7 @@ async function detectRepo() {
     // origin can be git@github.com:owner/repo.git or https://github.com/owner/repo.git
     const m = origin.match(/[:/]([^/]+\/[^/.]+)(?:\.git)?$/);
     if (m) return m[1];
-  } catch (e) {
+  } catch {
     // ignore
   }
   throw new Error('No GITHUB_REPOSITORY env var and cannot infer from git. Set GITHUB_REPOSITORY=owner/repo');

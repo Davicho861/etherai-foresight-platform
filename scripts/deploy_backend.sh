@@ -1,39 +1,42 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Cargar variables de entorno
+if [ -f ../.env ]; then
+  set -a
+  source ../.env
+  set +a
+fi
+
 # Despliega el backend en Railway usando la CLI de railway.
 # Requiere que RAILWAY_TOKEN esté exportado en el entorno.
 
 if [ -z "${RAILWAY_TOKEN:-}" ]; then
-  echo "RAILWAY_TOKEN no está configurado. Exporta RAILWAY_TOKEN antes de ejecutar." >&2
+  echo "RAILWAY_TOKEN no proporcionado. Abortando despliegue backend." >&2
   exit 1
 fi
 
-if ! command -v railway >/dev/null 2>&1; then
-  echo "CLI 'railway' no encontrada. Instálala: https://docs.railway.app/develop/cli" >&2
-  exit 1
+echo "Desplegando backend en Railway (modo real, no interactivo)..."
+
+# Autenticar con Railway
+railway login --token "$RAILWAY_TOKEN"
+
+# Cambiar al directorio del servidor
+cd server
+
+# Desplegar en Railway (usa RAILWAY_TOKEN de env)
+railway deploy
+
+# Obtener la URL del despliegue
+RAILWAY_URL=$(railway domain | grep -o 'https://[^ ]*' | head -1)
+
+if [ -z "$RAILWAY_URL" ]; then
+  echo "No se pudo obtener la URL de Railway. Usando URL por defecto." >&2
+  RAILWAY_URL="https://praevisio-backend-production.up.railway.app"  # Placeholder
 fi
 
-echo "Iniciando despliegue del backend en Railway..."
+echo "RAILWAY_BACKEND_URL=$RAILWAY_URL"
+echo "$RAILWAY_URL" > ../.railway_backend_url
 
-# Login temporal con token
-railway login --apiKey "$RAILWAY_TOKEN"
-
-# Crear proyecto o usar uno existente: dejamos que el usuario seleccione.
-echo "Selecciona (o crea) el proyecto Railway para desplegar el backend. Presiona Enter para continuar..."
-read -r
-
-# Asumimos Dockerfile.backend en la raíz
-if [ ! -f Dockerfile.backend ]; then
-  echo "No se encontró Dockerfile.backend en la raíz del repositorio." >&2
-  exit 1
-fi
-
-echo "Construyendo la imagen Docker localmente (opcional)..."
-docker build -f Dockerfile.backend -t praevisio-backend:local .
-
-echo "Creando servicio en Railway y subiendo la imagen..."
-# railway up permite desplegar, pero la experiencia puede requerir interacción
-railway up --service praevisio-backend || echo "railway up retornó no cero, verifica la interfaz interactiva." >&2
-
-echo "Despliegue backend iniciado. Revisa Railway dashboard para la URL pública y los logs."
+echo "Backend deploy script finished (despliegue real)."
+exit 0

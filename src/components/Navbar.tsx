@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNavigate } from 'react-router-dom';
+import { LanguageToggle } from '@/components/global/LanguageToggle';
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,14 +25,10 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: "Inicio", href: "#hero" },
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Precios", href: "/pricing" },
-    { name: "Módulo LATAM", href: "/module/colombia" },
-    { name: "Qué Hacemos", href: "#features" },
-    { name: "Soluciones", href: "#solutions" },
-    { name: "Cómo Funciona", href: "#how-it-works" },
-    { name: "Casos de Éxito", href: "#credibility" },
+    { name: t('nav.features'), href: "#features" },
+    { name: t('nav.solutions'), href: "#solutions" },
+    { name: t('nav.demo'), href: "#demo" },
+    { name: t('nav.contact'), href: "#contact" },
   ];
 
   return (
@@ -44,9 +41,13 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <a href="#" className="text-white font-bold text-xl flex items-center">
-                <div className="h-8 w-8 rounded-full bg-etherneon mr-2 flex items-center justify-center text-etherblue-dark font-bold">P</div>
-                <span>Praevisio AI</span>
+              <a href="#" className="text-white font-bold text-xl flex items-center font-sf-pro">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[hsl(var(--cosmic-accent-latam))] to-[hsl(var(--cosmic-accent-global))] mr-2 flex items-center justify-center text-white font-bold shadow-lg shadow-[hsl(var(--cosmic-accent-latam))]/30">
+                  E
+                </div>
+                <span className="bg-gradient-to-r from-white to-[hsl(var(--cosmic-accent-latam))] bg-clip-text text-transparent">
+                  EtherAI Foresight
+                </span>
               </a>
             </div>
             
@@ -56,13 +57,14 @@ const Navbar: React.FC = () => {
                   <a 
                     key={link.name} 
                     href={link.href} 
-                    className="text-sm text-white hover:text-etherneon transition-colors link-underline"
+                    className="text-sm text-white/90 hover:text-[hsl(var(--cosmic-accent-latam))] transition-all hover:scale-105"
                   >
                     {link.name}
                   </a>
                 ))}
-                <Button className="bg-etherneon hover:bg-etherneon/80 text-etherblue-dark ml-4" onClick={() => navigate('/demo')}>
-                  Ver Demo
+                <LanguageToggle />
+                <Button className="bg-gradient-to-r from-[hsl(var(--cosmic-gradient-start))] to-[hsl(var(--cosmic-gradient-end))] hover:scale-105 transition-transform text-white border-0 shadow-lg">
+                  {t('nav.requestDemo')}
                 </Button>
               </nav>
             ) : (
@@ -91,23 +93,24 @@ const Navbar: React.FC = () => {
       
       {/* Mobile menu */}
       {mobileMenuOpen && isMobile && (
-        <div className="fixed inset-0 z-40 bg-etherblue-dark/95 pt-20 px-4 flex flex-col">
+        <div className="fixed inset-0 z-40 bg-gradient-to-br from-[hsl(var(--cosmic-primary))] to-[hsl(var(--etherblue-dark))] backdrop-blur-xl pt-20 px-4 flex flex-col">
           <nav className="flex flex-col space-y-6 items-center py-8">
             {navLinks.map((link) => (
               <a 
                 key={link.name} 
                 href={link.href} 
-                className="text-lg text-white hover:text-etherneon transition-colors"
+                className="text-lg text-white hover:text-[hsl(var(--cosmic-accent-latam))] transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
               </a>
             ))}
-            <Button
-              className="bg-etherneon hover:bg-etherneon/80 text-etherblue-dark w-full mt-4"
-              onClick={() => { setMobileMenuOpen(false); navigate('/demo'); }}
+            <LanguageToggle />
+            <Button 
+              className="bg-gradient-to-r from-[hsl(var(--cosmic-gradient-start))] to-[hsl(var(--cosmic-gradient-end))] hover:scale-105 transition-transform text-white w-full mt-4"
+              onClick={() => setMobileMenuOpen(false)}
             >
-              Ver Demo
+              {t('nav.requestDemo')}
             </Button>
           </nav>
         </div>

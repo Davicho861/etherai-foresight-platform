@@ -1,0 +1,22 @@
+{
+  "plans": [
+    {
+      "id": "starter",
+      "name": "Starter",
+      "price_monthly": 79,
+      "features": ["Alerting básico", "Dashboard resumido", "Soporte por email"]
+    },
+    {
+      "id": "growth",
+      "name": "Growth",
+      "price_monthly": 249,
+      "features": ["Alerting avanzado", "Dashboards personalizados", "Integraciones API", "Soporte prioritario"]
+    },
+    {
+      "id": "panteon",
+      "name": "Panteón",
+      "price_monthly": 1999,
+      "features": ["Modelo dedicado", "SLA de 99.99%", "Onboarding y consultoría", "Acceso a módulos avanzados"]
+    }
+  ]
+}

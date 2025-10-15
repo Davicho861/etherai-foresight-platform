@@ -1,0 +1,16 @@
+{
+  "articles": [
+    {
+      "title": "Protesta pacífica en Lima",
+      "url": "https://example.com/article1",
+      "themes": "PROTEST;DEMONSTRATION",
+      "date": "2025-09-30"
+    },
+    {
+      "title": "Bloqueos en carretera por huelga",
+      "url": "https://example.com/article2",
+      "themes": "STRIKE;PROTEST",
+      "date": "2025-09-29"
+    }
+  ]
+}

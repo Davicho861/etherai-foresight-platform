@@ -1,28 +1,29 @@
+FROM node:18-bullseye-slim
 
-FROM node:20-bullseye-slim AS builder
 WORKDIR /app
 
-# Copy source first so that installs happen in the correct folder (/app/app)
-COPY server ./app
-WORKDIR /app/app
+# Instalar dependencias del sistema necesarias para Prisma (OpenSSL)
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends ca-certificates curl libssl1.1 openssl && \
+	rm -rf /var/lib/apt/lists/*
 
-# Copy package files and install deps inside /app/app so node_modules are colocated
-COPY server/package*.json ./
-RUN npm ci
+# Copiar archivos de dependencias
+COPY package*.json ./
 
-# Generate Prisma client against the schema (will use DATABASE_URL in CI)
-RUN npx prisma generate --schema=./prisma/schema.prisma || true
+# Instalar dependencias de Node.js
+RUN npm install
 
-# Optional: build step if project has a build script (keeps compatibility)
-RUN npm run build --if-present || true
+# Copiar directorio prisma antes de generar cliente
+COPY prisma ./prisma
 
-# Final image
-FROM node:20-bullseye-slim AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=builder /app/app ./
-RUN apt-get update && apt-get install -y curl ca-certificates && rm -rf /var/lib/apt/lists/*
+# Generar cliente Prisma
+RUN npx prisma generate
+
+# Copiar el resto del código fuente
+COPY . .
+
+# Exponer puerto 4000
 EXPOSE 4000
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=5 \
-	CMD curl -f http://localhost:4000/api/platform-status || exit 1
-CMD ["node", "src/index.js"]
+
+# Comando para desarrollo con hot-reloading
+CMD ["npm", "run", "dev"]

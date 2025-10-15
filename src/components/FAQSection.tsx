@@ -49,7 +49,7 @@ const FAQSection: React.FC = () => {
             
             <AccordionItem value="item-3" className="border-b border-white/10">
               <AccordionTrigger className="text-lg hover:text-etherneon">
-                ¿Cuánto tiempo se tarda en implementar Praevisio AI?
+                ¿Cuánto tiempo se tarda en implementar EtherAI Labs?
               </AccordionTrigger>
               <AccordionContent className="text-ethergray-light">
                 El tiempo de implementación varía según la complejidad del caso. Una implementación básica puede estar 
@@ -60,7 +60,7 @@ const FAQSection: React.FC = () => {
             
             <AccordionItem value="item-4" className="border-b border-white/10">
               <AccordionTrigger className="text-lg hover:text-etherneon">
-                ¿Qué hace diferente a Praevisio AI de otras soluciones predictivas?
+                ¿Qué hace diferente a EtherAI Labs de otras soluciones predictivas?
               </AccordionTrigger>
               <AccordionContent className="text-ethergray-light">
                 Nos diferenciamos en tres aspectos clave: nuestra IA explicable que proporciona total transparencia sobre 

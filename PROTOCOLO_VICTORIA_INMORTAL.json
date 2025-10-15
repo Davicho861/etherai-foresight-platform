@@ -1,0 +1,78 @@
+{
+  "protocolo": "Victoria Inmortal",
+  "version": "1.0",
+  "descripcion": "Secuencia óptima de acciones para aniquilar deuda técnica y alcanzar perfección absoluta",
+  "acciones": [
+    {
+      "id": "fix_vulnerabilidades",
+      "descripcion": "Sanar vulnerabilidades críticas y moderadas en dependencias",
+      "comando": "npm audit fix --force",
+      "riesgo": "breaking changes",
+      "paralelo": false
+    },
+    {
+      "id": "install_babel_preset",
+      "descripcion": "Instalar @babel/preset-env faltante para tests",
+      "comando": "npm install --save-dev @babel/preset-env",
+      "riesgo": "bajo",
+      "paralelo": true
+    },
+    {
+      "id": "remove_unused_imports",
+      "descripcion": "Remover imports no usados en archivos Playwright",
+      "archivos": [
+        "playwright/dashboard.spec.ts",
+        "playwright/demo.spec.ts",
+        "playwright/eternal-vigilance.smoke.spec.ts",
+        "playwright/pricing.spec.ts",
+        "playwright/visual-demo.spec.ts"
+      ],
+      "accion": "remover 'waitForAppReady' import",
+      "riesgo": "bajo",
+      "paralelo": true
+    },
+    {
+      "id": "validate_docker",
+      "descripcion": "Validar sintaxis de docker-compose.yml",
+      "comando": "docker compose config",
+      "riesgo": "bajo",
+      "paralelo": true
+    },
+    {
+      "id": "build_proyecto",
+      "descripcion": "Construir el proyecto para verificar integridad",
+      "comando": "npm run build",
+      "riesgo": "medio",
+      "paralelo": false
+    },
+    {
+      "id": "run_tests",
+      "descripcion": "Ejecutar tests unitarios después de fixes",
+      "comando": "npm test",
+      "riesgo": "medio",
+      "paralelo": false
+    },
+    {
+      "id": "run_lint_final",
+      "descripcion": "Verificar lint después de correcciones",
+      "comando": "npm run lint",
+      "riesgo": "bajo",
+      "paralelo": false
+    },
+    {
+      "id": "audit_final",
+      "descripcion": "Auditoría final de vulnerabilidades",
+      "comando": "npm audit",
+      "riesgo": "bajo",
+      "paralelo": false
+    }
+  ],
+  "crews": {
+    "Hefesto": ["fix_vulnerabilidades", "install_babel_preset", "build_proyecto"],
+    "Atenea": ["remove_unused_imports", "run_lint_final"],
+    "Ares": ["run_tests", "audit_final"],
+    "Hermes": ["validate_docker"]
+  },
+  "simulacion_requerida": true,
+  "veredicto_final": "Perfección absoluta o regeneración"
+}

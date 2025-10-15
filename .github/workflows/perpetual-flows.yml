@@ -1,0 +1,28 @@
+name: Perpetual Flows
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Cada hora para Auto-Preservation
+    - cron: '*/5 * * * *'  # Cada 5 minutos para Knowledge y Prophecy
+
+jobs:
+  run_auto_preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Auto-Preservation
+        run: |
+          curl -X POST https://etherai-foresight-platform-main-2vxm1e1gt.vercel.app/api/auto-preservation
+
+  run_knowledge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Knowledge
+        run: |
+          curl -X POST https://etherai-foresight-platform-main-2vxm1e1gt.vercel.app/api/knowledge
+
+  run_prophecy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Prophecy
+        run: |
+          curl -X POST https://etherai-foresight-platform-main-2vxm1e1gt.vercel.app/api/prophecy

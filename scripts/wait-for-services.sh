@@ -1,38 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-start_ts=$(date +%s)
-echo "Esperando a que Postgres esté disponible (dentro del contenedor)..."
-for i in {1..60}; do
-  if docker-compose exec -T db pg_isready -U praevisio >/dev/null 2>&1; then
-    echo "Postgres listo"
-    break
+echo "Waiting for services to be healthy..."
+
+# Services to wait for
+SERVICES=("db" "mock-api-server" "backend" "frontend")
+
+# Maximum wait time in seconds
+MAX_WAIT=300
+WAIT_INTERVAL=5
+
+elapsed=0
+while [ $elapsed -lt $MAX_WAIT ]; do
+  all_healthy=true
+
+  for service in "${SERVICES[@]}"; do
+    if ! docker-compose ps $service | grep -q "Up (healthy)"; then
+      all_healthy=false
+      break
+    fi
+  done
+
+  if $all_healthy; then
+    echo "All services are healthy!"
+    exit 0
   fi
-  echo "Postgres no listo, intento $i/60..."
-  sleep 2
+
+  echo "Waiting for services... ($elapsed/$MAX_WAIT seconds)"
+  sleep $WAIT_INTERVAL
+  elapsed=$((elapsed + WAIT_INTERVAL))
 done
 
-# Espera al backend
-echo "Esperando al backend en http://localhost:4000..."
-for i in {1..60}; do
-  if curl -sS "http://localhost:4000/api/platform-status" -H "Authorization: Bearer ${PRAEVISIO_BEARER_TOKEN:-demo-token}" >/dev/null 2>&1; then
-    echo "Backend listo"
-    break
-  fi
-  echo "Backend no listo, intento $i/60..."
-  sleep 2
-done
-
-# Espera al frontend
-echo "Esperando al frontend en http://localhost:3002..."
-for i in {1..60}; do
-  if curl -sS "http://localhost:3002" >/dev/null 2>&1; then
-    echo "Frontend listo"
-    break
-  fi
-  echo "Frontend no listo, intento $i/60..."
-  sleep 2
-done
-
-end_ts=$(date +%s)
-echo "Todos los servicios listos (took $((end_ts-start_ts))s)"
+echo "Timeout waiting for services to be healthy"
+docker-compose ps
+exit 1

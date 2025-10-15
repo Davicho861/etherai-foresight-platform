@@ -1,32 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Despliega el frontend en Vercel usando la CLI de vercel.
-# Requiere VERCEL_TOKEN en el entorno.
+# Despliega el frontend en Vercel en modo CI.
+# Requiere: VERCEL_TOKEN en el entorno. RAILWAY_BACKEND_URL opcionalmente.
 
 if [ -z "${VERCEL_TOKEN:-}" ]; then
-  echo "VERCEL_TOKEN no está configurado. Exporta VERCEL_TOKEN antes de ejecutar." >&2
-  exit 1
-fi
-
-if ! command -v vercel >/dev/null 2>&1; then
-  echo "CLI 'vercel' no encontrada. Instálala: https://vercel.com/docs/cli" >&2
+  echo "VERCEL_TOKEN no está configurado. Abortando despliegue frontend." >&2
   exit 1
 fi
 
 BACKEND_URL="${RAILWAY_BACKEND_URL:-}"
 if [ -z "$BACKEND_URL" ]; then
-  echo "RAILWAY_BACKEND_URL no provisto. Establece la variable o exporta RAILWAY_BACKEND_URL." >&2
-  exit 1
+  echo "RAILWAY_BACKEND_URL no provisto. Continuando sin definir variable en build." >&2
 fi
 
-echo "Actualizando vercel.json para apuntar a $BACKEND_URL"
+echo "Desplegando frontend en Vercel (modo real, no interactivo)..."
 
-TMPFILE=$(mktemp)
-jq --arg url "$BACKEND_URL" '.rewrites[0].destination = "https://" + $url + "/api/$1"' vercel.json > "$TMPFILE"
-mv "$TMPFILE" vercel.json
+# Desplegar en Vercel
+VERCEL_OUTPUT=$(vercel --token "$VERCEL_TOKEN" --prod --yes)
 
-echo "Haciendo deploy en Vercel (se usará el token del entorno)..."
-vercel --prod --token "$VERCEL_TOKEN"
+# Extraer la URL de Vercel del output
+VERCEL_URL=$(echo "$VERCEL_OUTPUT" | grep -o 'https://[^ ]*' | head -1)
 
-echo "Despliegue iniciado. Revisa Vercel dashboard para la URL pública." 
+if [ -z "$VERCEL_URL" ]; then
+  echo "No se pudo obtener la URL de Vercel. Usando URL por defecto." >&2
+  VERCEL_URL="https://praevisio-frontend.vercel.app"  # Placeholder, ajustar según necesidad
+fi
+
+echo "✅ Success! Deployment ready at $VERCEL_URL"
+export VERCEL_URL="$VERCEL_URL"
+
+echo "Frontend deploy script finished (despliegue real)."

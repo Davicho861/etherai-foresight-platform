@@ -5,37 +5,37 @@ const ComparisonSection = () => {
   const features = [
     {
       feature: "Precisión en Predicciones",
-  etherAI: "90%",
+      etherAI: "90%",
       traditional: "65%",
       highlight: true
     },
     {
       feature: "IA Explicable",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: true
     },
     {
       feature: "Tiempo de Implementación",
-  etherAI: "2-4 semanas",
+      etherAI: "2-4 semanas",
       traditional: "6-12 meses",
       highlight: false
     },
     {
       feature: "Capacidad Multi-sector",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: false
     },
     {
       feature: "Análisis en Tiempo Real",
-  etherAI: true,
+      etherAI: true,
       traditional: false,
       highlight: false
     },
     {
       feature: "Soporte 24/7",
-  etherAI: true,
+      etherAI: true,
       traditional: "Limitado",
       highlight: false
     }

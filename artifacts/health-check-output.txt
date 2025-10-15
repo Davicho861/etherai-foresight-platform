@@ -1,0 +1,10 @@
+Health check for Praevisio native dev
+- Checking backend platform-status...
+  OK: platform-status reachable
+- Checking backend global-risk...
+  OK: global-risk endpoint reachable
+- Checking frontend root...
+  OK: frontend serving HTML
+  WARN: mock on port 4010 not listening
+  WARN: mock on port 4020 not listening
+  WARN: mock on port 4030 not listening

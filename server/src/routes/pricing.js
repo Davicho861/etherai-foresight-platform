@@ -1,16 +1,44 @@
 import express from 'express';
+import path from 'path';
+import fs from 'fs';
 
 const router = express.Router();
 
-// Static pricing plans per the spec
-const plans = [
-  { id: 'essential', name: 'Essential', price: 'Contactar', description: 'Inteligencia predictiva para equipos y proyectos específicos.', features: ['1 Módulo de País', 'Alertas Básicas', 'Dashboard Estándar', 'Soporte por Email'] },
-  { id: 'professional', name: 'Professional', price: 'Contactar', popular: true, description: 'La solución completa para organizaciones que operan a nivel nacional.', features: ['Hasta 5 Módulos de País', 'Alertas Avanzadas con IA Explicativa', 'Dashboard Personalizable', 'Generador de Escenarios (Básico)', 'Soporte Prioritario'] },
-  { id: 'elite', name: 'Elite', price: 'Contactar', description: 'Inteligencia estratégica sin límites para gobiernos y corporaciones globales.', features: ['Módulos de País Ilimitados', 'Acceso API Completo', 'Modelos de IA Personalizados', 'Consultoría Estratégica Dedicada', 'Soporte 24/7/365'] }
-];
+// Read the GLOBAL_OFFERING_PROTOCOL.json and expose structured plans
+const PROTOCOL_PATH = path.resolve(process.cwd(), 'GLOBAL_OFFERING_PROTOCOL.json');
+
+function readProtocol() {
+  try {
+    const raw = fs.readFileSync(PROTOCOL_PATH, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Failed to read GLOBAL_OFFERING_PROTOCOL.json:', err?.message || err);
+    return null;
+  }
+}
 
 router.get('/', (req, res) => {
-  res.json(plans);
+  const protocol = readProtocol();
+  if (!protocol) return res.status(500).json({ error: 'protocol not available' });
+
+  // Transform into a consumable response for the frontend
+  const segments = protocol.segments || {};
+  const response = {
+    currency: protocol.currency || 'USD',
+    globalSettings: protocol.globalSettings || {},
+    segments: Object.keys(segments).reduce((acc, key) => {
+      acc[key] = {
+        name: segments[key].name,
+        plans: segments[key].plans || []
+      };
+      return acc;
+    }, {}),
+  };
+
+  // Optionally include a pantheonOffering if present (backward compat)
+  if (protocol.pantheonOffering) response.pantheonOffering = protocol.pantheonOffering;
+
+  res.json(response);
 });
 
 export default router;

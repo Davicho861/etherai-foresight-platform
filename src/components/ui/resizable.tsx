@@ -1,9 +1,3 @@
-import React from 'react'
-export function Resizable({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="resizable">{children}</div>
-  )
-}
 import { GripVertical } from "lucide-react"
 import * as ResizablePrimitive from "react-resizable-panels"
 
