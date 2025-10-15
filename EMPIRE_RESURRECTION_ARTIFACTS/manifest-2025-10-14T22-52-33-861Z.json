@@ -1,0 +1,26 @@
+{
+  "createdAt": "2025-10-14T22:52:33.861Z",
+  "results": [
+    {
+      "plan": "starter",
+      "url": "http://localhost:3002/demo?plan=starter",
+      "hasData": false,
+      "shotPath": "/home/davicho/etherai-foresight-platform-main/EMPIRE_RESURRECTION_ARTIFACTS/demo-starter-2025-10-14T22-51-15-806Z.png",
+      "sampleText": ""
+    },
+    {
+      "plan": "growth",
+      "url": "http://localhost:3002/demo?plan=growth",
+      "hasData": false,
+      "shotPath": "/home/davicho/etherai-foresight-platform-main/EMPIRE_RESURRECTION_ARTIFACTS/demo-growth-2025-10-14T22-51-54-470Z.png",
+      "sampleText": ""
+    },
+    {
+      "plan": "panteon",
+      "url": "http://localhost:3002/demo?plan=panteon",
+      "hasData": false,
+      "shotPath": "/home/davicho/etherai-foresight-platform-main/EMPIRE_RESURRECTION_ARTIFACTS/demo-panteon-2025-10-14T22-52-33-178Z.png",
+      "sampleText": ""
+    }
+  ]
+}

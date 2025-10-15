@@ -35,7 +35,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           🏭 Santuario Operativo - COO
         </h1>
         <p className="text-slate-400 text-xl">
@@ -52,14 +52,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-amber-400/30 shadow-xl shadow-amber-500/10 transition-all duration-300 hover:shadow-amber-500/20 hover:border-amber-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚀</div>
               <button
@@ -86,14 +79,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-orange-400/30 shadow-xl shadow-orange-500/10 transition-all duration-300 hover:shadow-orange-500/20 hover:border-orange-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📋</div>
               <button
@@ -120,14 +106,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-red-400/30 shadow-xl shadow-red-500/10 transition-all duration-300 hover:shadow-red-500/20 hover:border-red-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⏱️</div>
               <button
@@ -154,14 +133,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⚙️</div>
               <button
@@ -189,20 +161,15 @@ const COODashboard: React.FC<COODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-blue-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">📊</span>
             Utilización de Recursos
           </h3>
           <div className="text-center">
-            <div className="text-5xl font-bold text-blue-400 mb-2">{resourceUtilization}%</div>
-            <p className="text-slate-400">Eficiencia en el uso de recursos</p>
+            <div className="text-5xl font-bold text-[color:var(--primary)] mb-2">{resourceUtilization}%</div>
+            <p className="text-[color:var(--text-secondary)]">Eficiencia en el uso de recursos</p>
           </div>
         </motion.div>
 
@@ -211,20 +178,15 @@ const COODashboard: React.FC<COODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-purple-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🤖</span>
             Automatización
           </h3>
           <div className="text-center">
-            <div className="text-5xl font-bold text-purple-400 mb-2">{processAutomation}%</div>
-            <p className="text-slate-400">Procesos automatizados</p>
+            <div className="text-5xl font-bold text-[color:var(--primary)] mb-2">{processAutomation}%</div>
+            <p className="text-[color:var(--text-secondary)]">Procesos automatizados</p>
           </div>
         </motion.div>
       </div>
@@ -234,35 +196,30 @@ const COODashboard: React.FC<COODashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-pink-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(190, 24, 93, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
       >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
           <span className="mr-3">⭐</span>
           Calidad & Productividad
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-slate-300">Tasa de Defectos:</span>
-              <span className="font-mono text-red-400">{qualityMetrics.defectRate}</span>
+              <span className="text-[color:var(--text-secondary)]">Tasa de Defectos:</span>
+              <span className="font-mono text-[color:var(--accent-red)]">{qualityMetrics.defectRate}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-300">Tasa de Retrabajo:</span>
-              <span className="font-mono text-orange-400">{qualityMetrics.reworkRate}</span>
+              <span className="text-[color:var(--text-secondary)]">Tasa de Retrabajo:</span>
+              <span className="font-mono text-[color:var(--accent-yellow)]">{qualityMetrics.reworkRate}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-300">Satisfacción del Cliente:</span>
-              <span className="font-mono text-green-400">{qualityMetrics.customerSatisfaction}%</span>
+              <span className="text-[color:var(--text-secondary)]">Satisfacción del Cliente:</span>
+              <span className="font-mono text-[color:var(--primary)]">{qualityMetrics.customerSatisfaction}%</span>
             </div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-pink-400 mb-2">{teamProductivity}%</div>
-            <p className="text-slate-400">Productividad del Equipo</p>
+            <div className="text-4xl font-bold text-[color:var(--accent-yellow)] mb-2">{teamProductivity}%</div>
+            <p className="text-[color:var(--text-secondary)]">Productividad del Equipo</p>
           </div>
         </div>
       </motion.div>

@@ -51,7 +51,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-400 via-gray-500 to-zinc-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           🔒 Santuario de Seguridad - CSO
         </h1>
         <p className="text-slate-400 text-xl">
@@ -68,14 +68,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-red-400/30 shadow-xl shadow-red-500/10 transition-all duration-300 hover:shadow-red-500/20 hover:border-red-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚨</div>
               <button
@@ -120,14 +113,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🛡️</div>
               <button
@@ -171,14 +157,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📋</div>
               <button
@@ -222,14 +201,7 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🔍</div>
               <button
@@ -367,15 +339,15 @@ const CSODashboard: React.FC<CSODashboardProps> = ({
       {/* XAI Modal */}
   {_selectedMetric && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60" onClick={() => { setSelectedMetric(null); setXaiContent(null); setXaiError(null); }} />
+          <div className="absolute inset-0 bg-black/60" onClick={() => { _setSelectedMetric(null); setXaiContent(null); setXaiError(null); }} />
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="relative max-w-2xl w-full p-6 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl"
+            className="relative max-w-2xl w-full p-6 rounded-2xl bg-[color:var(--card)] border border-[color:var(--border)] shadow-2xl"
           >
             <div className="flex items-start justify-between mb-4">
-              <h4 className="text-lg font-bold">Explicación XAI — {_selectedMetric}</h4>
-              <button className="text-slate-400" onClick={() => { _setSelectedMetric(null); setXaiContent(null); setXaiError(null); }}>Cerrar</button>
+              <h4 className="text-lg font-bold text-[color:var(--text-primary)]">Explicación XAI — {_selectedMetric}</h4>
+              <button className="text-[color:var(--text-secondary)]" onClick={() => { _setSelectedMetric(null); setXaiContent(null); setXaiError(null); }}>Cerrar</button>
             </div>
 
             <div className="min-h-[120px]">

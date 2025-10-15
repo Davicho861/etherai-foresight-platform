@@ -30,7 +30,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-400 via-rose-500 to-red-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           📈 Santuario de Mercado - CMO
         </h1>
         <p className="text-slate-400 text-xl">
@@ -47,14 +47,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-pink-400/30 shadow-xl shadow-pink-500/10 transition-all duration-300 hover:shadow-pink-500/20 hover:border-pink-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(190, 24, 93, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🎯</div>
               <button
@@ -81,14 +74,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">👥</div>
               <button
@@ -115,29 +101,30 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">💝</div>
               <button
                 onClick={() => requestDivineExplanation('brandSentiment', brandSentiment, 'CMODashboard')}
-                className="text-blue-400 hover:text-blue-300 transition-colors text-xl animate-pulse"
+                className="text-amber-400 hover:text-amber-300 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Sentimiento de Marca</h3>
-              <div className="text-4xl font-bold text-blue-400">
-                {brandSentiment}%
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Sentimiento de Marca</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">{brandSentiment}%</div>
+              <p className="text-sm text-[color:var(--text-secondary)]">Percepción pública y feedback</p>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="text-center p-3 bg-[color:var(--card)] rounded-xl">
+                  <div className="text-2xl font-bold text-[color:var(--primary)]">{customerAcquisition}</div>
+                  <div className="text-sm text-[color:var(--text-secondary)]">Adquisición</div>
+                </div>
+                <div className="text-center p-3 bg-[color:var(--card)] rounded-xl">
+                  <div className="text-2xl font-bold text-[color:var(--primary)]">{viralCoefficient}</div>
+                  <div className="text-sm text-[color:var(--text-secondary)]">Viralidad</div>
+                </div>
               </div>
-              <p className="text-sm text-slate-400">Percepción positiva</p>
             </div>
           </div>
         </motion.div>
@@ -149,14 +136,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-cyan-400/30 shadow-xl shadow-cyan-500/10 transition-all duration-300 hover:shadow-cyan-500/20 hover:border-cyan-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(14, 116, 144, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🌍</div>
               <button
@@ -167,11 +147,9 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Penetración</h3>
-              <div className="text-4xl font-bold text-cyan-400">
-                {marketPenetration}%
-              </div>
-              <p className="text-sm text-slate-400">Cobertura de mercado</p>
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Penetración</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">{marketPenetration}%</div>
+              <p className="text-sm text-[color:var(--text-secondary)]">Cobertura de mercado</p>
             </div>
           </div>
         </motion.div>

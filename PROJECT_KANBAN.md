@@ -32,6 +32,20 @@
     - Integración ética vectorial para evaluaciones de impacto ambiental.
 - **Estado:** **COMPLETADO**
 
+### MIS-021: Integración de API de Datos Cripto para Predicción de Volatilidad Económica Global
+- **Objetivo:** Integrar datos en tiempo real sobre criptomonedas para predecir fluctuaciones económicas que impactan cadenas de suministro, mercados financieros y estabilidad regional en LATAM.
+- **Agente Líder:** Kairós (Oportunidad)
+- **Criterios de Éxito:**
+    - Nuevo endpoint `/api/global-risk/crypto-volatility` operativo que devuelve datos de volatilidad cripto
+    - Servicio `cryptoService.js` con método `getCryptoVolatility()` implementado
+    - Integración en `predictionEngine.js` para actualizar "Índice de Riesgo Cripto-Económico"
+    - Arquitectura resiliente con fallbacks automáticos ante fallos de API externa
+    - Pruebas unitarias en `server/__tests__/services/cryptoService.test.js` con cobertura de fallos
+    - Suite completa de pruebas (`npm test --workspace=server`) ejecutada con cero errores
+    - Commit en main con nueva funcionalidad cripto-económica
+    - Documentación actualizada en `PROJECT_KANBAN.md`
+- **Estado:** **COMPLETADO**
+
 ## Misiones en Progreso
 
 ### MIS-014: Optimización de Backend y APIs

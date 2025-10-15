@@ -27,7 +27,7 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold text-[color:var(--text-primary)] mb-2">
           🔮 Santuario del Análisis Predictivo
         </h1>
         <p className="text-slate-400 text-lg">
@@ -42,7 +42,7 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
+          className="rounded-2xl p-6 border border-[color:var(--border)] bg-[color:var(--card)]"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="text-2xl">🎯</div>
@@ -54,11 +54,11 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
             </button>
           </div>
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">Precisión Predictiva</h3>
-            <div className="text-3xl font-bold text-cyan-400">
+            <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Precisión Predictiva</h3>
+            <div className="text-3xl font-bold text-[color:var(--primary)]">
               {divineData.kpis?.precisionPromedio || 0}%
             </div>
-            <p className="text-sm text-slate-400">Accuracy de modelos predictivos</p>
+            <p className="text-sm text-[color:var(--text-secondary)]">Accuracy de modelos predictivos</p>
           </div>
         </motion.div>
 
@@ -67,7 +67,7 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
+          className="rounded-2xl p-6 border border-[color:var(--border)] bg-[color:var(--card)]"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="text-2xl">📊</div>
@@ -79,11 +79,11 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
             </button>
           </div>
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">Predicciones Diarias</h3>
-            <div className="text-3xl font-bold text-blue-400">
+            <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Predicciones Diarias</h3>
+            <div className="text-3xl font-bold text-[color:var(--primary)]">
               {divineData.kpis?.prediccionesDiarias || 0}
             </div>
-            <p className="text-sm text-slate-400">Señales críticas procesadas</p>
+            <p className="text-sm text-[color:var(--text-secondary)]">Señales críticas procesadas</p>
           </div>
         </motion.div>
 
@@ -92,7 +92,7 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
+          className="rounded-2xl p-6 border border-[color:var(--border)] bg-[color:var(--card)]"
         >
           <div className="flex items-center justify-between mb-4">
             <div className="text-2xl">⏰</div>
@@ -122,7 +122,7 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
           transition={{ delay: 0.4 }}
           className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50"
         >
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-[color:var(--text-primary)] mb-4 flex items-center">
             📈 Evolución del Riesgo
             <button
               onClick={() => requestDivineExplanation('evolucionRiesgo', 'Gráfico temporal', 'PredictiveAnalysis')}
@@ -140,11 +140,11 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
               { name: 'May', riesgo: 70 },
               { name: 'Jun', riesgo: 78 }
             ]}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="name" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
-              <Line type="monotone" dataKey="riesgo" stroke="#06B6D4" strokeWidth={3} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: `1px solid hsl(var(--border))` }} />
+              <Line type="monotone" dataKey="riesgo" stroke="hsl(var(--primary))" strokeWidth={3} />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>
@@ -172,11 +172,11 @@ const PredictiveAnalysisDashboard: React.FC<PredictiveAnalysisDashboardProps> = 
               { name: 'Económico', valor: 22 },
               { name: 'Social', valor: 15 }
             ]}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="name" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
-              <Bar dataKey="valor" fill="#06B6D4" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: `1px solid hsl(var(--border))` }} />
+              <Bar dataKey="valor" fill="hsl(var(--primary))" />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>

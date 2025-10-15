@@ -112,11 +112,11 @@ const EnhancedRiskDashboard: React.FC = () => {
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'Low': return 'bg-green-500';
-      case 'Medium': return 'bg-yellow-500';
-      case 'High': return 'bg-orange-500';
-      case 'Critical': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'Low': return 'bg-[color:var(--accent-yellow)]';
+      case 'Medium': return 'bg-[color:var(--accent-yellow)]';
+      case 'High': return 'bg-[color:var(--accent-red)]';
+      case 'Critical': return 'bg-[color:var(--accent-red)]';
+      default: return 'bg-[color:var(--border)]';
     }
   };
 
@@ -161,7 +161,7 @@ const EnhancedRiskDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header with controls */}
-      <Card className="bg-gradient-to-r from-blue-900 to-purple-900 border-gray-700">
+      <Card className="bg-[color:var(--card)] border-[color:var(--border)]">
         <CardHeader>
           <div className="flex justify-between items-center">
             <div>
@@ -194,7 +194,7 @@ const EnhancedRiskDashboard: React.FC = () => {
       </Card>
 
       {/* Filters */}
-      <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+      <Card className="bg-[color:var(--card)] border-[color:var(--border)]">
         <CardContent className="pt-6">
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex items-center space-x-2">
@@ -258,26 +258,26 @@ const EnhancedRiskDashboard: React.FC = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
+        <Card className="bg-[color:var(--card)] border-[color:var(--border)]">
           <CardHeader>
             <CardTitle className="text-white">Tendencia de Riesgos por País</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={riskTrendData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="country" stroke="#9CA3AF" />
-                <YAxis stroke="#9CA3AF" />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="country" stroke="hsl(var(--text-secondary))" />
+                <YAxis stroke="hsl(var(--text-secondary))" />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: 'hsl(var(--card))',
+                    border: `1px solid hsl(var(--border))`,
                     borderRadius: '8px',
-                    color: '#FFFFFF'
+                    color: 'hsl(var(--text-primary))'
                   }}
                 />
-                <Bar dataKey="risk" fill="#3B82F6" name="Riesgo Actual" />
-                <Bar dataKey="alerts" fill="#EF4444" name="Alertas Activas" />
+                <Bar dataKey="risk" fill="hsl(var(--primary))" name="Riesgo Actual" />
+                <Bar dataKey="alerts" fill="hsl(var(--accent-red))" name="Alertas Activas" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

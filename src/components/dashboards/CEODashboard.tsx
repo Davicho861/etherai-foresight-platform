@@ -32,16 +32,16 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-6xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
-          👑 Santuario Ejecutivo - CEO
-        </h1>
+          <h1 className="text-6xl font-bold text-[color:var(--text-primary)] mb-4">
+            👑 Santuario Ejecutivo - CEO
+          </h1>
         <p className="text-slate-400 text-2xl font-light">
           Visión soberana del imperio - Gobernanza divina
         </p>
       </motion.div>
 
       {/* GRID DE MÉTRICAS EJECUTIVAS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* SALUD DEL IMPERIO */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -49,14 +49,7 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-8 rounded-3xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+            <div className="p-8 rounded-3xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🏛️</div>
               <button
@@ -67,11 +60,11 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-white">Salud del Imperio</h3>
-              <div className="text-5xl font-bold text-green-400">
+                <h3 className="text-xl font-semibold text-[color:var(--text-primary)]">Salud del Imperio</h3>
+                <div className="text-5xl font-bold text-[color:var(--accent-yellow)]">
                 {empireHealth}%
               </div>
-              <p className="text-base text-slate-400">Estado general operativo</p>
+                <p className="text-base text-[color:var(--text-secondary)]">Estado general operativo</p>
             </div>
           </div>
         </motion.div>
@@ -83,14 +76,7 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+            <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🎯</div>
               <button
@@ -101,11 +87,11 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Progreso Estratégico</h3>
-              <div className="text-4xl font-bold text-blue-400">
+                <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Progreso Estratégico</h3>
+                <div className="text-4xl font-bold text-[color:var(--primary)]">
                 {strategicProgress}%
               </div>
-              <p className="text-sm text-slate-400">Hacia objetivos principales</p>
+                <p className="text-sm text-[color:var(--text-secondary)]">Hacia objetivos principales</p>
             </div>
           </div>
         </motion.div>
@@ -117,14 +103,7 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-orange-400/30 shadow-xl shadow-orange-500/10 transition-all duration-300 hover:shadow-orange-500/20 hover:border-orange-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+            <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🔥</div>
               <button
@@ -135,11 +114,11 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Burn Rate</h3>
-              <div className="text-2xl font-bold text-orange-400">
+                <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Burn Rate</h3>
+                <div className="text-2xl font-bold text-[color:var(--accent-yellow)]">
                 {burnRate}
               </div>
-              <p className="text-sm text-slate-400">Consumo de recursos</p>
+                <p className="text-sm text-[color:var(--text-secondary)]">Consumo de recursos</p>
             </div>
           </div>
         </motion.div>
@@ -151,14 +130,7 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+            <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">💎</div>
               <button
@@ -169,11 +141,11 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">ARR Proyectado</h3>
-              <div className="text-2xl font-bold text-purple-400">
+                <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">ARR Proyectado</h3>
+                <div className="text-2xl font-bold text-[color:var(--primary)]">
                 {arr}
               </div>
-              <p className="text-sm text-slate-400">Ingresos recurrentes</p>
+                <p className="text-sm text-[color:var(--text-secondary)]">Ingresos recurrentes</p>
             </div>
           </div>
         </motion.div>
@@ -182,24 +154,19 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
       {/* VISUALIZACIONES EJECUTIVAS AVANZADAS */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* POSICIÓN DE MERCADO */}
-        <motion.div
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-cyan-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(14, 116, 144, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🏆</span>
             Posición de Mercado
           </h3>
           <div className="text-center">
-            <div className="text-4xl font-bold text-cyan-400 mb-2">{marketPosition}</div>
-            <p className="text-slate-400">Ventaja competitiva en IA predictiva</p>
+            <div className="text-4xl font-bold text-[color:var(--primary)] mb-2">{marketPosition}</div>
+            <p className="text-[color:var(--text-secondary)]">Ventaja competitiva en IA predictiva</p>
           </div>
         </motion.div>
 
@@ -208,20 +175,15 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-pink-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(190, 24, 93, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🚀</span>
             Velocidad de Innovación
           </h3>
           <div className="text-center">
-            <div className="text-4xl font-bold text-pink-400 mb-2">{innovationVelocity} commits/semana</div>
-            <p className="text-slate-400">Ritmo de desarrollo e innovación</p>
+            <div className="text-4xl font-bold text-[color:var(--accent-yellow)] mb-2">{innovationVelocity} commits/semana</div>
+            <p className="text-[color:var(--text-secondary)]">Ritmo de desarrollo e innovación</p>
           </div>
         </motion.div>
       </div>
@@ -231,25 +193,20 @@ const CEODashboard: React.FC<CEODashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-red-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
       >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
           <span className="mr-3">⚠️</span>
           Índice de Riesgo Global
         </h3>
         <div className="flex items-center justify-center space-x-8">
           <div className="text-center">
-            <div className="text-6xl font-bold text-red-400 mb-2">{riskIndex}</div>
-            <p className="text-slate-400">Nivel de riesgo actual</p>
+            <div className="text-6xl font-bold text-[color:var(--accent-red)] mb-2">{riskIndex}</div>
+            <p className="text-[color:var(--text-secondary)]">Nivel de riesgo actual</p>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-400 mb-2">{stakeholderSatisfaction}%</div>
-            <p className="text-slate-400">Satisfacción de stakeholders</p>
+            <div className="text-4xl font-bold text-[color:var(--primary)] mb-2">{stakeholderSatisfaction}%</div>
+            <p className="text-[color:var(--text-secondary)]">Satisfacción de stakeholders</p>
           </div>
         </div>
       </motion.div>

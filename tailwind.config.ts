@@ -67,6 +67,15 @@ export default {
 					DEFAULT: "#4ADE80",
 					light: "#86EFAC",
 				},
+				// Gemini soul palette (mapped to CSS variables in global CSS)
+				gemini: {
+					background: 'hsl(var(--background))',
+					primary: 'hsl(var(--primary))',
+					'accent-yellow': 'hsl(var(--accent-yellow))',
+					'accent-red': 'hsl(var(--accent-red))',
+					'text-primary': 'hsl(var(--text-primary))',
+					'text-secondary': 'hsl(var(--text-secondary))',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -131,7 +140,7 @@ export default {
 				'float': 'float 6s ease-in-out infinite'
 			},
 			fontFamily: {
-				'inter': ['Inter', 'sans-serif'],
+				'inter': ['Inter', 'Roboto', 'sans-serif'],
 			},
 			backgroundImage: {
 				'grid-pattern': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%232D3748' fill-opacity='0.05'%3E%3Cpath d='M0 0h60v60H0V0z M30 30h30v30H30V30z M0 30h30v30H0V30z'/%3E%3C/g%3E%3C/svg%3E\")",

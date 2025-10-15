@@ -52,7 +52,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           🏛️ Santuario de la Planificación - Junta Directiva
         </h1>
         <p className="text-slate-400 text-xl">
@@ -69,29 +69,22 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-cyan-400/30 shadow-xl shadow-cyan-500/10 transition-all duration-300 hover:shadow-cyan-500/20 hover:border-cyan-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(14, 116, 144, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📋</div>
               <button
                 onClick={() => requestDivineExplanation('planningProgress', planningProgress, 'PlanningDashboard')}
-                className="text-cyan-400 hover:text-cyan-300 transition-colors text-xl animate-pulse"
+                className="text-[color:var(--primary)] hover:opacity-90 transition-colors text-xl"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Progreso de Planificación</h3>
-              <div className="text-4xl font-bold text-cyan-400">
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Progreso de Planificación</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">
                 {planningProgress}%
               </div>
-              <p className="text-sm text-slate-400">Hacia objetivos estratégicos</p>
+              <p className="text-sm text-[color:var(--text-secondary)]">Hacia objetivos estratégicos</p>
             </div>
           </div>
         </motion.div>
@@ -104,12 +97,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
+            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📝</div>
@@ -138,12 +126,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
+            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🤝</div>
@@ -172,12 +155,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
+            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">💰</div>
@@ -202,16 +180,11 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
       {/* VISUALIZACIONES PLANNING AVANZADAS */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* ALINEACIÓN DE STAKEHOLDERS */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-blue-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
           <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="mr-3">🤝</span>
@@ -219,51 +192,34 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={stakeholderData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="name" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
-                  borderRadius: '8px'
-                }}
-              />
-              <Bar dataKey="alignment" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: `1px solid hsl(var(--border))`, borderRadius: '8px' }} />
+              <Bar dataKey="alignment" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
 
         {/* PROGRESO DEL TIMELINE */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-cyan-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(14, 116, 144, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
-        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          >
           <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="mr-3">📈</span>
             Progreso del Timeline
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={timelineData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="phase" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
-                  borderRadius: '8px'
-                }}
-              />
-              <Line type="monotone" dataKey="progress" stroke="#06B6D4" strokeWidth={3} />
-              <Line type="monotone" dataKey="target" stroke="#F59E0B" strokeWidth={2} strokeDasharray="5 5" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="phase" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: `1px solid hsl(var(--border))`, borderRadius: '8px' }} />
+              <Line type="monotone" dataKey="progress" stroke="hsl(var(--primary))" strokeWidth={3} />
+              <Line type="monotone" dataKey="target" stroke="hsl(var(--accent-yellow))" strokeWidth={2} strokeDasharray="5 5" />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>
@@ -274,12 +230,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-red-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(185, 28, 28, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
       >
         <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
           <span className="mr-3">⚠️</span>
@@ -287,7 +238,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
                   data={riskData}
@@ -302,13 +253,7 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
-                    borderRadius: '8px'
-                  }}
-                />
+                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: `1px solid hsl(var(--border))`, borderRadius: '8px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>

@@ -30,7 +30,7 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           🗄️ Santuario de Datos - CIO
         </h1>
         <p className="text-slate-400 text-xl">
@@ -47,14 +47,7 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-teal-400/30 shadow-xl shadow-teal-500/10 transition-all duration-300 hover:shadow-teal-500/20 hover:border-teal-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(13, 148, 136, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🌊</div>
               <button
@@ -81,14 +74,7 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-cyan-400/30 shadow-xl shadow-cyan-500/10 transition-all duration-300 hover:shadow-cyan-500/20 hover:border-cyan-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(14, 116, 144, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⚡</div>
               <button
@@ -115,14 +101,7 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">✨</div>
               <button
@@ -149,14 +128,7 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🟢</div>
               <button
@@ -184,20 +156,15 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-purple-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">💾</span>
             Volumen de Datos
           </h3>
           <div className="text-center">
-            <div className="text-5xl font-bold text-purple-400 mb-2">{dataVolume}</div>
-            <p className="text-slate-400">Datos procesados mensualmente</p>
+            <div className="text-5xl font-bold text-[color:var(--primary)] mb-2">{dataVolume}</div>
+            <p className="text-[color:var(--text-secondary)]">Datos procesados mensualmente</p>
           </div>
         </motion.div>
 
@@ -206,20 +173,15 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-orange-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🚀</span>
             Throughput
           </h3>
           <div className="text-center">
-            <div className="text-4xl font-bold text-orange-400 mb-2">{processingThroughput}</div>
-            <p className="text-slate-400">Procesamiento por segundo</p>
+            <div className="text-4xl font-bold text-[color:var(--primary)] mb-2">{processingThroughput}</div>
+            <p className="text-[color:var(--text-secondary)]">Procesamiento por segundo</p>
           </div>
         </motion.div>
       </div>
@@ -229,33 +191,28 @@ const CIODashboard: React.FC<CIODashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-pink-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(190, 24, 93, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
       >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
           <span className="mr-3">🔒</span>
           Calidad & Cumplimiento
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-slate-300">Tasa de Error:</span>
-              <span className="font-mono text-red-400">{errorRate}</span>
+              <span className="text-[color:var(--text-secondary)]">Tasa de Error:</span>
+              <span className="font-mono text-[color:var(--accent-red)]">{errorRate}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-300">Score de Cumplimiento:</span>
-              <span className="font-mono text-green-400">{complianceScore}%</span>
+              <span className="text-[color:var(--text-secondary)]">Score de Cumplimiento:</span>
+              <span className="font-mono text-[color:var(--primary)]">{complianceScore}%</span>
             </div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-pink-400 mb-2">
+            <div className="text-4xl font-bold text-[color:var(--accent-yellow)] mb-2">
               {Math.round((100 - parseFloat(errorRate)) * complianceScore / 100)}%
             </div>
-            <p className="text-slate-400">Índice de Confiabilidad</p>
+            <p className="text-[color:var(--text-secondary)]">Índice de Confiabilidad</p>
           </div>
         </div>
       </motion.div>

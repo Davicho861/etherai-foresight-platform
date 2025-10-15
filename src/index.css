@@ -7,34 +7,35 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    /* Gemini Soul Palette (H S% L%) */
+    --background: 230 7% 4%; /* approx #0c0c0f */
+    --primary: 219 100% 64%; /* #4f80ff */
+    --accent-yellow: 42 100% 50%; /* #ffab00 */
+    --accent-red: 3 67% 50%; /* #e53935 */
+    --text-primary: 0 0% 100%;
+    --text-secondary: 220 6% 70%;
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    /* Surfaces */
+    --card: 230 9% 6%;
+    --card-foreground: var(--text-primary);
+    --popover: 230 9% 6%;
+    --popover-foreground: var(--text-primary);
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    /* Semantic tokens */
+    --primary-foreground: 230 7% 4%;
+    --secondary: 220 6% 12%;
+    --secondary-foreground: var(--text-primary);
+    --muted: 220 6% 14%;
+    --muted-foreground: 220 6% 70%;
+    --accent: var(--primary);
+    --accent-foreground: var(--text-primary);
+    --destructive: var(--accent-red);
+    --destructive-foreground: var(--text-primary);
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 142 70% 56%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --radius: 0.75rem;
+    --border: 220 6% 12%;
+    --input: 220 6% 12%;
+    --ring: 219 100% 75%;
+    --radius: 0.5rem;
   }
 }
 
@@ -44,9 +45,9 @@
   }
 
   body {
-    background-color: #1A1F2C;
-    color: hsl(210 40% 98%);
-    font-family: 'Inter', sans-serif;
+    background-color: hsl(var(--background));
+    color: hsl(var(--text-primary));
+    font-family: 'Inter', 'Roboto', sans-serif;
     scroll-behavior: smooth;
   }
   

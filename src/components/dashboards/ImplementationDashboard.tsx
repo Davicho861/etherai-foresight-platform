@@ -54,7 +54,7 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
           ⚒️ Santuario de la Forja - La Forja de Hefesto
         </h1>
         <p className="text-slate-400 text-xl">
@@ -71,14 +71,7 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-green-400/30 shadow-xl shadow-green-500/10 transition-all duration-300 hover:shadow-green-500/20 hover:border-green-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📊</div>
               <button
@@ -89,11 +82,11 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Cobertura de Código</h3>
-              <div className="text-4xl font-bold text-green-400">
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Cobertura de Código</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">
                 {codeCoverage}%
               </div>
-              <p className="text-sm text-slate-400">Líneas testeadas</p>
+              <p className="text-sm text-[color:var(--text-secondary)]">Líneas testeadas</p>
             </div>
           </div>
         </motion.div>
@@ -105,14 +98,7 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🔨</div>
               <button
@@ -123,11 +109,11 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Éxito de Builds</h3>
-              <div className="text-4xl font-bold text-blue-400">
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Éxito de Builds</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">
                 {buildSuccessRate}%
               </div>
-              <p className="text-sm text-slate-400">Builds exitosos</p>
+              <p className="text-sm text-[color:var(--text-secondary)]">Builds exitosos</p>
             </div>
           </div>
         </motion.div>
@@ -139,14 +125,7 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚀</div>
               <button
@@ -157,11 +136,11 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Despliegues/Semana</h3>
-              <div className="text-4xl font-bold text-purple-400">
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Despliegues/Semana</h3>
+              <div className="text-4xl font-bold text-[color:var(--primary)]">
                 {deploymentFrequency}
               </div>
-              <p className="text-sm text-slate-400">Ritmo de entrega</p>
+              <p className="text-sm text-[color:var(--text-secondary)]">Ritmo de entrega</p>
             </div>
           </div>
         </motion.div>
@@ -173,14 +152,7 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-orange-400/30 shadow-xl shadow-orange-500/10 transition-all duration-300 hover:shadow-orange-500/20 hover:border-orange-400/50"
-            style={{
-              background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
-              backdropFilter: 'blur(15px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-            }}
-          >
+          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⏱️</div>
               <button
@@ -191,11 +163,11 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">MTTR</h3>
-              <div className="text-2xl font-bold text-orange-400">
+              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">MTTR</h3>
+              <div className="text-2xl font-bold text-[color:var(--primary)]">
                 {meanTimeToRecovery}
               </div>
-              <p className="text-sm text-slate-400">Tiempo de recuperación</p>
+              <p className="text-sm text-[color:var(--text-secondary)]">Tiempo de recuperación</p>
             </div>
           </div>
         </motion.div>
@@ -208,31 +180,20 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-blue-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🔨</span>
             Éxito de Builds por Día
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={buildData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="day" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
-                  borderRadius: '8px'
-                }}
-              />
-              <Bar dataKey="success" stackId="a" fill="#3B82F6" />
-              <Bar dataKey="failures" stackId="a" fill="#EF4444" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="day" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+              <Bar dataKey="success" stackId="a" fill="hsl(var(--primary))" />
+              <Bar dataKey="failures" stackId="a" fill="hsl(var(--accent-red))" />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -242,31 +203,20 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-purple-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🚀</span>
             Despliegues vs Rollbacks
           </h3>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={deploymentData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="week" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1F2937',
-                  border: '1px solid #374151',
-                  borderRadius: '8px'
-                }}
-              />
-              <Line type="monotone" dataKey="deployments" stroke="#8B5CF6" strokeWidth={3} />
-              <Line type="monotone" dataKey="rollbacks" stroke="#EF4444" strokeWidth={2} strokeDasharray="5 5" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="week" stroke="hsl(var(--text-secondary))" />
+              <YAxis stroke="hsl(var(--text-secondary))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+              <Line type="monotone" dataKey="deployments" stroke="hsl(var(--primary))" strokeWidth={3} />
+              <Line type="monotone" dataKey="rollbacks" stroke="hsl(var(--accent-red))" strokeWidth={2} strokeDasharray="5 5" />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>
@@ -277,56 +227,45 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-green-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
       >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
           <span className="mr-3">⚙️</span>
           Estado del Motor de Agentes Inmortales
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
               <div>
-                <div className="text-sm text-slate-400">Estado del Motor</div>
-                <div className="text-xl font-bold text-green-400">Operativo</div>
+                <div className="text-sm text-[color:var(--text-secondary)]">Estado del Motor</div>
+                <div className="text-xl font-bold text-[color:var(--primary)]">Operativo</div>
               </div>
-              <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+              <div className="w-4 h-4 bg-[color:var(--primary)] rounded-full animate-pulse"></div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
               <div>
-                <div className="text-sm text-slate-400">Workers Activos</div>
-                <div className="text-xl font-bold text-blue-400">{activeWorkers}</div>
+                <div className="text-sm text-[color:var(--text-secondary)]">Workers Activos</div>
+                <div className="text-xl font-bold text-[color:var(--primary)]">{activeWorkers}</div>
               </div>
-              <div className="text-sm text-slate-400">de 6 totales</div>
+              <div className="text-sm text-[color:var(--text-secondary)]">de 6 totales</div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
               <div>
-                <div className="text-sm text-slate-400">Colas Pendientes</div>
-                <div className="text-xl font-bold text-orange-400">{pendingQueues}</div>
+                <div className="text-sm text-[color:var(--text-secondary)]">Colas Pendientes</div>
+                <div className="text-xl font-bold text-[color:var(--accent-yellow)]">{pendingQueues}</div>
               </div>
-              <div className="text-sm text-slate-400">tareas en espera</div>
+              <div className="text-sm text-[color:var(--text-secondary)]">tareas en espera</div>
             </div>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Distribución de Carga por Worker</h4>
+            <h4 className="text-lg font-semibold text-[color:var(--text-primary)] mb-4">Distribución de Carga por Worker</h4>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={workerData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="name" stroke="#9CA3AF" />
-                <YAxis stroke="#9CA3AF" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
-                    borderRadius: '8px'
-                  }}
-                />
-                <Bar dataKey="tasks" fill="#10B981" radius={[4, 4, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="name" stroke="hsl(var(--text-secondary))" />
+                <YAxis stroke="hsl(var(--text-secondary))" />
+                <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: '8px' }} />
+                <Bar dataKey="tasks" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
