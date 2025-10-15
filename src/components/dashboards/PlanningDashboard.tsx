@@ -52,10 +52,10 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
+        <h1 className="text-5xl font-bold text-google-text-primary mb-2">
           🏛️ Santuario de la Planificación - Junta Directiva
         </h1>
-        <p className="text-slate-400 text-xl">
+        <p className="text-google-text-secondary text-xl">
           Arquitectura estratégica del imperio - Planificación soberana
         </p>
       </motion.div>
@@ -69,22 +69,22 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📋</div>
               <button
                 onClick={() => requestDivineExplanation('planningProgress', planningProgress, 'PlanningDashboard')}
-                className="text-[color:var(--primary)] hover:opacity-90 transition-colors text-xl"
+                className="text-google-primary hover:opacity-90 transition-colors text-xl"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Progreso de Planificación</h3>
-              <div className="text-4xl font-bold text-[color:var(--primary)]">
+              <h3 className="text-lg font-semibold text-google-text-primary">Progreso de Planificación</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {planningProgress}%
               </div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Hacia objetivos estratégicos</p>
+              <p className="text-sm text-google-text-secondary">Hacia objetivos estratégicos</p>
             </div>
           </div>
         </motion.div>
@@ -97,23 +97,23 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
+            className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📝</div>
               <button
                 onClick={() => requestDivineExplanation('requirementsGathered', requirementsGathered, 'PlanningDashboard')}
-                className="text-green-400 hover:text-green-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Requisitos Recopilados</h3>
-              <div className="text-4xl font-bold text-green-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Requisitos Recopilados</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {requirementsGathered}%
               </div>
-              <p className="text-sm text-slate-400">Cobertura de requerimientos</p>
+              <p className="text-sm text-google-text-secondary">Cobertura de requerimientos</p>
             </div>
           </div>
         </motion.div>
@@ -126,23 +126,23 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
+            className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🤝</div>
               <button
                 onClick={() => requestDivineExplanation('stakeholderAlignment', stakeholderAlignment, 'PlanningDashboard')}
-                className="text-blue-400 hover:text-blue-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Alineación Stakeholders</h3>
-              <div className="text-4xl font-bold text-blue-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Alineación Stakeholders</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {stakeholderAlignment}%
               </div>
-              <p className="text-sm text-slate-400">Consenso del equipo</p>
+              <p className="text-sm text-google-text-secondary">Consenso del equipo</p>
             </div>
           </div>
         </motion.div>
@@ -155,23 +155,23 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           className="relative group"
         >
           <div
-            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md"
+            className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200 hover:shadow-md"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">💰</div>
               <button
                 onClick={() => requestDivineExplanation('budgetAllocated', budgetAllocated, 'PlanningDashboard')}
-                className="text-purple-400 hover:text-purple-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Presupuesto Asignado</h3>
-              <div className="text-2xl font-bold text-purple-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Presupuesto Asignado</h3>
+              <div className="text-2xl font-bold text-google-primary">
                 {budgetAllocated}
               </div>
-              <p className="text-sm text-slate-400">Recursos disponibles</p>
+              <p className="text-sm text-google-text-secondary">Recursos disponibles</p>
             </div>
           </div>
         </motion.div>
@@ -184,9 +184,9 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+            className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">🤝</span>
             Alineación de Stakeholders
           </h3>
@@ -206,9 +206,9 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+            className="p-6 rounded-lg border border-gray-700 bg-google-surface"
           >
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+          <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">📈</span>
             Progreso del Timeline
           </h3>
@@ -230,9 +230,9 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+        className="p-8 rounded-lg border border-gray-700 bg-google-surface"
       >
-        <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
           <span className="mr-3">⚠️</span>
           Análisis de Riesgos de Planificación
         </h3>
@@ -259,24 +259,24 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
           </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-slate-300">Confianza del Timeline</span>
+              <span className="text-google-text-secondary">Confianza del Timeline</span>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-green-400">{timelineConfidence}%</span>
+                <span className="text-2xl font-bold text-google-primary">{timelineConfidence}%</span>
                 <button
                   onClick={() => requestDivineExplanation('timelineConfidence', timelineConfidence, 'PlanningDashboard')}
-                  className="text-green-400 hover:text-green-300 transition-colors text-lg animate-pulse"
+                  className="text-google-primary hover:brightness-110 transition-colors text-lg animate-pulse"
                 >
                   ✨
                 </button>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-300">Índice de Riesgo Global</span>
+              <span className="text-google-text-secondary">Índice de Riesgo Global</span>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-red-400">{riskAssessment}</span>
+                <span className="text-2xl font-bold text-google-accent-red">{riskAssessment}</span>
                 <button
                   onClick={() => requestDivineExplanation('riskAssessment', riskAssessment, 'PlanningDashboard')}
-                  className="text-red-400 hover:text-red-300 transition-colors text-lg animate-pulse"
+                  className="text-google-accent-red hover:brightness-110 transition-colors text-lg animate-pulse"
                 >
                   ✨
                 </button>
@@ -291,12 +291,12 @@ const PlanningDashboard: React.FC<PlanningDashboardProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
-        className="text-center py-4 border-t border-slate-700/50"
+        className="text-center py-4 border-t border-gray-700/50"
       >
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-google-text-secondary">
           🔒 Certificado por Apolo Prime - Planificación soberana 100% real del imperio
         </div>
-        <div className="text-xs text-slate-600 mt-1">
+        <div className="text-xs text-google-text-secondary mt-1">
           Última actualización: {new Date().toLocaleString()}
         </div>
       </motion.div>

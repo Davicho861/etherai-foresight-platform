@@ -4,7 +4,7 @@ import { useServiceWorker } from '../../hooks/useServiceWorker';
 // Mock navigator.serviceWorker
 const mockServiceWorker = {
   register: jest.fn(),
-  ready: jest.fn(),
+  ready: jest.fn().mockResolvedValue({}),
   addEventListener: jest.fn(),
   controller: null,
 };
@@ -21,6 +21,7 @@ describe('useServiceWorker', () => {
     Object.defineProperty(navigator, 'serviceWorker', {
       value: mockServiceWorker,
       writable: true,
+      configurable: true,
     });
   });
 

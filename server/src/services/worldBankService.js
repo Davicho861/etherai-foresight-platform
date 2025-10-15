@@ -7,7 +7,7 @@ async function getWorldBankInstance() {
   let mod;
   // Try CommonJS require if available (jest/CJS environment)
   try {
-    // eslint-disable-next-line import/no-dynamic-require
+     
     mod = require('../integrations/WorldBankIntegration.js');
   } catch (e) {
     // Fallback to dynamic import for ESM runtimes

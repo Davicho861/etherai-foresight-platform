@@ -8,6 +8,16 @@ import axios from 'axios';
 import { calculateEthicalVector } from './ethicalVectorModule.js';
 import cache from '../cache.js';
 
+// Lazy load generative AI service to avoid circular dependencies
+let generativeAIService = null;
+const getGenerativeAIService = async () => {
+  if (!generativeAIService) {
+    const module = await import('./generativeAIService.js');
+    generativeAIService = module.default || module;
+  }
+  return generativeAIService;
+};
+
 // This would be stored in a more secure and dynamic configuration in a real system.
 // Resolve the internal API base URL to the actual running server port.
 // Default to PORT env or 4000 (the server listens on 4000 by default for native/dev runs).
@@ -112,6 +122,12 @@ const predictionState = {
     overallScore: 0,
     assessment: 'Low Ethical Concern',
     timestamp: null,
+  },
+  generativeAnalysis: {
+    narrative: null,
+    correlations: null,
+    lastGenerated: null,
+    confidence: 0.0,
   },
 };
 
@@ -588,6 +604,50 @@ function updateMultiDomainRiskIndex() {
 }
 
 /**
+ * Generates generative AI analysis for the current risk state.
+ */
+async function updateGenerativeAnalysis() {
+  console.log('[PredictionEngine] Generating Generative AI Analysis...');
+  try {
+    const service = await getGenerativeAIService();
+    const currentRiskData = {
+      riskIndices: predictionState.riskIndices,
+      multiDomainRiskIndex: predictionState.multiDomainRiskIndex,
+      ethicalAssessment: predictionState.ethicalAssessment,
+    };
+
+    // Generate predictive narrative
+    const narrative = await service.generatePredictiveNarrative(currentRiskData, {
+      focusAreas: ['climate', 'economic', 'social', 'geopolitical'],
+      timeHorizon: '6months',
+      detailLevel: 'comprehensive',
+      language: 'es'
+    });
+
+    // Generate correlation analysis
+    const correlations = await service.analyzeRiskCorrelations(predictionState.riskIndices);
+
+    predictionState.generativeAnalysis = {
+      narrative,
+      correlations,
+      lastGenerated: new Date().toISOString(),
+      confidence: 0.85, // Base confidence for generative analysis
+    };
+
+    console.log('[PredictionEngine] Generative AI Analysis completed successfully.');
+  } catch (error) {
+    console.warn('[PredictionEngine] Error generating AI analysis:', error.message);
+    predictionState.generativeAnalysis = {
+      narrative: null,
+      correlations: null,
+      lastGenerated: new Date().toISOString(),
+      confidence: 0.0,
+      error: error.message,
+    };
+  }
+}
+
+/**
  * Updates the Ethical Assessment based on current risk indices.
  * Evaluates predictions against human impact, environmental sustainability, and social equity.
  */
@@ -629,8 +689,14 @@ async function runProphecyCycle() {
 
     updateMultiDomainRiskIndex();
     updateEthicalAssessment();
+
+    // Generate generative AI analysis (non-blocking to avoid delaying the cycle)
+    updateGenerativeAnalysis().catch(error => {
+      console.warn('[PredictionEngine] Generative analysis failed but cycle continues:', error.message);
+    });
+
     predictionState.lastUpdated = new Date().toISOString();
-    console.log('[PredictionEngine] Prophecy cycle complete. All risk indices and ethical assessment updated.');
+    console.log('[PredictionEngine] Prophecy cycle complete. All risk indices, ethical assessment, and AI analysis updated.');
 
   } catch (error) {
     console.error('[PredictionEngine] Error during prophecy cycle:', error.message);

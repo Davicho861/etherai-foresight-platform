@@ -23,17 +23,17 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
   const codeQuality = ctoData?.codeQuality || 87;
 
   return (
-    <div className="space-y-8">
+  <div className="space-y-8 bg-google-background p-6">
       {/* HEADER DIVINO CTO */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
+        <h1 className="text-5xl font-bold text-google-text-primary mb-2">
           ⚡ Santuario Tecnológico - CTO
         </h1>
-        <p className="text-slate-400 text-xl">
+        <p className="text-google-text-secondary text-xl">
           Arquitectura soberana - Salud técnica del imperio
         </p>
       </motion.div>
@@ -47,7 +47,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🏗️</div>
               <button
@@ -58,7 +58,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Deuda Técnica</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Deuda Técnica</h3>
               <div className="text-4xl font-bold text-red-400">
                 {technicalDebt}%
               </div>
@@ -74,7 +74,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🧩</div>
               <button
@@ -85,7 +85,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Complejidad</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Complejidad</h3>
               <div className="text-4xl font-bold text-orange-400">
                 {complexityScore}%
               </div>
@@ -101,7 +101,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚀</div>
               <button
@@ -112,7 +112,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Innovación</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Innovación</h3>
               <div className="text-3xl font-bold text-purple-400">
                 {innovationVelocity}
               </div>
@@ -128,7 +128,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🏛️</div>
               <button
@@ -139,7 +139,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Arquitectura</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Arquitectura</h3>
               <div className="text-4xl font-bold text-green-400">
                 {architectureHealth}%
               </div>
@@ -156,7 +156,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
           <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">📈</span>
@@ -173,7 +173,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
           <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
             <span className="mr-3">🔄</span>
@@ -191,7 +191,7 @@ const CTODashboard: React.FC<CTODashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+        className="p-8 rounded-lg border border-gray-700 bg-google-surface"
       >
         <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
           <span className="mr-3">🔒</span>

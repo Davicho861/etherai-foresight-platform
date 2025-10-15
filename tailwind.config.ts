@@ -67,14 +67,41 @@ export default {
 					DEFAULT: "#4ADE80",
 					light: "#86EFAC",
 				},
+				// Google Material Design palette for SDLC Dashboard
+				google: {
+					background: '#202124', // Dark gray background
+					surface: '#303134', // Slightly lighter gray for cards
+					primary: '#89b4fa', // Google blue
+					'text-primary': '#e8eaed', // Soft white for primary text
+					'text-secondary': '#bdc1c6', // Light gray for secondary text
+				},
+				// SDLC aliases (convenience shortcuts to the Google palette)
+				sdlc: {
+					background: '#202124',
+					surface: '#303134',
+					primary: '#89b4fa',
+					'text-primary': '#e8eaed',
+					'text-secondary': '#bdc1c6',
+				},
 				// Gemini soul palette (mapped to CSS variables in global CSS)
 				gemini: {
-					background: 'hsl(var(--background))',
-					primary: 'hsl(var(--primary))',
-					'accent-yellow': 'hsl(var(--accent-yellow))',
-					'accent-red': 'hsl(var(--accent-red))',
-					'text-primary': 'hsl(var(--text-primary))',
-					'text-secondary': 'hsl(var(--text-secondary))',
+					background: 'var(--background)',
+					'background-secondary': 'var(--background-secondary)',
+					primary: 'var(--primary)',
+					'primary-hover': 'var(--primary-hover)',
+					'primary-dark': 'var(--primary-dark)',
+					'accent-yellow': 'var(--accent-yellow)',
+					'accent-yellow-hover': 'var(--accent-yellow-hover)',
+					'accent-red': 'var(--accent-red)',
+					'accent-red-hover': 'var(--accent-red-hover)',
+					'text-primary': 'var(--text-primary)',
+					'text-secondary': 'var(--text-secondary)',
+					'text-muted': 'var(--text-muted)',
+					border: 'var(--border)',
+					'border-light': 'var(--border-light)',
+					success: 'var(--success)',
+					error: 'var(--error)',
+					warning: 'var(--warning)',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

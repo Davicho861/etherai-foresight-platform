@@ -14,7 +14,7 @@ async function safeLoad(modulePath) {
     return im && (im.default || im);
   } catch (e) {
     try {
-      // eslint-disable-next-line import/no-dynamic-require
+       
       const r = require(modulePath);
       return r && (r.default || r);
     } catch (e) {
@@ -66,7 +66,7 @@ const getCryptoService = async () => {
 
   // Next try requiring the same absolute path (ensures same module cache entry)
   try {
-    // eslint-disable-next-line import/no-dynamic-require
+     
     const _c = require(servicePath);
     const _Crypto = _c && (_c.default || _c);
     if (typeof _Crypto === 'function') {
@@ -505,6 +505,48 @@ router.get('/geopolitical-instability', async (req, res) => {
       }
     });
   }
+/**
+   * @route GET /api/generative-analysis
+   * @description Provides generative AI analysis of risk data with narrative insights.
+   * @access Public
+   */
+router.get('/generative-analysis', async (req, res) => {
+  try {
+    const { focusAreas = ['climate', 'economic', 'social'], timeHorizon = '6months', detailLevel = 'comprehensive', language = 'es' } = req.query;
+
+    // Get current risk indices from prediction engine
+    const predictionEngine = await safeLoad('../services/predictionEngine.js');
+    const getRiskIndices = predictionEngine && predictionEngine.getRiskIndices ? predictionEngine.getRiskIndices : (predictionEngine && predictionEngine.default && predictionEngine.default.getRiskIndices);
+    const riskData = await getRiskIndices();
+
+    // Load generative AI service
+    const generativeAIService = await safeLoad('../services/generativeAIService.js');
+    const generatePredictiveNarrative = generativeAIService && generativeAIService.generatePredictiveNarrative ? generativeAIService.generatePredictiveNarrative : (generativeAIService && generativeAIService.default && generativeAIService.default.generatePredictiveNarrative);
+
+    const options = {
+      focusAreas: Array.isArray(focusAreas) ? focusAreas : focusAreas.split(',').map(a => a.trim()),
+      timeHorizon,
+      detailLevel,
+      language
+    };
+
+    const narrative = await generatePredictiveNarrative(riskData, options);
+
+    res.status(200).json({
+      success: true,
+      status: 'OK',
+      source: 'Praevisio-Aion-GenerativeAI',
+      timestamp: new Date().toISOString(),
+      data: narrative
+    });
+  } catch (error) {
+    console.error('Error generating AI analysis:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: Could not generate AI analysis.'
+    });
+  }
+});
 });
 
 export default router;

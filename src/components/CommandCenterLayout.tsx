@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, Globe, LayoutDashboard, Activity, Brain, Lightbulb, AlertCircle, Settings } from 'lucide-react';
-import DashboardPage from '@/pages/DashboardPage';
+import Dashboard from '@/pages/Dashboard';
 
 type PlatformStatus = {
   statusGeneral: string;
@@ -187,7 +187,7 @@ const CommandCenterLayout: React.FC = () => {
       </aside>
 
       <main className="flex-1 overflow-auto">
-        <DashboardPage platformStatus={platformStatus} loadingStatus={loadingStatus} />
+        <Dashboard />
       </main>
     </div>
   );

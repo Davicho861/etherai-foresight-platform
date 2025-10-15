@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.35% </span>
+                <span class="strong">70.96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/37</span>
+                <span class='fraction'>22/31</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.88% </span>
+                <span class="strong">35.71% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/17</span>
+                <span class='fraction'>5/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.36% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/22</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -132,12 +132,7 @@
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,26 +156,21 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,44 +207,39 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NativeModeBanner from "./components/NativeModeBanner";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { useServiceWorker } from "./hooks/useServiceWorker";
 import { usePrefetch } from "./hooks/usePrefetch";
 &nbsp;
 // Lazy load pages for code splitting
-const Index = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/Index"))</span>;
+const Index = React.lazy(() =&gt; import("./pages/Index"));
 const LoginPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/LoginPage"))</span>;
-const DashboardPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/DashboardPage"))</span>;
+const Dashboard = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/Dashboard"))</span>;
 const NotFound = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/NotFound"))</span>;
 const ModuleColombia = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/ModuleColombia"))</span>;
 const PricingPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/PricingPage"))</span>;
 const FoodResiliencePage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/FoodResiliencePage"))</span>;
 const MetatronPanel = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./components/MetatronPanel"))</span>;
-const DemoPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/DemoPage"))</span>;
-const SolutionsPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/SolutionsPage"))</span>;
+const DemoPage = React.lazy(() =&gt; import("./pages/DemoPage"));
+const SolutionsPage = React.lazy(() =&gt; import("./pages/SolutionsPage"));
 const CommandCenterPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/CommandCenterPage"))</span>;
 const SdlcDashboardPage = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./pages/SdlcDashboardPage"))</span>;
-&nbsp;
-// Lazy load heavy dashboard components for performance optimization
-const CTODashboard = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./components/dashboards/CTODashboard"))</span>;
-const CIODashboard = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./components/dashboards/CIODashboard"))</span>;
-const CSODashboard = React.lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import("./components/dashboards/CSODashboard"))</span>;
 &nbsp;
 const App = () =&gt; {
   console.log('App render');
 &nbsp;
   // Initialize service worker
-  const { isSupported, isRegistered, updateAvailable, skipWaiting } = useServiceWorker();
+  useServiceWorker();
 &nbsp;
   // Initialize prefetching
   const { prefetchSDLCData } = usePrefetch();
 &nbsp;
   // Prefetch critical data on app start
-<span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    prefetchSDLCData();</span>
+  React.useEffect(() =&gt; {
+    prefetchSDLCData();
   }, [prefetchSDLCData]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;ErrorBoundary&gt;
       &lt;TooltipProvider&gt;
         &lt;NativeModeBanner /&gt;
@@ -264,7 +249,7 @@ const App = () =&gt; {
           &lt;Suspense fallback={&lt;div className="min-h-screen flex items-center justify-center bg-etherblue-dark text-etherneon"&gt;&lt;div className="animate-spin rounded-full h-32 w-32 border-b-2 border-etherneon"&gt;&lt;/div&gt;&lt;/div&gt;}&gt;
             &lt;Routes&gt;
                 &lt;Route path="/" element={&lt;Index /&gt;} /&gt;
-                &lt;Route path="/dashboard" element={&lt;DashboardPage /&gt;} /&gt;
+                &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;} /&gt;
                 &lt;Route path="/login" element={&lt;LoginPage /&gt;} /&gt;
                 &lt;Route path="/sdlc-dashboard" element={&lt;SdlcDashboardPage /&gt;} /&gt;
                 &lt;Route path="/command-center" element={&lt;CommandCenterPage /&gt;} /&gt;
@@ -292,7 +277,7 @@ export default App;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-14T17:20:24.520Z
+                at 2025-10-15T03:33:58.282Z
             </div>
         <script src="../prettify.js"></script>
         <script>

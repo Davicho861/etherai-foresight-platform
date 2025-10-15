@@ -53,10 +53,10 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-          <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-4">
+          <h1 className="text-5xl font-bold text-google-text-primary mb-4">
           🎨 Santuario del Diseño - Consejo Técnico Soberano
         </h1>
-        <p className="text-slate-400 text-xl">
+        <p className="text-google-text-secondary text-xl">
           Arquitectura digital divina - Diseño de sistemas inmortales
         </p>
       </motion.div>
@@ -70,28 +70,22 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-purple-400/30 shadow-xl shadow-purple-500/10 transition-all duration-300 hover:shadow-purple-500/20 hover:border-purple-400/50"
-            style={{
-                background: 'hsl(var(--card))',
-                backdropFilter: 'none'
-            }}
-          >
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🎯</div>
               <button
                 onClick={() => requestDivineExplanation('designCompleteness', designCompleteness, 'DesignDashboard')}
-                className="text-purple-400 hover:text-purple-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Completitud del Diseño</h3>
-              <div className="text-4xl font-bold text-purple-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Completitud del Diseño</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {designCompleteness}%
               </div>
-              <p className="text-sm text-slate-400">Especificaciones completadas</p>
+              <p className="text-sm text-google-text-secondary">Especificaciones completadas</p>
             </div>
           </div>
         </motion.div>
@@ -103,28 +97,22 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-blue-400/30 shadow-xl shadow-blue-500/10 transition-all duration-300 hover:shadow-blue-500/20 hover:border-blue-400/50"
-            style={{
-                background: 'hsl(var(--card))',
-                backdropFilter: 'none'
-            }}
-          >
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🏗️</div>
               <button
                 onClick={() => requestDivineExplanation('architectureStability', architectureStability, 'DesignDashboard')}
-                className="text-blue-400 hover:text-blue-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Estabilidad Arquitectural</h3>
-              <div className="text-4xl font-bold text-blue-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Estabilidad Arquitectural</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {architectureStability}%
               </div>
-              <p className="text-sm text-slate-400">Solidez del diseño</p>
+              <p className="text-sm text-google-text-secondary">Solidez del diseño</p>
             </div>
           </div>
         </motion.div>
@@ -136,28 +124,22 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-pink-400/30 shadow-xl shadow-pink-500/10 transition-all duration-300 hover:shadow-pink-500/20 hover:border-pink-400/50"
-            style={{
-                background: 'hsl(var(--card))',
-                backdropFilter: 'none'
-            }}
-          >
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">👥</div>
               <button
                 onClick={() => requestDivineExplanation('userExperienceScore', userExperienceScore, 'DesignDashboard')}
-                className="text-pink-400 hover:text-pink-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Puntaje de UX</h3>
-              <div className="text-4xl font-bold text-pink-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Puntaje de UX</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {userExperienceScore}
               </div>
-              <p className="text-sm text-slate-400">Experiencia de usuario</p>
+              <p className="text-sm text-google-text-secondary">Experiencia de usuario</p>
             </div>
           </div>
         </motion.div>
@@ -169,28 +151,22 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div
-            className="p-6 rounded-2xl border border-orange-400/30 shadow-xl shadow-orange-500/10 transition-all duration-300 hover:shadow-orange-500/20 hover:border-orange-400/50"
-            style={{
-                background: 'hsl(var(--card))',
-                backdropFilter: 'none'
-            }}
-          >
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⚠️</div>
               <button
                 onClick={() => requestDivineExplanation('technicalDebt', technicalDebt, 'DesignDashboard')}
-                className="text-orange-400 hover:text-orange-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Deuda Técnica</h3>
-              <div className="text-4xl font-bold text-orange-400">
+              <h3 className="text-lg font-semibold text-google-text-primary">Deuda Técnica</h3>
+              <div className="text-4xl font-bold text-google-accent-red">
                 {technicalDebt}%
               </div>
-              <p className="text-sm text-slate-400">Acumulación de deuda</p>
+              <p className="text-sm text-google-text-secondary">Acumulación de deuda</p>
             </div>
           </div>
         </motion.div>
@@ -203,9 +179,9 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
-          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+            <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">🏗️</span>
             Estabilidad Arquitectural por Componente
           </h3>
@@ -225,9 +201,9 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
-          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+            <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">👥</span>
             Métricas de Experiencia de Usuario
           </h3>
@@ -249,9 +225,9 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+        className="p-8 rounded-lg border border-gray-700 bg-google-surface"
       >
-        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
           <span className="mr-3">⚠️</span>
           Composición de Deuda Técnica
         </h3>
@@ -278,24 +254,24 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
           </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[color:var(--text-secondary)]">Índice de Escalabilidad</span>
+              <span className="text-google-text-secondary">Índice de Escalabilidad</span>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-[color:var(--primary)]">{scalabilityIndex}%</span>
+                <span className="text-2xl font-bold text-google-primary">{scalabilityIndex}%</span>
                 <button
                   onClick={() => requestDivineExplanation('scalabilityIndex', scalabilityIndex, 'DesignDashboard')}
-                  className="text-[color:var(--primary)] hover:opacity-90 transition-colors text-lg"
+                  className="text-google-primary hover:opacity-90 transition-colors text-lg"
                 >
                   ✨
                 </button>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[color:var(--text-secondary)]">Puntaje de Seguridad</span>
+              <span className="text-google-text-secondary">Puntaje de Seguridad</span>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-[color:var(--accent-yellow)]">{securityScore}</span>
+                <span className="text-2xl font-bold text-google-accent-yellow">{securityScore}</span>
                 <button
                   onClick={() => requestDivineExplanation('securityScore', securityScore, 'DesignDashboard')}
-                  className="text-[color:var(--accent-yellow)] hover:opacity-90 transition-colors text-lg"
+                  className="text-google-accent-yellow hover:opacity-90 transition-colors text-lg"
                 >
                   ✨
                 </button>
@@ -310,12 +286,12 @@ const DesignDashboard: React.FC<DesignDashboardProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}
-        className="text-center py-4 border-t border-slate-700/50"
+        className="text-center py-4 border-t border-gray-700/50"
       >
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-google-text-secondary">
           🔒 Certificado por Apolo Prime - Diseño arquitectónico 100% real del imperio
         </div>
-        <div className="text-xs text-slate-600 mt-1">
+        <div className="text-xs text-google-text-secondary mt-1">
           Última actualización: {new Date().toLocaleString()}
         </div>
       </motion.div>

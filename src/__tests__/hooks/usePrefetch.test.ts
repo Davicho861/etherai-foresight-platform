@@ -71,6 +71,25 @@ describe('usePrefetch', () => {
 
       consoleWarnSpy.mockRestore();
     });
+
+    it('should handle fetch errors gracefully', async () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+      (global.fetch as jest.Mock)
+        .mockRejectedValueOnce(new Error('Network error'))
+        .mockRejectedValueOnce(new Error('Network error'));
+
+      const { result } = renderHook(() => usePrefetch(), { wrapper });
+
+      await result.current.prefetchSDLCData();
+
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        '[Prefetch] Failed to prefetch critical data:',
+        expect.any(Error)
+      );
+
+      consoleWarnSpy.mockRestore();
+    });
   });
 
   describe('prefetchRoute', () => {

@@ -39,7 +39,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
       </motion.div>
 
       {/* GRID DE MÉTRICAS DE MERCADO */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* ENGAGEMENT DE LA DEMO */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -47,7 +47,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🎯</div>
               <button
@@ -58,11 +58,11 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Demo Engagement</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Demo Engagement</h3>
               <div className="text-4xl font-bold text-pink-400">
                 {demoEngagement}%
               </div>
-              <p className="text-sm text-slate-400">Interacción con la plataforma</p>
+              <p className="text-sm text-google-text-secondary">Interacción con la plataforma</p>
             </div>
           </div>
         </motion.div>
@@ -74,7 +74,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">👥</div>
               <button
@@ -85,11 +85,11 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Leads Generados</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Leads Generados</h3>
               <div className="text-4xl font-bold text-purple-400">
                 {leadsGenerated}
               </div>
-              <p className="text-sm text-slate-400">Prospectos interesados</p>
+              <p className="text-sm text-google-text-secondary">Prospectos interesados</p>
             </div>
           </div>
         </motion.div>
@@ -101,7 +101,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">💝</div>
               <button
@@ -112,17 +112,17 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Sentimiento de Marca</h3>
-              <div className="text-4xl font-bold text-[color:var(--primary)]">{brandSentiment}%</div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Percepción pública y feedback</p>
+              <h3 className="text-lg font-semibold text-google-text-primary">Sentimiento de Marca</h3>
+              <div className="text-4xl font-bold text-google-primary">{brandSentiment}%</div>
+              <p className="text-sm text-google-text-secondary">Percepción pública y feedback</p>
               <div className="grid grid-cols-2 gap-4 mt-4">
-                <div className="text-center p-3 bg-[color:var(--card)] rounded-xl">
-                  <div className="text-2xl font-bold text-[color:var(--primary)]">{customerAcquisition}</div>
-                  <div className="text-sm text-[color:var(--text-secondary)]">Adquisición</div>
+                <div className="text-center p-3 bg-google-surface rounded-lg">
+                  <div className="text-2xl font-bold text-google-primary">{customerAcquisition}</div>
+                  <div className="text-sm text-google-text-secondary">Adquisición</div>
                 </div>
-                <div className="text-center p-3 bg-[color:var(--card)] rounded-xl">
-                  <div className="text-2xl font-bold text-[color:var(--primary)]">{viralCoefficient}</div>
-                  <div className="text-sm text-[color:var(--text-secondary)]">Viralidad</div>
+                <div className="text-center p-3 bg-google-surface rounded-lg">
+                  <div className="text-2xl font-bold text-google-primary">{viralCoefficient}</div>
+                  <div className="text-sm text-google-text-secondary">Viralidad</div>
                 </div>
               </div>
             </div>
@@ -136,7 +136,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🌍</div>
               <button
@@ -162,12 +162,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-green-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
           <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="mr-3">🎯</span>
@@ -184,12 +179,7 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-orange-400/30"
-          style={{
-            background: 'linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%)',
-            backdropFilter: 'blur(15px) saturate(150%)',
-            WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-          }}
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
           <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="mr-3">🔄</span>
@@ -207,31 +197,26 @@ const CMODashboard: React.FC<CMODashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-indigo-400/30"
-        style={{
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%)',
-          backdropFilter: 'blur(15px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(15px) saturate(150%)'
-        }}
+        className="p-8 rounded-lg border border-gray-700 bg-google-surface"
       >
         <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
           <span className="mr-3">🚀</span>
           Adquisición & Viralidad
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="text-center p-4 bg-indigo-800/20 rounded-xl">
-            <div className="text-3xl font-bold text-indigo-300 mb-2">{customerAcquisition}</div>
-            <div className="text-sm text-indigo-400">Adquisición de Clientes</div>
+          <div className="text-center p-4 bg-google-surface rounded-lg">
+            <div className="text-3xl font-bold text-google-primary mb-2">{customerAcquisition}</div>
+            <div className="text-sm text-google-text-secondary">Adquisición de Clientes</div>
           </div>
-          <div className="text-center p-4 bg-indigo-800/20 rounded-xl">
-            <div className="text-3xl font-bold text-indigo-300 mb-2">{viralCoefficient}</div>
-            <div className="text-sm text-indigo-400">Coeficiente Viral</div>
+          <div className="text-center p-4 bg-google-surface rounded-lg">
+            <div className="text-3xl font-bold text-google-primary mb-2">{viralCoefficient}</div>
+            <div className="text-sm text-google-text-secondary">Coeficiente Viral</div>
           </div>
         </div>
       </motion.div>
 
       {/* CERTIFICACIÓN DE REALIDAD */}
-      <motion.div
+        <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.9 }}

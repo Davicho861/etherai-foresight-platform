@@ -54,10 +54,10 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-5xl font-bold text-[color:var(--text-primary)] mb-2">
+        <h1 className="text-5xl font-bold text-google-text-primary mb-2">
           ⚒️ Santuario de la Forja - La Forja de Hefesto
         </h1>
-        <p className="text-slate-400 text-xl">
+        <p className="text-google-text-secondary text-xl">
           Motor de agentes inmortal - Implementación divina del código
         </p>
       </motion.div>
@@ -71,22 +71,22 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📊</div>
               <button
                 onClick={() => requestDivineExplanation('codeCoverage', codeCoverage, 'ImplementationDashboard')}
-                className="text-green-400 hover:text-green-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Cobertura de Código</h3>
-              <div className="text-4xl font-bold text-[color:var(--primary)]">
+              <h3 className="text-lg font-semibold text-google-text-primary">Cobertura de Código</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {codeCoverage}%
               </div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Líneas testeadas</p>
+              <p className="text-sm text-google-text-secondary">Líneas testeadas</p>
             </div>
           </div>
         </motion.div>
@@ -98,22 +98,22 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🔨</div>
               <button
                 onClick={() => requestDivineExplanation('buildSuccessRate', buildSuccessRate, 'ImplementationDashboard')}
-                className="text-blue-400 hover:text-blue-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Éxito de Builds</h3>
-              <div className="text-4xl font-bold text-[color:var(--primary)]">
+              <h3 className="text-lg font-semibold text-google-text-primary">Éxito de Builds</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {buildSuccessRate}%
               </div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Builds exitosos</p>
+              <p className="text-sm text-google-text-secondary">Builds exitosos</p>
             </div>
           </div>
         </motion.div>
@@ -125,22 +125,22 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚀</div>
               <button
                 onClick={() => requestDivineExplanation('deploymentFrequency', deploymentFrequency, 'ImplementationDashboard')}
-                className="text-purple-400 hover:text-purple-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">Despliegues/Semana</h3>
-              <div className="text-4xl font-bold text-[color:var(--primary)]">
+              <h3 className="text-lg font-semibold text-google-text-primary">Despliegues/Semana</h3>
+              <div className="text-4xl font-bold text-google-primary">
                 {deploymentFrequency}
               </div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Ritmo de entrega</p>
+              <p className="text-sm text-google-text-secondary">Ritmo de entrega</p>
             </div>
           </div>
         </motion.div>
@@ -152,22 +152,22 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⏱️</div>
               <button
                 onClick={() => requestDivineExplanation('meanTimeToRecovery', meanTimeToRecovery, 'ImplementationDashboard')}
-                className="text-orange-400 hover:text-orange-300 transition-colors text-xl animate-pulse"
+                className="text-google-primary hover:brightness-110 transition-colors text-xl animate-pulse"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-[color:var(--text-primary)]">MTTR</h3>
-              <div className="text-2xl font-bold text-[color:var(--primary)]">
+              <h3 className="text-lg font-semibold text-google-text-primary">MTTR</h3>
+              <div className="text-2xl font-bold text-google-primary">
                 {meanTimeToRecovery}
               </div>
-              <p className="text-sm text-[color:var(--text-secondary)]">Tiempo de recuperación</p>
+              <p className="text-sm text-google-text-secondary">Tiempo de recuperación</p>
             </div>
           </div>
         </motion.div>
@@ -180,9 +180,9 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
-          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+            <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">🔨</span>
             Éxito de Builds por Día
           </h3>
@@ -203,9 +203,9 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+          className="p-6 rounded-lg border border-gray-700 bg-google-surface"
         >
-          <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+            <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
             <span className="mr-3">🚀</span>
             Despliegues vs Rollbacks
           </h3>
@@ -227,34 +227,34 @@ const ImplementationDashboard: React.FC<ImplementationDashboardProps> = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-8 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)]"
+        className="p-8 rounded-lg border border-gray-700 bg-google-surface"
       >
-        <h3 className="text-2xl font-bold text-[color:var(--text-primary)] mb-6 flex items-center">
+        <h3 className="text-2xl font-bold text-google-text-primary mb-6 flex items-center">
           <span className="mr-3">⚙️</span>
           Estado del Motor de Agentes Inmortales
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-google-background rounded-lg">
               <div>
-                <div className="text-sm text-[color:var(--text-secondary)]">Estado del Motor</div>
-                <div className="text-xl font-bold text-[color:var(--primary)]">Operativo</div>
+                <div className="text-sm text-google-text-secondary">Estado del Motor</div>
+                <div className="text-xl font-bold text-google-primary">Operativo</div>
               </div>
-              <div className="w-4 h-4 bg-[color:var(--primary)] rounded-full animate-pulse"></div>
+              <div className="w-4 h-4 bg-google-primary rounded-full animate-pulse"></div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-google-background rounded-lg">
               <div>
-                <div className="text-sm text-[color:var(--text-secondary)]">Workers Activos</div>
-                <div className="text-xl font-bold text-[color:var(--primary)]">{activeWorkers}</div>
+                <div className="text-sm text-google-text-secondary">Workers Activos</div>
+                <div className="text-xl font-bold text-google-primary">{activeWorkers}</div>
               </div>
-              <div className="text-sm text-[color:var(--text-secondary)]">de 6 totales</div>
+              <div className="text-sm text-google-text-secondary">de 6 totales</div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-[color:var(--popover)] rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-google-background rounded-lg">
               <div>
-                <div className="text-sm text-[color:var(--text-secondary)]">Colas Pendientes</div>
-                <div className="text-xl font-bold text-[color:var(--accent-yellow)]">{pendingQueues}</div>
+                <div className="text-sm text-google-text-secondary">Colas Pendientes</div>
+                <div className="text-xl font-bold text-google-accent-yellow">{pendingQueues}</div>
               </div>
-              <div className="text-sm text-[color:var(--text-secondary)]">tareas en espera</div>
+              <div className="text-sm text-google-text-secondary">tareas en espera</div>
             </div>
           </div>
           <div>

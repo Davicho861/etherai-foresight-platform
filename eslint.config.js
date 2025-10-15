@@ -2,6 +2,7 @@ import globals from "globals";
 import js from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import importPlugin from "eslint-plugin-import";
 
 export default [
   {
@@ -30,9 +31,12 @@ export default [
     },
     plugins: {
       "@typescript-eslint": tsPlugin,
+      "import": importPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,
+      // Allow intentional dynamic require patterns that support Jest mocking
+      "import/no-dynamic-require": "off",
       "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
       "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
       "no-prototype-builtins": "warn",

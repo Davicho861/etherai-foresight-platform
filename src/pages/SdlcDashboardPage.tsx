@@ -57,15 +57,10 @@ const SDLCModule: React.FC<{
   onClick?: () => void;
 }> = ({ title, roles, kpis, status, excerpt, isActive, onClick }) => {
   return (
-    <div
-      className={`bg-gradient-to-b from-etherblue-800 to-etherblue-700 border border-gray-700 rounded-xl p-4 cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-etherneon/20 ${
-        isActive ? 'ring-2 ring-etherneon shadow-lg shadow-etherneon/30' : ''
-      }`}
-      onClick={onClick}
-    >
+    <div onClick={onClick} className={`bg-google-surface border border-gray-700 rounded-lg p-4 cursor-pointer transition-shadow duration-200 ${isActive ? 'ring-2 ring-google-primary/40 shadow-lg' : 'shadow-sm hover:shadow-md'}`}>
       <div className="flex items-center justify-between">
         <h4 className="text-white font-semibold">{title}</h4>
-        <span className={`text-xs px-2 py-1 rounded ${status === 'Healthy' ? 'bg-green-500 text-black' : 'bg-yellow-600 text-black'}`}>
+        <span className={`text-xs px-2 py-1 rounded ${status === 'Healthy' ? 'bg-green-400 text-black' : 'bg-yellow-500 text-black'}`}>
           {status || 'Optimizando'}
         </span>
       </div>
@@ -74,9 +69,9 @@ const SDLCModule: React.FC<{
       {kpis && (
         <div className="mt-3 grid grid-cols-2 gap-2">
           {Object.entries(kpis).map(([k, v]) => (
-            <div key={k} className="bg-etherblue-dark/40 p-2 rounded">
-              <div className="text-xs text-gray-400">{k}</div>
-              <div className="text-sm font-semibold text-white">{String(v)}</div>
+            <div key={k} className="bg-google-background/40 p-2 rounded">
+              <div className="text-xs text-google-text-secondary">{k}</div>
+              <div className="text-sm font-semibold text-google-text-primary">{String(v)}</div>
             </div>
           ))}
         </div>
@@ -90,11 +85,11 @@ const KanbanTask: React.FC<{
 }> = ({ task }) => {
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
-      case 'Divine': return 'border-etherneon bg-etherneon/10';
-      case 'High': return 'border-red-400 bg-red-400/10';
-      case 'Medium': return 'border-yellow-400 bg-yellow-400/10';
-      case 'Low': return 'border-gray-400 bg-gray-400/10';
-      default: return 'border-gray-600 bg-gray-600/10';
+      case 'Divine': return 'border-google-primary bg-google-primary/10 text-google-primary';
+      case 'High': return 'border-red-500 bg-red-500/10 text-red-400';
+      case 'Medium': return 'border-yellow-400 bg-yellow-400/10 text-yellow-300';
+      case 'Low': return 'border-gray-500 bg-gray-500/10 text-gray-300';
+      default: return 'border-gray-600 bg-gray-600/10 text-gray-300';
     }
   };
 
@@ -114,7 +109,7 @@ const KanbanTask: React.FC<{
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className={`bg-gradient-to-r from-etherblue-700 to-etherblue-600 text-white p-3 rounded-lg shadow-md hover:shadow-lg transition-all border ${getPriorityColor(task.priority)} cursor-grab active:cursor-grabbing`}
+      className={`kanban-card bg-google-surface text-google-text-primary p-3 rounded-lg shadow-sm hover:shadow-md transition-colors border ${getPriorityColor(task.priority)} cursor-grab active:cursor-grabbing`}
       style={style}
       {...attributes}
       {...listeners}
@@ -124,27 +119,27 @@ const KanbanTask: React.FC<{
         <div className="text-xs text-gray-300 mb-2 line-clamp-2">{task.description}</div>
       )}
       <div className="flex justify-between items-center text-xs">
-        <span className={`px-2 py-1 rounded ${task.priority === 'Divine' ? 'bg-etherneon/20 text-etherneon' : 'bg-gray-600 text-gray-300'}`}>
+        <span className={`px-2 py-1 rounded ${task.priority === 'Divine' ? 'bg-google-primary/20 text-google-primary' : 'bg-gray-700 text-gray-300'}`}>
           {task.priority || 'Medium'}
         </span>
         {task.assignee && (
-          <span className="text-gray-400">👤 {task.assignee}</span>
+          <span className="text-google-text-secondary">👤 {task.assignee}</span>
         )}
       </div>
     </motion.div>
   );
 };
 
-const KanbanColumn: React.FC<{
+  const KanbanColumn: React.FC<{
   column: KanbanColumnType;
   tasks: any[];
 }> = ({ column, tasks }) => {
   const { isOver, setNodeRef } = useDroppable({ id: column.name });
   return (
-    <div ref={setNodeRef} className={`min-w-[320px] bg-gradient-to-b from-gray-800/50 to-gray-900/50 border border-gray-700 rounded-xl p-4 shadow-lg ${isOver ? 'ring-2 ring-etherneon/40' : ''}`}>
+    <div ref={setNodeRef} className={`kanban-column min-w-[320px] bg-google-surface border border-gray-700 rounded-lg p-4 shadow-sm ${isOver ? 'ring-2 ring-google-primary/40' : ''}`}>
       <div className="flex items-center justify-between mb-3">
-        <h5 className="text-etherneon font-semibold flex items-center">
-          <span className="w-3 h-3 bg-etherneon rounded-full mr-2"></span>
+        <h5 className="text-google-primary font-semibold flex items-center">
+          <span className="w-3 h-3 bg-google-primary rounded-full mr-2"></span>
           {column.name}
         </h5>
         <span className="text-xs bg-gray-700 px-2 py-1 rounded-full text-gray-300">
@@ -209,22 +204,22 @@ const KanbanBoard: React.FC<{
 };
 
 const BoardMemberCard: React.FC<{ name: string; role: string; directive?: string; icon?: string }> = ({ name, role, directive, icon }) => (
-  <div className="bg-gradient-to-br from-etherblue-dark/60 to-etherblue-800/60 border border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:border-etherneon/50">
+  <div className="bg-google-surface border border-gray-700 rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:border-google-primary/50">
     <div className="flex items-center mb-2">
-      {icon && <span className="text-etherneon mr-2">{icon}</span>}
-      <div className="text-white font-semibold">{name}</div>
+      {icon && <span className="text-google-primary mr-2">{icon}</span>}
+      <div className="text-google-text-primary font-semibold">{name}</div>
     </div>
-    <div className="text-gray-400 text-sm mb-2">{role}</div>
-    {directive && <div className="text-sm text-gray-300 leading-relaxed">{directive}</div>}
+    <div className="text-google-text-secondary text-sm mb-2">{role}</div>
+    {directive && <div className="text-sm text-google-text-secondary leading-relaxed">{directive}</div>}
   </div>
 );
 
 const KPIsPanel: React.FC<{ kpis: Record<string, any> }> = ({ kpis }) => (
   <div className="grid grid-cols-2 gap-4">
     {Object.entries(kpis || {}).map(([k, v]) => (
-      <div key={k} className="bg-gradient-to-r from-purple-800/80 to-indigo-800/80 p-4 rounded-xl border border-gray-600 hover:border-purple-400/50 transition-colors">
-        <div className="text-xs text-gray-300 uppercase tracking-wide">{k}</div>
-        <div className="text-white font-bold text-lg">{String(v)}</div>
+      <div key={k} className="bg-google-surface p-4 rounded-xl border border-gray-600 hover:border-google-primary/50 transition-colors">
+        <div className="text-xs text-google-text-secondary uppercase tracking-wide">{k}</div>
+        <div className="text-google-text-primary font-bold text-lg">{String(v)}</div>
       </div>
     ))}
   </div>
@@ -233,12 +228,12 @@ const KPIsPanel: React.FC<{ kpis: Record<string, any> }> = ({ kpis }) => (
 const HealthChart: React.FC<{ data: any[] }> = ({ data }) => (
   <ResponsiveContainer width="100%" height={200}>
     <LineChart data={data}>
-      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+      <CartesianGrid strokeDasharray="3 3" stroke="#5f6368" />
       <XAxis dataKey="time" stroke="#9CA3AF" />
       <YAxis stroke="#9CA3AF" />
-      <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
-      <Line type="monotone" dataKey="uptime" stroke="#00D4FF" strokeWidth={2} />
-      <Line type="monotone" dataKey="latency" stroke="#FF6B00" strokeWidth={2} />
+      <Tooltip contentStyle={{ backgroundColor: '#303134', border: '1px solid #5f6368' }} />
+      <Line type="monotone" dataKey="uptime" stroke="#89b4fa" strokeWidth={2} />
+      <Line type="monotone" dataKey="latency" stroke="#ea4335" strokeWidth={2} />
     </LineChart>
   </ResponsiveContainer>
 );
@@ -258,10 +253,10 @@ const RiskIndexChart: React.FC<{ value: number }> = ({ value }) => {
           dataKey="value"
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={index === 0 ? '#FF6B00' : '#00D4FF'} />
+            <Cell key={`cell-${index}`} fill={index === 0 ? '#ea4335' : '#89b4fa'} />
           ))}
         </Pie>
-        <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151' }} />
+        <Tooltip contentStyle={{ backgroundColor: '#303134', border: '1px solid #5f6368' }} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -302,7 +297,7 @@ const ModuleContent: React.FC<{
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent mb-2">
+        <h2 className="text-4xl font-bold text-google-primary mb-2">
           🎯 El Kanban Viviente Interactivo
         </h2>
         {/* Exact text node used by tests to assert presence of the Kanban overview */}
@@ -329,7 +324,7 @@ const ModuleContent: React.FC<{
           <button
             key={phase.key}
             onClick={() => onModuleSelect && onModuleSelect(phase.key)}
-            className={`px-4 py-2 bg-gradient-to-r ${phase.color} text-white rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2`}
+            className={`px-4 py-2 bg-google-primary text-google-background rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2`}
           >
             <span className="text-lg">{phase.icon}</span>
             {phase.label}
@@ -342,7 +337,7 @@ const ModuleContent: React.FC<{
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.4 }}
-        className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50"
+        className="bg-google-surface rounded-2xl p-6 border border-gray-700/50"
       >
         <KanbanBoard
           columns={kanban}
@@ -360,8 +355,8 @@ const ModuleContent: React.FC<{
         className="grid grid-cols-1 lg:grid-cols-2 gap-6"
       >
         {/* KPIs Globales */}
-        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50">
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+        <div className="bg-google-surface rounded-2xl p-6 border border-gray-700/50">
+          <h3 className="text-2xl font-bold text-google-text-primary mb-4 flex items-center">
             <span className="mr-3">📊</span>
             KPIs Globales del Imperio
           </h3>
@@ -369,8 +364,8 @@ const ModuleContent: React.FC<{
         </div>
 
         {/* Widgets de Inteligencia */}
-        <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-6 border border-gray-700/50">
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+        <div className="bg-google-surface rounded-2xl p-6 border border-gray-700/50">
+          <h3 className="text-2xl font-bold text-google-text-primary mb-4 flex items-center">
             <span className="mr-3">🔮</span>
             Oráculos de Inteligencia
           </h3>
@@ -406,26 +401,26 @@ const ModuleContent: React.FC<{
   const ExecutivePanel: React.FC<{ files: SDLCFile[]; kpis: Record<string, any> }> = ({ files, kpis }) => {
     const summary = files && files.length ? files[0].sections.map(s => s.title).slice(0,3).join(' · ') : 'Sin contenido ejecutivo disponible';
     return (
-      <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-900/60 to-gray-800/50">
+      <div className="p-4 rounded-xl border border-gray-700 bg-google-surface">
         <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-400 mt-2 line-clamp-2">
-                      <span>El Kanban Viviente</span>
-                      <span className="sr-only"> y métricas globales</span>
-                    </div>
-          <div className="text-right">
-            <div className="text-xs text-gray-400">KPIs</div>
-            <div className="text-lg font-bold text-etherneon">{kpis && Object.keys(kpis).length}</div>
-          </div>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          <div className="p-2 bg-gray-800 rounded">Última actualización: ahora</div>
-          <div className="p-2 bg-gray-800 rounded">Próxima revisión: 2025-10-20</div>
-        </div>
-        <div className="mt-3 flex gap-2">
-          <button className="px-3 py-2 bg-etherneon text-black rounded font-semibold">Abrir panel ejecutivo</button>
-          <button className="px-3 py-2 bg-gray-800 border border-gray-700 rounded text-sm">Exportar resumen</button>
+                   <div className="text-sm text-google-text-secondary mt-2 line-clamp-2">
+                     <span>El Kanban Viviente</span>
+                     <span className="sr-only"> y métricas globales</span>
+                   </div>
+        <div className="text-right">
+          <div className="text-xs text-google-text-secondary">KPIs</div>
+          <div className="text-lg font-bold text-google-primary">{kpis && Object.keys(kpis).length}</div>
         </div>
       </div>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <div className="p-2 bg-google-surface rounded">Última actualización: ahora</div>
+        <div className="p-2 bg-google-surface rounded">Próxima revisión: 2025-10-20</div>
+      </div>
+      <div className="mt-3 flex gap-2">
+        <button className="px-3 py-2 bg-google-primary text-google-background rounded font-semibold">Abrir panel ejecutivo</button>
+        <button className="px-3 py-2 bg-google-surface border border-gray-700 rounded text-sm">Exportar resumen</button>
+      </div>
+    </div>
     );
   };
 
@@ -470,21 +465,21 @@ const ModuleContent: React.FC<{
     if (phaseLoading) return <div className="text-gray-300">Cargando datos de fase...</div>;
 
     return (
-      <div className="p-4 rounded-xl border border-gray-700 bg-gradient-to-br from-gray-900/40 to-gray-800/30">
+      <div className="p-4 rounded-xl border border-gray-700 bg-google-surface">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs text-slate-400">Fase: {phaseKey}</div>
-            <div className="text-lg font-bold">Detalles y artefactos</div>
+            <div className="text-xs text-google-text-secondary">Fase: {phaseKey}</div>
+            <div className="text-lg font-bold text-google-text-primary">Detalles y artefactos</div>
           </div>
-          <div className="text-xs text-gray-400">Fuente: /api/sdlc/phase/{phaseKey.toLowerCase()}</div>
+          <div className="text-xs text-google-text-secondary">Fuente: /api/sdlc/phase/{phaseKey.toLowerCase()}</div>
         </div>
-        <div className="mt-3 text-sm text-gray-300 space-y-2">
+        <div className="mt-3 text-sm text-google-text-secondary space-y-2">
           {phaseData && phaseData.items && phaseData.items.length ? (
             phaseData.items.slice(0,5).map((it: any, i: number) => (
-              <div key={i} className="p-2 bg-gray-900 rounded">{it.title || it.name || String(it)}</div>
+              <div key={i} className="p-2 bg-google-background rounded">{it.title || it.name || String(it)}</div>
             ))
           ) : (
-            <div className="text-gray-500 italic">No hay artefactos visibles para esta fase.</div>
+            <div className="text-google-text-secondary italic">No hay artefactos visibles para esta fase.</div>
           )}
         </div>
       </div>
@@ -526,7 +521,7 @@ const ModuleContent: React.FC<{
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="text-6xl mb-4">🏛️</div>
-            <div className="text-etherneon text-xl">Selecciona un miembro del Consejo Divino</div>
+            <div className="text-google-primary text-xl">Selecciona un miembro del Consejo Divino</div>
           </div>
         </div>
       );
@@ -782,15 +777,15 @@ const SdlcDashboardPage: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-etherblue-dark via-etherblue-900 to-black text-white">
+    <div className="min-h-screen bg-google-background text-google-text-primary">
       <div className="p-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent flex items-center">
+          <h1 className="text-5xl font-bold text-google-primary flex items-center">
             <span className="mr-4">🏛️</span> Apolo — Panteón de la Gobernanza (SDLC)
           </h1>
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="text-etherneon hover:text-white transition-colors p-3 rounded-xl hover:bg-etherblue-800/50 border border-etherneon/20 hover:border-etherneon/40"
+            className="text-google-primary hover:text-google-text-primary transition-colors p-3 rounded-xl hover:bg-google-surface border border-google-primary/20 hover:border-google-primary/40"
           >
             {sidebarCollapsed ? '▶️' : '◀️'}
           </button>
@@ -805,11 +800,11 @@ const SdlcDashboardPage: React.FC = () => {
               whileTap={{ scale: 0.99 }}
               onClick={() => setActiveModule('OVERVIEW')}
               className={`w-full text-left transition-all duration-300 flex items-center gap-4 ${sidebarCollapsed ? 'py-4 px-3' : 'py-4 px-6'} rounded-2xl border ${
-                activeModule === 'OVERVIEW' ? 'ring-2 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/30 to-indigo-900/20 shadow-xl shadow-etherneon/20' : 'bg-gradient-to-b from-gray-800/60 to-gray-900/60 border-gray-700/50 hover:shadow-lg hover:shadow-etherneon/10 hover:border-etherneon/30'
+                activeModule === 'OVERVIEW' ? 'ring-2 ring-google-primary border-google-primary/60 bg-google-surface shadow-xl' : 'bg-google-surface border-gray-700/50 hover:shadow-lg hover:border-google-primary/30'
               }`}
             >
               <div className="flex-shrink-0">
-                <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === 'OVERVIEW' ? 'border-etherneon' : 'border-gray-600'}`}>
+                <div className={`w-14 h-14 flex items-center justify-center rounded-xl bg-google-surface border ${activeModule === 'OVERVIEW' ? 'border-google-primary' : 'border-gray-600'}`}>
                   <span className="text-3xl">🏛️</span>
                 </div>
               </div>
@@ -817,12 +812,12 @@ const SdlcDashboardPage: React.FC = () => {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-white font-semibold text-lg">Vista General</div>
-                      <div className="text-sm text-slate-400">Kanban Interactivo</div>
+                      <div className="text-google-text-primary font-semibold text-lg">Vista General</div>
+                      <div className="text-sm text-google-text-secondary">Kanban Interactivo</div>
                     </div>
-                    <div className="text-sm text-amber-300">📊</div>
+                    <div className="text-sm text-google-primary">📊</div>
                   </div>
-                  <div className="text-sm text-gray-400 mt-2 line-clamp-2">El Kanban Viviente y métricas globales</div>
+                  <div className="text-sm text-google-text-secondary mt-2 line-clamp-2">El Kanban Viviente y métricas globales</div>
                 </div>
               ) : null}
             </motion.button>
@@ -839,7 +834,7 @@ const SdlcDashboardPage: React.FC = () => {
                   }
                   return newSet;
                 })}
-                className="w-full text-left px-6 py-3 text-lg font-semibold text-etherneon hover:text-white transition-colors flex items-center justify-between rounded-xl hover:bg-gray-800/30"
+                className="w-full text-left px-6 py-3 text-lg font-semibold text-google-primary hover:text-google-text-primary transition-colors flex items-center justify-between rounded-xl hover:bg-google-surface"
               >
                 <span>🏛️ Consejo Divino</span>
                 <span className={`transform transition-transform duration-200 ${expandedSections.has('c-suite') ? 'rotate-90' : ''}`}>▶️</span>
@@ -853,11 +848,11 @@ const SdlcDashboardPage: React.FC = () => {
                       whileTap={{ scale: 0.99 }}
                       onClick={() => setActiveModule(member.key)}
                       className={`w-full text-left transition-all duration-300 flex items-center gap-4 ${sidebarCollapsed ? 'py-3 px-2' : 'py-3 px-4'} rounded-xl border ${
-                        activeModule === member.key ? 'ring-2 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/30 to-indigo-900/20 shadow-lg shadow-etherneon/20' : 'bg-gradient-to-b from-gray-800/60 to-gray-900/60 border-gray-700/50 hover:shadow-lg hover:shadow-etherneon/10 hover:border-etherneon/30'
+                        activeModule === member.key ? 'ring-2 ring-google-primary border-google-primary/60 bg-google-surface shadow-lg' : 'bg-google-surface border-gray-700/50 hover:shadow-lg hover:border-google-primary/30'
                       }`}
                     >
                       <div className="flex-shrink-0">
-                        <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === member.key ? 'border-etherneon' : 'border-gray-600'}`}>
+                        <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-google-surface border ${activeModule === member.key ? 'border-google-primary' : 'border-gray-600'}`}>
                           <span className="text-2xl">{member.avatar}</span>
                         </div>
                       </div>
@@ -865,10 +860,10 @@ const SdlcDashboardPage: React.FC = () => {
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <div>
-                              <div className="text-white font-semibold text-base">{member.title}</div>
-                              <div className="text-sm text-slate-400">{member.role.split(' ').slice(1).join(' ')}</div>
+                              <div className="text-google-text-primary font-semibold text-base">{member.title}</div>
+                              <div className="text-sm text-google-text-secondary">{member.role.split(' ').slice(1).join(' ')}</div>
                             </div>
-                            <div className="text-sm text-amber-300">{member.icon}</div>
+                            <div className="text-sm text-google-primary">{member.icon}</div>
                           </div>
                         </div>
                       ) : null}
@@ -890,7 +885,7 @@ const SdlcDashboardPage: React.FC = () => {
                   }
                   return newSet;
                 })}
-                className="w-full text-left px-6 py-3 text-lg font-semibold text-etherneon hover:text-white transition-colors flex items-center justify-between rounded-xl hover:bg-gray-800/30"
+                className="w-full text-left px-6 py-3 text-lg font-semibold text-google-primary hover:text-google-text-primary transition-colors flex items-center justify-between rounded-xl hover:bg-google-surface"
               >
                 <span>🔄 Ciclo de Vida Soberano</span>
                 <span className={`transform transition-transform duration-200 ${expandedSections.has('sdlc') ? 'rotate-90' : ''}`}>▶️</span>
@@ -904,11 +899,11 @@ const SdlcDashboardPage: React.FC = () => {
                       whileTap={{ scale: 0.99 }}
                       onClick={() => setActiveModule(phase.key)}
                       className={`w-full text-left transition-all duration-300 flex items-center gap-4 ${sidebarCollapsed ? 'py-3 px-2' : 'py-3 px-4'} rounded-xl border ${
-                        activeModule === phase.key ? 'ring-2 ring-etherneon border-etherneon/60 bg-gradient-to-br from-cyan-800/30 to-indigo-900/20 shadow-lg shadow-etherneon/20' : 'bg-gradient-to-b from-gray-800/60 to-gray-900/60 border-gray-700/50 hover:shadow-lg hover:shadow-etherneon/10 hover:border-etherneon/30'
+                        activeModule === phase.key ? 'ring-2 ring-google-primary border-google-primary/60 bg-google-surface shadow-lg' : 'bg-google-surface border-gray-700/50 hover:shadow-lg hover:border-google-primary/30'
                       }`}
                     >
                       <div className="flex-shrink-0">
-                        <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-gray-800/40 to-gray-700/30 border ${activeModule === phase.key ? 'border-etherneon' : 'border-gray-600'}`}>
+                        <div className={`w-12 h-12 flex items-center justify-center rounded-lg bg-google-surface border ${activeModule === phase.key ? 'border-google-primary' : 'border-gray-600'}`}>
                           <span className="text-2xl">{phase.avatar}</span>
                         </div>
                       </div>
@@ -916,10 +911,10 @@ const SdlcDashboardPage: React.FC = () => {
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <div>
-                              <div className="text-white font-semibold text-base">{phase.title}</div>
-                              <div className="text-sm text-slate-400">{phase.role}</div>
+                              <div className="text-google-text-primary font-semibold text-base">{phase.title}</div>
+                              <div className="text-sm text-google-text-secondary">{phase.role}</div>
                             </div>
-                            <div className="text-sm text-amber-300">{phase.icon}</div>
+                            <div className="text-sm text-google-primary">{phase.icon}</div>
                           </div>
                         </div>
                       ) : null}
@@ -929,7 +924,7 @@ const SdlcDashboardPage: React.FC = () => {
               )}
             </div>
 
-            <div className="mt-6 px-6 text-sm text-slate-500 font-medium">Navega entre los santuarios divinos para gobernar el imperio.</div>
+            <div className="mt-6 px-6 text-sm text-google-text-secondary font-medium">Navega entre los santuarios divinos para gobernar el imperio.</div>
           </div>
 
           {/* Center: Module Content */}
@@ -947,8 +942,8 @@ const SdlcDashboardPage: React.FC = () => {
           {/* Right Panel: KPIs, Regions & Intelligence */}
           <div className="w-96 space-y-6">
             {/* KPIs Globales */}
-            <div className="p-6 rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/60 to-gray-900/60 shadow-lg">
-              <h4 className="text-white font-semibold mb-4 flex items-center text-lg">
+            <div className="p-6 rounded-2xl border border-gray-700/50 bg-google-surface shadow-lg">
+              <h4 className="text-google-text-primary font-semibold mb-4 flex items-center text-lg">
                 <span className="mr-3">📊</span>
                 KPIs Globales
               </h4>
@@ -956,8 +951,8 @@ const SdlcDashboardPage: React.FC = () => {
             </div>
 
             {/* Resiliencia por Región */}
-            <div className="p-6 rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/60 to-gray-900/60 shadow-lg">
-              <h4 className="text-white font-semibold mb-4 flex items-center text-lg">
+            <div className="p-6 rounded-2xl border border-gray-700/50 bg-google-surface shadow-lg">
+              <h4 className="text-google-text-primary font-semibold mb-4 flex items-center text-lg">
                 <span className="mr-3">🌎</span>
                 Resiliencia Regional
               </h4>
@@ -1011,8 +1006,8 @@ const SdlcDashboardPage: React.FC = () => {
             </div>
 
             {/* Monitoreo Sísmico */}
-            <div className="p-6 rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/60 to-gray-900/60 shadow-lg">
-              <h4 className="text-white font-semibold mb-4 flex items-center text-lg">
+            <div className="p-6 rounded-2xl border border-gray-700/50 bg-google-surface shadow-lg">
+              <h4 className="text-google-text-primary font-semibold mb-4 flex items-center text-lg">
                 <span className="mr-3">🌋</span>
                 Actividad Sísmica
               </h4>
@@ -1042,35 +1037,35 @@ const SdlcDashboardPage: React.FC = () => {
             </div>
 
             {/* Oráculo de Métricas Globales */}
-            <div className="p-6 rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/60 to-gray-900/60 shadow-lg">
-              <h4 className="text-white font-semibold mb-4 flex items-center text-lg">
+            <div className="p-6 rounded-2xl border border-gray-700/50 bg-google-surface shadow-lg">
+              <h4 className="text-google-text-primary font-semibold mb-4 flex items-center text-lg">
                 <span className="mr-3">🔮</span>
                 Oráculo Imperial
               </h4>
-              <div className="text-base text-gray-300 mb-4">Centro de inteligencia predictiva y análisis estratégico.</div>
-              <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/70 p-3 rounded-md min-h-[120px] text-sm text-gray-200">
+              <div className="text-base text-google-text-secondary mb-4">Centro de inteligencia predictiva y análisis estratégico.</div>
+              <div className="bg-google-background p-3 rounded-md min-h-[120px] text-sm text-google-text-primary">
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="font-semibold text-etherneon">Estado del Imperio</div>
-                    <div className="text-xs text-gray-400 mt-1">
+                    <div className="font-semibold text-google-primary">Estado del Imperio</div>
+                    <div className="text-xs text-google-text-secondary mt-1">
                       • Salud operativa: <span className="text-green-400">87%</span><br/>
                       • Riesgos críticos: <span className="text-red-400">2 activos</span><br/>
                       • Próxima revisión: <span className="text-blue-400">2025-10-20</span>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-400">Ahora</div>
+                  <div className="text-xs text-google-text-secondary">Ahora</div>
                 </div>
-                <div className="mt-3 text-xs text-gray-300 border-t border-gray-700/50 pt-2">
+                <div className="mt-3 text-xs text-google-text-secondary border-t border-gray-700/50 pt-2">
                   Sistema funcionando correctamente. Todos los indicadores en rango óptimo.
                 </div>
               </div>
               <div className="mt-3 flex gap-2">
                 <input
                   aria-label="oracle-input"
-                  className="flex-1 p-2 rounded bg-gray-800 border border-gray-700 text-white text-sm focus:border-etherneon focus:outline-none"
+                  className="flex-1 p-2 rounded bg-google-surface border border-gray-700 text-google-text-primary text-sm focus:border-google-primary focus:outline-none"
                   placeholder="Consulta al oráculo..."
                 />
-                <button className="px-3 py-2 rounded bg-etherneon text-black font-semibold hover:bg-etherneon/90 transition-colors">
+                <button className="px-3 py-2 rounded bg-google-primary text-google-background font-semibold hover:bg-google-primary/90 transition-colors">
                   Consultar
                 </button>
               </div>

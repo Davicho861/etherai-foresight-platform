@@ -37,6 +37,26 @@ if (typeof (global as any).ResizeObserver === 'undefined') {
   (global as any).ResizeObserver = ResizeObserverMock;
 }
 
+// Mock IntersectionObserver for tests that use it (prefetchOnVisible)
+if (typeof (global as any).IntersectionObserver === 'undefined') {
+  class IntersectionObserverMock {
+    callback: any;
+    constructor(cb: any) {
+      this.callback = cb;
+    }
+    observe() {
+      // no-op
+    }
+    unobserve() {
+      // no-op
+    }
+    disconnect() {
+      // no-op
+    }
+  }
+  (global as any).IntersectionObserver = IntersectionObserverMock;
+}
+
 // Silenciar warnings repetitivos de Recharts en JSDOM (ResponsiveContainer width/height = 0)
 // Reemplazamos ResponsiveContainer por un wrapper que rendeiza children directamente.
 jest.mock('recharts', () => {

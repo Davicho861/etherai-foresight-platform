@@ -11,7 +11,7 @@ import { usePrefetch } from "./hooks/usePrefetch";
 // Lazy load pages for code splitting
 const Index = React.lazy(() => import("./pages/Index"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
-const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const ModuleColombia = React.lazy(() => import("./pages/ModuleColombia"));
 const PricingPage = React.lazy(() => import("./pages/PricingPage"));
@@ -46,7 +46,7 @@ const App = () => {
           <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-etherblue-dark text-etherneon"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-etherneon"></div></div>}>
             <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/sdlc-dashboard" element={<SdlcDashboardPage />} />
                 <Route path="/command-center" element={<CommandCenterPage />} />

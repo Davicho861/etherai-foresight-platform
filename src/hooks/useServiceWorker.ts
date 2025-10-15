@@ -11,9 +11,13 @@ export const useServiceWorker = () => {
       setIsSupported(true);
 
       // Register service worker
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then((registration) => {
+      try {
+        const registrationResult = (navigator.serviceWorker as any).register
+          ? (navigator.serviceWorker as any).register('/sw.js')
+          : undefined;
+
+        Promise.resolve(registrationResult)
+          .then((registration) => {
           console.log('[SW] Service worker registered:', registration);
           setIsRegistered(true);
 
@@ -36,10 +40,13 @@ export const useServiceWorker = () => {
             console.log('[SW] New service worker activated');
             window.location.reload();
           });
-        })
-        .catch((error) => {
-          console.error('[SW] Service worker registration failed:', error);
-        });
+          })
+          .catch((error) => {
+            console.error('[SW] Service worker registration failed:', error);
+          });
+      } catch (err) {
+        console.error('[SW] Service worker registration failed (sync):', err);
+      }
 
       // Listen for messages from service worker
       navigator.serviceWorker.addEventListener('message', (event) => {
@@ -50,21 +57,33 @@ export const useServiceWorker = () => {
 
   const updateServiceWorker = () => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then((registration) => {
-        registration.update().then(() => {
-          console.log('[SW] Service worker update triggered');
+      try {
+        const ready = (navigator.serviceWorker as any).ready;
+        const readyPromise = typeof ready === 'function' ? ready() : ready;
+        Promise.resolve(readyPromise).then((registration) => {
+          registration.update().then(() => {
+            console.log('[SW] Service worker update triggered');
+          });
         });
-      });
+      } catch (err) {
+        // noop in test env
+      }
     }
   };
 
   const skipWaiting = () => {
     if ('serviceWorker' in navigator && updateAvailable) {
-      navigator.serviceWorker.ready.then((registration) => {
-        if (registration.waiting) {
-          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-        }
-      });
+      try {
+        const ready = (navigator.serviceWorker as any).ready;
+        const readyPromise = typeof ready === 'function' ? ready() : ready;
+        Promise.resolve(readyPromise).then((registration) => {
+          if (registration.waiting) {
+            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+          }
+        });
+      } catch (err) {
+        // noop
+      }
     }
   };
 

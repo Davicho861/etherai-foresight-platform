@@ -11,15 +11,15 @@ const SystemStatusDashboard: React.FC<Props> = ({ systemData }) => {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-2">⚙️ Dashboard de Meta-Gobernanza (SDLC)</h2>
-        <p className="text-slate-400">Autoconciencia y estado completo del sistema</p>
+        <h2 className="text-3xl font-bold text-google-text-primary mb-2">⚙️ Dashboard de Meta-Gobernanza (SDLC)</h2>
+        <p className="text-google-text-secondary">Autoconciencia y estado completo del sistema</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-gradient-to-br from-green-900/60 to-emerald-900/60 backdrop-blur-sm border border-green-700/50 rounded-2xl p-6"><div className="text-2xl font-bold text-green-400 mb-2">99.9%</div><div className="text-sm text-slate-400">Uptime Sistema</div></motion.div>
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-gradient-to-br from-blue-900/60 to-cyan-900/60 backdrop-blur-sm border border-blue-700/50 rounded-2xl p-6"><div className="text-2xl font-bold text-blue-400 mb-2">24/7</div><div className="text-sm text-slate-400">Monitoreo Continuo</div></motion.div>
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-gradient-to-br from-purple-900/60 to-indigo-900/60 backdrop-blur-sm border border-purple-700/50 rounded-2xl p-6"><div className="text-2xl font-bold text-purple-400 mb-2">Ω</div><div className="text-sm text-slate-400">Omnisciencia</div></motion.div>
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-gradient-to-br from-orange-900/60 to-red-900/60 backdrop-blur-sm border border-orange-700/50 rounded-2xl p-6"><div className="text-2xl font-bold text-orange-400 mb-2">0ms</div><div className="text-sm text-slate-400">Latencia Cuántica</div></motion.div>
+        <motion.div whileHover={{ scale: 1.02 }} className="bg-google-surface border border-gray-700 rounded-lg p-6"><div className="text-2xl font-bold text-google-primary mb-2">99.9%</div><div className="text-sm text-google-text-secondary">Uptime Sistema</div></motion.div>
+        <motion.div whileHover={{ scale: 1.02 }} className="bg-google-surface border border-gray-700 rounded-lg p-6"><div className="text-2xl font-bold text-google-primary mb-2">24/7</div><div className="text-sm text-google-text-secondary">Monitoreo Continuo</div></motion.div>
+        <motion.div whileHover={{ scale: 1.02 }} className="bg-google-surface border border-gray-700 rounded-lg p-6"><div className="text-2xl font-bold text-google-primary mb-2">Ω</div><div className="text-sm text-google-text-secondary">Omnisciencia</div></motion.div>
+        <motion.div whileHover={{ scale: 1.02 }} className="bg-google-surface border border-gray-700 rounded-lg p-6"><div className="text-2xl font-bold text-google-primary mb-2">0ms</div><div className="text-sm text-google-text-secondary">Latencia Cuántica</div></motion.div>
       </div>
 
       {systemData.kanban && (

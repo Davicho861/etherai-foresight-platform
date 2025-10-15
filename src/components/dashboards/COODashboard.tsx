@@ -52,22 +52,22 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.1 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-shadow duration-200 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">🚀</div>
               <button
                 onClick={() => requestDivineExplanation('crewVelocity', crewVelocity, 'COODashboard')}
-                className="text-amber-400 hover:text-amber-300 transition-colors text-xl animate-pulse"
+                className="text-amber-400 hover:text-amber-300 transition-colors text-xl"
               >
                 ✨
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Velocidad de Crews</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Velocidad de Crews</h3>
               <div className="text-4xl font-bold text-amber-400">
                 {crewVelocity}
               </div>
-              <p className="text-sm text-slate-400">Commits por desarrollador</p>
+              <p className="text-sm text-google-text-secondary">Commits por desarrollador</p>
             </div>
           </div>
         </motion.div>
@@ -79,7 +79,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.2 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">📋</div>
               <button
@@ -90,11 +90,11 @@ const COODashboard: React.FC<COODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Kanban Throughput</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Kanban Throughput</h3>
               <div className="text-4xl font-bold text-orange-400">
                 {kanbanThroughput}
               </div>
-              <p className="text-sm text-slate-400">Issues cerrados</p>
+              <p className="text-sm text-google-text-secondary">Issues cerrados</p>
             </div>
           </div>
         </motion.div>
@@ -106,7 +106,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.3 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⏱️</div>
               <button
@@ -117,11 +117,11 @@ const COODashboard: React.FC<COODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Lead Time</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Lead Time</h3>
               <div className="text-2xl font-bold text-red-400">
                 {leadTime}
               </div>
-              <p className="text-sm text-slate-400">Tiempo de entrega</p>
+              <p className="text-sm text-google-text-secondary">Tiempo de entrega</p>
             </div>
           </div>
         </motion.div>
@@ -133,7 +133,7 @@ const COODashboard: React.FC<COODashboardProps> = ({
           transition={{ delay: 0.4 }}
           className="relative group"
         >
-          <div className="p-6 rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] transition-all duration-300 hover:shadow-md">
+          <div className="p-6 rounded-lg border border-gray-700 bg-google-surface transition-all duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="text-3xl">⚙️</div>
               <button
@@ -144,11 +144,11 @@ const COODashboard: React.FC<COODashboardProps> = ({
               </button>
             </div>
             <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-white">Eficiencia Operativa</h3>
+              <h3 className="text-lg font-semibold text-google-text-primary">Eficiencia Operativa</h3>
               <div className="text-4xl font-bold text-green-400">
                 {operationalEfficiency}%
               </div>
-              <p className="text-sm text-slate-400">Optimización de procesos</p>
+              <p className="text-sm text-google-text-secondary">Optimización de procesos</p>
             </div>
           </div>
         </motion.div>
