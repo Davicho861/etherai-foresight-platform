@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "manifest:empire": "bash scripts/manifest-empire.sh",
+    "purge:frontend:dryrun": "bash scripts/purge_old_frontend.sh --dry-run",
+    "purge:frontend": "bash scripts/purge_old_frontend.sh",
+    "purge:docker:dryrun": "bash scripts/purge_docker.sh --dry-run",
+    "purge:docker": "bash scripts/purge_docker.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -53,6 +54,7 @@
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
+    "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
