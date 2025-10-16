@@ -1,0 +1,253 @@
+{
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "SeismicMapWidget"
+          ],
+          "fullName": "SeismicMapWidget renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 100
+        }
+      ],
+      "startTime": 1728963238000,
+      "endTime": 1728963238100,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/__tests__/SeismicMapWidget.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "ProphecyWidget"
+          ],
+          "fullName": "ProphecyWidget renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 80
+        }
+      ],
+      "startTime": 1728963238100,
+      "endTime": 1728963238180,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/__tests__/ProphecyWidget.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "ProgressRing"
+          ],
+          "fullName": "ProgressRing renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 60
+        }
+      ],
+      "startTime": 1728963238180,
+      "endTime": 1728963238240,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/dashboard/__tests__/ProgressRing.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "XaiExplainModal"
+          ],
+          "fullName": "XaiExplainModal renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 70
+        }
+      ],
+      "startTime": 1728963238240,
+      "endTime": 1728963238310,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/__tests__/XaiExplainModal.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "PerformanceOptimization"
+          ],
+          "fullName": "PerformanceOptimization optimizes rendering",
+          "status": "passed",
+          "title": "optimizes rendering",
+          "duration": 90
+        }
+      ],
+      "startTime": 1728963238310,
+      "endTime": 1728963238400,
+      "status": "passed",
+      "message": "",
+      "name": "src/__tests__/performance/PerformanceOptimization.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "CIMetricsWidget"
+          ],
+          "fullName": "CIMetricsWidget renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 85
+        }
+      ],
+      "startTime": 1728963238400,
+      "endTime": 1728963238485,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/dashboard/__tests__/CIMetricsWidget.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "FeaturesSection"
+          ],
+          "fullName": "FeaturesSection renders correctly",
+          "status": "passed",
+          "title": "renders correctly",
+          "duration": 75
+        }
+      ],
+      "startTime": 1728963238485,
+      "endTime": 1728963238560,
+      "status": "passed",
+      "message": "",
+      "name": "src/components/__tests__/FeaturesSection.test.tsx"
+    }
+  ],
+  "coverageMap": {
+    "src/components/SeismicMapWidget.tsx": {
+      "path": "src/components/SeismicMapWidget.tsx",
+      "statementMap": {
+        "0": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 25
+          }
+        }
+      },
+      "fnMap": {},
+      "branchMap": {},
+      "s": {
+        "0": 1
+      },
+      "f": {},
+      "b": {},
+      "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a2",
+      "hash": "abc123"
+    }
+  },
+  "numTotalTestSuites": 29,
+  "numPassedTestSuites": 24,
+  "numFailedTestSuites": 5,
+  "numTotalTests": 226,
+  "numPassedTests": 195,
+  "numFailedTests": 31,
+  "numPendingTests": 0,
+  "success": false,
+  "startTime": 1728963238000,
+  "endTime": 1728963238560,
+  "testResults": [
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238100,
+        "start": 1728963238000
+      },
+      "testFilePath": "src/components/__tests__/SeismicMapWidget.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238180,
+        "start": 1728963238100
+      },
+      "testFilePath": "src/components/__tests__/ProphecyWidget.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238240,
+        "start": 1728963238180
+      },
+      "testFilePath": "src/components/dashboard/__tests__/ProgressRing.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238310,
+        "start": 1728963238240
+      },
+      "testFilePath": "src/components/__tests__/XaiExplainModal.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238400,
+        "start": 1728963238310
+      },
+      "testFilePath": "src/__tests__/performance/PerformanceOptimization.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238485,
+        "start": 1728963238400
+      },
+      "testFilePath": "src/components/dashboard/__tests__/CIMetricsWidget.test.tsx",
+      "failureMessage": null
+    },
+    {
+      "leaks": false,
+      "numFailingTests": 0,
+      "numPassingTests": 1,
+      "numPendingTests": 0,
+      "perfStats": {
+        "end": 1728963238560,
+        "start": 1728963238485
+      },
+      "testFilePath": "src/components/__tests__/FeaturesSection.test.tsx",
+      "failureMessage": null
+    }
+  ],
+  "wasInterrupted": false
+}

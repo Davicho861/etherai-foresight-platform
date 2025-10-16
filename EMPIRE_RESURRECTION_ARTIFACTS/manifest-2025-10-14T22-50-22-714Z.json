@@ -1,0 +1,20 @@
+{
+  "createdAt": "2025-10-14T22:50:22.715Z",
+  "results": [
+    {
+      "plan": "starter",
+      "url": "http://localhost:3002/demo?plan=starter",
+      "error": "page.waitForTimeout is not a function"
+    },
+    {
+      "plan": "growth",
+      "url": "http://localhost:3002/demo?plan=growth",
+      "error": "page.waitForTimeout is not a function"
+    },
+    {
+      "plan": "panteon",
+      "url": "http://localhost:3002/demo?plan=panteon",
+      "error": "page.waitForTimeout is not a function"
+    }
+  ]
+}

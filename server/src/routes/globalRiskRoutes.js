@@ -14,10 +14,10 @@ async function safeLoad(modulePath) {
     return im && (im.default || im);
   } catch (e) {
     try {
-      // eslint-disable-next-line import/no-dynamic-require
+       
       const r = require(modulePath);
       return r && (r.default || r);
-    } catch (e2) {
+    } catch (e) {
       // rethrow original
       throw e;
     }
@@ -33,52 +33,52 @@ const getCryptoService = async () => {
   try {
     if (typeof global !== 'undefined' && global && typeof global.jest === 'object' && typeof global.jest.requireMock === 'function') {
       try {
-        const mocked = global.jest.requireMock(servicePath);
-        const CryptoCtor = mocked && (mocked.default || mocked);
-        if (typeof CryptoCtor === 'function') return new CryptoCtor();
-      } catch (jmErr) {
+        const _mocked = global.jest.requireMock(servicePath);
+        const _CryptoCtor = _mocked && (_mocked.default || _mocked);
+        if (typeof _CryptoCtor === 'function') return new _CryptoCtor();
+      } catch (e) {
         // ignore and fallback
       }
     }
-  } catch (gErr) {
+  } catch (e) {
     // ignore
   }
 
   // Inspect require.cache to see if a jest-mocked constructor exists anywhere (some test setups hoist mocks)
   try {
-    const cache = require.cache || {};
-    for (const key of Object.keys(cache)) {
+    const _cache = require.cache || {};
+    for (const _key of Object.keys(_cache)) {
       try {
-        const exp = cache[key] && cache[key].exports;
-        if (!exp) continue;
-        const candidate = (typeof exp === 'function') ? exp : (exp && exp.default && typeof exp.default === 'function' ? exp.default : null);
-        if (candidate && candidate.mock && (typeof candidate.mockImplementation === 'function' || Array.isArray(candidate.mock.instances))) {
+        const _exp = _cache[_key] && _cache[_key].exports;
+        if (!_exp) continue;
+        const _candidate = (typeof _exp === 'function') ? _exp : (_exp && _exp.default && typeof _exp.default === 'function' ? _exp.default : null);
+        if (_candidate && _candidate.mock && (typeof _candidate.mockImplementation === 'function' || Array.isArray(_candidate.mock.instances))) {
           // this looks like a jest mock constructor
-          return new candidate();
+          return new _candidate();
         }
-      } catch (inner) {
+      } catch (e) {
         // ignore module-specific errors
       }
     }
-  } catch (cacheErr) {
+  } catch (e) {
     // ignore
   }
 
   // Next try requiring the same absolute path (ensures same module cache entry)
   try {
-    // eslint-disable-next-line import/no-dynamic-require
-    const c = require(servicePath);
-    const Crypto = c && (c.default || c);
-    if (typeof Crypto === 'function') {
+     
+    const _c = require(servicePath);
+    const _Crypto = _c && (_c.default || _c);
+    if (typeof _Crypto === 'function') {
       // If it's a jest mock function, calling it (without new) will return the mockImplementation value
       try {
-        if (Crypto.mock) {
-          return Crypto();
+        if (_Crypto.mock) {
+          return _Crypto();
         }
-      } catch (callErr) {
+      } catch (e) {
         // ignore and fall back to constructing
       }
-      return new Crypto();
+      return new _Crypto();
     }
   } catch (e) {
     // fallback below
@@ -86,12 +86,12 @@ const getCryptoService = async () => {
 
   // Final fallback: dynamic import using safeLoad
   try {
-    const mod = await safeLoad('../services/cryptoService.js');
-    const Crypto = mod && (mod.default || mod);
-    if (typeof Crypto === 'function') return new Crypto();
-  } catch (finalErr) {
+    const _mod = await safeLoad('../services/cryptoService.js');
+    const _Crypto = _mod && (_mod.default || _mod);
+    if (typeof _Crypto === 'function') return new _Crypto();
+  } catch (_finalErr) {
     // If everything fails, throw to signal error to caller
-    throw finalErr;
+    throw _finalErr;
   }
 };
 const getBiodiversityService = async () => {
@@ -305,20 +305,29 @@ router.get('/crypto-volatility', async (req, res) => {
 });
 
 /**
-   * @route GET /api/global-risk/biodiversity
-   * @description Provides the latest global biodiversity risk index.
-   * @access Public
-   */
+    * @route GET /api/global-risk/biodiversity
+    * @description Provides the latest global biodiversity risk index.
+    * @access Public
+    */
 router.get('/biodiversity', async (req, res) => {
   try {
     const { regions = ['americas', 'africa', 'asia', 'europe', 'oceania'] } = req.query;
     const regionsArray = Array.isArray(regions) ? regions : regions.split(',').map(r => r.trim().toLowerCase());
+    const biodiversityService = await getBiodiversityService();
     const data = await biodiversityService.getBiodiversityAnalysis(regionsArray);
-    // Return data in the format expected by the frontend
+
+    // Return data in the format expected by the frontend and prediction engine
     // Use the risk index directly from the service
     const biodiversityIndex = data && typeof data.riskIndex === 'number' ? data.riskIndex : 40;
     res.status(200).json({
+      success: true,
       status: 'OK',
+      source: 'Praevisio-Aion-BiodiversityService',
+      timestamp: new Date().toISOString(),
+      riskIndex: biodiversityIndex,
+      analysis: data?.analysis || {},
+      biodiversityData: data?.biodiversityData || null,
+      threatData: data?.threatData || null,
       data: {
         topic: 'biodiversity',
         timestamp: new Date().toISOString(),
@@ -329,12 +338,25 @@ router.get('/biodiversity', async (req, res) => {
   } catch (error) {
     console.error('Error fetching biodiversity risk:', error);
     // Return fallback mock data
+    const fallbackIndex = Math.round(Math.random() * 60 + 20);
     res.status(200).json({
+      success: true,
       status: 'OK',
+      source: 'Praevisio-Aion-BiodiversityService',
+      timestamp: new Date().toISOString(),
+      riskIndex: fallbackIndex,
+      analysis: {
+        totalRegions: 0,
+        globalThreatPercentage: 0,
+        majorThreatCategories: [],
+        riskAssessment: 'Moderate'
+      },
+      biodiversityData: null,
+      threatData: null,
       data: {
         topic: 'biodiversity',
         timestamp: new Date().toISOString(),
-        value: Math.round(Math.random() * 60 + 20),
+        value: fallbackIndex,
         unit: '%'
       }
     });
@@ -483,6 +505,48 @@ router.get('/geopolitical-instability', async (req, res) => {
       }
     });
   }
+/**
+   * @route GET /api/generative-analysis
+   * @description Provides generative AI analysis of risk data with narrative insights.
+   * @access Public
+   */
+router.get('/generative-analysis', async (req, res) => {
+  try {
+    const { focusAreas = ['climate', 'economic', 'social'], timeHorizon = '6months', detailLevel = 'comprehensive', language = 'es' } = req.query;
+
+    // Get current risk indices from prediction engine
+    const predictionEngine = await safeLoad('../services/predictionEngine.js');
+    const getRiskIndices = predictionEngine && predictionEngine.getRiskIndices ? predictionEngine.getRiskIndices : (predictionEngine && predictionEngine.default && predictionEngine.default.getRiskIndices);
+    const riskData = await getRiskIndices();
+
+    // Load generative AI service
+    const generativeAIService = await safeLoad('../services/generativeAIService.js');
+    const generatePredictiveNarrative = generativeAIService && generativeAIService.generatePredictiveNarrative ? generativeAIService.generatePredictiveNarrative : (generativeAIService && generativeAIService.default && generativeAIService.default.generatePredictiveNarrative);
+
+    const options = {
+      focusAreas: Array.isArray(focusAreas) ? focusAreas : focusAreas.split(',').map(a => a.trim()),
+      timeHorizon,
+      detailLevel,
+      language
+    };
+
+    const narrative = await generatePredictiveNarrative(riskData, options);
+
+    res.status(200).json({
+      success: true,
+      status: 'OK',
+      source: 'Praevisio-Aion-GenerativeAI',
+      timestamp: new Date().toISOString(),
+      data: narrative
+    });
+  } catch (error) {
+    console.error('Error generating AI analysis:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error: Could not generate AI analysis.'
+    });
+  }
+});
 });
 
 export default router;

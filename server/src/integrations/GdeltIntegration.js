@@ -19,11 +19,9 @@ class GdeltIntegration {
   }
 
   async getSocialEvents(country, startDate, endDate) {
-    // Check for FORCE_MOCKS first
-    const forceMocks = process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1' || process.env.NODE_ENV === 'test';
-    if (forceMocks) {
-      return this.getMockSocialEvents(country, startDate, endDate);
-    }
+    // PRAEVISIO ELITE EXPERIENCE: ZERO MOCKS ALLOWED
+    // La belleza sin verdad es una ilusión. Los datos sin explicación son ruido.
+    // Esta integración siempre intenta obtener datos reales, nunca usa mocks.
 
     try {
       const result = await this.circuitBreaker.execute(async () => {
@@ -102,8 +100,9 @@ class GdeltIntegration {
     } catch (error) {
       console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}.`);
 
-      // Return mock data on any error
-      return this.getMockSocialEvents(country, startDate, endDate);
+      // PRAEVISIO ELITE EXPERIENCE: ZERO MOCKS ALLOWED
+      // Si falla la API real, propagar el error - no usar mocks
+      throw new Error(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error && error.message ? error.message : 'Unknown error'}`);
     }
   }
 

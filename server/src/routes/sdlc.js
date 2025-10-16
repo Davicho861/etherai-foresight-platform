@@ -1,9 +1,19 @@
 import express from 'express';
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+
+// ESM shim: define __filename and __dirname when running as an ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
+
+// Absolute repository root resolver using __dirname for ESM
+// Builds an infallible path from the current file location to project root
+const repoRootPath = path.resolve(__dirname, '..', '..', '..');
 
 // Utility: simple markdown parser that extracts headings and paragraphs
 function parseMarkdownSections(md) {
@@ -27,8 +37,8 @@ function parseMarkdownSections(md) {
 // GET /api/sdlc/full-state - CONEXIÓN 100% REAL CON LA REALIDAD DEL PROYECTO
 router.get('/full-state', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
-    const docsDir = path.join(repoRoot, 'docs', 'sdlc');
+  const repoRoot = repoRootPath;
+  const docsDir = path.join(repoRoot, 'docs', 'sdlc');
     const kanbanPathCandidates = [
       path.join(repoRoot, 'PROJECT_KANBAN.md'),
       path.join(repoRoot, 'docs', 'PROJECT_KANBAN.md'),
@@ -126,7 +136,7 @@ router.get('/full-state', async (req, res) => {
 // GET /api/sdlc/planning - Métricas detalladas de planificación
 router.get('/planning', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Calcular métricas reales de planificación basadas en Git y documentos
     let planningMetrics = {
@@ -205,7 +215,7 @@ router.get('/planning', async (req, res) => {
 // GET /api/sdlc/design - Métricas de arquitectura y diseño
 router.get('/design', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Calcular métricas reales de diseño usando análisis estático
     let designMetrics = {
@@ -335,7 +345,7 @@ router.get('/design', async (req, res) => {
 // GET /api/sdlc/implementation - Métricas de desarrollo en tiempo real
 router.get('/implementation', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Obtener datos reales de Git
     let gitMetrics = {
@@ -391,7 +401,7 @@ router.get('/implementation', async (req, res) => {
 // GET /api/sdlc/testing - Dashboard de calidad detallado
 router.get('/testing', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Calcular métricas reales de testing ejecutando npm test -- --json
     let testingMetrics = {
@@ -489,7 +499,7 @@ router.get('/testing', async (req, res) => {
 // GET /api/sdlc/deployment - Métricas de DevOps
 router.get('/deployment', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Calcular métricas reales de deployment usando GitHub API
     let deploymentMetrics = {
@@ -608,7 +618,7 @@ router.get('/deployment', async (req, res) => {
 // GET /api/sdlc/ceo-dashboard - Dashboard del CEO: visión global del imperio
 router.get('/ceo-dashboard', async (req, res) => {
   try {
-    const repoRoot = path.resolve(process.cwd());
+  const repoRoot = repoRootPath;
 
     // Calcular métricas reales para el CEO
     let ceoMetrics = {

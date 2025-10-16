@@ -1,5 +1,8 @@
 export function forceMocksEnabled() {
-  return process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1' || process.env.NODE_ENV === 'test';
+  // PRAEVISIO ELITE EXPERIENCE: ZERO MOCKS ALLOWED
+  // La belleza sin verdad es una ilusión. Los datos sin explicación son ruido.
+  // Esta función siempre retorna false para asegurar datos 100% reales.
+  return false;
 }
 
 export default forceMocksEnabled;

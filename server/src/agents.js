@@ -272,7 +272,7 @@ class MetatronAgent {
           optimalProtocol: { name: 'p2', description: 'Protocol 2' },
           allProtocols: [{ name: 'p1' }, { name: 'p2' }]
         };
-      case 'ReportGenerationAgent':
+      case 'ReportGenerationAgent': {
         // Implement actual report generation logic
         const { risks = {}, correlations = {} } = params;
         const reportPath = 'INTELLIGENCE_REPORT_001.md';
@@ -304,7 +304,8 @@ class MetatronAgent {
           reportPath,
           summary: 'Informe generado exitosamente.'
         };
-      case 'CausalCorrelationAgent':
+      }
+      case 'CausalCorrelationAgent': {
         // Implement actual causal correlation logic
         const { signals: inputSignals = {} } = params;
         const causalCorrelations = {};
@@ -320,10 +321,11 @@ class MetatronAgent {
         }
 
         return { correlations: causalCorrelations };
+      }
       case 'Tyche':
         // Implement actual tyche logic
         return { result: 'analyzed', flaky: false };
-      case 'SignalAnalysisAgent':
+      case 'SignalAnalysisAgent': {
         // Implement actual signal analysis logic
         const { data = {} } = params;
         const signals = {};
@@ -343,7 +345,8 @@ class MetatronAgent {
         }
 
         return signals;
-      case 'RiskAssessmentAgent':
+      }
+      case 'RiskAssessmentAgent': {
         // Implement actual risk assessment logic
         const { correlations: riskCorrelations = {} } = params;
         const riskResults = {};
@@ -358,7 +361,8 @@ class MetatronAgent {
         }
 
         return riskResults;
-      case 'DataAcquisitionAgent':
+      }
+      case 'DataAcquisitionAgent': {
         // Implement actual data acquisition logic
         const { countries = [], gdeltCodes = [] } = params;
         const result = {};
@@ -411,7 +415,8 @@ class MetatronAgent {
         }
 
         return result;
-      case 'PeruAgent':
+      }
+      case 'PeruAgent': {
         // Implement actual Peru mission analysis logic
         const fsModule = await import('fs');
         const pathModule = await import('path');
@@ -479,11 +484,12 @@ class MetatronAgent {
         } catch (error) {
           throw error; // Re-throw for test to catch
         }
+      }
       case 'CommunityResilienceAgent':
         return { resilience: 80 };
       case 'CoffeeSupplyChainAgent':
         return { supply: 'stable' };
-      case 'CryptoVolatilityAgent':
+      case 'CryptoVolatilityAgent': {
         // Implement actual crypto volatility logic
         const { cryptoIds = [], days = 14 } = params;
         const volatilityAnalysis = {};
@@ -502,6 +508,7 @@ class MetatronAgent {
           volatilityAnalysis,
           globalAssessment: { assessment: 'Stable', details: volatilityAnalysis }
         };
+      }
       case 'Hephaestus':
         return { repaired: true };
       case 'PlanningCrew':
@@ -511,8 +518,9 @@ class MetatronAgent {
       case 'Socrates':
       case 'Ares':
       case 'Tyche':
-      case 'ConsensusAgent':
+      case 'ConsensusAgent': {
         return { status: 'completed' };
+      }
       default:
         return {};
     }

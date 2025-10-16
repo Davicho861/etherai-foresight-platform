@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>3/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>3/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,21 +90,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -118,16 +118,16 @@ const router = express.Router();
 const tokenLimiter = rateLimit({ windowMs: 60 * 1000, max: 5, message: { error: 'Too many token requests, try later' } });
 &nbsp;
 // POST /token -&gt; returns { token, expiresAt }
-router.post('/token', tokenLimiter, async (req, res) =&gt; {
-  try {
-    const ttl = Number(req.body &amp;&amp; req.body.ttl) || <span class="branch-1 cbranch-no" title="branch not covered" >60;</span> // seconds
-    const { token, expiresAt } = await sseTokenService.generateToken(ttl);
-    const cookieOptions = { httpOnly: false, secure: process.env.NODE_ENV === 'production', maxAge: Math.max(1000, expiresAt - Date.now()), sameSite: 'lax', path: '/' };
-    res.cookie('praevisio_sse_token', token, cookieOptions);
-    res.json({ token, expiresAt });
+router.post('/token', tokenLimiter, <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const ttl = <span class="cstat-no" title="statement not covered" >Number(req.body &amp;&amp; req.body.ttl) || 60;</span> // seconds
+    const { token, expiresAt } = <span class="cstat-no" title="statement not covered" >await sseTokenService.generateToken(ttl);</span>
+    const cookieOptions = <span class="cstat-no" title="statement not covered" >{ httpOnly: false, secure: process.env.NODE_ENV === 'production', maxAge: Math.max(1000, expiresAt - Date.now()), sameSite: 'lax', path: '/' };</span>
+<span class="cstat-no" title="statement not covered" >    res.cookie('praevisio_sse_token', token, cookieOptions);</span>
+<span class="cstat-no" title="statement not covered" >    res.json({ token, expiresAt });</span>
   } catch (e) {
-    console.error('Error generating token:', e);
-    res.status(500).json({ error: 'Could not generate token' });
+<span class="cstat-no" title="statement not covered" >    console.error('Error generating token:', e);</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Could not generate token' });</span>
   }
 });
 &nbsp;
@@ -139,7 +139,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-11T18:29:50.116Z
+                at 2025-10-14T17:21:16.091Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

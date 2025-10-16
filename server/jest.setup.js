@@ -8,7 +8,7 @@ try {
    
   const sms = require('source-map-support');
   if (sms && typeof sms.uninstall === 'function') sms.uninstall();
-} catch (e) {
+} catch {
   // ignore if not present
 }
 
@@ -25,11 +25,11 @@ try {
       if (typeof sms2.wrapCallSite === 'function') {
         sms2.wrapCallSite = (callSite) => callSite;
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
   }
-} catch (e) {
+} catch {
   // ignore if not installed
 }
 
@@ -49,9 +49,9 @@ try {
       return err.stack || `${err.name}: ${err.message}`;
     }
   };
-} catch (e) {
-  // ignore
-}
+    } catch {
+      // ignore
+    }
 
 // Importar el Oráculo de Mocks (MSW Server)
 const { server } = require('./__tests__/mocks/server.js');
@@ -113,7 +113,7 @@ if (typeof global.fetch === 'undefined' || typeof global.fetch.mockResolvedValue
       fn.mockRejectedValue = (err) => { fn._mockRejectedValue = err; return fn; };
       global.fetch = fn;
     }
-  } catch (e) {
+  } catch {
     // ignore if we can't define jest mocks in this environment
   }
 }

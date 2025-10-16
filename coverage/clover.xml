@@ -1,13 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1760208813008" clover="3.2.0">
-  <project timestamp="1760208813008" name="All files">
-    <metrics statements="822" coveredstatements="589" conditionals="516" coveredconditionals="266" methods="243" coveredmethods="156" elements="1581" coveredelements="1011" complexity="0" loc="822" ncloc="822" packages="8" files="31" classes="31"/>
-    <package name="components">
-      <metrics statements="467" coveredstatements="366" conditionals="353" coveredconditionals="188" methods="137" coveredmethods="103"/>
+<coverage generated="1760499238313" clover="3.2.0">
+  <project timestamp="1760499238313" name="All files">
+    <metrics statements="1437" coveredstatements="966" conditionals="895" coveredconditionals="449" methods="505" coveredmethods="256" elements="2837" coveredelements="1671" complexity="0" loc="1437" ncloc="1437" packages="10" files="62" classes="62"/>
+    <package name="src">
+      <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="5"/>
+      <file name="App.tsx" path="/home/davicho/etherai-foresight-platform-main/src/App.tsx">
+        <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="5"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="506" coveredstatements="326" conditionals="339" coveredconditionals="149" methods="166" coveredmethods="92"/>
+      <file name="AdvancedInteractiveDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/AdvancedInteractiveDashboard.tsx">
+        <metrics statements="28" coveredstatements="16" conditionals="12" coveredconditionals="2" methods="9" coveredmethods="3"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="42" count="3" type="stmt"/>
+        <line num="46" count="4" type="stmt"/>
+        <line num="53" count="4" type="stmt"/>
+        <line num="54" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="55" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="60" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="61" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="73" count="4" type="stmt"/>
+        <line num="78" count="4" type="stmt"/>
+        <line num="221" count="0" type="stmt"/>
+        <line num="224" count="0" type="stmt"/>
+      </file>
+      <file name="AnimatedMetrics.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/AnimatedMetrics.tsx">
+        <metrics statements="39" coveredstatements="1" conditionals="17" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="62" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="76" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+      </file>
       <file name="ClimateWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ClimateWidget.tsx">
         <metrics statements="43" coveredstatements="35" conditionals="26" coveredconditionals="12" methods="11" coveredmethods="10"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="35" count="2" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
         <line num="36" count="9" type="stmt"/>
         <line num="37" count="9" type="stmt"/>
         <line num="38" count="9" type="stmt"/>
@@ -50,77 +148,18 @@
         <line num="112" count="0" type="stmt"/>
         <line num="151" count="5" type="stmt"/>
       </file>
-      <file name="CommandCenterLayout.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/CommandCenterLayout.tsx">
-        <metrics statements="64" coveredstatements="50" conditionals="77" coveredconditionals="49" methods="15" coveredmethods="10"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="22" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="23" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="27" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="28" count="18" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="35" count="4" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="38" count="3" type="stmt"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="cond" truecount="3" falsecount="0"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="52" count="3" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="cond" truecount="3" falsecount="0"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="63" count="1" type="cond" truecount="2" falsecount="2"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="67" count="1" type="cond" truecount="4" falsecount="1"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="76" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="80" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="85" count="1" type="stmt"/>
-        <line num="86" count="1" type="stmt"/>
-        <line num="88" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
-        <line num="93" count="1" type="stmt"/>
-        <line num="96" count="3" type="stmt"/>
-        <line num="97" count="3" type="stmt"/>
-        <line num="98" count="3" type="cond" truecount="2" falsecount="2"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="101" count="3" type="cond" truecount="4" falsecount="1"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="107" count="3" type="stmt"/>
-        <line num="110" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="112" count="3" type="stmt"/>
-        <line num="128" count="0" type="stmt"/>
-        <line num="161" count="0" type="stmt"/>
-        <line num="168" count="2" type="stmt"/>
-        <line num="169" count="2" type="stmt"/>
-        <line num="170" count="2" type="stmt"/>
-        <line num="171" count="2" type="cond" truecount="3" falsecount="1"/>
-        <line num="172" count="2" type="cond" truecount="2" falsecount="0"/>
+      <file name="ComparisonSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ComparisonSection.tsx">
+        <metrics statements="4" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="3" coveredmethods="0"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
       </file>
       <file name="DemoSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/DemoSection.tsx">
         <metrics statements="68" coveredstatements="35" conditionals="45" coveredconditionals="15" methods="22" coveredmethods="7"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
         <line num="50" count="2" type="stmt"/>
         <line num="51" count="2" type="stmt"/>
         <line num="52" count="2" type="stmt"/>
@@ -131,62 +170,107 @@
         <line num="57" count="2" type="stmt"/>
         <line num="58" count="2" type="stmt"/>
         <line num="59" count="2" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="62" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
         <line num="63" count="1" type="stmt"/>
         <line num="64" count="1" type="stmt"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="66" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="67" count="0" type="stmt"/>
+        <line num="65" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
-        <line num="70" count="1" type="stmt"/>
-        <line num="71" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="72" count="1" type="stmt"/>
+        <line num="70" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
         <line num="74" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="83" count="1" type="stmt"/>
-        <line num="85" count="1" type="stmt"/>
-        <line num="88" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="96" count="1" type="cond" truecount="3" falsecount="1"/>
-        <line num="97" count="0" type="stmt"/>
-        <line num="104" count="1" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="106" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="107" count="0" type="stmt"/>
-        <line num="110" count="1" type="stmt"/>
-        <line num="111" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="87" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="95" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="103" count="1" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="110" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="112" count="0" type="stmt"/>
         <line num="113" count="0" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="124" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="125" count="0" type="stmt"/>
+        <line num="123" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
         <line num="128" count="0" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
         <line num="132" count="0" type="stmt"/>
         <line num="133" count="0" type="stmt"/>
         <line num="134" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="139" count="1" type="stmt"/>
-        <line num="220" count="0" type="stmt"/>
-        <line num="221" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="228" count="1" type="stmt"/>
-        <line num="274" count="1" type="stmt"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="219" count="0" type="stmt"/>
+        <line num="220" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="227" count="1" type="stmt"/>
+        <line num="273" count="1" type="stmt"/>
+        <line num="274" count="0" type="stmt"/>
         <line num="275" count="0" type="stmt"/>
-        <line num="276" count="0" type="stmt"/>
-        <line num="289" count="0" type="stmt"/>
-        <line num="290" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="292" count="0" type="stmt"/>
-        <line num="294" count="0" type="stmt"/>
-        <line num="295" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="288" count="0" type="stmt"/>
+        <line num="289" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="291" count="0" type="stmt"/>
+        <line num="293" count="0" type="stmt"/>
+        <line num="294" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="295" count="0" type="stmt"/>
         <line num="296" count="0" type="stmt"/>
-        <line num="297" count="0" type="stmt"/>
-        <line num="354" count="1" type="stmt"/>
-        <line num="366" count="0" type="stmt"/>
-        <line num="377" count="0" type="stmt"/>
-        <line num="392" count="0" type="stmt"/>
+        <line num="353" count="1" type="stmt"/>
+        <line num="365" count="0" type="stmt"/>
+        <line num="376" count="0" type="stmt"/>
+        <line num="391" count="0" type="stmt"/>
+      </file>
+      <file name="EnhancedContactSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/EnhancedContactSection.tsx">
+        <metrics statements="25" coveredstatements="1" conditionals="10" coveredconditionals="0" methods="12" coveredmethods="0"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="40" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
+        <line num="202" count="0" type="stmt"/>
+        <line num="213" count="0" type="stmt"/>
+        <line num="219" count="0" type="stmt"/>
+        <line num="234" count="0" type="stmt"/>
+      </file>
+      <file name="EnhancedCredibilitySection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/EnhancedCredibilitySection.tsx">
+        <metrics statements="8" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+      </file>
+      <file name="EnhancedFAQSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/EnhancedFAQSection.tsx">
+        <metrics statements="4" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
       </file>
       <file name="EnhancedRiskDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/EnhancedRiskDashboard.tsx">
         <metrics statements="61" coveredstatements="52" conditionals="24" coveredconditionals="17" methods="22" coveredmethods="19"/>
@@ -252,6 +336,16 @@
         <line num="323" count="46" type="stmt"/>
         <line num="340" count="138" type="stmt"/>
       </file>
+      <file name="ErrorBoundary.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ErrorBoundary.tsx">
+        <metrics statements="7" coveredstatements="3" conditionals="5" coveredconditionals="1" methods="4" coveredmethods="1"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+      </file>
       <file name="FAQSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/FAQSection.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="10" count="1" type="stmt"/>
@@ -259,12 +353,12 @@
       </file>
       <file name="FeaturesSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/FeaturesSection.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
         <line num="6" count="11" type="stmt"/>
       </file>
       <file name="HeroSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/HeroSection.tsx">
-        <metrics statements="54" coveredstatements="54" conditionals="14" coveredconditionals="9" methods="12" coveredmethods="12"/>
-        <line num="7" count="1" type="stmt"/>
+        <metrics statements="55" coveredstatements="54" conditionals="14" coveredconditionals="9" methods="13" coveredmethods="12"/>
+        <line num="7" count="2" type="stmt"/>
         <line num="8" count="17" type="stmt"/>
         <line num="9" count="17" type="stmt"/>
         <line num="11" count="17" type="stmt"/>
@@ -281,29 +375,29 @@
         <line num="29" count="12" type="stmt"/>
         <line num="31" count="12" type="stmt"/>
         <line num="32" count="1440" type="stmt"/>
-        <line num="43" count="192" type="stmt"/>
-        <line num="44" count="192" type="stmt"/>
-        <line num="47" count="192" type="stmt"/>
-        <line num="48" count="23040" type="stmt"/>
-        <line num="49" count="23040" type="stmt"/>
-        <line num="50" count="23040" type="stmt"/>
-        <line num="51" count="23040" type="stmt"/>
-        <line num="54" count="23040" type="stmt"/>
-        <line num="57" count="23040" type="cond" truecount="1" falsecount="1"/>
-        <line num="58" count="23040" type="stmt"/>
-        <line num="59" count="23040" type="stmt"/>
-        <line num="64" count="192" type="stmt"/>
-        <line num="65" count="23040" type="stmt"/>
-        <line num="66" count="1370880" type="stmt"/>
-        <line num="67" count="1370880" type="stmt"/>
-        <line num="68" count="1370880" type="stmt"/>
-        <line num="70" count="1370880" type="cond" truecount="1" falsecount="1"/>
-        <line num="71" count="1370880" type="stmt"/>
-        <line num="72" count="1370880" type="stmt"/>
-        <line num="73" count="1370880" type="stmt"/>
-        <line num="74" count="1370880" type="stmt"/>
-        <line num="75" count="1370880" type="stmt"/>
-        <line num="76" count="1370880" type="stmt"/>
+        <line num="43" count="186" type="stmt"/>
+        <line num="44" count="186" type="stmt"/>
+        <line num="47" count="186" type="stmt"/>
+        <line num="48" count="22320" type="stmt"/>
+        <line num="49" count="22320" type="stmt"/>
+        <line num="50" count="22320" type="stmt"/>
+        <line num="51" count="22320" type="stmt"/>
+        <line num="54" count="22320" type="stmt"/>
+        <line num="57" count="22320" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="22320" type="stmt"/>
+        <line num="59" count="22320" type="stmt"/>
+        <line num="64" count="186" type="stmt"/>
+        <line num="65" count="22320" type="stmt"/>
+        <line num="66" count="1328040" type="stmt"/>
+        <line num="67" count="1328040" type="stmt"/>
+        <line num="68" count="1328040" type="stmt"/>
+        <line num="70" count="1328040" type="cond" truecount="1" falsecount="1"/>
+        <line num="71" count="1328040" type="stmt"/>
+        <line num="72" count="1328040" type="stmt"/>
+        <line num="73" count="1328040" type="stmt"/>
+        <line num="74" count="1328040" type="stmt"/>
+        <line num="75" count="1328040" type="stmt"/>
+        <line num="76" count="1328040" type="stmt"/>
         <line num="82" count="12" type="stmt"/>
         <line num="84" count="12" type="stmt"/>
         <line num="85" count="12" type="stmt"/>
@@ -317,11 +411,19 @@
         <line num="106" count="1" type="stmt"/>
         <line num="107" count="1" type="stmt"/>
         <line num="110" count="1" type="stmt"/>
+        <line num="155" count="0" type="stmt"/>
         <line num="163" count="3" type="stmt"/>
+      </file>
+      <file name="HowItWorksSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/HowItWorksSection.tsx">
+        <metrics statements="4" coveredstatements="1" conditionals="4" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
       </file>
       <file name="IntelligenceReportWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/IntelligenceReportWidget.tsx">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="5"/>
-        <line num="3" count="2" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="4" count="16" type="stmt"/>
         <line num="6" count="16" type="stmt"/>
         <line num="7" count="10" type="stmt"/>
@@ -373,48 +475,57 @@
         <line num="234" count="1" type="stmt"/>
       </file>
       <file name="MissionGallery.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/MissionGallery.tsx">
-        <metrics statements="37" coveredstatements="34" conditionals="15" coveredconditionals="11" methods="13" coveredmethods="12"/>
-        <line num="11" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="12" count="12" type="stmt"/>
-        <line num="13" count="12" type="stmt"/>
-        <line num="15" count="12" type="stmt"/>
-        <line num="16" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="17" count="11" type="stmt"/>
-        <line num="18" count="11" type="stmt"/>
-        <line num="19" count="11" type="stmt"/>
-        <line num="21" count="11" type="stmt"/>
-        <line num="25" count="12" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="29" count="3" type="stmt"/>
-        <line num="30" count="3" type="stmt"/>
-        <line num="31" count="3" type="stmt"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="38" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="55" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="1" type="stmt"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="67" count="1" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
-        <line num="74" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="75" count="4" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
+        <metrics statements="39" coveredstatements="25" conditionals="23" coveredconditionals="16" methods="13" coveredmethods="7"/>
+        <line num="21" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="39" count="6" type="stmt"/>
+        <line num="40" count="6" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
+        <line num="43" count="6" type="stmt"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="46" count="3" type="stmt"/>
+        <line num="47" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="3" type="stmt"/>
+        <line num="51" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="64" count="6" type="stmt"/>
+        <line num="65" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="70" count="6" type="stmt"/>
+        <line num="71" count="4" type="stmt"/>
+        <line num="77" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="3" type="stmt"/>
+        <line num="86" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="95" count="3" type="stmt"/>
+        <line num="109" count="4" type="stmt"/>
+        <line num="116" count="2" type="stmt"/>
+      </file>
+      <file name="NativeModeBanner.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/NativeModeBanner.tsx">
+        <metrics statements="4" coveredstatements="3" conditionals="5" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="3" falsecount="0"/>
+        <line num="5" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="0" type="stmt"/>
       </file>
       <file name="Navbar.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/Navbar.tsx">
         <metrics statements="18" coveredstatements="17" conditionals="11" coveredconditionals="10" methods="8" coveredmethods="8"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
         <line num="8" count="41" type="stmt"/>
         <line num="9" count="41" type="stmt"/>
         <line num="10" count="41" type="stmt"/>
@@ -429,93 +540,73 @@
         <line num="26" count="41" type="stmt"/>
         <line num="38" count="41" type="stmt"/>
         <line num="57" count="315" type="stmt"/>
-        <line num="69" count="2" type="stmt"/>
-        <line num="95" count="18" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="99" count="18" type="stmt"/>
+        <line num="103" count="1" type="stmt"/>
       </file>
       <file name="ProphecyWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ProphecyWidget.tsx">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="3" count="2" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="4" count="11" type="stmt"/>
       </file>
       <file name="SeismicMapWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/SeismicMapWidget.tsx">
-        <metrics statements="69" coveredstatements="43" conditionals="88" coveredconditionals="39" methods="18" coveredmethods="11"/>
+        <metrics statements="44" coveredstatements="33" conditionals="80" coveredconditionals="37" methods="14" coveredmethods="10"/>
         <line num="6" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="15" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="13" type="cond" truecount="2" falsecount="0"/>
-        <line num="31" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="32" count="7" type="cond" truecount="4" falsecount="0"/>
-        <line num="33" count="4" type="cond" truecount="4" falsecount="0"/>
-        <line num="34" count="2" type="stmt"/>
-        <line num="37" count="2" type="stmt"/>
-        <line num="38" count="2" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="45" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="47" count="2" type="stmt"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="50" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="57" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="75" count="2" type="stmt"/>
-        <line num="77" count="2" type="cond" truecount="5" falsecount="1"/>
-        <line num="78" count="2" type="stmt"/>
-        <line num="82" count="0" type="cond" truecount="0" falsecount="5"/>
-        <line num="83" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="84" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="85" count="0" type="cond" truecount="0" falsecount="3"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="103" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="104" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="105" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="108" count="2" type="cond" truecount="4" falsecount="0"/>
-        <line num="110" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="113" count="2" type="stmt"/>
-        <line num="114" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="115" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="116" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="117" count="0" type="stmt"/>
-        <line num="120" count="2" type="stmt"/>
-        <line num="121" count="1" type="stmt"/>
-        <line num="124" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="125" count="1" type="stmt"/>
-        <line num="140" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="37" count="1" type="cond" truecount="5" falsecount="1"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="42" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="44" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="45" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="63" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="64" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="65" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="68" count="1" type="cond" truecount="4" falsecount="0"/>
+        <line num="70" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="74" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="75" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="85" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="140" count="1" type="stmt"/>
         <line num="141" count="0" type="stmt"/>
-        <line num="153" count="1" type="stmt"/>
-        <line num="168" count="0" type="stmt"/>
-        <line num="193" count="1" type="stmt"/>
-        <line num="194" count="0" type="stmt"/>
-        <line num="210" count="1" type="stmt"/>
-        <line num="211" count="1" type="stmt"/>
-        <line num="212" count="1" type="stmt"/>
-        <line num="216" count="0" type="stmt"/>
-        <line num="217" count="0" type="stmt"/>
-        <line num="250" count="1" type="stmt"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="158" count="1" type="stmt"/>
+        <line num="159" count="1" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+        <line num="164" count="0" type="stmt"/>
+        <line num="197" count="1" type="stmt"/>
+      </file>
+      <file name="SolutionsSection.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/SolutionsSection.tsx">
+        <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="components.dashboard">
-      <metrics statements="34" coveredstatements="20" conditionals="18" coveredconditionals="5" methods="11" coveredmethods="5"/>
+    <package name="src.components.dashboard">
+      <metrics statements="18" coveredstatements="18" conditionals="6" coveredconditionals="5" methods="5" coveredmethods="5"/>
       <file name="CIMetricsWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboard/CIMetricsWidget.tsx">
         <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="3" methods="4" coveredmethods="4"/>
-        <line num="10" count="2" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
         <line num="11" count="16" type="stmt"/>
         <line num="18" count="16" type="stmt"/>
         <line num="20" count="16" type="stmt"/>
@@ -529,43 +620,121 @@
         <line num="37" count="16" type="stmt"/>
       </file>
       <file name="ProgressRing.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboard/ProgressRing.tsx">
-        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="10" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="11" count="16" type="stmt"/>
-        <line num="12" count="16" type="stmt"/>
-        <line num="13" count="16" type="stmt"/>
-        <line num="15" count="16" type="stmt"/>
+        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="10" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="17" type="stmt"/>
+        <line num="12" count="17" type="stmt"/>
+        <line num="13" count="17" type="stmt"/>
+        <line num="14" count="17" type="stmt"/>
+        <line num="16" count="17" type="stmt"/>
       </file>
-      <file name="SeismicActivityWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboard/SeismicActivityWidget.tsx">
-        <metrics statements="17" coveredstatements="3" conditionals="12" coveredconditionals="0" methods="6" coveredmethods="0"/>
-        <line num="7" count="1" type="stmt"/>
+    </package>
+    <package name="src.components.dashboards">
+      <metrics statements="87" coveredstatements="63" conditionals="60" coveredconditionals="60" methods="32" coveredmethods="8"/>
+      <file name="DeploymentDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboards/DeploymentDashboard.tsx">
+        <metrics statements="16" coveredstatements="12" conditionals="12" coveredconditionals="12" methods="5" coveredmethods="1"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="42" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="158" count="0" type="stmt"/>
+      </file>
+      <file name="DesignDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboards/DesignDashboard.tsx">
+        <metrics statements="19" coveredstatements="13" conditionals="12" coveredconditionals="12" methods="8" coveredmethods="2"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="158" count="0" type="stmt"/>
+        <line num="248" count="5" type="stmt"/>
+        <line num="261" count="0" type="stmt"/>
+        <line num="273" count="0" type="stmt"/>
+      </file>
+      <file name="ImplementationDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboards/ImplementationDashboard.tsx">
+        <metrics statements="16" coveredstatements="12" conditionals="12" coveredconditionals="12" methods="5" coveredmethods="1"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="159" count="0" type="stmt"/>
+      </file>
+      <file name="PlanningDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboards/PlanningDashboard.tsx">
+        <metrics statements="19" coveredstatements="13" conditionals="12" coveredconditionals="12" methods="8" coveredmethods="2"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+        <line num="253" count="4" type="stmt"/>
+        <line num="266" count="0" type="stmt"/>
+        <line num="278" count="0" type="stmt"/>
+      </file>
+      <file name="TestingDashboard.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/dashboards/TestingDashboard.tsx">
+        <metrics statements="17" coveredstatements="13" conditionals="12" coveredconditionals="12" methods="6" coveredmethods="2"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="155" count="0" type="stmt"/>
+        <line num="215" count="5" type="stmt"/>
       </file>
     </package>
-    <package name="components.generated">
-      <metrics statements="2" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="DashboardWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/generated/DashboardWidget.tsx">
-        <metrics statements="2" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="components.metatron">
+    <package name="src.components.metatron">
       <metrics statements="19" coveredstatements="18" conditionals="38" coveredconditionals="29" methods="9" coveredmethods="9"/>
       <file name="FlowsStatus.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/metatron/FlowsStatus.tsx">
         <metrics statements="4" coveredstatements="4" conditionals="10" coveredconditionals="5" methods="3" coveredmethods="3"/>
@@ -593,49 +762,115 @@
         <line num="144" count="38" type="stmt"/>
       </file>
     </package>
-    <package name="components.ui">
-      <metrics statements="61" coveredstatements="56" conditionals="8" coveredconditionals="7" methods="19" coveredmethods="14"/>
+    <package name="src.components.ui">
+      <metrics statements="133" coveredstatements="93" conditionals="30" coveredconditionals="7" methods="38" coveredmethods="16"/>
       <file name="accordion.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/accordion.tsx">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
         <line num="13" count="25" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
         <line num="25" count="25" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
         <line num="45" count="25" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
+        <line num="54" count="2" type="stmt"/>
       </file>
       <file name="button.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/button.tsx">
         <metrics statements="5" coveredstatements="5" conditionals="3" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="7" count="5" type="stmt"/>
-        <line num="42" count="5" type="stmt"/>
-        <line num="44" count="113" type="cond" truecount="1" falsecount="1"/>
-        <line num="45" count="113" type="stmt"/>
-        <line num="54" count="5" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="42" count="8" type="stmt"/>
+        <line num="44" count="134" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="134" type="stmt"/>
+        <line num="54" count="8" type="stmt"/>
       </file>
       <file name="card.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/card.tsx">
         <metrics statements="18" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="4"/>
-        <line num="5" count="8" type="stmt"/>
-        <line num="9" count="334" type="stmt"/>
-        <line num="18" count="8" type="stmt"/>
-        <line num="20" count="8" type="stmt"/>
-        <line num="24" count="196" type="stmt"/>
-        <line num="30" count="8" type="stmt"/>
-        <line num="32" count="8" type="stmt"/>
-        <line num="36" count="196" type="stmt"/>
-        <line num="45" count="8" type="stmt"/>
-        <line num="47" count="8" type="stmt"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="9" count="220" type="stmt"/>
+        <line num="18" count="7" type="stmt"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="24" count="138" type="stmt"/>
+        <line num="30" count="7" type="stmt"/>
+        <line num="32" count="7" type="stmt"/>
+        <line num="36" count="138" type="stmt"/>
+        <line num="45" count="7" type="stmt"/>
+        <line num="47" count="7" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="57" count="8" type="stmt"/>
-        <line num="59" count="8" type="stmt"/>
-        <line num="63" count="304" type="stmt"/>
-        <line num="65" count="8" type="stmt"/>
-        <line num="67" count="8" type="stmt"/>
+        <line num="57" count="7" type="stmt"/>
+        <line num="59" count="7" type="stmt"/>
+        <line num="63" count="190" type="stmt"/>
+        <line num="65" count="7" type="stmt"/>
+        <line num="67" count="7" type="stmt"/>
         <line num="71" count="0" type="stmt"/>
-        <line num="77" count="8" type="stmt"/>
+        <line num="77" count="7" type="stmt"/>
+      </file>
+      <file name="dialog.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/dialog.tsx">
+        <metrics statements="22" coveredstatements="18" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="34" count="15" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+      </file>
+      <file name="input.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/input.tsx">
+        <metrics statements="3" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+      </file>
+      <file name="lazy-image.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/lazy-image.tsx">
+        <metrics statements="26" coveredstatements="1" conditionals="19" coveredconditionals="0" methods="7" coveredmethods="0"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="69" count="0" type="stmt"/>
+      </file>
+      <file name="progress.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/progress.tsx">
+        <metrics statements="3" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
       </file>
       <file name="select.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/select.tsx">
         <metrics statements="24" coveredstatements="22" conditionals="5" coveredconditionals="5" methods="7" coveredmethods="5"/>
@@ -643,43 +878,161 @@
         <line num="9" count="5" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
         <line num="13" count="5" type="stmt"/>
-        <line num="17" count="34" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
         <line num="31" count="5" type="stmt"/>
         <line num="33" count="5" type="stmt"/>
-        <line num="37" count="34" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
         <line num="48" count="5" type="stmt"/>
         <line num="50" count="5" type="stmt"/>
-        <line num="54" count="34" type="stmt"/>
+        <line num="54" count="6" type="stmt"/>
         <line num="65" count="5" type="stmt"/>
         <line num="68" count="5" type="stmt"/>
-        <line num="72" count="34" type="stmt"/>
+        <line num="72" count="6" type="stmt"/>
         <line num="98" count="5" type="stmt"/>
         <line num="100" count="5" type="stmt"/>
         <line num="104" count="0" type="stmt"/>
         <line num="110" count="5" type="stmt"/>
         <line num="112" count="5" type="stmt"/>
-        <line num="116" count="71" type="stmt"/>
+        <line num="116" count="15" type="stmt"/>
         <line num="133" count="5" type="stmt"/>
         <line num="135" count="5" type="stmt"/>
         <line num="139" count="0" type="stmt"/>
         <line num="145" count="5" type="stmt"/>
       </file>
-      <file name="skeleton.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/skeleton.tsx">
-        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="8" count="0" type="stmt"/>
-      </file>
       <file name="slider.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/slider.tsx">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="10" count="36" type="stmt"/>
-        <line num="24" count="3" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+      </file>
+      <file name="tabs.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/tabs.tsx">
+        <metrics statements="10" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+      </file>
+      <file name="textarea.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/textarea.tsx">
+        <metrics statements="3" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+      </file>
+      <file name="tooltip.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/ui/tooltip.tsx">
+        <metrics statements="6" coveredstatements="5" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="hooks">
-      <metrics statements="10" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
+    <package name="src.components.widgets">
+      <metrics statements="76" coveredstatements="61" conditionals="40" coveredconditionals="28" methods="28" coveredmethods="14"/>
+      <file name="CommunityResilienceWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/widgets/CommunityResilienceWidget.tsx">
+        <metrics statements="13" coveredstatements="9" conditionals="2" coveredconditionals="1" methods="6" coveredmethods="3"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="18" count="11" type="stmt"/>
+        <line num="20" count="11" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="37" count="55" type="stmt"/>
+        <line num="47" count="55" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+      </file>
+      <file name="FoodSecurityWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/widgets/FoodSecurityWidget.tsx">
+        <metrics statements="7" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="1"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="11" type="stmt"/>
+        <line num="16" count="11" type="stmt"/>
+        <line num="18" count="11" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+      </file>
+      <file name="SeismicMapWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/widgets/SeismicMapWidget.tsx">
+        <metrics statements="16" coveredstatements="11" conditionals="2" coveredconditionals="1" methods="10" coveredmethods="4"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="11" type="stmt"/>
+        <line num="13" count="11" type="stmt"/>
+        <line num="14" count="11" type="stmt"/>
+        <line num="16" count="11" type="stmt"/>
+        <line num="18" count="10" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="21" count="10" type="stmt"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="29" count="11" type="stmt"/>
+        <line num="38" count="33" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="51" count="0" type="cond" truecount="1" falsecount="1"/>
+      </file>
+      <file name="VectorEthicWidget.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/widgets/VectorEthicWidget.tsx">
+        <metrics statements="10" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="4" coveredmethods="1"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="11" type="stmt"/>
+        <line num="15" count="11" type="stmt"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="22" count="11" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="40" count="0" type="cond" truecount="1" falsecount="1"/>
+      </file>
+      <file name="XaiExplainModal.tsx" path="/home/davicho/etherai-foresight-platform-main/src/components/widgets/XaiExplainModal.tsx">
+        <metrics statements="30" coveredstatements="30" conditionals="32" coveredconditionals="24" methods="5" coveredmethods="5"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+        <line num="16" count="9" type="stmt"/>
+        <line num="18" count="9" type="stmt"/>
+        <line num="19" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="31" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="2" type="cond" truecount="1" falsecount="2"/>
+        <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="44" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="51" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="53" count="9" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.hooks">
+      <metrics statements="150" coveredstatements="87" conditionals="59" coveredconditionals="19" methods="43" coveredmethods="27"/>
       <file name="use-mobile.tsx" path="/home/davicho/etherai-foresight-platform-main/src/hooks/use-mobile.tsx">
         <metrics statements="10" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
-        <line num="3" count="2" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
@@ -690,175 +1043,221 @@
         <line num="15" count="1" type="stmt"/>
         <line num="18" count="2" type="stmt"/>
       </file>
-    </package>
-    <package name="lib">
-      <metrics statements="74" coveredstatements="11" conditionals="24" coveredconditionals="4" methods="17" coveredmethods="2"/>
-      <file name="eternalVigilanceSimulator.ts" path="/home/davicho/etherai-foresight-platform-main/src/lib/eternalVigilanceSimulator.ts">
-        <metrics statements="73" coveredstatements="10" conditionals="24" coveredconditionals="4" methods="16" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="cond" truecount="3" falsecount="1"/>
+      <file name="useLiveState.ts" path="/home/davicho/etherai-foresight-platform-main/src/hooks/useLiveState.ts">
+        <metrics statements="39" coveredstatements="0" conditionals="23" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <line num="10" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="11" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+      </file>
+      <file name="usePrefetch.ts" path="/home/davicho/etherai-foresight-platform-main/src/hooks/usePrefetch.ts">
+        <metrics statements="45" coveredstatements="31" conditionals="12" coveredconditionals="5" methods="15" coveredmethods="13"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="7" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="19" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="22" count="7" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="27" count="11" type="stmt"/>
+        <line num="28" count="11" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="39" count="11" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="51" count="3" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="61" count="11" type="stmt"/>
+        <line num="63" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="88" count="11" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="93" count="3" type="stmt"/>
+        <line num="94" count="3" type="stmt"/>
+        <line num="98" count="11" type="stmt"/>
+        <line num="100" count="2" type="stmt"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="103" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="115" count="11" type="stmt"/>
+      </file>
+      <file name="useServiceWorker.ts" path="/home/davicho/etherai-foresight-platform-main/src/hooks/useServiceWorker.ts">
+        <metrics statements="36" coveredstatements="27" conditionals="16" coveredconditionals="9" methods="13" coveredmethods="9"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="22" type="stmt"/>
+        <line num="5" count="22" type="stmt"/>
+        <line num="6" count="22" type="stmt"/>
+        <line num="7" count="22" type="stmt"/>
+        <line num="9" count="22" type="stmt"/>
+        <line num="10" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="17" count="6" type="stmt"/>
+        <line num="18" count="6" type="stmt"/>
+        <line num="21" count="6" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="cond" truecount="2" falsecount="2"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="35" count="6" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="45" count="7" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="51" count="22" type="stmt"/>
+        <line num="52" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="53" count="1" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="61" count="22" type="stmt"/>
+        <line num="62" count="2" type="cond" truecount="3" falsecount="1"/>
         <line num="63" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
+        <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="65" count="0" type="stmt"/>
-        <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="79" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
-        <line num="94" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="110" count="0" type="stmt"/>
-        <line num="111" count="0" type="stmt"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="119" count="0" type="stmt"/>
-        <line num="120" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="121" count="0" type="stmt"/>
-        <line num="123" count="0" type="stmt"/>
-        <line num="128" count="0" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
-        <line num="130" count="0" type="stmt"/>
-        <line num="131" count="0" type="stmt"/>
-        <line num="132" count="0" type="stmt"/>
-        <line num="133" count="0" type="stmt"/>
-        <line num="134" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="136" count="0" type="stmt"/>
-        <line num="137" count="0" type="stmt"/>
-        <line num="143" count="1" type="stmt"/>
-        <line num="144" count="1" type="stmt"/>
-        <line num="146" count="0" type="stmt"/>
+        <line num="71" count="22" type="stmt"/>
       </file>
-      <file name="utils.ts" path="/home/davicho/etherai-foresight-platform-main/src/lib/utils.ts">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1495" type="stmt"/>
+      <file name="useXaiExplain.ts" path="/home/davicho/etherai-foresight-platform-main/src/hooks/useXaiExplain.ts">
+        <metrics statements="20" coveredstatements="20" conditionals="8" coveredconditionals="5" methods="2" coveredmethods="2"/>
+        <line num="12" count="13" type="stmt"/>
+        <line num="13" count="13" type="stmt"/>
+        <line num="14" count="13" type="stmt"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="18" count="11" type="stmt"/>
+        <line num="19" count="11" type="stmt"/>
+        <line num="20" count="11" type="stmt"/>
+        <line num="21" count="11" type="stmt"/>
+        <line num="26" count="10" type="stmt"/>
+        <line num="27" count="9" type="cond" truecount="3" falsecount="1"/>
+        <line num="28" count="8" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="32" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="42" count="11" type="stmt"/>
+        <line num="46" count="13" type="stmt"/>
       </file>
     </package>
-    <package name="pages">
-      <metrics statements="155" coveredstatements="108" conditionals="73" coveredconditionals="33" methods="45" coveredmethods="20"/>
-      <file name="DashboardPage.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/DashboardPage.tsx">
-        <metrics statements="10" coveredstatements="7" conditionals="8" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="3" type="stmt"/>
-        <line num="43" count="3" type="cond" truecount="1" falsecount="1"/>
-        <line num="44" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
+    <package name="src.lib">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="utils.ts" path="/home/davicho/etherai-foresight-platform-main/src/lib/utils.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="5" count="965" type="stmt"/>
       </file>
+    </package>
+    <package name="src.pages">
+      <metrics statements="428" coveredstatements="280" conditionals="323" coveredconditionals="152" methods="169" coveredmethods="79"/>
       <file name="DemoPage.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/DemoPage.tsx">
-        <metrics statements="68" coveredstatements="38" conditionals="43" coveredconditionals="17" methods="22" coveredmethods="6"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="37" type="stmt"/>
-        <line num="57" count="36" type="stmt"/>
-        <line num="58" count="36" type="stmt"/>
-        <line num="59" count="36" type="stmt"/>
-        <line num="60" count="36" type="stmt"/>
-        <line num="61" count="36" type="stmt"/>
-        <line num="62" count="36" type="stmt"/>
-        <line num="63" count="36" type="stmt"/>
-        <line num="64" count="36" type="stmt"/>
-        <line num="65" count="36" type="stmt"/>
-        <line num="66" count="36" type="stmt"/>
-        <line num="68" count="36" type="stmt"/>
+        <metrics statements="18" coveredstatements="14" conditionals="4" coveredconditionals="1" methods="7" coveredmethods="3"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="19" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="65" count="19" type="stmt"/>
+        <line num="66" count="19" type="stmt"/>
+        <line num="67" count="19" type="stmt"/>
         <line num="69" count="19" type="stmt"/>
-        <line num="70" count="20" type="stmt"/>
-        <line num="71" count="20" type="stmt"/>
-        <line num="72" count="18" type="cond" truecount="2" falsecount="0"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="75" count="17" type="stmt"/>
-        <line num="76" count="17" type="stmt"/>
-        <line num="77" count="17" type="cond" truecount="1" falsecount="1"/>
-        <line num="78" count="16" type="stmt"/>
-        <line num="80" count="3" type="stmt"/>
-        <line num="81" count="3" type="stmt"/>
-        <line num="83" count="19" type="stmt"/>
-        <line num="87" count="19" type="stmt"/>
-        <line num="90" count="19" type="stmt"/>
-        <line num="93" count="19" type="stmt"/>
-        <line num="96" count="36" type="cond" truecount="2" falsecount="0"/>
-        <line num="97" count="19" type="stmt"/>
-        <line num="104" count="17" type="cond" truecount="4" falsecount="0"/>
-        <line num="105" count="3" type="stmt"/>
-        <line num="112" count="14" type="stmt"/>
-        <line num="113" count="0" type="stmt"/>
-        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="116" count="0" type="stmt"/>
-        <line num="119" count="14" type="stmt"/>
-        <line num="120" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="122" count="0" type="stmt"/>
-        <line num="123" count="0" type="stmt"/>
-        <line num="133" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="134" count="0" type="stmt"/>
-        <line num="137" count="0" type="stmt"/>
-        <line num="138" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="144" count="0" type="stmt"/>
-        <line num="145" count="0" type="stmt"/>
-        <line num="149" count="14" type="stmt"/>
-        <line num="233" count="0" type="stmt"/>
-        <line num="234" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="241" count="28" type="stmt"/>
-        <line num="287" count="0" type="stmt"/>
-        <line num="288" count="0" type="stmt"/>
-        <line num="289" count="0" type="stmt"/>
-        <line num="303" count="0" type="stmt"/>
-        <line num="304" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="306" count="0" type="stmt"/>
-        <line num="308" count="0" type="stmt"/>
-        <line num="309" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="310" count="0" type="stmt"/>
-        <line num="311" count="0" type="stmt"/>
-        <line num="370" count="28" type="stmt"/>
-        <line num="382" count="0" type="stmt"/>
-        <line num="393" count="0" type="stmt"/>
-        <line num="408" count="0" type="stmt"/>
+        <line num="70" count="19" type="cond" truecount="1" falsecount="3"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="78" count="19" type="stmt"/>
+        <line num="82" count="19" type="stmt"/>
+      </file>
+      <file name="Index.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/Index.tsx">
+        <metrics statements="30" coveredstatements="21" conditionals="15" coveredconditionals="9" methods="8" coveredmethods="6"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="27" count="11" type="stmt"/>
+        <line num="29" count="6" type="stmt"/>
+        <line num="30" count="6" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="38" count="6" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="55" count="6" type="stmt"/>
+        <line num="56" count="6" type="stmt"/>
+        <line num="57" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="61" count="6" type="stmt"/>
+        <line num="64" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="7" type="stmt"/>
+        <line num="78" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="83" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
       </file>
       <file name="MetatronPanel.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/MetatronPanel.tsx">
         <metrics statements="77" coveredstatements="63" conditionals="22" coveredconditionals="15" methods="22" coveredmethods="13"/>
@@ -939,6 +1338,321 @@
         <line num="123" count="14" type="stmt"/>
         <line num="124" count="14" type="cond" truecount="1" falsecount="1"/>
         <line num="127" count="33" type="stmt"/>
+      </file>
+      <file name="ModuleColombia.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/ModuleColombia.tsx">
+        <metrics statements="14" coveredstatements="1" conditionals="11" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="19" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="22" count="0" type="stmt"/>
+      </file>
+      <file name="PricingPage.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/PricingPage.tsx">
+        <metrics statements="82" coveredstatements="77" conditionals="80" coveredconditionals="60" methods="27" coveredmethods="27"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="11" type="stmt"/>
+        <line num="21" count="11" type="stmt"/>
+        <line num="22" count="11" type="stmt"/>
+        <line num="23" count="11" type="stmt"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="27" count="11" type="stmt"/>
+        <line num="29" count="5" type="stmt"/>
+        <line num="30" count="5" type="stmt"/>
+        <line num="31" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="33" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="41" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="50" count="4" type="stmt"/>
+        <line num="52" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="60" count="4" type="stmt"/>
+        <line num="63" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="67" count="5" type="stmt"/>
+        <line num="72" count="11" type="stmt"/>
+        <line num="73" count="11" type="stmt"/>
+        <line num="74" count="11" type="cond" truecount="2" falsecount="1"/>
+        <line num="75" count="11" type="cond" truecount="4" falsecount="1"/>
+        <line num="76" count="11" type="cond" truecount="4" falsecount="1"/>
+        <line num="78" count="11" type="stmt"/>
+        <line num="81" count="11" type="stmt"/>
+        <line num="83" count="11" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="88" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="89" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="5" type="stmt"/>
+        <line num="118" count="5" type="stmt"/>
+        <line num="119" count="5" type="stmt"/>
+        <line num="130" count="15" type="stmt"/>
+        <line num="171" count="55" type="stmt"/>
+        <line num="185" count="1" type="stmt"/>
+        <line num="225" count="5" type="stmt"/>
+        <line num="253" count="1" type="stmt"/>
+        <line num="254" count="11" type="stmt"/>
+        <line num="255" count="11" type="stmt"/>
+        <line num="257" count="11" type="stmt"/>
+        <line num="258" count="3" type="stmt"/>
+        <line num="259" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="260" count="0" type="stmt"/>
+        <line num="262" count="3" type="stmt"/>
+        <line num="264" count="3" type="stmt"/>
+        <line num="267" count="11" type="stmt"/>
+        <line num="268" count="3" type="stmt"/>
+        <line num="269" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="270" count="0" type="stmt"/>
+        <line num="272" count="3" type="stmt"/>
+        <line num="274" count="3" type="stmt"/>
+        <line num="277" count="11" type="stmt"/>
+        <line num="278" count="22" type="stmt"/>
+        <line num="279" count="22" type="stmt"/>
+        <line num="280" count="24" type="stmt"/>
+        <line num="281" count="18" type="cond" truecount="3" falsecount="1"/>
+        <line num="282" count="18" type="stmt"/>
+        <line num="286" count="22" type="stmt"/>
+        <line num="287" count="8" type="stmt"/>
+        <line num="289" count="22" type="stmt"/>
+        <line num="292" count="11" type="stmt"/>
+        <line num="293" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="294" count="9" type="stmt"/>
+        <line num="296" count="4" type="stmt"/>
+        <line num="300" count="11" type="stmt"/>
+        <line num="312" count="33" type="stmt"/>
+        <line num="322" count="3" type="stmt"/>
+        <line num="348" count="44" type="stmt"/>
+        <line num="358" count="3" type="stmt"/>
+        <line num="402" count="12" type="stmt"/>
+        <line num="403" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="417" count="4" type="stmt"/>
+      </file>
+      <file name="SdlcDashboardPage.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/SdlcDashboardPage.tsx">
+        <metrics statements="197" coveredstatements="103" conditionals="191" coveredconditionals="67" methods="91" coveredmethods="30"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="86" count="50" type="stmt"/>
+        <line num="87" count="50" type="cond" truecount="1" falsecount="4"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="50" type="stmt"/>
+        <line num="97" count="50" type="stmt"/>
+        <line num="98" count="50" type="stmt"/>
+        <line num="105" count="50" type="stmt"/>
+        <line num="136" count="1" type="stmt"/>
+        <line num="137" count="30" type="stmt"/>
+        <line num="138" count="30" type="stmt"/>
+        <line num="150" count="50" type="stmt"/>
+        <line num="152" count="50" type="stmt"/>
+        <line num="174" count="1" type="stmt"/>
+        <line num="175" count="11" type="stmt"/>
+        <line num="183" count="11" type="stmt"/>
+        <line num="192" count="30" type="cond" truecount="1" falsecount="1"/>
+        <line num="193" count="30" type="stmt"/>
+        <line num="206" count="1" type="stmt"/>
+        <line num="207" count="0" type="stmt"/>
+        <line num="217" count="1" type="stmt"/>
+        <line num="218" count="40" type="stmt"/>
+        <line num="220" count="100" type="stmt"/>
+        <line num="228" count="1" type="stmt"/>
+        <line num="229" count="0" type="stmt"/>
+        <line num="241" count="1" type="stmt"/>
+        <line num="242" count="0" type="stmt"/>
+        <line num="243" count="0" type="stmt"/>
+        <line num="256" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="272" count="1" type="stmt"/>
+        <line num="273" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="274" count="13" type="stmt"/>
+        <line num="282" count="16" type="stmt"/>
+        <line num="283" count="5" type="stmt"/>
+        <line num="292" count="16" type="stmt"/>
+        <line num="293" count="11" type="stmt"/>
+        <line num="324" count="55" type="stmt"/>
+        <line num="326" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="401" count="16" type="stmt"/>
+        <line num="402" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="403" count="0" type="stmt"/>
+        <line num="428" count="16" type="stmt"/>
+        <line num="429" count="0" type="stmt"/>
+        <line num="430" count="0" type="stmt"/>
+        <line num="431" count="0" type="stmt"/>
+        <line num="433" count="0" type="stmt"/>
+        <line num="434" count="0" type="stmt"/>
+        <line num="435" count="0" type="stmt"/>
+        <line num="436" count="0" type="stmt"/>
+        <line num="437" count="0" type="stmt"/>
+        <line num="438" count="0" type="stmt"/>
+        <line num="439" count="0" type="stmt"/>
+        <line num="440" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="441" count="0" type="stmt"/>
+        <line num="442" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="444" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="445" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="446" count="0" type="stmt"/>
+        <line num="448" count="0" type="stmt"/>
+        <line num="452" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="453" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="454" count="0" type="stmt"/>
+        <line num="455" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="458" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="461" count="0" type="stmt"/>
+        <line num="462" count="0" type="stmt"/>
+        <line num="465" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="467" count="0" type="stmt"/>
+        <line num="479" count="0" type="cond" truecount="0" falsecount="3"/>
+        <line num="489" count="16" type="cond" truecount="6" falsecount="8"/>
+        <line num="491" count="0" type="stmt"/>
+        <line num="493" count="0" type="stmt"/>
+        <line num="495" count="0" type="stmt"/>
+        <line num="497" count="0" type="stmt"/>
+        <line num="499" count="0" type="stmt"/>
+        <line num="501" count="0" type="stmt"/>
+        <line num="503" count="0" type="stmt"/>
+        <line num="506" count="1" type="stmt"/>
+        <line num="508" count="1" type="stmt"/>
+        <line num="510" count="1" type="stmt"/>
+        <line num="512" count="1" type="stmt"/>
+        <line num="514" count="1" type="stmt"/>
+        <line num="516" count="11" type="stmt"/>
+        <line num="520" count="0" type="stmt"/>
+        <line num="531" count="1" type="stmt"/>
+        <line num="532" count="30" type="stmt"/>
+        <line num="533" count="29" type="stmt"/>
+        <line num="534" count="29" type="stmt"/>
+        <line num="535" count="29" type="stmt"/>
+        <line num="536" count="29" type="stmt"/>
+        <line num="537" count="29" type="stmt"/>
+        <line num="538" count="29" type="stmt"/>
+        <line num="539" count="29" type="stmt"/>
+        <line num="540" count="29" type="stmt"/>
+        <line num="542" count="29" type="stmt"/>
+        <line num="543" count="13" type="stmt"/>
+        <line num="568" count="13" type="stmt"/>
+        <line num="569" count="13" type="stmt"/>
+        <line num="570" count="13" type="stmt"/>
+        <line num="571" count="13" type="stmt"/>
+        <line num="572" count="13" type="stmt"/>
+        <line num="574" count="13" type="stmt"/>
+        <line num="575" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="576" count="12" type="stmt"/>
+        <line num="579" count="12" type="stmt"/>
+        <line num="580" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="581" count="12" type="stmt"/>
+        <line num="583" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="586" count="12" type="cond" truecount="4" falsecount="1"/>
+        <line num="587" count="12" type="cond" truecount="4" falsecount="1"/>
+        <line num="588" count="12" type="cond" truecount="4" falsecount="1"/>
+        <line num="590" count="12" type="stmt"/>
+        <line num="591" count="12" type="stmt"/>
+        <line num="592" count="12" type="stmt"/>
+        <line num="594" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="596" count="13" type="stmt"/>
+        <line num="599" count="13" type="stmt"/>
+        <line num="600" count="13" type="stmt"/>
+        <line num="603" count="29" type="stmt"/>
+        <line num="662" count="29" type="stmt"/>
+        <line num="705" count="29" type="stmt"/>
+        <line num="706" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="707" count="0" type="stmt"/>
+        <line num="708" count="0" type="stmt"/>
+        <line num="709" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="710" count="0" type="stmt"/>
+        <line num="711" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="714" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="718" count="29" type="stmt"/>
+        <line num="719" count="0" type="stmt"/>
+        <line num="720" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="721" count="0" type="stmt"/>
+        <line num="724" count="29" type="stmt"/>
+        <line num="725" count="0" type="stmt"/>
+        <line num="726" count="0" type="stmt"/>
+        <line num="728" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="730" count="0" type="stmt"/>
+        <line num="731" count="0" type="stmt"/>
+        <line num="734" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="736" count="0" type="stmt"/>
+        <line num="737" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="738" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="739" count="0" type="stmt"/>
+        <line num="744" count="0" type="stmt"/>
+        <line num="745" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="747" count="0" type="stmt"/>
+        <line num="749" count="0" type="stmt"/>
+        <line num="757" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="760" count="0" type="stmt"/>
+        <line num="761" count="0" type="stmt"/>
+        <line num="764" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="765" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="769" count="0" type="stmt"/>
+        <line num="774" count="29" type="stmt"/>
+        <line num="779" count="29" type="stmt"/>
+        <line num="787" count="1" type="stmt"/>
+        <line num="801" count="0" type="stmt"/>
+        <line num="828" count="0" type="stmt"/>
+        <line num="829" count="0" type="stmt"/>
+        <line num="830" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="831" count="0" type="stmt"/>
+        <line num="833" count="0" type="stmt"/>
+        <line num="835" count="0" type="stmt"/>
+        <line num="845" count="203" type="stmt"/>
+        <line num="849" count="0" type="stmt"/>
+        <line num="879" count="0" type="stmt"/>
+        <line num="880" count="0" type="stmt"/>
+        <line num="881" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="882" count="0" type="stmt"/>
+        <line num="884" count="0" type="stmt"/>
+        <line num="886" count="0" type="stmt"/>
+        <line num="896" count="145" type="stmt"/>
+        <line num="900" count="5" type="stmt"/>
+        <line num="938" count="0" type="stmt"/>
+      </file>
+      <file name="SolutionsPage.tsx" path="/home/davicho/etherai-foresight-platform-main/src/pages/SolutionsPage.tsx">
+        <metrics statements="10" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
       </file>
     </package>
   </project>

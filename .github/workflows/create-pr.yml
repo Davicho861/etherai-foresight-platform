@@ -1,0 +1,28 @@
+name: Create PR from transplant branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: 'Base branch to open PR against'
+        required: true
+        default: 'main'
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: open transplant PR"
+          branch: ${{ github.ref_name }}
+          base: ${{ github.event.inputs.base }}
+          title: "chore(transplant): implant new frontend (Praevisio-Hephaestus-Facade-Transplant)"
+          body: "$(cat PR_DESCRIPTION.md)"

@@ -1,0 +1,397 @@
+{
+  "@hookform/resolvers": {
+    "current": "3.10.0",
+    "wanted": "3.10.0",
+    "latest": "5.2.2",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@hookform/resolvers"
+  },
+  "@langchain/core": {
+    "current": "0.2.36",
+    "wanted": "0.2.36",
+    "latest": "0.3.78",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@langchain/core"
+  },
+  "@langchain/openai": [
+    {
+      "current": "0.2.11",
+      "wanted": "0.2.11",
+      "latest": "0.6.16",
+      "dependent": "etherai-foresight-platform-main",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@langchain/openai"
+    },
+    {
+      "current": "0.2.11",
+      "wanted": "0.2.11",
+      "latest": "0.6.16",
+      "dependent": "server",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@langchain/openai"
+    }
+  ],
+  "@prisma/client": {
+    "current": "5.22.0",
+    "wanted": "5.22.0",
+    "latest": "6.17.1",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@prisma/client"
+  },
+  "@sveltejs/adapter-auto": {
+    "current": "3.3.1",
+    "wanted": "3.3.1",
+    "latest": "6.1.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@sveltejs/adapter-auto"
+  },
+  "@sveltejs/kit": {
+    "current": "2.46.2",
+    "wanted": "2.46.5",
+    "latest": "2.46.5",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@sveltejs/kit"
+  },
+  "@sveltejs/vite-plugin-svelte": {
+    "current": "3.1.2",
+    "wanted": "3.1.2",
+    "latest": "6.2.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@sveltejs/vite-plugin-svelte"
+  },
+  "@tanstack/react-query": {
+    "current": "5.90.2",
+    "wanted": "5.90.3",
+    "latest": "5.90.3",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@tanstack/react-query"
+  },
+  "@types/node": {
+    "current": "20.19.19",
+    "wanted": "20.19.21",
+    "latest": "24.7.2",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@types/node"
+  },
+  "@typescript-eslint/eslint-plugin": {
+    "current": "8.46.0",
+    "wanted": "8.46.1",
+    "latest": "8.46.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@typescript-eslint/eslint-plugin"
+  },
+  "@typescript-eslint/parser": {
+    "current": "8.46.0",
+    "wanted": "8.46.1",
+    "latest": "8.46.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@typescript-eslint/parser"
+  },
+  "@vitejs/plugin-react": {
+    "current": "4.7.0",
+    "wanted": "4.7.0",
+    "latest": "5.0.4",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/@vitejs/plugin-react"
+  },
+  "babel-jest": {
+    "current": "29.7.0",
+    "wanted": "29.7.0",
+    "latest": "30.2.0",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/babel-jest"
+  },
+  "concurrently": {
+    "current": "8.2.2",
+    "wanted": "8.2.2",
+    "latest": "9.2.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/concurrently"
+  },
+  "d3-selection": {
+    "current": "2.0.0",
+    "wanted": "2.0.0",
+    "latest": "3.0.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/d3-selection"
+  },
+  "date-fns": {
+    "current": "3.6.0",
+    "wanted": "3.6.0",
+    "latest": "4.1.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/date-fns"
+  },
+  "dotenv": {
+    "current": "16.6.1",
+    "wanted": "16.6.1",
+    "latest": "17.2.3",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/dotenv"
+  },
+  "eslint-config-prettier": {
+    "current": "9.1.2",
+    "wanted": "9.1.2",
+    "latest": "10.1.8",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/eslint-config-prettier"
+  },
+  "eslint-plugin-react-hooks": {
+    "current": "6.1.1",
+    "wanted": "6.1.1",
+    "latest": "7.0.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/eslint-plugin-react-hooks"
+  },
+  "eslint-plugin-svelte": {
+    "current": "2.46.1",
+    "wanted": "2.46.1",
+    "latest": "3.12.4",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/eslint-plugin-svelte"
+  },
+  "eventsource": {
+    "current": "2.0.2",
+    "wanted": "2.0.2",
+    "latest": "4.0.0",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/eventsource"
+  },
+  "express": {
+    "current": "4.21.2",
+    "wanted": "4.21.2",
+    "latest": "5.1.0",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/express"
+  },
+  "express-rate-limit": {
+    "current": "7.5.1",
+    "wanted": "7.5.1",
+    "latest": "8.1.0",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/express-rate-limit"
+  },
+  "form-data-encoder": {
+    "current": "1.7.2",
+    "wanted": "1.9.0",
+    "latest": "4.1.0",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/form-data-encoder"
+  },
+  "formdata-node": {
+    "current": "4.4.1",
+    "wanted": "4.4.1",
+    "latest": "6.0.3",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/formdata-node"
+  },
+  "jest": [
+    {
+      "current": "29.7.0",
+      "wanted": "29.7.0",
+      "latest": "30.2.0",
+      "dependent": "etherai-foresight-platform-main",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/jest"
+    },
+    {
+      "current": "29.7.0",
+      "wanted": "29.7.0",
+      "latest": "30.2.0",
+      "dependent": "server",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/jest"
+    }
+  ],
+  "kill-port": {
+    "current": "1.6.1",
+    "wanted": "1.6.1",
+    "latest": "2.0.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/kill-port"
+  },
+  "langchain": [
+    {
+      "current": "0.2.20",
+      "wanted": "0.2.20",
+      "latest": "0.3.36",
+      "dependent": "etherai-foresight-platform-main",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/langchain"
+    },
+    {
+      "current": "0.2.20",
+      "wanted": "0.2.20",
+      "latest": "0.3.36",
+      "dependent": "server",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/langchain"
+    }
+  ],
+  "lucide-react": {
+    "current": "0.462.0",
+    "wanted": "0.462.0",
+    "latest": "0.545.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/lucide-react"
+  },
+  "next-themes": {
+    "current": "0.3.0",
+    "wanted": "0.3.0",
+    "latest": "0.4.6",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/next-themes"
+  },
+  "prettier-plugin-tailwindcss": {
+    "current": "0.6.14",
+    "wanted": "0.6.14",
+    "latest": "0.7.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/prettier-plugin-tailwindcss"
+  },
+  "prisma": [
+    {
+      "current": "5.22.0",
+      "wanted": "5.22.0",
+      "latest": "6.17.1",
+      "dependent": "etherai-foresight-platform-main",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/prisma"
+    },
+    {
+      "current": "5.22.0",
+      "wanted": "5.22.0",
+      "latest": "6.17.1",
+      "dependent": "server",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/prisma"
+    }
+  ],
+  "react": {
+    "current": "18.3.1",
+    "wanted": "18.3.1",
+    "latest": "19.2.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react"
+  },
+  "react-day-picker": {
+    "current": "8.10.1",
+    "wanted": "8.10.1",
+    "latest": "9.11.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-day-picker"
+  },
+  "react-dom": {
+    "current": "18.3.1",
+    "wanted": "18.3.1",
+    "latest": "19.2.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-dom"
+  },
+  "react-hook-form": {
+    "current": "7.64.0",
+    "wanted": "7.65.0",
+    "latest": "7.65.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-hook-form"
+  },
+  "react-is": {
+    "current": "18.3.1",
+    "wanted": "18.3.1",
+    "latest": "19.2.0",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-is"
+  },
+  "react-resizable-panels": {
+    "current": "2.1.9",
+    "wanted": "2.1.9",
+    "latest": "3.0.6",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-resizable-panels"
+  },
+  "react-router-dom": {
+    "current": "6.30.1",
+    "wanted": "6.30.1",
+    "latest": "7.9.4",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/react-router-dom"
+  },
+  "redis": {
+    "current": "4.7.1",
+    "wanted": "4.7.1",
+    "latest": "5.8.3",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/redis"
+  },
+  "sonner": {
+    "current": "1.7.4",
+    "wanted": "1.7.4",
+    "latest": "2.0.7",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/sonner"
+  },
+  "start-server-and-test": {
+    "current": "1.14.0",
+    "wanted": "1.15.4",
+    "latest": "2.1.2",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/start-server-and-test"
+  },
+  "supertest": {
+    "current": "6.3.4",
+    "wanted": "6.3.4",
+    "latest": "7.1.4",
+    "dependent": "server",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/supertest"
+  },
+  "svelte": {
+    "current": "4.2.20",
+    "wanted": "4.2.20",
+    "latest": "5.39.13",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/svelte"
+  },
+  "svelte-check": {
+    "current": "3.8.6",
+    "wanted": "3.8.6",
+    "latest": "4.3.3",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/svelte-check"
+  },
+  "tailwind-merge": {
+    "current": "2.6.0",
+    "wanted": "2.6.0",
+    "latest": "3.3.1",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/tailwind-merge"
+  },
+  "tailwindcss": {
+    "current": "3.4.18",
+    "wanted": "3.4.18",
+    "latest": "4.1.14",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/tailwindcss"
+  },
+  "vaul": {
+    "current": "0.9.9",
+    "wanted": "0.9.9",
+    "latest": "1.1.2",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/vaul"
+  },
+  "vite": {
+    "current": "5.4.20",
+    "wanted": "5.4.20",
+    "latest": "7.1.10",
+    "dependent": "etherai-foresight-platform-main",
+    "location": "/home/davicho/etherai-foresight-platform-main/node_modules/vite"
+  },
+  "zod": [
+    {
+      "current": "3.25.76",
+      "wanted": "3.25.76",
+      "latest": "4.1.12",
+      "dependent": "etherai-foresight-platform-main",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/zod"
+    },
+    {
+      "current": "3.25.76",
+      "wanted": "3.25.76",
+      "latest": "4.1.12",
+      "dependent": "server",
+      "location": "/home/davicho/etherai-foresight-platform-main/node_modules/zod"
+    }
+  ]
+}
