@@ -11,52 +11,26 @@ export default async function handler(req, res) {
     console.log('[Auto-Preservation] Iniciando chequeo de salud completo del sistema');
 
     const timestamp = new Date().toISOString();
-    const event = {
-      timestamp,
-      flow: 'Auto-Preservación',
-      message: 'Iniciando chequeo de salud completo del sistema'
-    };
-
     // Publicar evento (simplificado para serverless)
     publish('Auto-Preservation: Chequeo de salud iniciado');
 
     // Ejecutar QualityCrew para pruebas
     const qualityCrew = new MetatronAgent('QualityCrew');
     const qualityResult = await qualityCrew.run({ changes: [] });
-    const qualityEvent = {
-      timestamp: new Date().toISOString(),
-      flow: 'Auto-Preservación',
-      message: `QualityCrew: ${qualityResult.passed ? 'Todas las pruebas pasaron' : 'Fallo en pruebas'}`
-    };
-    publish(`Auto-Preservación: ${qualityEvent.message}`);
+    publish(`Auto-Preservación: QualityCrew: ${qualityResult.passed ? 'Todas las pruebas pasaron' : 'Fallo en pruebas'}`);
 
     // Simular Cerbero (Seguridad) - usar ConsensusAgent
     const securityAgent = new MetatronAgent('ConsensusAgent');
     const securityResult = await securityAgent.run({ changes: [] });
-    const securityEvent = {
-      timestamp: new Date().toISOString(),
-      flow: 'Auto-Preservación',
-      message: `Cerbero: ${securityResult.consensus ? 'Sistema seguro' : 'Anomalías detectadas'}`
-    };
-    publish(`Auto-Preservación: ${securityEvent.message}`);
+    publish(`Auto-Preservación: Cerbero: ${securityResult.consensus ? 'Sistema seguro' : 'Anomalías detectadas'}`);
 
     // Si anomalía, iniciar reparación automática
     if (!qualityResult.passed || !securityResult.consensus) {
-      const anomalyEvent = {
-        timestamp: new Date().toISOString(),
-        flow: 'Auto-Preservación',
-        message: 'Anomalía detectada: iniciando misión de reparación automática'
-      };
       publish(`Auto-Preservación: Anomalía detectada - iniciando reparación`);
 
       // Iniciar Hephaestus para corrección
       const hephaestus = new MetatronAgent('Hephaestus');
       await hephaestus.run({ suggestion: 'Reparar anomalías detectadas' });
-      const repairEvent = {
-        timestamp: new Date().toISOString(),
-        flow: 'Auto-Preservación',
-        message: 'Reparación automática completada'
-      };
       publish(`Auto-Preservación: Reparación automática completada`);
     }
 

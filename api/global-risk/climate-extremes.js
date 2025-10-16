@@ -74,7 +74,7 @@ export default async function handler(req, res) {
   }
 }
 
-function processClimateData(parameters, country) {
+function processClimateData(parameters) {
   // Process NASA POWER data to identify extreme events
   const maxTemps = Object.values(parameters.T2M_MAX || {});
   const minTemps = Object.values(parameters.T2M_MIN || {});

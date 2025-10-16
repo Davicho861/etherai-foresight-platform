@@ -11,12 +11,6 @@ export default async function handler(req, res) {
     console.log('[Knowledge] Kairós escaneando fuentes de datos para oportunidades');
 
     const timestamp = new Date().toISOString();
-    const scanEvent = {
-      timestamp,
-      flow: 'Conocimiento',
-      message: 'Kairós escaneando fuentes de datos para oportunidades'
-    };
-
     // Publicar evento
     publish(`Conocimiento: Kairós escaneando oportunidades`);
 
@@ -26,11 +20,6 @@ export default async function handler(req, res) {
 
     // Si detecta oportunidad, proponer misión
     if (kairosResult.opportunities && kairosResult.opportunities.length > 0) {
-      const opportunityEvent = {
-        timestamp: new Date().toISOString(),
-        flow: 'Conocimiento',
-        message: `Nueva oportunidad detectada: ${kairosResult.opportunities[0]}. Proponiendo Misión de Expansión.`
-      };
       publish(`Conocimiento: Nueva oportunidad detectada - ${kairosResult.opportunities[0]}`);
       // Aquí podría iniciar una misión automáticamente, pero para serverless, solo publicar
     }
