@@ -11,6 +11,8 @@ export default [
       "node_modules/**",
       "backend_stdout.log",
       "reports/**",
+      "landing/dist/**",
+      "artifacts/**",
       "**/generated/**",
       ".wrangler/**",
       "server/coverage/**",
