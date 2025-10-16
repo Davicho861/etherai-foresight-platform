@@ -5,7 +5,7 @@ import path from 'path';
 function safeRead(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8');
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -13,7 +13,7 @@ function safeRead(filePath) {
 function parseNpmAudit(jsonStr) {
   try {
     return JSON.parse(jsonStr);
-  } catch (e) {
+  } catch (_e) {
     return { error: 'invalid_json' };
   }
 }

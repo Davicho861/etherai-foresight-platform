@@ -10,13 +10,7 @@ export default async function handler(req, res) {
   try {
     console.log('[Prophecy] Actualizando índices de riesgo global en tiempo real');
 
-    const timestamp = new Date().toISOString();
-    const prophecyEvent = {
-      timestamp,
-      flow: 'Profecía',
-      message: 'Actualizando índices de riesgo global en tiempo real'
-    };
-
+    const _timestamp = new Date().toISOString();
     // Publicar evento
     publish(`Profecía: Actualizando índices de riesgo global`);
 
@@ -53,7 +47,7 @@ export default async function handler(req, res) {
           await reportAgent.run({ risks, correlations });
         }
       }
-    } catch (error) {
+    } catch (_error) {
       // Silenciar errores de integraciones para evitar ruido en logs
       console.log('Profecía: Usando datos de fallback debido a error en integraciones externas');
       publish(`Profecía: Actualización completada con datos de fallback`);

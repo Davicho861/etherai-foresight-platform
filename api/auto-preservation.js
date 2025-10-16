@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   try {
     console.log('[Auto-Preservation] Iniciando chequeo de salud completo del sistema');
 
-    const timestamp = new Date().toISOString();
+  const _timestamp = new Date().toISOString();
     // Publicar evento (simplificado para serverless)
     publish('Auto-Preservation: Chequeo de salud iniciado');
 

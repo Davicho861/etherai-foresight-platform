@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   try {
     console.log('[Knowledge] Kairós escaneando fuentes de datos para oportunidades');
 
-    const timestamp = new Date().toISOString();
+  const _timestamp = new Date().toISOString();
     // Publicar evento
     publish(`Conocimiento: Kairós escaneando oportunidades`);
 
