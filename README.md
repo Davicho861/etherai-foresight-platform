@@ -197,3 +197,13 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 La documentación estratégica y técnica del proyecto está centralizada en el directorio `docs/`.
 - Índice de documentación: `docs/README.md`
 - Tablero de gestión (Kanban): `docs/PROJECT_KANBAN.md`
+
+## Certificación (evidencias)
+
+Se han generado evidencias automatizadas de la purga e integración del nuevo frontend estático. Los artefactos están en el directorio `reports/` del repositorio:
+
+- Manifiesto de certificación: `reports/EMPIRE_CERTIFICATION_MANIFEST_3003.json`
+- Capturas del dashboard y rutas: `reports/CERTIFICATION_EMPIRE_DASHBOARD_SCREENSHOT.png`, `reports/dashboard.png`, `reports/demo.png`, `reports/sdlc.png`, `reports/pricing.png`
+- Reporte consolidado: `reports/EMPIRE_MANIFESTATION_REPORT.md`
+
+Estos archivos fueron generados automáticamente por scripts de Puppeteer y subidos a la rama `main` para revisión y auditoría.
