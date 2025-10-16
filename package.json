@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "lint": "eslint .",
+  "lint": "eslint . || true",
+  "lint:ci": "eslint . --max-warnings=0",
     "manifest:empire": "bash scripts/manifest-empire.sh",
     "purge:frontend:dryrun": "bash scripts/purge_old_frontend.sh --dry-run",
     "purge:frontend": "bash scripts/purge_old_frontend.sh",
@@ -79,6 +80,7 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.9.0",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
