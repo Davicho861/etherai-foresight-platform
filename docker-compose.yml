@@ -64,24 +64,17 @@ services:
       timeout: 10s
       retries: 3
 
-  frontend:
+  landing:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    container_name: praevisio_frontend
-    environment:
-      VITE_API_BASE_URL: http://backend:4000
-      VITE_PRAEVISIO_TOKEN: demo-token
+    container_name: praevisio_landing
     ports:
-      - "3002:3002"
+      - "3003:3003"
     volumes:
-      - .:/app
-      - /app/node_modules
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - ./landing/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:
