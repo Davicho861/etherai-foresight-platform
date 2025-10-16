@@ -5,3 +5,8 @@ server/prisma/
 public/
 test-results/
 **/*.min.js
+
+# Ignore extracted landing static build and other generated artifacts
+landing/dist/
+artifacts/
+reports/
