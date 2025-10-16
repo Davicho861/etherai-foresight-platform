@@ -1,0 +1,367 @@
+5d520deda03e0cf660fd0407cb7c2859
+/* istanbul ignore next */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.analyzeSeismicActivity = analyzeSeismicActivity;
+function cov_1n8cpoe73a() {
+  var path = "/home/davicho/etherai-foresight-platform-main/server/src/agents/GeophysicalRiskAgent.js";
+  var hash = "1044dced88c4f34bcef34e417c7fb26e46ae4cde";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/davicho/etherai-foresight-platform-main/server/src/agents/GeophysicalRiskAgent.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 2
+        },
+        end: {
+          line: 2,
+          column: 41
+        }
+      },
+      "1": {
+        start: {
+          line: 2,
+          column: 31
+        },
+        end: {
+          line: 2,
+          column: 41
+        }
+      },
+      "2": {
+        start: {
+          line: 4,
+          column: 2
+        },
+        end: {
+          line: 19,
+          column: 5
+        }
+      },
+      "3": {
+        start: {
+          line: 5,
+          column: 41
+        },
+        end: {
+          line: 5,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 6,
+          column: 22
+        },
+        end: {
+          line: 6,
+          column: 41
+        }
+      },
+      "5": {
+        start: {
+          line: 7,
+          column: 22
+        },
+        end: {
+          line: 7,
+          column: 103
+        }
+      },
+      "6": {
+        start: {
+          line: 9,
+          column: 4
+        },
+        end: {
+          line: 18,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "analyzeSeismicActivity",
+        decl: {
+          start: {
+            line: 1,
+            column: 16
+          },
+          end: {
+            line: 1,
+            column: 38
+          }
+        },
+        loc: {
+          start: {
+            line: 1,
+            column: 45
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 1
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 4,
+            column: 27
+          },
+          end: {
+            line: 4,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 4,
+            column: 38
+          },
+          end: {
+            line: 19,
+            column: 3
+          }
+        },
+        line: 4
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 2,
+            column: 2
+          },
+          end: {
+            line: 2,
+            column: 41
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 2,
+            column: 2
+          },
+          end: {
+            line: 2,
+            column: 41
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 2
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 2,
+            column: 6
+          },
+          end: {
+            line: 2,
+            column: 29
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 2,
+            column: 6
+          },
+          end: {
+            line: 2,
+            column: 11
+          }
+        }, {
+          start: {
+            line: 2,
+            column: 15
+          },
+          end: {
+            line: 2,
+            column: 29
+          }
+        }],
+        line: 2
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 6,
+            column: 22
+          },
+          end: {
+            line: 6,
+            column: 41
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 6,
+            column: 22
+          },
+          end: {
+            line: 6,
+            column: 36
+          }
+        }, {
+          start: {
+            line: 6,
+            column: 40
+          },
+          end: {
+            line: 6,
+            column: 41
+          }
+        }],
+        line: 6
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 7,
+            column: 74
+          },
+          end: {
+            line: 7,
+            column: 101
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 7,
+            column: 95
+          },
+          end: {
+            line: 7,
+            column: 97
+          }
+        }, {
+          start: {
+            line: 7,
+            column: 100
+          },
+          end: {
+            line: 7,
+            column: 101
+          }
+        }],
+        line: 7
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "1044dced88c4f34bcef34e417c7fb26e46ae4cde"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1n8cpoe73a = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1n8cpoe73a();
+function analyzeSeismicActivity(data) {
+  /* istanbul ignore next */
+  cov_1n8cpoe73a().f[0]++;
+  cov_1n8cpoe73a().s[0]++;
+  if (
+  /* istanbul ignore next */
+  (cov_1n8cpoe73a().b[1][0]++, !data) ||
+  /* istanbul ignore next */
+  (cov_1n8cpoe73a().b[1][1]++, !data.features)) {
+    /* istanbul ignore next */
+    cov_1n8cpoe73a().b[0][0]++;
+    cov_1n8cpoe73a().s[1]++;
+    return [];
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1n8cpoe73a().b[0][1]++;
+  }
+  cov_1n8cpoe73a().s[2]++;
+  return data.features.map(feature => {
+    /* istanbul ignore next */
+    cov_1n8cpoe73a().f[1]++;
+    const {
+      properties,
+      geometry,
+      id
+    } =
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().s[3]++, feature);
+    const magnitude =
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().s[4]++,
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().b[2][0]++, properties.mag) ||
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().b[2][1]++, 0));
+    const riskScore =
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().s[5]++, Math.min(100, Math.round(magnitude / 10 * 100) + (properties.tsunami ?
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().b[3][0]++, 20) :
+    /* istanbul ignore next */
+    (cov_1n8cpoe73a().b[3][1]++, 0))));
+    /* istanbul ignore next */
+    cov_1n8cpoe73a().s[6]++;
+    return {
+      id: id,
+      place: properties.place,
+      magnitude: magnitude,
+      depth: geometry.coordinates[2],
+      time: properties.time,
+      url: properties.url,
+      tsunami: {
+        warning: properties.tsunami
+      },
+      riskScore
+    };
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMW44Y3BvZTczYSIsImFjdHVhbENvdmVyYWdlIiwiYW5hbHl6ZVNlaXNtaWNBY3Rpdml0eSIsImRhdGEiLCJmIiwicyIsImIiLCJmZWF0dXJlcyIsIm1hcCIsImZlYXR1cmUiLCJwcm9wZXJ0aWVzIiwiZ2VvbWV0cnkiLCJpZCIsIm1hZ25pdHVkZSIsIm1hZyIsInJpc2tTY29yZSIsIk1hdGgiLCJtaW4iLCJyb3VuZCIsInRzdW5hbWkiLCJwbGFjZSIsImRlcHRoIiwiY29vcmRpbmF0ZXMiLCJ0aW1lIiwidXJsIiwid2FybmluZyJdLCJzb3VyY2VzIjpbIkdlb3BoeXNpY2FsUmlza0FnZW50LmpzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBmdW5jdGlvbiBhbmFseXplU2Vpc21pY0FjdGl2aXR5KGRhdGEpIHtcbiAgaWYgKCFkYXRhIHx8ICFkYXRhLmZlYXR1cmVzKSByZXR1cm4gW107XG5cbiAgcmV0dXJuIGRhdGEuZmVhdHVyZXMubWFwKGZlYXR1cmUgPT4ge1xuICAgIGNvbnN0IHsgcHJvcGVydGllcywgZ2VvbWV0cnksIGlkIH0gPSBmZWF0dXJlO1xuICAgIGNvbnN0IG1hZ25pdHVkZSA9IHByb3BlcnRpZXMubWFnIHx8IDA7XG4gICAgY29uc3Qgcmlza1Njb3JlID0gTWF0aC5taW4oMTAwLCBNYXRoLnJvdW5kKChtYWduaXR1ZGUgLyAxMCkgKiAxMDApICsgKHByb3BlcnRpZXMudHN1bmFtaSA/IDIwIDogMCkpO1xuXG4gICAgcmV0dXJuIHtcbiAgICAgIGlkOiBpZCxcbiAgICAgIHBsYWNlOiBwcm9wZXJ0aWVzLnBsYWNlLFxuICAgICAgbWFnbml0dWRlOiBtYWduaXR1ZGUsXG4gICAgICBkZXB0aDogZ2VvbWV0cnkuY29vcmRpbmF0ZXNbMl0sXG4gICAgICB0aW1lOiBwcm9wZXJ0aWVzLnRpbWUsXG4gICAgICB1cmw6IHByb3BlcnRpZXMudXJsLFxuICAgICAgdHN1bmFtaTogeyB3YXJuaW5nOiBwcm9wZXJ0aWVzLnRzdW5hbWkgfSxc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

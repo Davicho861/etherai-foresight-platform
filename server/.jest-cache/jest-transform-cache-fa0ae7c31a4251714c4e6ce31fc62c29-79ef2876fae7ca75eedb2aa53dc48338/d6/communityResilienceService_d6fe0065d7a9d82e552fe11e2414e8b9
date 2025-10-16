@@ -1,0 +1,328 @@
+65869b3351386fdcbde30e8db195ada5
+/* istanbul ignore next */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getCommunityResilienceIndex = getCommunityResilienceIndex;
+var
+/* istanbul ignore next */
+_agents = _interopRequireDefault(require("../agents.js"));
+/* istanbul ignore next */ function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function cov_19oqcvrysd() {
+  var path = "/home/davicho/etherai-foresight-platform-main/server/src/services/communityResilienceService.js";
+  var hash = "19b961dd1556ed8e4dbf0e88122f5563c11a580a";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/davicho/etherai-foresight-platform-main/server/src/services/communityResilienceService.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 11,
+          column: 2
+        },
+        end: {
+          line: 54,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 12,
+          column: 18
+        },
+        end: {
+          line: 12,
+          column: 63
+        }
+      },
+      "2": {
+        start: {
+          line: 13,
+          column: 19
+        },
+        end: {
+          line: 16,
+          column: 6
+        }
+      },
+      "3": {
+        start: {
+          line: 18,
+          column: 4
+        },
+        end: {
+          line: 23,
+          column: 6
+        }
+      },
+      "4": {
+        start: {
+          line: 25,
+          column: 4
+        },
+        end: {
+          line: 25,
+          column: 66
+        }
+      },
+      "5": {
+        start: {
+          line: 27,
+          column: 21
+        },
+        end: {
+          line: 37,
+          column: 5
+        }
+      },
+      "6": {
+        start: {
+          line: 40,
+          column: 4
+        },
+        end: {
+          line: 51,
+          column: 7
+        }
+      },
+      "7": {
+        start: {
+          line: 41,
+          column: 6
+        },
+        end: {
+          line: 50,
+          column: 8
+        }
+      },
+      "8": {
+        start: {
+          line: 53,
+          column: 4
+        },
+        end: {
+          line: 53,
+          column: 20
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "getCommunityResilienceIndex",
+        decl: {
+          start: {
+            line: 10,
+            column: 22
+          },
+          end: {
+            line: 10,
+            column: 49
+          }
+        },
+        loc: {
+          start: {
+            line: 10,
+            column: 96
+          },
+          end: {
+            line: 55,
+            column: 1
+          }
+        },
+        line: 10
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 40,
+            column: 22
+          },
+          end: {
+            line: 40,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 40,
+            column: 33
+          },
+          end: {
+            line: 51,
+            column: 5
+          }
+        },
+        line: 40
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 10,
+            column: 50
+          },
+          end: {
+            line: 10,
+            column: 83
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 10,
+            column: 62
+          },
+          end: {
+            line: 10,
+            column: 83
+          }
+        }],
+        line: 10
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 10,
+            column: 85
+          },
+          end: {
+            line: 10,
+            column: 94
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 10,
+            column: 92
+          },
+          end: {
+            line: 10,
+            column: 94
+          }
+        }],
+        line: 10
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0],
+      "1": [0]
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "19b961dd1556ed8e4dbf0e88122f5563c11a580a"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_19oqcvrysd = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_19oqcvrysd();
+/**
+ * Fetches community resilience analysis for LATAM countries.
+ * Uses the MetatronAgent CommunityResilienceAgent to analyze social resilience.
+ * @param {Array<string>} countries - Array of country codes (e.g., ['COL', 'PER', 'ARG'])
+ * @param {number} days - Number of days for analysis (default: 30)
+ * @returns {Promise<object>} A promise that resolves to the community resilience data.
+ */
+async function getCommunityResilienceIndex(countries =
+/* istanbul ignore next */
+(cov_19oqcvrysd().b[0][0]++, ['COL', 'PER', 'ARG']), days =
+/* istanbul ignore next */
+(cov_19oqcvrysd().b[1][0]++, 30)) {
+  /* istanbul ignore next */
+  cov_19oqcvrysd().f[0]++;
+  cov_19oqcvrysd().s[0]++;
+  try {
+    const agent =
+    /* istanbul ignore next */
+    (cov_19oqcvrysd().s[1]++, new
+    /* istanbul ignore next */
+    _agents.
+    /* istanbul ignore next */
+    default('CommunityResilienceAgent'));
+    const result =
+    /* istanbul ignore next */
+    (cov_19oqcvrysd().s[2]++, await agent.run({
+      countries,
+      days
+    }));
+    /* istanbul ignore next */
+    cov_19oqcvrysd().s[3]++;
+    return {
+      timestamp: result.timestamp,
+      resilienceAnalysis: result.resilienceAnalysis,
+      globalResilienceAssessment: result.globalResilienceAssessment,
+      source: 'CommunityResilienceAgent'
+    };
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_19oqcvrysd().s[4]++;
+    console.error('Error in getCommunityResilienceIndex:', error);
+    // Return mock data if agent fails
+    const mockData =
+    /* istanbul ignore next */
+    (cov_19oqcvrysd().s[5]++, {
+      timestamp: new Date().toISOString(),
+      resilienceAnalysis: {},
+      globalResilienceAssessment: {
+        averageResilience: 65.0,
+        lowResilienceCountries: ['COL', 'PER'],
+        assessment: 'Moderate community resilience with areas of concern',
+        globalRecommendations: ['Strengthen community networks', 'Improve social services']
+      },
+      source: 'Mock data - Agent unavailable'
+    });
+
+    // Generate mock data for each country
+    /* istanbul ignore next */
+    cov_19oqcvrysd().s[6]++;
+    countries.forEach(country => {
+      /* istanbul ignore next */
+      cov_19oqcvrysd().f[1]++;
+      cov_19oqcvrysd().s[7]++;
+      mockData.resilienceAnalysis[country] = {
+        socialEvents: Math.floor(Math.random() * 10) + 1,
+        resilienceScore: Math.floor(Math.random() * 40) + 60,
+        // 60-100
+        recommendations: ['Community engagement', 'Social programs', 'Education initiatives'],
+        period: {
+          startDate: new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          endDate: new Date().toISOString().split('T')[0]
+        },
+        isMock: true
+      };
+    });
+    /* istanbul ignore next */
+    cov_19oqcvrysd().s[8]++;
+    return mockData;
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfYWdlbnRzIiwiX2ludGVyb3BSZXF1aXJlRGVmYXVsdCIsInJlcXVpcmUiLCJlIiwiX19lc01vZHVsZSIsImRlZmF1bHQiLCJjb3ZfMTlvcWN2cnlzZCIsInBhdGgiLCJoYXNoIiwiZ2xvYmFsIiwiRnVuY3Rpb24iLCJnY3YiLCJjb3ZlcmFnZURhdGEiLCJzdGF0ZW1lbnRNYXAiLCJzdGFydCIsImxpbmUiLCJjb2x1bW4iLCJlbmQiLCJmbk1hcCIsIm5hbWUiLCJkZWNsIiwibG9jIiwiYnJhbmNoTWFwIiwidHlwZSIsImxvY2F0aW9ucyIsInMiLCJmIiwiYiIsIl9jb3ZlcmFnZVNjaGVtYSIsImNvdmVyYWdlIiwiYWN0dWFsQ292ZXJhZ2UiLCJnZXRDb21tdW5pdHlSZXNpbGllbmNlSW5kZXgiLCJjb3VudHJpZXMiLCJkYXlzIiwiYWdlbnQiLCJNZXRhdHJvbkFnZW50IiwicmVzdWx0IiwicnVuIiwidGltZXN0YW1wIiwicmVzaWxpZW5jZUFuYWx5c2lzIiwiZ2xvYmFsUmVzaWxpZW5jZUFzc2Vzc21lbnQiLCJzb3VyY2UiLCJlcnJvciIsImNvbnNvbGUiLCJtb2NrRGF0YSIsIkRhdGUiLCJ0b0lTT1N0cmluZyIsImF2ZXJhZ2VSZXNpbGllbmNlIiwibG93UmVzaWxpZW5jZUNvdW50cmllcyIsImFzc2Vzc21lbnQiLCJnbG9iYWxSZWNvbW1lbmRhdGlvbnMiLCJmb3JFYWNoIiwiY291bnRyeSIsInNvY2lhbEV2ZW50cyIsIk1hdGgiLCJmbG9vciIsInJhbmRvbSIsInJlc2lsaWVuY2VTY29yZSIsInJlY29tbWVuZGF0aW9ucyIsInBlcmlvZCIsInN0YXJ0RGF0ZSIsIm5vdyIsInNwbGl0IiwiZW5kRGF0ZSIsImlzTW9jayJdLCJzb3VyY2VzIjpbImNvbW11bml0eVJlc2lsaWVuY2VTZXJ2aWNlLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBNZXRhdHJvbkFnZW50IGZyb20gJy4uL2FnZW50cy5qcyc7XG5cbi8qKlxuICogRmV0Y2hlcyBjb21tdW5pdHkgcmVzaWxpZW5jZSBhbmFseXNpcyBmb3IgTEFUQU0gY291bnRyaWVzLlxuICogVXNlcyB0aGUgTWV0YXRyb25BZ2VudCBDb21tdW5pdHlSZXNpbGllbmNlQWdlbnQgdG8gYW5hbHl6ZSBzb2NpYWwgcmVzaWxpZW5jZS5cbiAqIEBwYXJhbSB7QXJyYXk8c3RyaW5nPn0gY291bnRyaWVzIC0gQXJyYXkgb2YgY291bnRyeSBjb2RlcyAoZS5nLiwgWydDT0wnLCAnUEVSJywgJ0FSRyddKVxuICogQHBhcmFtIHtudW1iZXJ9IGRheXMgLSBOdW1iZXIgb2YgZGF5cyBmb3IgYW5hbHlzaXMgKGRlZmF1bHQ6IDMwKVxuICogQHJldHVybnMge1Byb21pc2U8b2JqZWN0Pn0gQSBwcm9taXNlIHRoYXQgcmVzb2x2ZXMgdG8gdGhlIGNvbW11bml0eSByZXNpbGllbmNlIGRhdGEuXG4gKi9cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZXRDb21tdW5pdHlSZXNpbGllbmNlSW5kZXgoY291bnRyaWVzID0gWydDT0wnLCAnUEVSJywgJ0FSRyddLCBkYXlzID0gMzApIHtcbiAgdHJ5IHtcbiAgICBjb25zdCBhZ2VudCA9IG5ldyBNZXRhdHJvbkFnZW50KCdDb21tdW5pdHlSZXNpbGllbmNlQWdlbnQnKTtcbiAgICBjb25zdCByZXN1bHQgPSBhd2FpdCBhZ2VudC5ydW4oe1xuICAgICAgY291bnRyaWVzLFxuICAgICAgZGF5c1xuICAgIH0pO1xuXG4gICAgcmV0dXJuIHtcbiAgICAgIHRpbWVzdGFtcDogcmVzdWx0LnRpbWVzdGFtcCxcbiAgICAgIHJlc2lsaWVuY2VBbmFseXNpczogcmVzdWx0LnJlc2lsaWVuY2VBbmFseXNpcyxcbiAgICAgIGdsb2JhbFJlc2lsaWVuY2VBc3Nlc3NtZW50OiByZXN1bHQuZ2xvYmFsUmVzaWxpZW5jZUFzc2Vzc21lbnQsXG4gICAgICBzb3VyY2U6ICdDb21tdW5pdHlSZXNpbGllbmNlQWdlbnQnXG4gICAgfTtcbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBjb25zb2xlLmVycm9yKCdFcnJvciBpbiBnZXRDb21tdW5pdHlSZXNpbGllbmNlSW5kZXg6JywgZXJyb3IpO1xuICAgIC8vIFJldHVybiBtb2NrIGRhdGEgaWYgYWdlbnQgZmFpbHNcbiAgICBjb25zdCBtb2NrRGF0YSA9IHtcbiAgICAgIHRpbWVzdGFtcDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLFxuICAgICAgcmVzaWxpZW5jZUFuYWx5c2lzOiB7fSxcbiAgICAgIGdsb2JhbFJlc2lsaWVuY2VBc3Nlc3NtZW50OiB7XG4gICAgICAgIGF2ZXJhZ2VSZXNpbGllbmNlOiA2NS4wLFxuICAgICAgICBsb3dSZXNpbGllbmNlQ291bnRyaWVzOiBbJ0NPTCcsICdQRVInXSxcbiAgICAgICAgYXNzZXNzbWVudDogJ01vZGVyYXRlIGNvbW11bml0eSByZXNpbGllbmNlIHdpdGggYXJlYXMgb2YgY29uY2VybicsXG4gICAgICAgIGdsb2JhbFJlY29tbWVuZGF0aW9uczogWydTdHJlbmd0aGVuIGNvbW11bml0eSBuZXR3b3JrcycsICdJbXByb3ZlIHNvY2lhbCBzZXJ2aWNlcyddXG4gICAgICB9LFxuICAgICAgc291cmNlOiAnTW9jayBkYXRhIC0gQWdlbnQgdW5hdmFpbGFibGUnXG4gICAgfTtcblxuICAgIC8vIEdlbmVyYXRlIG1vY2sgZGF0YSBmb3IgZWFjaCBjb3VudHJ5XG4gICAgY291bnRyaWVzLmZvckVhY2goY291bnRyeSA9PiB7XG4gICAgICBtb2NrRGF0YS5yZXNpbGllbmNlQW5hbHlzaXNbY291bnRyeV0gPSB7XG4gICAgICAgIHNvY2lhbEV2ZW50czogTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpICogMTApICsgMSxcbiAgICAgICAgcmVzaWxpZW5jZVNjb3JlOiBNYXRoLmZsb29yKE1hdGgucmFuZG9tKCkgKiA0MCkgKyA2MCwgLy8gNjAtMTAwXG4gICAgICAgIHJlY29tbWVuZGF0aW9uczogWydDb21tdW5pdHkgZW5nYWdlbWVudCcsICdTb2NpYWwgcHJvZ3JhbXMnLCAnRWR1Y2F0aW9uIGluaXRpYXRpdmVzJ10sXG4gICAgICAgIHBlcmlvZDoge1xuICAgICAgICAgIHN0YXJ0RGF0ZTogbmV3IERhdGUoRGF0ZS5ub3coKSAtIGRheXMgKiAyNCAqIDYwICogNjAgKiAxMDAwKS50b0lTT1N0cmluZygpLnNwbGl0KCdUJylbMF0sXG4gICAgICAgICAgZW5kRGF0ZTogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLnNwbGl0KCdUJylbMF1cbiAgICAgICAgfSxcbiAgICAgICAgaXNNb2NrOiB0cnVlXG4gICAgICB9O1xuICAgIH0pO1xuXG4gICAgcmV0dXJuIG1vY2tEYXRhO1xuICB9XG59Il0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7QUFBQTtBQUFBQSxPQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7QUFBeUMsb0NBQUFELHVCQUFBRSxDQUFBLFdBQUFBLENBQUEsSUFBQUEsQ0FBQSxDQUFBQyxVQUFBLEdBQUFELENBQUEsS0FBQUUsT0FBQSxFQUFBRixDQUFBO0FBQUEsU0FBQUcsZUFBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsTUFBQSxPQUFBQyxRQUFBO0VBQUEsSUFBQUMsR0FBQTtFQUFBLElBQUFDLFlBQUE7SUFBQUwsSUFBQTtJQUFBTSxZQUFBO01BQUE7UUFBQUMsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO0lBQUE7SUFBQUUsS0FBQTtNQUFBO1FBQUFDLElBQUE7UUFBQUMsSUFBQTtVQUFBTixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBSyxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFELElBQUE7TUFBQTtNQUFBO1FBQUFJLElBQUE7UUFBQUMsSUFBQTtVQUFBTixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBSyxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFELElBQUE7TUFBQTtJQUFBO0lBQUFPLFNBQUE7TUFBQTtRQUFBRCxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFPLElBQUE7UUFBQUMsU0FBQTtVQUFBVixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBRCxJQUFBO01BQUE7TUFBQTtRQUFBTSxHQUFBO1VBQUFQLEtBQUE7WUFBQUMsSUFBQTtZQUFBQyxNQUFBO1VBQUE7VUFBQUMsR0FBQTtZQUFBRixJQUFBO1lBQUFDLE1BQUE7VUFBQTtRQUFBO1FBQUFPLElBQUE7UUFBQUMsU0FBQTtVQUFBVixLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBRCxJQUFBO01BQUE7SUFBQTtJQUFBVSxDQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO0lBQUE7SUFBQUMsQ0FBQTtNQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO01BQUE7TUFBQTtJQUFBO0lBQUFDLGVBQUE7SUFBQXBCLElBQUE7RUFBQTtFQUFBLElBQUFxQixRQUFBLEdBQUFwQixNQUFBLENBQUFFLEdBQUEsTUFBQUYsTUFBQSxDQUFBRSxHQUFBO0VBQUEsS0FBQWtCLFFBQUEsQ0FBQXRCLElBQUEsS0FBQXNCLFFBQUEsQ0FBQXRCLElBQUEsRUFBQUMsSUFBQSxLQUFBQSxJQUFBO0lBQUFxQixRQUFBLENBQUF0QixJQUFBLElBQUFLLFlBQUE7RUFBQTtFQUFBLElBQUFrQixjQUFBLEdBQUFELFFBQUEsQ0FBQXRCLElBQUE7RUFBQTtJQWU3QjtJQUFBRCxjQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBd0IsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQXhCLGNBQUE7QUFiWjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FB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

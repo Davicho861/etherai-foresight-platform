@@ -2,6 +2,7 @@ import { spawn } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs';
 import path from 'path';
+import { Worker } from 'worker_threads';
 import { coverageGauge, startMetricsServer } from './monitoring/index.js';
 
 const run = (cmd, args = []) => new Promise((resolve) => {
@@ -25,6 +26,16 @@ async function updateCoverageMetric() {
   }
 }
 
+async function runParallelTasks(tasks) {
+  const results = await Promise.allSettled(tasks.map(task => task()));
+  return results.map((result, index) => ({
+    task: index,
+    status: result.status,
+    value: result.value,
+    reason: result.reason
+  }));
+}
+
 async function eternal() {
   console.log('[eternal] Iniciando server de métricas...');
   startMetricsServer(process.env.METRICS_PORT ? Number(process.env.METRICS_PORT) : 3000);
@@ -35,35 +46,69 @@ async function eternal() {
 
   while (cycle < maxCycles) {
     cycle++;
-    console.log(`[eternal] Ciclo ${cycle} - ejecutando ares3 loop y pruebas`);
+    console.time(`[eternal] Ciclo ${cycle} - tiempo total`);
+    console.log(`[eternal] Ciclo ${cycle} - ejecutando tareas paralelizadas`);
 
-  const args = [];
-  if (oneCycle) args.push('--one-cycle');
-  await run('node', ['ares3_loop.js', ...args]);
-    await run('npm', ['test', '--', '--coverage']);
-    await updateCoverageMetric();
+    const args = [];
+    if (oneCycle) args.push('--one-cycle');
 
-    // Simulate docker buildx push if docker is present
-    const dockerCheck = await run('docker', ['--version']);
-    if (dockerCheck.code === 0) {
-      console.log('[eternal] Docker detectado, simulando buildx multiarquitectura (no push en entorno local)');
-      // we don't actually push in this environment
-      await run('echo', ['"[sim] docker buildx build --platform linux/amd64,linux/arm64 -t multi:v1 . --push"']);
-    }
+    // Parallel execution using Promise.allSettled for better performance
+    const parallelTasks = [
+      // Task 1: Run ares3 loop
+      async () => {
+        console.time('[eternal] ares3_loop');
+        const result = await run('node', ['ares3_loop.js', ...args]);
+        console.timeEnd('[eternal] ares3_loop');
+        return result;
+      },
+      // Task 2: Run tests with coverage
+      async () => {
+        console.time('[eternal] npm test');
+        const result = await run('npm', ['test', '--', '--coverage']);
+        console.timeEnd('[eternal] npm test');
+        return result;
+      },
+      // Task 3: Update coverage metric
+      async () => {
+        console.time('[eternal] updateCoverageMetric');
+        await updateCoverageMetric();
+        console.timeEnd('[eternal] updateCoverageMetric');
+        return { code: 0, out: 'Coverage updated' };
+      },
+      // Task 4: Docker simulation (if available)
+      async () => {
+        const dockerCheck = await run('docker', ['--version']);
+        if (dockerCheck.code === 0) {
+          console.time('[eternal] docker sim');
+          console.log('[eternal] Docker detectado, simulando buildx multiarquitectura');
+          const result = await run('echo', ['"[sim] docker buildx build --platform linux/amd64,linux/arm64 -t multi:v1 . --push"']);
+          console.timeEnd('[eternal] docker sim');
+          return result;
+        }
+        return { code: 0, out: 'Docker not available' };
+      }
+    ];
 
-    // Try a safe git commit/push if configured
+    const results = await runParallelTasks(parallelTasks);
+    console.log(`[eternal] Resultados paralelos: ${results.filter(r => r.status === 'fulfilled').length}/${results.length} exitosos`);
+
+    // Git operations (sequential for safety)
     try {
+      console.time('[eternal] git operations');
       await run('git', ['add', '.']);
-      await run('git', ['commit', '-m', 'Ares-IV Eternal commit'], []);
+      await run('git', ['commit', '-m', `Ares-V Apotheosis Cycle ${cycle}`], []);
       await run('git', ['push', 'origin', 'main']);
-      console.log('[eternal] git push ejecutado (si remote configurado)');
+      console.log('[eternal] git push ejecutado');
+      console.timeEnd('[eternal] git operations');
     } catch (e) {
-      console.log('[eternal] git push omitido o falló (entorno sin remote o sin credenciales)');
+      console.log('[eternal] git operations omitidas o fallaron');
     }
 
-    // Wait a short interval before next cycle (3s default)
+    console.timeEnd(`[eternal] Ciclo ${cycle} - tiempo total`);
+
+    // Wait a short interval before next cycle (reduced to 2s for faster cycles)
     if (oneCycle) break;
-    await new Promise(r => setTimeout(r, 3000));
+    await new Promise(r => setTimeout(r, 2000));
   }
 }
 

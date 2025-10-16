@@ -1,0 +1,1193 @@
+804f119775729b27c157844765c11a1b
+/* istanbul ignore next */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.calculateAlgorithmicJustice = calculateAlgorithmicJustice;
+exports.calculateEnvironmentalSustainability = calculateEnvironmentalSustainability;
+exports.calculateEthicalVector = calculateEthicalVector;
+exports.calculateHumanImpact = calculateHumanImpact;
+exports.calculatePrivacyRisk = calculatePrivacyRisk;
+exports.calculateSocialEquity = calculateSocialEquity;
+function cov_15q5kgs6hn() {
+  var path = "/home/davicho/etherai-foresight-platform-main/server/src/services/ethicalVectorModule.js";
+  var hash = "6f622bd35b72fb0f67d5e4f743b704b9071416c8";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/davicho/etherai-foresight-platform-main/server/src/services/ethicalVectorModule.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 14,
+          column: 42
+        },
+        end: {
+          line: 14,
+          column: 53
+        }
+      },
+      "1": {
+        start: {
+          line: 17,
+          column: 23
+        },
+        end: {
+          line: 17,
+          column: 52
+        }
+      },
+      "2": {
+        start: {
+          line: 18,
+          column: 28
+        },
+        end: {
+          line: 18,
+          column: 62
+        }
+      },
+      "3": {
+        start: {
+          line: 21,
+          column: 22
+        },
+        end: {
+          line: 21,
+          column: 70
+        }
+      },
+      "4": {
+        start: {
+          line: 23,
+          column: 2
+        },
+        end: {
+          line: 23,
+          column: 34
+        }
+      },
+      "5": {
+        start: {
+          line: 33,
+          column: 30
+        },
+        end: {
+          line: 33,
+          column: 41
+        }
+      },
+      "6": {
+        start: {
+          line: 36,
+          column: 20
+        },
+        end: {
+          line: 36,
+          column: 54
+        }
+      },
+      "7": {
+        start: {
+          line: 41,
+          column: 2
+        },
+        end: {
+          line: 41,
+          column: 32
+        }
+      },
+      "8": {
+        start: {
+          line: 51,
+          column: 42
+        },
+        end: {
+          line: 51,
+          column: 53
+        }
+      },
+      "9": {
+        start: {
+          line: 55,
+          column: 26
+        },
+        end: {
+          line: 55,
+          column: 80
+        }
+      },
+      "10": {
+        start: {
+          line: 56,
+          column: 23
+        },
+        end: {
+          line: 56,
+          column: 56
+        }
+      },
+      "11": {
+        start: {
+          line: 59,
+          column: 26
+        },
+        end: {
+          line: 59,
+          column: 102
+        }
+      },
+      "12": {
+        start: {
+          line: 60,
+          column: 23
+        },
+        end: {
+          line: 60,
+          column: 56
+        }
+      },
+      "13": {
+        start: {
+          line: 63,
+          column: 23
+        },
+        end: {
+          line: 63,
+          column: 66
+        }
+      },
+      "14": {
+        start: {
+          line: 65,
+          column: 2
+        },
+        end: {
+          line: 65,
+          column: 35
+        }
+      },
+      "15": {
+        start: {
+          line: 75,
+          column: 59
+        },
+        end: {
+          line: 75,
+          column: 70
+        }
+      },
+      "16": {
+        start: {
+          line: 78,
+          column: 32
+        },
+        end: {
+          line: 78,
+          column: 74
+        }
+      },
+      "17": {
+        start: {
+          line: 79,
+          column: 30
+        },
+        end: {
+          line: 79,
+          column: 68
+        }
+      },
+      "18": {
+        start: {
+          line: 82,
+          column: 22
+        },
+        end: {
+          line: 82,
+          column: 81
+        }
+      },
+      "19": {
+        start: {
+          line: 84,
+          column: 2
+        },
+        end: {
+          line: 84,
+          column: 34
+        }
+      },
+      "20": {
+        start: {
+          line: 94,
+          column: 42
+        },
+        end: {
+          line: 94,
+          column: 53
+        }
+      },
+      "21": {
+        start: {
+          line: 98,
+          column: 30
+        },
+        end: {
+          line: 98,
+          column: 102
+        }
+      },
+      "22": {
+        start: {
+          line: 99,
+          column: 27
+        },
+        end: {
+          line: 99,
+          column: 61
+        }
+      },
+      "23": {
+        start: {
+          line: 102,
+          column: 29
+        },
+        end: {
+          line: 102,
+          column: 83
+        }
+      },
+      "24": {
+        start: {
+          line: 104,
+          column: 2
+        },
+        end: {
+          line: 104,
+          column: 41
+        }
+      },
+      "25": {
+        start: {
+          line: 115,
+          column: 22
+        },
+        end: {
+          line: 115,
+          column: 55
+        }
+      },
+      "26": {
+        start: {
+          line: 116,
+          column: 38
+        },
+        end: {
+          line: 116,
+          column: 87
+        }
+      },
+      "27": {
+        start: {
+          line: 117,
+          column: 23
+        },
+        end: {
+          line: 117,
+          column: 57
+        }
+      },
+      "28": {
+        start: {
+          line: 118,
+          column: 22
+        },
+        end: {
+          line: 118,
+          column: 55
+        }
+      },
+      "29": {
+        start: {
+          line: 119,
+          column: 29
+        },
+        end: {
+          line: 119,
+          column: 69
+        }
+      },
+      "30": {
+        start: {
+          line: 124,
+          column: 23
+        },
+        end: {
+          line: 125,
+          column: 93
+        }
+      },
+      "31": {
+        start: {
+          line: 127,
+          column: 2
+        },
+        end: {
+          line: 140,
+          column: 4
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "calculateHumanImpact",
+        decl: {
+          start: {
+            line: 13,
+            column: 9
+          },
+          end: {
+            line: 13,
+            column: 29
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 43
+          },
+          end: {
+            line: 24,
+            column: 1
+          }
+        },
+        line: 13
+      },
+      "1": {
+        name: "calculateEnvironmentalSustainability",
+        decl: {
+          start: {
+            line: 32,
+            column: 9
+          },
+          end: {
+            line: 32,
+            column: 45
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 59
+          },
+          end: {
+            line: 42,
+            column: 1
+          }
+        },
+        line: 32
+      },
+      "2": {
+        name: "calculateSocialEquity",
+        decl: {
+          start: {
+            line: 50,
+            column: 9
+          },
+          end: {
+            line: 50,
+            column: 30
+          }
+        },
+        loc: {
+          start: {
+            line: 50,
+            column: 44
+          },
+          end: {
+            line: 66,
+            column: 1
+          }
+        },
+        line: 50
+      },
+      "3": {
+        name: "calculatePrivacyRisk",
+        decl: {
+          start: {
+            line: 74,
+            column: 9
+          },
+          end: {
+            line: 74,
+            column: 29
+          }
+        },
+        loc: {
+          start: {
+            line: 74,
+            column: 43
+          },
+          end: {
+            line: 85,
+            column: 1
+          }
+        },
+        line: 74
+      },
+      "4": {
+        name: "calculateAlgorithmicJustice",
+        decl: {
+          start: {
+            line: 93,
+            column: 9
+          },
+          end: {
+            line: 93,
+            column: 36
+          }
+        },
+        loc: {
+          start: {
+            line: 93,
+            column: 50
+          },
+          end: {
+            line: 105,
+            column: 1
+          }
+        },
+        line: 93
+      },
+      "5": {
+        name: "calculateEthicalVector",
+        decl: {
+          start: {
+            line: 114,
+            column: 9
+          },
+          end: {
+            line: 114,
+            column: 31
+          }
+        },
+        loc: {
+          start: {
+            line: 114,
+            column: 45
+          },
+          end: {
+            line: 141,
+            column: 1
+          }
+        },
+        line: 114
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 24
+          },
+          end: {
+            line: 17,
+            column: 45
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 24
+          },
+          end: {
+            line: 17,
+            column: 40
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 44
+          },
+          end: {
+            line: 17,
+            column: 45
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 18,
+            column: 29
+          },
+          end: {
+            line: 18,
+            column: 55
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 18,
+            column: 29
+          },
+          end: {
+            line: 18,
+            column: 50
+          }
+        }, {
+          start: {
+            line: 18,
+            column: 54
+          },
+          end: {
+            line: 18,
+            column: 55
+          }
+        }],
+        line: 18
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 36,
+            column: 21
+          },
+          end: {
+            line: 36,
+            column: 47
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 36,
+            column: 21
+          },
+          end: {
+            line: 36,
+            column: 42
+          }
+        }, {
+          start: {
+            line: 36,
+            column: 46
+          },
+          end: {
+            line: 36,
+            column: 47
+          }
+        }],
+        line: 36
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 55,
+            column: 26
+          },
+          end: {
+            line: 55,
+            column: 80
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 55,
+            column: 49
+          },
+          end: {
+            line: 55,
+            column: 76
+          }
+        }, {
+          start: {
+            line: 55,
+            column: 79
+          },
+          end: {
+            line: 55,
+            column: 80
+          }
+        }],
+        line: 55
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 59,
+            column: 26
+          },
+          end: {
+            line: 59,
+            column: 102
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 59,
+            column: 60
+          },
+          end: {
+            line: 59,
+            column: 98
+          }
+        }, {
+          start: {
+            line: 59,
+            column: 101
+          },
+          end: {
+            line: 59,
+            column: 102
+          }
+        }],
+        line: 59
+      },
+      "5": {
+        loc: {
+          start: {
+            line: 78,
+            column: 33
+          },
+          end: {
+            line: 78,
+            column: 67
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 78,
+            column: 33
+          },
+          end: {
+            line: 78,
+            column: 62
+          }
+        }, {
+          start: {
+            line: 78,
+            column: 66
+          },
+          end: {
+            line: 78,
+            column: 67
+          }
+        }],
+        line: 78
+      },
+      "6": {
+        loc: {
+          start: {
+            line: 79,
+            column: 31
+          },
+          end: {
+            line: 79,
+            column: 61
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 79,
+            column: 31
+          },
+          end: {
+            line: 79,
+            column: 56
+          }
+        }, {
+          start: {
+            line: 79,
+            column: 60
+          },
+          end: {
+            line: 79,
+            column: 61
+          }
+        }],
+        line: 79
+      },
+      "7": {
+        loc: {
+          start: {
+            line: 98,
+            column: 30
+          },
+          end: {
+            line: 98,
+            column: 102
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 98,
+            column: 53
+          },
+          end: {
+            line: 98,
+            column: 98
+          }
+        }, {
+          start: {
+            line: 98,
+            column: 101
+          },
+          end: {
+            line: 98,
+            column: 102
+          }
+        }],
+        line: 98
+      },
+      "8": {
+        loc: {
+          start: {
+            line: 99,
+            column: 28
+          },
+          end: {
+            line: 99,
+            column: 54
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 99,
+            column: 28
+          },
+          end: {
+            line: 99,
+            column: 49
+          }
+        }, {
+          start: {
+            line: 99,
+            column: 53
+          },
+          end: {
+            line: 99,
+            column: 54
+          }
+        }],
+        line: 99
+      },
+      "9": {
+        loc: {
+          start: {
+            line: 137,
+            column: 16
+          },
+          end: {
+            line: 138,
+            column: 85
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 137,
+            column: 37
+          },
+          end: {
+            line: 137,
+            column: 59
+          }
+        }, {
+          start: {
+            line: 138,
+            column: 16
+          },
+          end: {
+            line: 138,
+            column: 85
+          }
+        }],
+        line: 137
+      },
+      "10": {
+        loc: {
+          start: {
+            line: 138,
+            column: 16
+          },
+          end: {
+            line: 138,
+            column: 85
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 138,
+            column: 37
+          },
+          end: {
+            line: 138,
+            column: 61
+          }
+        }, {
+          start: {
+            line: 138,
+            column: 64
+          },
+          end: {
+            line: 138,
+            column: 85
+          }
+        }],
+        line: 138
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0,
+      "29": 0,
+      "30": 0,
+      "31": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0],
+      "4": [0, 0],
+      "5": [0, 0],
+      "6": [0, 0],
+      "7": [0, 0],
+      "8": [0, 0],
+      "9": [0, 0],
+      "10": [0, 0]
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "6f622bd35b72fb0f67d5e4f743b704b9071416c8"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_15q5kgs6hn = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_15q5kgs6hn();
+/**
+ * @fileoverview Ethical Vector Module for Praevisio AI.
+ * This module implements the Quantum Ethics framework for evaluating predictions
+ * against human impact, environmental sustainability, social equity, privacy, and algorithmic justice.
+ */
+
+/**
+ * Calculates the human impact component of the ethical vector.
+ * Higher values indicate greater potential harm to human populations.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Human impact score (0-1).
+ */
+function calculateHumanImpact(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[0]++;
+  const {
+    famineRisk,
+    supplyChainRisk
+  } =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[0]++, riskIndices);
+
+  // Human impact primarily from famine and supply chain disruptions
+  const famineImpact =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[1]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[0][0]++, famineRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[0][1]++, 0)) / 100); // Normalize to 0-1
+  const supplyChainImpact =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[2]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[1][0]++, supplyChainRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[1][1]++, 0)) / 100);
+
+  // Weighted combination: famine has higher human impact weight
+  const humanImpact =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[3]++, famineImpact * 0.7 + supplyChainImpact * 0.3);
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[4]++;
+  return Math.min(1, humanImpact);
+}
+
+/**
+ * Calculates the environmental sustainability component of the ethical vector.
+ * Higher values indicate greater environmental risk.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Environmental sustainability score (0-1).
+ */
+function calculateEnvironmentalSustainability(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[1]++;
+  const {
+    geophysicalRisk
+  } =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[5]++, riskIndices);
+
+  // Environmental impact primarily from geophysical events
+  const geoImpact =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[6]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[2][0]++, geophysicalRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[2][1]++, 0)) / 100);
+
+  // Additional factors could include climate data when available
+  // For now, focus on seismic activity as proxy for environmental disruption
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[7]++;
+  return Math.min(1, geoImpact);
+}
+
+/**
+ * Calculates the social equity component of the ethical vector.
+ * Higher values indicate greater inequity in risk distribution.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Social equity score (0-1).
+ */
+function calculateSocialEquity(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[2]++;
+  const {
+    famineRisk,
+    supplyChainRisk
+  } =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[8]++, riskIndices);
+
+  // Social equity considers how risks are distributed across populations
+  // Higher famine risk in multiple countries indicates inequity
+  const famineCountries =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[9]++, famineRisk.countries ?
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[3][0]++, famineRisk.countries.length) :
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[3][1]++, 0));
+  const famineEquity =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[10]++, Math.min(1, famineCountries / 50)); // Normalize by global regions
+
+  // Supply chain disruptions affecting multiple regions
+  const affectedRegions =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[11]++, supplyChainRisk.affectedRegions ?
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[4][0]++, supplyChainRisk.affectedRegions.length) :
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[4][1]++, 0));
+  const supplyEquity =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[12]++, Math.min(1, affectedRegions / 20));
+
+  // Combined equity score
+  const socialEquity =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[13]++, famineEquity * 0.6 + supplyEquity * 0.4);
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[14]++;
+  return Math.min(1, socialEquity);
+}
+
+/**
+ * Calculates the privacy risk component of the ethical vector.
+ * Higher values indicate greater potential privacy violations in data handling.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Privacy risk score (0-1).
+ */
+function calculatePrivacyRisk(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[3]++;
+  const {
+    communityResilienceRisk,
+    climateExtremesRisk
+  } =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[15]++, riskIndices);
+
+  // Privacy risk increases with detailed community data exposure
+  const communityDataExposure =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[16]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[5][0]++, communityResilienceRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[5][1]++, 0)) / 100);
+  const climateDataExposure =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[17]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[6][0]++, climateExtremesRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[6][1]++, 0)) / 100);
+
+  // Weighted combination: community data has higher privacy sensitivity
+  const privacyRisk =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[18]++, communityDataExposure * 0.6 + climateDataExposure * 0.4);
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[19]++;
+  return Math.min(1, privacyRisk);
+}
+
+/**
+ * Calculates the algorithmic justice component of the ethical vector.
+ * Higher values indicate greater potential for algorithmic bias or unfair outcomes.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {number} Algorithmic justice score (0-1).
+ */
+function calculateAlgorithmicJustice(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[4]++;
+  const {
+    famineRisk,
+    geophysicalRisk
+  } =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[20]++, riskIndices);
+
+  // Algorithmic justice considers potential biases in risk predictions
+  // Higher concentration of risk in specific regions may indicate bias
+  const famineConcentration =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[21]++, famineRisk.countries ?
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[7][0]++, Math.min(1, famineRisk.countries.length / 10)) :
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[7][1]++, 0));
+  const geoConcentration =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[22]++, (
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[8][0]++, geophysicalRisk.value) ||
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().b[8][1]++, 0)) / 100);
+
+  // Combined justice score: concentration indicates potential bias
+  const algorithmicJustice =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[23]++, famineConcentration * 0.5 + geoConcentration * 0.5);
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[24]++;
+  return Math.min(1, algorithmicJustice);
+}
+
+/**
+ * Calculates the complete ethical vector for the current risk assessment.
+ * The vector represents [humanImpact, environmentalSustainability, socialEquity, privacyRisk, algorithmicJustice]
+ * where each component is normalized 0-1.
+ * @param {object} riskIndices - The current risk indices from prediction engine.
+ * @returns {object} Ethical vector with components and overall assessment.
+ */
+function calculateEthicalVector(riskIndices) {
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().f[5]++;
+  const humanImpact =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[25]++, calculateHumanImpact(riskIndices));
+  const environmentalSustainability =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[26]++, calculateEnvironmentalSustainability(riskIndices));
+  const socialEquity =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[27]++, calculateSocialEquity(riskIndices));
+  const privacyRisk =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[28]++, calculatePrivacyRisk(riskIndices));
+  const algorithmicJustice =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[29]++, calculateAlgorithmicJustice(riskIndices));
+
+  // Overall ethical score: weighted average
+  // Human impact has highest weight, followed by environmental and social concerns
+  // Privacy and algorithmic justice are emerging ethical dimensions
+  const overallScore =
+  /* istanbul ignore next */
+  (cov_15q5kgs6hn().s[30]++, humanImpact * 0.35 + environmentalSustainability * 0.25 + socialEquity * 0.2 + privacyRisk * 0.1 + algorithmicJustice * 0.1);
+  /* istanbul ignore next */
+  cov_15q5kgs6hn().s[31]++;
+  return {
+    vector: [humanImpact, environmentalSustainability, socialEquity, privacyRisk, algorithmicJustice],
+    components: {
+      humanImpact,
+      environmentalSustainability,
+      socialEquity,
+      privacyRisk,
+      algorithmicJustice
+    },
+    overallScore,
+    assessment: overallScore > 0.7 ?
+    /* istanbul ignore next */
+    (cov_15q5kgs6hn().b[9][0]++, 'High Ethical Concern') :
+    /* istanbul ignore next */
+    (cov_15q5kgs6hn().b[9][1]++, overallScore > 0.4 ?
+    /* istanbul ignore next */
+    (cov_15q5kgs6hn().b[10][0]++, 'Medium Ethical Concern') :
+    /* istanbul ignore next */
+    (cov_15q5kgs6hn().b[10][1]++, 'Low Ethical Concern')),
+    timestamp: new Date().toISOString()
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTVxNWtnczZobiIsImFjdHVhbENvdmVyYWdlIiwiY2FsY3VsYXRlSHVtYW5JbXBhY3QiLCJyaXNrSW5kaWNlcyIsImYiLCJmYW1pbmVSaXNrIiwic3VwcGx5Q2hhaW5SaXNrIiwicyIsImZhbWluZUltcGFjdCIsImIiLCJ2YWx1ZSIsInN1cHBseUNoYWluSW1wYWN0IiwiaHVtYW5JbXBhY3QiLCJNYXRoIiwibWluIiwiY2FsY3VsYXRlRW52aXJvbm1lbnRhbFN1c3RhaW5hYmlsaXR5IiwiZ2VvcGh5c2ljYWxSaXNrIiwiZ2VvSW1wYWN0IiwiY2FsY3VsYXRlU29jaWFsRXF1aXR5IiwiZmFtaW5lQ291bnRyaWVzIiwiY291bnRyaWVzIiwibGVuZ3RoIiwiZmFtaW5lRXF1aXR5IiwiYWZmZWN0ZWRSZWdpb25zIiwic3VwcGx5RXF1aXR5Iiwic29jaWFsRXF1aXR5IiwiY2FsY3VsYXRlUHJpdmFjeVJpc2siLCJjb21tdW5pdHlSZXNpbGllbmNlUmlzayIsImNsaW1hdGVFeHRyZW1lc1Jpc2siLCJjb21tdW5pdHlEYXRhRXhwb3N1cmUiLCJjbGltYXRlRGF0YUV4cG9zdXJlIiwicHJpdmFjeVJpc2siLCJjYWxjdWxhdGVBbGdvcml0aG1pY0p1c3RpY2UiLCJmYW1pbmVDb25jZW50cmF0aW9uIiwiZ2VvQ29uY2VudHJhdGlvbiIsImFsZ29yaXRobWljSnVzdGljZSIsImNhbGN1bGF0ZUV0aGljYWxWZWN0b3IiLCJlbnZpcm9ubWVudGFsU3VzdGFpbmFiaWxpdHkiLCJvdmVyYWxsU2NvcmUiLCJ2ZWN0b3IiLCJjb21wb25lbnRzIiwiYXNzZXNzbWVudCIsInRpbWVzdGFtcCIsIkRhdGUiLCJ0b0lTT1N0cmluZyJdLCJzb3VyY2VzIjpbImV0aGljYWxWZWN0b3JNb2R1bGUuanMiXSwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBAZmlsZW92ZXJ2aWV3IEV0aGljYWwgVmVjdG9yIE1vZHVsZSBmb3IgUHJhZXZpc2lvIEFJLlxuICogVGhpcyBtb2R1bGUgaW1wbGVtZW50cyB0aGUgUXVhbnR1bSBFdGhpY3MgZnJhbWV3b3JrIGZvciBldmFsdWF0aW5nIHByZWRpY3Rpb25zXG4gKiBhZ2FpbnN0IGh1bWFuIGltcGFjdCwgZW52aXJvbm1lbnRhbCBzdXN0YWluYWJpbGl0eSwgc29jaWFsIGVxdWl0eSwgcHJpdmFjeSwgYW5kIGFsZ29yaXRobWljIGp1c3RpY2UuXG4gKi9cblxuLyoqXG4gKiBDYWxjdWxhdGVzIHRoZSBodW1hbiBpbXBhY3QgY29tcG9uZW50IG9mIHRoZSBldGhpY2FsIHZlY3Rvci5cbiAqIEhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBwb3RlbnRpYWwgaGFybSB0byBodW1hbiBwb3B1bGF0aW9ucy5cbiAqIEBwYXJhbSB7b2JqZWN0fSByaXNrSW5kaWNlcyAtIFRoZSBjdXJyZW50IHJpc2sgaW5kaWNlcyBmcm9tIHByZWRpY3Rpb24gZW5naW5lLlxuICogQHJldHVybnMge251bWJlcn0gSHVtYW4gaW1wYWN0IHNjb3JlICgwLTEpLlxuICovXG5mdW5jdGlvbiBjYWxjdWxhdGVIdW1hbkltcGFjdChyaXNrSW5kaWNlcykge1xuICBjb25zdCB7IGZhbWluZVJpc2ssIHN1cHBseUNoYWluUmlzayB9ID0gcmlza0luZGljZXM7XG5cbiAgLy8gSHVtYW4gaW1wYWN0IHByaW1hcmlseSBmcm9tIGZhbWluZSBhbmQgc3VwcGx5IGNoYWluIGRpc3J1cHRpb25zXG4gIGNvbnN0IGZhbWluZUltcGFjdCA9IChmYW1pbmVSaXNrLnZhbHVlIHx8IDApIC8gMTAwOyAvLyBOb3JtYWxpemUgdG8gMC0xXG4gIGNvbnN0IHN1cHBseUNoYWluSW1wYWN0ID0gKHN1cHBseUNoYWluUmlzay52YWx1ZSB8fCAwKSAvIDEwMDtcblxuICAvLyBXZWlnaHRlZCBjb21iaW5hdGlvbjogZmFtaW5lIGhhcyBoaWdoZXIgaHVtYW4gaW1wYWN0IHdlaWdodFxuICBjb25zdCBodW1hbkltcGFjdCA9IChmYW1pbmVJbXBhY3QgKiAwLjcpICsgKHN1cHBseUNoYWluSW1wYWN0ICogMC4zKTtcblxuICByZXR1cm4gTWF0aC5taW4oMSwgaHVtYW5JbXBhY3QpO1xufVxuXG4vKipcbiAqIENhbGN1bGF0ZXMgdGhlIGVudmlyb25tZW50YWwgc3VzdGFpbmFiaWxpdHkgY29tcG9uZW50IG9mIHRoZSBldGhpY2FsIHZlY3Rvci5cbiAqIEhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBlbnZpcm9ubWVudGFsIHJpc2suXG4gKiBAcGFyYW0ge29iamVjdH0gcmlza0luZGljZXMgLSBUaGUgY3VycmVudCByaXNrIGluZGljZXMgZnJvbSBwcmVkaWN0aW9uIGVuZ2luZS5cbiAqIEByZXR1cm5zIHtudW1iZXJ9IEVudmlyb25tZW50YWwgc3VzdGFpbmFiaWxpdHkgc2NvcmUgKDAtMSkuXG4gKi9cbmZ1bmN0aW9uIGNhbGN1bGF0ZUVudmlyb25tZW50YWxTdXN0YWluYWJpbGl0eShyaXNrSW5kaWNlcykge1xuICBjb25zdCB7IGdlb3BoeXNpY2FsUmlzayB9ID0gcmlza0luZGljZXM7XG5cbiAgLy8gRW52aXJvbm1lbnRhbCBpbXBhY3QgcHJpbWFyaWx5IGZyb20gZ2VvcGh5c2ljYWwgZXZlbnRzXG4gIGNvbnN0IGdlb0ltcGFjdCA9IChnZW9waHlzaWNhbFJpc2sudmFsdWUgfHwgMCkgLyAxMDA7XG5cbiAgLy8gQWRkaXRpb25hbCBmYWN0b3JzIGNvdWxkIGluY2x1ZGUgY2xpbWF0ZSBkYXRhIHdoZW4gYXZhaWxhYmxlXG4gIC8vIEZvciBub3csIGZvY3VzIG9uIHNlaXNtaWMgYWN0aXZpdHkgYXMgcHJveHkgZm9yIGVudmlyb25tZW50YWwgZGlzcnVwdGlvblxuXG4gIHJldHVybiBNYXRoLm1pbigxLCBnZW9JbXBhY3QpO1xufVxuXG4vKipcbiAqIENhbGN1bGF0ZXMgdGhlIHNvY2lhbCBlcXVpdHkgY29tcG9uZW50IG9mIHRoZSBldGhpY2FsIHZlY3Rvci5cbiAqIEhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBpbmVxdWl0eSBpbiByaXNrIGRpc3RyaWJ1dGlvbi5cbiAqIEBwYXJhbSB7b2JqZWN0fSByaXNrSW5kaWNlcyAtIFRoZSBjdXJyZW50IHJpc2sgaW5kaWNlcyBmcm9tIHByZWRpY3Rpb24gZW5naW5lLlxuICogQHJldHVybnMge251bWJlcn0gU29jaWFsIGVxdWl0eSBzY29yZSAoMC0xKS5cbiAqL1xuZnVuY3Rpb24gY2FsY3VsYXRlU29jaWFsRXF1aXR5KHJpc2tJbmRpY2VzKSB7XG4gIGNvbnN0IHsgZmFtaW5lUmlzaywgc3VwcGx5Q2hhaW5SaXNrIH0gPSByaXNrSW5kaWNlcztcblxuICAvLyBTb2NpYWwgZXF1aXR5IGNvbnNpZGVycyBob3cgcmlza3MgYXJlIGRpc3RyaWJ1dGVkIGFjcm9zcyBwb3B1bGF0aW9uc1xuICAvLyBIaWdoZXIgZmFtaW5lIHJpc2sgaW4gbXVsdGlwbGUgY291bnRyaWVzIGluZGljYXRlcyBpbmVxdWl0eVxuICBjb25zdCBmYW1pbmVDb3VudHJpZXMgPSBmYW1pbmVSaXNrLmNvdW50cmllcyA/IGZhbWluZVJpc2suY291bnRyaWVzLmxlbmd0aCA6IDA7XG4gIGNvbnN0IGZhbWluZUVxdWl0eSA9IE1hdGgubWluKDEsIGZhbWluZUNvdW50cmllcyAvIDUwKTsgLy8gTm9ybWFsaXplIGJ5IGdsb2JhbCByZWdpb25zXG5cbiAgLy8gU3VwcGx5IGNoYWluIGRpc3J1cHRpb25zIGFmZmVjdGluZyBtdWx0aXBsZSByZWdpb25zXG4gIGNvbnN0IGFmZmVjdGVkUmVnaW9ucyA9IHN1cHBseUNoYWluUmlzay5hZmZlY3RlZFJlZ2lvbnMgPyBzdXBwbHlDaGFpblJpc2suYWZmZWN0ZWRSZWdpb25zLmxlbmd0aCA6IDA7XG4gIGNvbnN0IHN1cHBseUVxdWl0eSA9IE1hdGgubWluKDEsIGFmZmVjdGVkUmVnaW9ucyAvIDIwKTtcblxuICAvLyBDb21iaW5lZCBlcXVpdHkgc2NvcmVcbiAgY29uc3Qgc29jaWFsRXF1aXR5ID0gKGZhbWluZUVxdWl0eSAqIDAuNikgKyAoc3VwcGx5RXF1aXR5ICogMC40KTtcblxuICByZXR1cm4gTWF0aC5taW4oMSwgc29jaWFsRXF1aXR5KTtcbn1cblxuLyoqXG4gKiBDYWxjdWxhdGVzIHRoZSBwcml2YWN5IHJpc2sgY29tcG9uZW50IG9mIHRoZSBldGhpY2FsIHZlY3Rvci5cbiAqIEhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBwb3RlbnRpYWwgcHJpdmFjeSB2aW9sYXRpb25zIGluIGRhdGEgaGFuZGxpbmcuXG4gKiBAcGFyYW0ge29iamVjdH0gcmlza0luZGljZXMgLSBUaGUgY3VycmVudCByaXNrIGluZGljZXMgZnJvbSBwcmVkaWN0aW9uIGVuZ2luZS5cbiAqIEByZXR1cm5zIHtudW1iZXJ9IFByaXZhY3kgcmlzayBzY29yZSAoMC0xKS5cbiAqL1xuZnVuY3Rpb24gY2FsY3VsYXRlUHJpdmFjeVJpc2socmlza0luZGljZXMpIHtcbiAgY29uc3QgeyBjb21tdW5pdHlSZXNpbGllbmNlUmlzaywgY2xpbWF0ZUV4dHJlbWVzUmlzayB9ID0gcmlza0luZGljZXM7XG5cbiAgLy8gUHJpdmFjeSByaXNrIGluY3JlYXNlcyB3aXRoIGRldGFpbGVkIGNvbW11bml0eSBkYXRhIGV4cG9zdXJlXG4gIGNvbnN0IGNvbW11bml0eURhdGFFeHBvc3VyZSA9IChjb21tdW5pdHlSZXNpbGllbmNlUmlzay52YWx1ZSB8fCAwKSAvIDEwMDtcbiAgY29uc3QgY2xpbWF0ZURhdGFFeHBvc3VyZSA9IChjbGltYXRlRXh0cmVtZXNSaXNrLnZhbHVlIHx8IDApIC8gMTAwO1xuXG4gIC8vIFdlaWdodGVkIGNvbWJpbmF0aW9uOiBjb21tdW5pdHkgZGF0YSBoYXMgaGlnaGVyIHByaXZhY3kgc2Vuc2l0aXZpdHlcbiAgY29uc3QgcHJpdmFjeVJpc2sgPSAoY29tbXVuaXR5RGF0YUV4cG9zdXJlICogMC42KSArIChjbGltYXRlRGF0YUV4cG9zdXJlICogMC40KTtcblxuICByZXR1cm4gTWF0aC5taW4oMSwgcHJpdmFjeVJpc2spO1xufVxuXG4vKipcbiAqIENhbGN1bGF0ZXMgdGhlIGFsZ29yaXRobWljIGp1c3RpY2UgY29tcG9uZW50IG9mIHRoZSBldGhpY2FsIHZlY3Rvci5cbiAqIEhpZ2hlciB2YWx1ZXMgaW5kaWNhdGUgZ3JlYXRlciBwb3RlbnRpYWwgZm9yIGFsZ29yaXRobWljIGJpYXMgb3IgdW5mYWlyIG91dGNvbWVzLlxuICogQHBhcmFtIHtvYmplY3R9IHJpc2tJbmRpY2VzIC0gVGhlIGN1cnJlbnQgcmlzayBpbmRpY2VzIGZyb20gcHJlZGljdGlvbiBlbmdpbmUuXG4gKiBAcmV0dXJucyB7bnVtYmVyfSBBbGdvcml0aG1pYyBqdXN0aWNlIHNjb3JlICgwLTEpLlxuICovXG5mdW5jdGlvbiBjYWxjdWxhdGVBbGdvcml0aG1pY0p1c3RpY2Uocmlza0luZGljZXMpIHtcbiAgY29uc3QgeyBmYW1pbmVSaXNrLCBnZW9waHlzaWNhbFJpc2sgfSA9IHJpc2tJbmRpY2VzO1xuXG4gIC8vIEFsZ29yaXRobWljIGp1c3RpY2UgY29uc2lkZXJzIHBvdGVudGlhbCBiaWFzZXMgaW4gcmlzayBwcmVkaWN0aW9uc1xuICAvLyBIaWdoZXIgY29uY2VudHJhdGlvbiBvZiByaXNrIGluIHNwZWNpZmljIHJlZ2lvbnMgbWF5IGluZGljYXRlIGJpYXNcbiAgY29uc3QgZmFtaW5lQ29uY2VudHJhdGlvbiA9IGZhbWluZVJpc2suY291bnRyaWVzID8gTWF0aC5taW4oMSwgZmFtaW5lUmlzay5jb3VudHJpZXMubGVuZ3RoIC8gMTApIDogMDtcbiAgY29uc3QgZ2VvQ29uY2VudHJhdGlvbiA9IChnZW9waHlzaWNhbFJpc2sudmFsdWUgfHwgMCkgLyAxMDA7XG5cbiAgLy8gQ29tYmluZWQganVzdGljZSBzY29yZTogY29uY2VudHJhdGlvbiBpbmRpY2F0ZXMgcG90ZW50aWFsIGJpYXNcbiAgY29uc3QgYWxnb3JpdGhtaWNKdXN0aWNlID0gKGZhbWluZUNvbmNlbnRyYXRpb24gKiAwLjUpICsgKGdlb0NvbmNlbnRyYXRpb24gKiAwLjUpO1xuXG4gIHJldHVybiBNYXRoLm1pbigxLCBhbGdvcml0aG1pY0p1c3RpY2UpO1xufVxuXG4vKipcbiAqIENhbGN1bGF0ZXMgdGhlIGNvbXBsZXRlIGV0aGljYWwgdmVjdG9yIGZvciB0aGUgY3VycmVudCByaXNrIGFzc2Vzc21lbnQuXG4gKiBUaGUgdmVjdG9yIHJlcHJlc2VudHMgW2h1bWFuSW1wYWN0LCBlbnZpcm9ubWVudGFsU3VzdGFpbmFiaWxpdHksIHNvY2lhbEVxdWl0eSwgcHJpdmFjeVJpc2ssIGFsZ29yaXRobWljSnVzdGljZV1cbiAqIHdoZXJlIGVhY2ggY29tcG9uZW50IGlzIG5vcm1hbGl6ZWQgMC0xLlxuICogQHBhcmFtIHtvYmplY3R9IHJpc2tJbmRpY2VzIC0gVGhlIGN1cnJlbnQgcmlzayBpbmRpY2VzIGZyb20gcHJlZGljdGlvbiBlbmdpbmUuXG4gKiBAcmV0dXJucyB7b2JqZWN0fSBFdGhpY2FsIHZlY3RvciB3aXRoIGNvbXBvbmVudHMgYW5kIG92ZXJhbGwgYXNzZXNzbWVudC5cbiAqL1xuZnVuY3Rpb24gY2FsY3VsYXRlRXRoaWNhbFZlY3RvcihyaXNrSW5kaWNlcykge1xuICBjb25zdCBodW1hbkltcGFjdCA9IGNhbGN1bGF0ZUh1bWFuSW1wYWN0KHJpc2tJbmRpY2VzKTtcbiAgY29uc3QgZW52aXJvbm1lbnRhbFN1c3RhaW5hYmlsaXR5ID0gY2FsY3VsYXRlRW52aXJvbm1lbnRhbFN1c3RhaW5hYmlsaXR5KHJpc2tJbmRpY2VzKTtcbiAgY29uc3Qgc29jaWFsRXF1aXR5ID0gY2FsY3VsYXRlU29jaWFsRXF1aXR5KHJpc2tJbmRpY2VzKTtcbiAgY29uc3QgcHJpdmFjeVJpc2sgPSBjYWxjdWxhdGVQcml2YWN5UmlzayhyaXNrSW5kaWNlcyk7XG4gIGNvbnN0IGFsZ29yaXRobWljSnVzdGljZSA9IGNhbGN1bGF0ZUFsZ29yaXRobWljSnVzdGljZShyaXNrSW5kaWNlcyk7XG5cbiAgLy8gT3ZlcmFsbCBldGhpY2FsIHNjb3JlOiB3ZWlnaHRlZCBhdmVyYWdlXG4gIC8vIEh1bWFuIGltcGFjdCBoYXMgaGlnaGVzdCB3ZWlnaHQsIGZvbGxvd2VkIGJ5IGVudmlyb25tZW50YWwgYW5kIHNvY2lhbCBjb25jZXJuc1xuICAvLyBQcml2YWN5IGFuZCBhbGdvcml0aG1pYyBqdXN0aWNlIGFyZSBlbWVyZ2luZyBldGhpY2FsIGRpbWVuc2lvbnNcbiAgY29uc3Qgb3ZlcmFsbFNjb3JlID0gKGh1bWFuSW1wYWN0ICogMC4zNSkgKyAoZW52aXJvbm1lbnRhbFN1c3RhaW5hYmlsaXR5ICogMC4yNSkgK1xuICAgICAgICAgICAgICAgICAgICAgIChzb2NpYWxFcXVpdHkgKiAwLjIpICsgKHByaXZhY3lSaXNrICogMC4xKSArIChhbGdvcml0aG1pY0p1c3RpY2UgKiAwLjEpO1xuXG4gIHJldHVybiB7XG4gICAgdmVjdG9yOiBbaHVtYW5JbXBhY3QsIGVudmlyb25tZW50YWxTdXN0YWluYWJpbGl0eSwgc29jaWFsRXF1aXR5LCBwcml2YWN5UmlzaywgYWxnb3JpdGhtaWNKdXN0aWNlXSxcbiAgICBjb21wb25lbnRzOiB7XG4gICAgICBodW1hbkltcGFjdCxcbiAgICAgIGVudmlyb25tZW50YWxTdXN0YWluYWJpbGl0eSxcbiAgICAgIHNvY2lhbEVxdWl0eSxcbiAgICAgIHByaXZhY3lSaXNrLFxuICAgICAgYWxnb3JpdGhtaWNKdXN0aWNlLFxuICAgIH0sXG4gICAgb3ZlcmFsbFNjb3JlLFxuICAgIGFzc2Vzc21lbnQ6IG92ZXJhbGxTY29yZSA+IDAuNyA/ICdIaWdoIEV0aGljYWwgQ29uY2VybicgOlxuICAgICAgICAgICAgICAgIG92ZXJhbGxTY29yZSA+IDAuNCA/ICdNZWRpdW0gRXRoaWNhbCBDb25jZXJuJyA6ICdMb3cgRXRoaWNhbCBDb25jZXJuJyxcbiAgICB0aW1lc3RhbXA6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSxcbiAgfTtcbn1cblxuZXhwb3J0IHtcbiAgY2FsY3VsYXRlSHVtYW5JbXBhY3QsXG4gIGNhbGN1bGF0ZUVudmlyb25tZW50YWxTdXN0YWluYWJpbGl0eSxcbiAgY2FsY3VsYXRlU29jaWFsRXF1aXR5LFxuICBjYWxjdWxhdGVQcml2YWN5UmlzayxcbiAgY2FsY3VsYXRlQWxnb3JpdGhtaWNKdXN0aWNlLFxuICBjYWxjdWxhdGVFdGhpY2FsVmVjdG9yLFxufTsiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

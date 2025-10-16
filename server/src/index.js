@@ -5,25 +5,47 @@ import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import cluster from 'cluster';
+import { cpus } from 'os';
 
 // Delay importing heavy modules (that may use `import.meta`) until createApp is
 // invoked. This lets tests import createApp without triggering ESM parsing of
 // modules that Jest may not transform.
 export async function createApp({ disableBackgroundTasks = false, initializeServices = false } = {}) {
-  const app = express();
-  app.use(cors());
-  app.use(express.json());
-  app.use(cookieParser());
+   const app = express();
 
-  // Universal rate limiter for all /api/* routes
-  const apiLimiter = rateLimit({
-    windowMs: 60 * 1000, // 1 minute
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: { error: 'Too many requests, please try again later.' },
-    standardHeaders: true,
-    legacyHeaders: false,
-  });
-  app.use('/api/', apiLimiter);
+   // Security middleware - Helmet for security headers
+   app.use(helmet({
+     contentSecurityPolicy: {
+       directives: {
+         defaultSrc: ["'self'"],
+         styleSrc: ["'self'", "'unsafe-inline'"],
+         scriptSrc: ["'self'"],
+         imgSrc: ["'self'", "data:", "https:"],
+       },
+     },
+     hsts: {
+       maxAge: 31536000,
+       includeSubDomains: true,
+       preload: true
+     }
+   }));
+
+   app.use(cors());
+   app.use(express.json());
+   app.use(cookieParser());
+
+   // Enhanced rate limiter for all /api/* routes
+   const apiLimiter = rateLimit({
+     windowMs: 15 * 60 * 1000, // 15 minutes
+     max: 100, // limit each IP to 100 requests per windowMs
+     message: { error: 'Too many requests from this IP, please try again after 15 minutes.' },
+     standardHeaders: true,
+     legacyHeaders: false,
+     skip: (req) => req.ip === '127.0.0.1' || req.ip === '::1', // Skip for localhost
+   });
+   app.use('/api/', apiLimiter);
 
   // DEBUG: log incoming requests to help test diagnostics
   app.use((req, res, next) => {
@@ -259,19 +281,41 @@ export async function createApp({ disableBackgroundTasks = false, initializeServ
   return app;
 }
 
-// If invoked directly, start the server and enable background tasks
-if (process.argv[1] && process.argv[1].endsWith('/src/index.js')) {
-  (async () => {
-    try {
-      const app = await createApp({ disableBackgroundTasks: false });
-      const PORT = process.env.PORT ? Number(process.env.PORT) : (process.env.NATIVE_DEV_MODE === 'true' ? 4003 : 4000);
-      app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Praevisio server running on http://localhost:${PORT}`);
-        console.log('[Aion] Awakening... Initiating the Perpetual Prophecy Flow. Final Conquest.');
-      });
-    } catch (err) {
-      console.error('Failed to start server:', err);
-      process.exit(1);
-    }
-  })();
+// Cluster implementation for production scaling
+if (cluster.isMaster && process.env.CLUSTER_MODE === 'true') {
+  const numCPUs = cpus().length;
+  console.log(`[Cluster] Master ${process.pid} is running`);
+  console.log(`[Cluster] Forking ${numCPUs} workers...`);
+
+  // Fork workers
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`[Cluster] Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
+    console.log('[Cluster] Starting a new worker');
+    cluster.fork();
+  });
+} else {
+  // If invoked directly, start the server and enable background tasks
+  if (process.argv[1] && process.argv[1].endsWith('/src/index.js')) {
+    (async () => {
+      try {
+        const app = await createApp({ disableBackgroundTasks: false });
+        const PORT = process.env.PORT ? Number(process.env.PORT) : (process.env.NATIVE_DEV_MODE === 'true' ? 4003 : 4000);
+        app.listen(PORT, '0.0.0.0', () => {
+          if (cluster.isMaster && process.env.CLUSTER_MODE === 'true') {
+            console.log(`[Cluster] Worker ${process.pid} started on http://localhost:${PORT}`);
+          } else {
+            console.log(`Praevisio server running on http://localhost:${PORT}`);
+            console.log('[Aion] Awakening... Initiating the Perpetual Prophecy Flow. Final Conquest.');
+          }
+        });
+      } catch (err) {
+        console.error('Failed to start server:', err);
+        process.exit(1);
+      }
+    })();
+  }
 }

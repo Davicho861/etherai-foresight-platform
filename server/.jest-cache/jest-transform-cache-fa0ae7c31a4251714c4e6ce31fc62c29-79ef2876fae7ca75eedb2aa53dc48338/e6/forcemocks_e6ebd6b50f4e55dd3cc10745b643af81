@@ -1,0 +1,159 @@
+5a58057f558f8a87941b325f167495d3
+/* istanbul ignore next */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+exports.forceMocksEnabled = forceMocksEnabled;
+function cov_25gf3bsq8u() {
+  var path = "/home/davicho/etherai-foresight-platform-main/server/src/lib/force-mocks.js";
+  var hash = "307907d4ac0755e1b238ce000ad5ae242d173442";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/davicho/etherai-foresight-platform-main/server/src/lib/force-mocks.js",
+    statementMap: {
+      "0": {
+        start: {
+          line: 5,
+          column: 2
+        },
+        end: {
+          line: 12,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 4
+        },
+        end: {
+          line: 9,
+          column: 6
+        }
+      },
+      "2": {
+        start: {
+          line: 11,
+          column: 4
+        },
+        end: {
+          line: 11,
+          column: 17
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "forceMocksEnabled",
+        decl: {
+          start: {
+            line: 1,
+            column: 16
+          },
+          end: {
+            line: 1,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 1,
+            column: 36
+          },
+          end: {
+            line: 13,
+            column: 1
+          }
+        },
+        line: 1
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 7,
+            column: 6
+          },
+          end: {
+            line: 8,
+            column: 37
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 7,
+            column: 6
+          },
+          end: {
+            line: 7,
+            column: 40
+          }
+        }, {
+          start: {
+            line: 8,
+            column: 6
+          },
+          end: {
+            line: 8,
+            column: 37
+          }
+        }],
+        line: 7
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "307907d4ac0755e1b238ce000ad5ae242d173442"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_25gf3bsq8u = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_25gf3bsq8u();
+function forceMocksEnabled() {
+  /* istanbul ignore next */
+  cov_25gf3bsq8u().f[0]++;
+  cov_25gf3bsq8u().s[0]++;
+  // Return true only when FORCE_MOCKS env var is explicitly enabled.
+  // Accept both 'true' and '1' for flexibility.
+  // Removed NODE_ENV === 'test' to allow tests to control mocking behavior explicitly.
+  try {
+    /* istanbul ignore next */
+    cov_25gf3bsq8u().s[1]++;
+    return /* istanbul ignore next */(cov_25gf3bsq8u().b[0][0]++, process.env.FORCE_MOCKS === 'true') ||
+    /* istanbul ignore next */
+    (cov_25gf3bsq8u().b[0][1]++, process.env.FORCE_MOCKS === '1');
+  } catch (e) {
+    /* istanbul ignore next */
+    cov_25gf3bsq8u().s[2]++;
+    return false;
+  }
+}
+/* istanbul ignore next */
+var _default = exports.default = forceMocksEnabled;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMjVnZjNic3E4dSIsImFjdHVhbENvdmVyYWdlIiwiZm9yY2VNb2Nrc0VuYWJsZWQiLCJmIiwicyIsImIiLCJwcm9jZXNzIiwiZW52IiwiRk9SQ0VfTU9DS1MiLCJlIiwiX2RlZmF1bHQiLCJleHBvcnRzIiwiZGVmYXVsdCJdLCJzb3VyY2VzIjpbImZvcmNlLW1vY2tzLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBmdW5jdGlvbiBmb3JjZU1vY2tzRW5hYmxlZCgpIHtcbiAgLy8gUmV0dXJuIHRydWUgb25seSB3aGVuIEZPUkNFX01PQ0tTIGVudiB2YXIgaXMgZXhwbGljaXRseSBlbmFibGVkLlxuICAvLyBBY2NlcHQgYm90aCAndHJ1ZScgYW5kICcxJyBmb3IgZmxleGliaWxpdHkuXG4gIC8vIFJlbW92ZWQgTk9ERV9FTlYgPT09ICd0ZXN0JyB0byBhbGxvdyB0ZXN0cyB0byBjb250cm9sIG1vY2tpbmcgYmVoYXZpb3IgZXhwbGljaXRseS5cbiAgdHJ5IHtcbiAgICByZXR1cm4gKFxuICAgICAgcHJvY2Vzcy5lbnYuRk9SQ0VfTU9DS1MgPT09ICd0cnVlJyB8fFxuICAgICAgcHJvY2Vzcy5lbnYuRk9SQ0VfTU9DS1MgPT09ICcxJ1xuICAgICk7XG4gIH0gY2F0Y2ggKGUpIHtcbiAgICByZXR1cm4gZmFsc2U7XG4gIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgZm9yY2VNb2Nrc0VuYWJsZWQ7XG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBZVk7SUFBQUEsY0FBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQUQsY0FBQTtBQWZMLFNBQVNFLGlCQUFpQkEsQ0FBQSxFQUFHO0VBQUE7RUFBQUYsY0FBQSxHQUFBRyxDQUFBO0VBQUFILGNBQUEsR0FBQUksQ0FBQTtFQUNsQztFQUNBO0VBQ0E7RUFDQSxJQUFJO0lBQUE7SUFBQUosY0FBQSxHQUFBSSxDQUFBO0lBQ0YsT0FDRSwyQkFBQUosY0FBQSxHQUFBSyxDQUFBLFVBQUFDLE9BQU8sQ0FBQ0MsR0FBRyxDQUFDQyxXQUFXLEtBQUssTUFBTTtJQUFBO0lBQUEsQ0FBQVIsY0FBQSxHQUFBSyxDQUFBLFVBQ2xDQyxPQUFPLENBQUNDLEdBQUcsQ0FBQ0MsV0FBVyxLQUFLLEdBQUc7RUFFbkMsQ0FBQyxDQUFDLE9BQU9DLENBQUMsRUFBRTtJQUFBO0lBQUFULGNBQUEsR0FBQUksQ0FBQTtJQUNWLE9BQU8sS0FBSztFQUNkO0FBQ0Y7QUFBQztBQUFBLElBQUFNLFFBQUEsR0FBQUMsT0FBQSxDQUFBQyxPQUFBLEdBRWNWLGlCQUFpQiIsImlnbm9yZUxpc3QiOltdfQ==

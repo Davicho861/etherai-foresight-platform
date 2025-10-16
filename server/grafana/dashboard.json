@@ -1,0 +1,150 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "EtherAI Foresight Platform - Apotheosis Monitoring",
+    "tags": ["etherai", "monitoring", "apotheosis"],
+    "timezone": "UTC",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Test Coverage Percentage",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "coverage_ratio",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "orange", "value": 80 },
+                { "color": "green", "value": 95 }
+              ]
+            }
+          }
+        },
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
+      },
+      {
+        "id": 2,
+        "title": "Request Rate (per minute)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[5m])",
+            "refId": "A"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 }
+      },
+      {
+        "id": 3,
+        "title": "Uptime Percentage",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "(up == 1)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit"
+          }
+        },
+        "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 }
+      },
+      {
+        "id": 4,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes / 1024 / 1024",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "MB"
+          }
+        },
+        "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 }
+      },
+      {
+        "id": 5,
+        "title": "CPU Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(process_cpu_user_seconds_total[5m]) * 100",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent"
+          }
+        },
+        "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 }
+      },
+      {
+        "id": 6,
+        "title": "Security Alerts",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "security_violations_total",
+            "refId": "A"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 }
+      },
+      {
+        "id": 7,
+        "title": "Eternal Loop Cycles",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "eternal_loop_cycles_total",
+            "refId": "A"
+          }
+        ],
+        "gridPos": { "h": 8, "w": 6, "x": 12, "y": 16 }
+      },
+      {
+        "id": 8,
+        "title": "Apotheosis Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "apotheosis_status",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              { "options": { "0": { "text": "In Progress", "color": "orange" }, "1": { "text": "Achieved", "color": "green" } }, "type": "value" }
+            ]
+          }
+        },
+        "gridPos": { "h": 8, "w": 6, "x": 18, "y": 16 }
+      }
+    ],
+    "time": { "from": "now-1h", "to": "now" },
+    "timepicker": {},
+    "templating": { "list": [] },
+    "annotations": { "list": [] },
+    "refresh": "5s",
+    "schemaVersion": 27,
+    "version": 0,
+    "links": []
+  }
+}
