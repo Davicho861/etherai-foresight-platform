@@ -1,5 +1,8 @@
 // Minimal safeFetch helper: timeout, retries, JSON parse guard
 import fetch from 'node-fetch';
+// Prefer a global fetch (jest mock) when available so tests that set global.mockFetch
+// or global.fetch will be effective. Otherwise fall back to imported node-fetch.
+const defaultFetch = typeof global.fetch !== 'undefined' ? global.fetch : fetch;
 import fs from 'fs';
 import path from 'path';
 
@@ -14,7 +17,8 @@ async function safeFetch(url, opts = {}, { timeout = 8000, retries = 2 } = {}) {
     const id = setTimeout(() => controller.abort(), timeout);
     try {
       const headers = { ...(opts.headers || {}), 'Accept': 'application/json, text/plain, */*', 'User-Agent': USER_AGENTS[attempt % USER_AGENTS.length] };
-      const res = await fetch(url, { ...opts, headers, signal: controller.signal });
+      const fetchImpl = typeof defaultFetch === 'function' ? defaultFetch : fetch;
+      const res = await fetchImpl(url, { ...opts, headers, signal: controller.signal });
       clearTimeout(id);
       if (!res.ok) {
           // Try to safely read body/text for error reporting. Some test mocks may not

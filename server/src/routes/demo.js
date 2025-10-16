@@ -23,37 +23,32 @@ const LATAM_COUNTRIES = [
 
 // Helper: fetch a URL and return parsed JSON or throw - SIN FALLBACKS A MOCKS
 async function fetchOrThrow(url, name) {
-  try {
-    // When running unit tests, the test harness (MSW) exposes many internal
-    // endpoints on http://127.0.0.1:3000. Tests create an app server on a random
-    // port, so requests built with req.get('host') won't match MSW handlers and
-    // fall through to the generic handler. To ensure tests receive the mocked
-    // internal endpoints, rewrite local internal URLs to the MSW test server.
-    let fetchUrl = url;
-    if (process.env.NODE_ENV === 'test') {
-      try {
-        const u = new URL(url);
-        // Consider local internal endpoints (localhost or 127.0.0.1)
-        if (u.hostname === '127.0.0.1' || u.hostname === 'localhost') {
-          // Route to the MSW server which exposes deterministic test handlers
-          u.host = '127.0.0.1:3000';
-          fetchUrl = u.toString();
-        }
-      } catch (e) {
-        // ignore URL parse errors and use original url
+  // When running unit tests, the test harness (MSW) exposes many internal
+  // endpoints on http://127.0.0.1:3000. Tests create an app server on a random
+  // port, so requests built with req.get('host') won't match MSW handlers and
+  // fall through to the generic handler. To ensure tests receive the mocked
+  // internal endpoints, rewrite local internal URLs to the MSW test server.
+  let fetchUrl = url;
+  if (process.env.NODE_ENV === 'test') {
+    try {
+      const u = new URL(url);
+      // Consider local internal endpoints (localhost or 127.0.0.1)
+      if (u.hostname === '127.0.0.1' || u.hostname === 'localhost') {
+        // Route to the MSW server which exposes deterministic test handlers
+        u.host = '127.0.0.1:3000';
+        fetchUrl = u.toString();
       }
+    } catch {
+      // ignore URL parse errors and use original url
     }
-
-    const resp = await fetch(fetchUrl);
-    if (resp.ok) return await resp.json();
-
-    // ERROR CLARO - SIN FALLBACKS SILENCIOSOS
-    const body = await resp.text().catch(() => '');
-    throw new Error(`${name} fetch failed: HTTP ${resp.status} ${body.slice(0,200)}`);
-  } catch (err) {
-    // PROPAGAR ERROR - SIN FALLBACKS A MOCKS
-    throw err;
   }
+
+  const resp = await fetch(fetchUrl);
+  if (resp.ok) return await resp.json();
+
+  // ERROR CLARO - SIN FALLBACKS SILENCIOSOS
+  const body = await resp.text().catch(() => '');
+  throw new Error(`${name} fetch failed: HTTP ${resp.status} ${body.slice(0,200)}`);
 }
 
 // Función para calcular riesgo basado en datos reales - SIN FALLBACKS

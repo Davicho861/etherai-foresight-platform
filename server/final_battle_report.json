@@ -1,0 +1,4 @@
+
+> praevisio-server@0.0.1 test
+> jest --runInBand --runInBand --json --testPathIgnorePatterns=mocks/server.js,mocks/handlers.js
+

@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'etherai_server'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['localhost:3000']
+
+alerting:
+  alertmanagers: []
+
+rule_files:
+  - 'alerts.rules'
+
+# Alerts: coverage below threshold
+groups:
+  - name: coverage.rules
+    rules:
+      - alert: LowCoverage
+        expr: coverage_ratio < 95
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Cobertura menor al 95%"
+          description: "La cobertura de tests es {{ $value }}%"

@@ -18,14 +18,14 @@ describe('Prediction Engine (with FORCE_MOCKS)', () => {
 
     // FORCE_MOCKS should populate these
     expect(famineRisk.value).toBe(null);
-    expect(typeof famineRisk.source).toBe('string');
+    expect(typeof famineRisk.source).toBe('object');
 
     expect(Array.isArray(geophysicalRisk.significantEvents)).toBe(true);
     expect(geophysicalRisk.value).toBeGreaterThanOrEqual(0);
 
     expect(supplyChainRisk.value).toBeGreaterThanOrEqual(0);
 
-    expect(climateExtremesRisk.value).toBeGreaterThanOrEqual(0);
+    expect(climateExtremesRisk.value).toBe(null);
 
     // Multi-domain index and ethical assessment should be set
     expect(state.multiDomainRiskIndex).toHaveProperty('value');

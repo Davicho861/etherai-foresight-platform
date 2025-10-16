@@ -4,14 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "lint": "eslint . || true",
-  "lint:ci": "eslint . --max-warnings=0",
+    "lint": "eslint . || true",
+    "lint:ci": "eslint . --max-warnings=0",
     "manifest:empire": "bash scripts/manifest-empire.sh",
     "purge:frontend:dryrun": "bash scripts/purge_old_frontend.sh --dry-run",
     "purge:frontend": "bash scripts/purge_old_frontend.sh",
     "purge:docker:dryrun": "bash scripts/purge_docker.sh --dry-run",
-    "purge:docker": "bash scripts/purge_docker.sh"
+    "purge:docker": "bash scripts/purge_docker.sh",
+      "heal": "node server/auto-heal.js",
+      "eternal": "node server/eternal_loop.js",
+      "start:metrics": "node server/monitoring/index.js"
   },
+  
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -84,12 +88,13 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "jest-environment-jsdom": "^30.2.0",
     "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
     "puppeteer": "^24.25.0",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^7.1.10"
   }
 }

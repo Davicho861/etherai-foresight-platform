@@ -1,0 +1,20 @@
+cf514bec60c2e72db2053f0b7ba060fc
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+exports.forceMocksEnabled = forceMocksEnabled;
+function forceMocksEnabled() {
+  // Return true only when FORCE_MOCKS env var is explicitly enabled.
+  // Accept both 'true' and '1' for flexibility.
+  // Removed NODE_ENV === 'test' to allow tests to control mocking behavior explicitly.
+  try {
+    return process.env.FORCE_MOCKS === 'true' || process.env.FORCE_MOCKS === '1';
+  } catch (e) {
+    return false;
+  }
+}
+var _default = exports.default = forceMocksEnabled;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJmb3JjZU1vY2tzRW5hYmxlZCIsInByb2Nlc3MiLCJlbnYiLCJGT1JDRV9NT0NLUyIsImUiLCJfZGVmYXVsdCIsImV4cG9ydHMiLCJkZWZhdWx0Il0sInNvdXJjZXMiOlsiZm9yY2UtbW9ja3MuanMiXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIGZvcmNlTW9ja3NFbmFibGVkKCkge1xuICAvLyBSZXR1cm4gdHJ1ZSBvbmx5IHdoZW4gRk9SQ0VfTU9DS1MgZW52IHZhciBpcyBleHBsaWNpdGx5IGVuYWJsZWQuXG4gIC8vIEFjY2VwdCBib3RoICd0cnVlJyBhbmQgJzEnIGZvciBmbGV4aWJpbGl0eS5cbiAgLy8gUmVtb3ZlZCBOT0RFX0VOViA9PT0gJ3Rlc3QnIHRvIGFsbG93IHRlc3RzIHRvIGNvbnRyb2wgbW9ja2luZyBiZWhhdmlvciBleHBsaWNpdGx5LlxuICB0cnkge1xuICAgIHJldHVybiAoXG4gICAgICBwcm9jZXNzLmVudi5GT1JDRV9NT0NLUyA9PT0gJ3RydWUnIHx8XG4gICAgICBwcm9jZXNzLmVudi5GT1JDRV9NT0NLUyA9PT0gJzEnXG4gICAgKTtcbiAgfSBjYXRjaCAoZSkge1xuICAgIHJldHVybiBmYWxzZTtcbiAgfVxufVxuXG5leHBvcnQgZGVmYXVsdCBmb3JjZU1vY2tzRW5hYmxlZDtcbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFPLFNBQVNBLGlCQUFpQkEsQ0FBQSxFQUFHO0VBQ2xDO0VBQ0E7RUFDQTtFQUNBLElBQUk7SUFDRixPQUNFQyxPQUFPLENBQUNDLEdBQUcsQ0FBQ0MsV0FBVyxLQUFLLE1BQU0sSUFDbENGLE9BQU8sQ0FBQ0MsR0FBRyxDQUFDQyxXQUFXLEtBQUssR0FBRztFQUVuQyxDQUFDLENBQUMsT0FBT0MsQ0FBQyxFQUFFO0lBQ1YsT0FBTyxLQUFLO0VBQ2Q7QUFDRjtBQUFDLElBQUFDLFFBQUEsR0FBQUMsT0FBQSxDQUFBQyxPQUFBLEdBRWNQLGlCQUFpQiIsImlnbm9yZUxpc3QiOltdfQ==

@@ -421,69 +421,65 @@ class MetatronAgent {
         const fsModule = await import('fs');
         const pathModule = await import('path');
 
-        try {
-          // Read mission data
-          const missionFile = 'public/missions/america/peru/mision_peru.json';
-          const missionData = JSON.parse(fsModule.readFileSync(missionFile, 'utf8'));
+        // Read mission data
+        const missionFile = 'public/missions/america/peru/mision_peru.json';
+        const missionData = JSON.parse(fsModule.readFileSync(missionFile, 'utf8'));
 
-          // Analyze union negotiations
-          const unionNegotiations = {
-            status: 'active',
-            risk: Math.random(),
-            details: 'Ongoing negotiations with mining unions'
-          };
+        // Analyze union negotiations
+        const unionNegotiations = {
+          status: 'active',
+          risk: Math.random(),
+          details: 'Ongoing negotiations with mining unions'
+        };
 
-          // Analyze local news
-          const localNews = {
-            regions: ['Lima', 'Cusco', 'Arequipa'],
-            events: 5, // Fixed for test consistency
-            risk: Math.random()
-          };
+        // Analyze local news
+        const localNews = {
+          regions: ['Lima', 'Cusco', 'Arequipa'],
+          events: 5, // Fixed for test consistency
+          risk: Math.random()
+        };
 
-          // Analyze historical strikes
-          const historicalStrikes = {
-            averageDuration: 15, // Fixed for test consistency
-            frequency: 0.5, // Fixed for test consistency
-            risk: Math.random()
-          };
+        // Analyze historical strikes
+        const historicalStrikes = {
+          averageDuration: 15, // Fixed for test consistency
+          frequency: 0.5, // Fixed for test consistency
+          risk: Math.random()
+        };
 
-          const analysis = {
-            unionNegotiations,
-            localNews,
-            historicalStrikes
-          };
+        const analysis = {
+          unionNegotiations,
+          localNews,
+          historicalStrikes
+        };
 
-          // Calculate total risk: weighted average
-          const totalRisk = (unionNegotiations.risk * 0.6 + localNews.risk * 0.3 + historicalStrikes.risk * 0.1) * 100;
+        // Calculate total risk: weighted average
+        const totalRisk = (unionNegotiations.risk * 0.6 + localNews.risk * 0.3 + historicalStrikes.risk * 0.1) * 100;
 
-          // Generate report
-          const reportPath = 'PERU_INTELLIGENCE_REPORT.md';
-          let reportContent = `# PERU INTELLIGENCE REPORT\n\n`;
-          reportContent += `## Mission: ${missionData.title}\n\n`;
-          reportContent += `## Cadena de Suministro de Cobre\n\n`;
-          reportContent += `Total Risk: ${totalRisk.toFixed(1)}%\n\n`;
-          reportContent += `### Union Negotiations\n`;
-          reportContent += `- Risk: ${(unionNegotiations.risk * 100).toFixed(1)}%\n`;
-          reportContent += `- Status: ${unionNegotiations.status}\n\n`;
-          reportContent += `### Local News Events\n`;
-          reportContent += `- Events: ${localNews.events}\n`;
-          reportContent += `- Risk: ${(localNews.risk * 100).toFixed(1)}%\n\n`;
-          reportContent += `### Historical Strikes\n`;
-          reportContent += `- Average Duration: ${historicalStrikes.averageDuration} days\n`;
-          reportContent += `- Frequency: ${historicalStrikes.frequency.toFixed(1)} per year\n`;
-          reportContent += `- Risk: ${(historicalStrikes.risk * 100).toFixed(1)}%\n\n`;
-          reportContent += `Generado por PeruAgent\n`;
+        // Generate report
+        const reportPath = 'PERU_INTELLIGENCE_REPORT.md';
+        let reportContent = `# PERU INTELLIGENCE REPORT\n\n`;
+        reportContent += `## Mission: ${missionData.title}\n\n`;
+        reportContent += `## Cadena de Suministro de Cobre\n\n`;
+        reportContent += `Total Risk: ${totalRisk.toFixed(1)}%\n\n`;
+        reportContent += `### Union Negotiations\n`;
+        reportContent += `- Risk: ${(unionNegotiations.risk * 100).toFixed(1)}%\n`;
+        reportContent += `- Status: ${unionNegotiations.status}\n\n`;
+        reportContent += `### Local News Events\n`;
+        reportContent += `- Events: ${localNews.events}\n`;
+        reportContent += `- Risk: ${(localNews.risk * 100).toFixed(1)}%\n\n`;
+        reportContent += `### Historical Strikes\n`;
+        reportContent += `- Average Duration: ${historicalStrikes.averageDuration} days\n`;
+        reportContent += `- Frequency: ${historicalStrikes.frequency.toFixed(1)} per year\n`;
+        reportContent += `- Risk: ${(historicalStrikes.risk * 100).toFixed(1)}%\n\n`;
+        reportContent += `Generado por PeruAgent\n`;
 
-          fsModule.writeFileSync(reportPath, reportContent);
+        fsModule.writeFileSync(reportPath, reportContent);
 
-          return {
-            reportPath,
-            totalRisk,
-            analysis
-          };
-        } catch (error) {
-          throw error; // Re-throw for test to catch
-        }
+        return {
+          reportPath,
+          totalRisk,
+          analysis
+        };
       }
       case 'CommunityResilienceAgent':
         return { resilience: 80 };
@@ -516,9 +512,7 @@ class MetatronAgent {
       case 'QualityCrew':
       case 'DeploymentCrew':
       case 'Socrates':
-      case 'Ares':
-      case 'Tyche':
-      case 'ConsensusAgent': {
+      case 'Ares': {
         return { status: 'completed' };
       }
       default:

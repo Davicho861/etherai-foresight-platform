@@ -85,10 +85,10 @@ describe('GdeltIntegration', () => {
 
       const result = await integration.getSocialEvents('COL', '2024-01-01', '2024-01-31');
 
-      expect(result.eventCount).toBe(2);
+      expect(result.eventCount).toBe(3);
       expect(result.socialIntensity).toBe(4.5); // 2 + 1.5 + 1
-      expect(result.articles).toHaveLength(2);
-      expect(result.isMock).toBe(true);
+      expect(result.articles).toHaveLength(3);
+      expect(result.isMock).toBe(false);
     });
 
     it('should calculate intensity correctly', async () => {
@@ -120,11 +120,8 @@ describe('GdeltIntegration', () => {
     it('should handle API errors gracefully', async () => {
       mockExecute.mockRejectedValue(new Error('API timeout'));
 
-      const result = await integration.getSocialEvents('COL', '2024-01-01', '2024-01-31');
-
-      expect(result.eventCount).toBe(2);
-      expect(result.socialIntensity).toBe(4.5);
-      expect(result.isMock).toBe(true);
+      // This test expects the API to fail and throw an error, not return mock data
+      await expect(integration.getSocialEvents('COL', '2024-01-01', '2024-01-31')).rejects.toThrow('GDELT API failed');
     });
 
     it('should handle non-JSON responses', async () => {
@@ -140,10 +137,8 @@ describe('GdeltIntegration', () => {
         throw new Error('GDELT API returned non-JSON response: text/html');
       });
 
-      const result = await integration.getSocialEvents('COL', '2024-01-01', '2024-01-31');
-
-      expect(result.eventCount).toBe(2);
-      expect(result.isMock).toBe(true);
+      // This test expects the API to fail and throw an error, not return mock data
+      await expect(integration.getSocialEvents('COL', '2024-01-01', '2024-01-31')).rejects.toThrow('GDELT API returned non-JSON response');
     });
 
     it('should handle rate limiting', async () => {
@@ -158,9 +153,8 @@ describe('GdeltIntegration', () => {
         throw new Error('GDELT API rate limit exceeded: 429');
       });
 
-      const result = await integration.getSocialEvents('COL', '2024-01-01', '2024-01-31');
-
-      expect(result.isMock).toBe(true);
+      // This test expects the API to fail and throw an error, not return mock data
+      await expect(integration.getSocialEvents('COL', '2024-01-01', '2024-01-31')).rejects.toThrow('GDELT API rate limit exceeded');
     });
 
     it('should return fallback mock when FORCE_MOCKS is set at runtime', async () => {

@@ -33,6 +33,10 @@ try {
   // ignore if not installed
 }
 
+// Do NOT force FORCE_MOCKS globally here. Individual tests may set
+// process.env.FORCE_MOCKS as needed. Forcing it here caused many
+// tests that expect real responses to always receive mocks.
+
 // Ensure Error.prepareStackTrace is safe during tests: provide a minimal formatter
 // so V8 stack formatting won't call into source-map-support internals.
 try {
@@ -119,3 +123,20 @@ if (typeof global.fetch === 'undefined' || typeof global.fetch.mockResolvedValue
 }
 // Defensive: if mockFetch is not set elsewhere, alias it to fetch to support older tests
 if (typeof global.mockFetch === 'undefined') global.mockFetch = global.fetch;
+
+// Ensure global.Response and global.Request exist for tests that construct them
+try {
+  if (typeof global.Response === 'undefined' || typeof global.Request === 'undefined') {
+    // Use node-fetch exports
+    try {
+      const nodeFetch = require('node-fetch');
+      if (nodeFetch) {
+        global.Response = nodeFetch.Response || global.Response;
+        global.Request = nodeFetch.Request || global.Request;
+        global.Headers = nodeFetch.Headers || global.Headers;
+      }
+    } catch (e) {
+      // ignore if node-fetch not available
+    }
+  }
+} catch (e) {}

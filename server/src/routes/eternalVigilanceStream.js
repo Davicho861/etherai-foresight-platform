@@ -1,6 +1,5 @@
 import express from 'express';
-import vigilance from '../eternalVigilanceService.js';
-import sseTokenService from '../sseTokenService.js';
+// Do not import vigilance or sseTokenService at module load time so tests can mock them with jest.doMock
 
 const router = express.Router();
 
@@ -10,6 +9,11 @@ router.get('/stream', async (req, res) => {
   const cookieToken = req.cookies && req.cookies.praevisio_sse_token ? String(req.cookies.praevisio_sse_token) : '';
   const token = cookieToken || (req.query && (req.query.token || req.query.auth) ? String(req.query.token || req.query.auth) : '');
   const expected = process.env.PRAEVISIO_BEARER_TOKEN || 'demo-token';
+
+  // require services at request time so tests can override them
+  const sseTokenService = require('../sseTokenService.js').default || require('../sseTokenService.js');
+  const vigilance = require('../eternalVigilanceService.js').default || require('../eternalVigilanceService.js');
+
   const okStatic = token && token === expected;
   const okTemp = token && (await sseTokenService.validateToken(token));
   if (!okStatic && !okTemp) {
@@ -24,12 +28,18 @@ router.get('/stream', async (req, res) => {
   res.flushHeaders && res.flushHeaders();
 
   // send initial state
-  res.write(`data: ${JSON.stringify({ event: 'init', state: vigilance.getState() })}\n\n`);
+  // send initial state (stringified event)
+  try {
+    const state = (typeof vigilance.getState === 'function') ? vigilance.getState() : {};
+    res.write(`data: ${JSON.stringify({ event: 'init', state })}\n\n`);
+  } catch (e) {
+    // ignore write errors
+  }
 
-  vigilance.subscribe(res);
+  if (typeof vigilance.subscribe === 'function') vigilance.subscribe(res);
 
   req.on('close', () => {
-    vigilance.unsubscribe(res);
+    if (typeof vigilance.unsubscribe === 'function') vigilance.unsubscribe(res);
   });
 });
 

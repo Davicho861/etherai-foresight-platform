@@ -1,0 +1,41 @@
+99647cc646a412bbc4d7b80683c960b4
+"use strict";
+
+// Mock axios
+_getJestObj().mock('axios');
+function _axios() {
+  const data = _interopRequireDefault(require("axios"));
+  _axios = function () {
+    return data;
+  };
+  return data;
+}
+var _SeismicIntegration = require("../../src/services/SeismicIntegration.js");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _getJestObj() {
+  const {
+    jest
+  } = require("@jest/globals");
+  _getJestObj = () => jest;
+  return jest;
+}
+describe('SeismicIntegration Service', () => {
+  it('should fetch seismic data successfully', async () => {
+    const mockData = {
+      features: [{
+        id: 'test1'
+      }]
+    };
+    _axios().default.get.mockResolvedValue({
+      data: mockData
+    });
+    const data = await (0, _SeismicIntegration.getSeismicData)();
+    expect(_axios().default.get).toHaveBeenCalledWith('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson');
+    expect(data).toEqual(mockData);
+  });
+  it('should throw an error if the API call fails', async () => {
+    _axios().default.get.mockRejectedValue(new Error('Network Error'));
+    await expect((0, _SeismicIntegration.getSeismicData)()).rejects.toThrow('Failed to fetch seismic data.');
+  });
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfZ2V0SmVzdE9iaiIsIm1vY2siLCJfYXhpb3MiLCJkYXRhIiwiX2ludGVyb3BSZXF1aXJlRGVmYXVsdCIsInJlcXVpcmUiLCJfU2Vpc21pY0ludGVncmF0aW9uIiwiZSIsIl9fZXNNb2R1bGUiLCJkZWZhdWx0IiwiamVzdCIsImRlc2NyaWJlIiwiaXQiLCJtb2NrRGF0YSIsImZlYXR1cmVzIiwiaWQiLCJheGlvcyIsImdldCIsIm1vY2tSZXNvbHZlZFZhbHVlIiwiZ2V0U2Vpc21pY0RhdGEiLCJleHBlY3QiLCJ0b0hhdmVCZWVuQ2FsbGVkV2l0aCIsInRvRXF1YWwiLCJtb2NrUmVqZWN0ZWRWYWx1ZSIsIkVycm9yIiwicmVqZWN0cyIsInRvVGhyb3ciXSwic291cmNlcyI6WyJTZWlzbWljSW50ZWdyYXRpb24udGVzdC5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnO1xuaW1wb3J0IHsgZ2V0U2Vpc21pY0RhdGEgfSBmcm9tICcuLi8uLi9zcmMvc2VydmljZXMvU2Vpc21pY0ludGVncmF0aW9uLmpzJztcblxuLy8gTW9jayBheGlvc1xuamVzdC5tb2NrKCdheGlvcycpO1xuXG5kZXNjcmliZSgnU2Vpc21pY0ludGVncmF0aW9uIFNlcnZpY2UnLCAoKSA9PiB7XG4gIGl0KCdzaG91bGQgZmV0Y2ggc2Vpc21pYyBkYXRhIHN1Y2Nlc3NmdWxseScsIGFzeW5jICgpID0+IHtcbiAgICBjb25zdCBtb2NrRGF0YSA9IHsgZmVhdHVyZXM6IFt7IGlkOiAndGVzdDEnIH1dIH07XG4gICAgYXhpb3MuZ2V0Lm1vY2tSZXNvbHZlZFZhbHVlKHsgZGF0YTogbW9ja0RhdGEgfSk7XG5cbiAgICBjb25zdCBkYXRhID0gYXdhaXQgZ2V0U2Vpc21pY0RhdGEoKTtcblxuICAgIGV4cGVjdChheGlvcy5nZXQpLnRvSGF2ZUJlZW5DYWxsZWRXaXRoKCdodHRwczovL2VhcnRocXVha2UudXNncy5nb3YvZWFydGhxdWFrZXMvZmVlZC92MS4wL3N1bW1hcnkvc2lnbmlmaWNhbnRfZGF5Lmdlb2pzb24nKTtcbiAgICBleHBlY3QoZGF0YSkudG9FcXVhbChtb2NrRGF0YSk7XG4gIH0pO1xuXG4gIGl0KCdzaG91bGQgdGhyb3cgYW4gZXJyb3IgaWYgdGhlIEFQSSBjYWxsIGZhaWxzJywgYXN5bmMgKCkgPT4ge1xuICAgIGF4aW9zLmdldC5tb2NrUmVqZWN0ZWRWYWx1ZShuZXcgRXJyb3IoJ05ldHdvcmsgRXJyb3InKSk7XG5cbiAgICBhd2FpdCBleHBlY3QoZ2V0U2Vpc21pY0RhdGEoKSkucmVqZWN0cy50b1Rocm93KCdGYWlsZWQgdG8gZmV0Y2ggc2Vpc21pYyBkYXRhLicpO1xuICB9KTtcbn0pO1xuIl0sIm1hcHBpbmdzIjoiOztBQUdBO0FBQ0FBLFdBQUEsR0FBS0MsSUFBSSxDQUFDLE9BQU8sQ0FBQztBQUpsQixTQUFBQyxPQUFBO0VBQUEsTUFBQUMsSUFBQSxHQUFBQyxzQkFBQSxDQUFBQyxPQUFBO0VBQUFILE1BQUEsWUFBQUEsQ0FBQTtJQUFBLE9BQUFDLElBQUE7RUFBQTtFQUFBLE9BQUFBLElBQUE7QUFBQTtBQUNBLElBQUFHLG1CQUFBLEdBQUFELE9BQUE7QUFBMEUsU0FBQUQsdUJBQUFHLENBQUEsV0FBQUEsQ0FBQSxJQUFBQSxDQUFBLENBQUFDLFVBQUEsR0FBQUQsQ0FBQSxLQUFBRSxPQUFBLEVBQUFGLENBQUE7QUFBQSxTQUFBUCxZQUFBO0VBQUE7SUFBQVU7RUFBQSxJQUFBTCxPQUFBO0VBQUFMLFdBQUEsR0FBQUEsQ0FBQSxLQUFBVSxJQUFBO0VBQUEsT0FBQUEsSUFBQTtBQUFBO0FBSzFFQyxRQUFRLENBQUMsNEJBQTRCLEVBQUUsTUFBTTtFQUMzQ0MsRUFBRSxDQUFDLHdDQUF3QyxFQUFFLFlBQVk7SUFDdkQsTUFBTUMsUUFBUSxHQUFHO01BQUVDLFFBQVEsRUFBRSxDQUFDO1FBQUVDLEVBQUUsRUFBRTtNQUFRLENBQUM7SUFBRSxDQUFDO0lBQ2hEQyxnQkFBSyxDQUFDQyxHQUFHLENBQUNDLGlCQUFpQixDQUFDO01BQUVmLElBQUksRUFBRVU7SUFBUyxDQUFDLENBQUM7SUFFL0MsTUFBTVYsSUFBSSxHQUFHLE1BQU0sSUFBQWdCLGtDQUFjLEVBQUMsQ0FBQztJQUVuQ0MsTUFBTSxDQUFDSixnQkFBSyxDQUFDQyxHQUFHLENBQUMsQ0FBQ0ksb0JBQW9CLENBQUMsbUZBQW1GLENBQUM7SUFDM0hELE1BQU0sQ0FBQ2pCLElBQUksQ0FBQyxDQUFDbUIsT0FBTyxDQUFDVCxRQUFRLENBQUM7RUFDaEMsQ0FBQyxDQUFDO0VBRUZELEVBQUUsQ0FBQyw2Q0FBNkMsRUFBRSxZQUFZO0lBQzVESSxnQkFBSyxDQUFDQyxHQUFHLENBQUNNLGlCQUFpQixDQUFDLElBQUlDLEtBQUssQ0FBQyxlQUFlLENBQUMsQ0FBQztJQUV2RCxNQUFNSixNQUFNLENBQUMsSUFBQUQsa0NBQWMsRUFBQyxDQUFDLENBQUMsQ0FBQ00sT0FBTyxDQUFDQyxPQUFPLENBQUMsK0JBQStCLENBQUM7RUFDakYsQ0FBQyxDQUFDO0FBQ0osQ0FBQyxDQUFDIiwiaWdub3JlTGlzdCI6W119

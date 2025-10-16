@@ -1,4 +1,5 @@
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class INEIIntegration {
   constructor() {
@@ -33,7 +34,6 @@ class INEIIntegration {
         isMock: false
       };
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
       if (forceMocksEnabled()) {
         console.log(`INEIIntegration: returning FORCE_MOCKS mock for ${department} (${year})`);
         const mockDepartments = {
@@ -93,8 +93,7 @@ class INEIIntegration {
         isMock: false
       };
     } catch (error) {
-      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
-      if (forceMocksEnabled2()) {
+      if (forceMocksEnabled()) {
         console.log(`INEIIntegration: returning FORCE_MOCKS mock economic for ${department} (${year})`);
         const mockEconomics = {
           'Lima': { gdp: 45000000, unemploymentRate: 6.5, povertyRate: 15.2, incomePerCapita: 18000 },

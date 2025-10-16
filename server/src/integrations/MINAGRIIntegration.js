@@ -1,4 +1,5 @@
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class MINAGRIIntegration {
   constructor() {
@@ -33,7 +34,6 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
       if (forceMocksEnabled()) {
         console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for ${product} (${year})`);
         const mockProductions = {
@@ -83,8 +83,7 @@ class MINAGRIIntegration {
         isMock: false
       };
     } catch (error) {
-      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
-      if (forceMocksEnabled2()) {
+      if (forceMocksEnabled()) {
         console.log(`MINAGRIIntegration: returning FORCE_MOCKS mock for supply chain ${region}`);
         const mockRegions = {
           'Lima': { capacity: 85, distance: 0, cost: 1.2 },

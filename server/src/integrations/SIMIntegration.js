@@ -1,4 +1,5 @@
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class SIMIntegration {
   constructor() {
@@ -36,7 +37,6 @@ class SIMIntegration {
       };
     } catch (error) {
       console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
       if (!forceMocksEnabled()) {
         throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
       }
@@ -94,8 +94,7 @@ class SIMIntegration {
       };
     } catch (error) {
       console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
-      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
-      if (!forceMocksEnabled2()) {
+      if (!forceMocksEnabled()) {
         throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
       }
       // Generate mock historical data
@@ -141,8 +140,7 @@ class SIMIntegration {
       };
     } catch (error) {
       console.log(`SIMIntegration: API failed for ${product} in ${region}: ${error && error.message}`);
-      const { forceMocksEnabled: forceMocksEnabled3 } = await import('../lib/force-mocks.js');
-      if (!forceMocksEnabled3()) {
+      if (!forceMocksEnabled()) {
         throw new Error(`SIMIntegration failure: ${error && error.message ? error.message : String(error)}`);
       }
       const volatilities = {

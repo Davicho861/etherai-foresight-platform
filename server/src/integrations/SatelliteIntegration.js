@@ -46,7 +46,8 @@ class SatelliteIntegration {
         source: 'Open-Meteo (proxy for satellite data)'
       };
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      const _fm = await import('../lib/force-mocks.js');
+      const forceMocksEnabled = _fm.forceMocksEnabled || _fm.default || _fm;
       if (forceMocksEnabled()) {
         console.log(`SatelliteIntegration: returning FORCE_MOCKS mock for location (${latitude}, ${longitude})`);
         // Fallback to mock NDVI data

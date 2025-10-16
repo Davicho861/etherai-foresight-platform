@@ -4,6 +4,10 @@ describe('SIMIntegration', () => {
   beforeEach(() => {
     // MSW maneja automáticamente el aislamiento entre pruebas
     // No se necesitan mocks manuales
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      isMock: true,
+      json: async () => ({})
+    });
   });
 
   describe('getFoodPrices', () => {

@@ -1,0 +1,70 @@
+name: Jest CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: server/package-lock.json
+
+    - name: Install dependencies
+      working-directory: server
+      run: npm ci
+
+    - name: Run tests with coverage
+      working-directory: server
+      run: npm run test:coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        directory: server/coverage
+        fail_ci_if_error: true
+
+    - name: Check coverage threshold
+      working-directory: server
+      run: |
+        COVERAGE=$(node -e "const cov = require('./coverage/coverage-summary.json'); console.log(cov.total.lines.pct);")
+        if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+          echo "Coverage $COVERAGE% is below 90% threshold"
+          exit 1
+        fi
+        echo "Coverage $COVERAGE% meets threshold"
+
+    - name: Run security audit
+      working-directory: server
+      run: npm audit --audit-level=moderate
+
+    - name: Check for vulnerabilities
+      working-directory: server
+      run: |
+        if npm audit --audit-level=moderate --json | jq -e '.metadata.vulnerabilities.total > 0' > /dev/null; then
+          echo "Security vulnerabilities found"
+          npm audit fix --force
+          echo "Attempted to fix vulnerabilities"
+        else
+          echo "No security vulnerabilities found"
+        fi
+
+    - name: Test native start
+      working-directory: server
+      run: |
+        timeout 30s npm run start:native || (echo "start:native failed" && exit 1)
+        echo "start:native successful"

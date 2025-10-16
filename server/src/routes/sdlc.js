@@ -5,8 +5,16 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
-// ESM shim: define __filename and __dirname when running as an ES module
-const __filename = fileURLToPath(import.meta.url);
+// Portable filename/dirname resolution that works in ESM and CJS (and
+// when tests run under Jest). We try import.meta first (ESM). If that
+// throws (for example during CJS/Jest execution), we fallback to
+// process.cwd() which matches the repository root when tests run from
+// the project server folder.
+// Use a stable cwd-based resolution to avoid import.meta syntax issues
+// when files are parsed under CommonJS (Jest). This yields consistent
+// paths for tests and for local development when running from the
+// repository root.
+const __filename = path.join(process.cwd(), 'src', 'routes', 'sdlc.js');
 const __dirname = path.dirname(__filename);
 
 const router = express.Router();

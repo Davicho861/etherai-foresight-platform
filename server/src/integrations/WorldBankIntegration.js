@@ -1,4 +1,5 @@
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class WorldBankIntegration {
   constructor() {
@@ -87,7 +88,6 @@ class WorldBankIntegration {
       // Only return mock data when explicitly forced (tests or demo). Otherwise
       // propagate the error so callers can handle the failure and we don't silently
       // pretend we have real data.
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
       if (forceMocksEnabled()) {
         const mockData = this.getMockEconomicIndicators(country, indicators, startYear, endYear);
         return mockData;

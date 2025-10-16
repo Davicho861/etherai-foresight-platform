@@ -1,4 +1,5 @@
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class CryptoIntegration {
   constructor() {
@@ -12,7 +13,6 @@ class CryptoIntegration {
       const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
       if (forceMocksEnabled()) {
         console.error('CryptoIntegration: returning FORCE_MOCKS mock for crypto data due to error:', error);
         return { error: null, cryptoIds, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
@@ -28,8 +28,7 @@ class CryptoIntegration {
       const data = await safeFetch(url, {}, { timeout: 10000, retries: 2 });
       return data;
     } catch (error) {
-      const { forceMocksEnabled: forceMocksEnabled2 } = await import('../lib/force-mocks.js');
-      if (forceMocksEnabled2()) {
+      if (forceMocksEnabled()) {
         console.error('CryptoIntegration: returning FORCE_MOCKS mock for historical data due to error:', error);
         return { error: null, cryptoId, days, vsCurrency, isMock: true, source: 'FORCE_MOCKS:Crypto' };
       }

@@ -1,9 +1,10 @@
 import { CircuitBreaker, retryWithBackoff, fetchWithTimeout, isJsonResponse } from '../utils/resilience.js';
 import safeFetch from '../lib/safeFetch.js';
+import { forceMocksEnabled } from '../lib/force-mocks.js';
 
 class GdeltIntegration {
   constructor() {
-  const native = process.env.NATIVE_DEV_MODE === 'true' || process.env.FORCE_MOCKS === 'true';
+    const native = process.env.NATIVE_DEV_MODE === 'true' || process.env.FORCE_MOCKS === 'true';
     const gdeltMockPort = process.env.GDELT_MOCK_PORT || 4020;
     this.baseUrl = native
       ? `http://localhost:${gdeltMockPort}/gdelt/events`
@@ -11,7 +12,7 @@ class GdeltIntegration {
         ? 'http://mock-api-server:3001/gdelt' // internal mock server used in CI
         : 'https://api.gdeltproject.org/api/v2/doc/doc');
     // Debug: log which baseUrl is being used to help troubleshoot native dev mode
-     
+
     console.log(`[GdeltIntegration] NATIVE_DEV_MODE=${process.env.NATIVE_DEV_MODE}; using baseUrl=${this.baseUrl}`);
     // Use shorter circuit breaker window in tests to avoid long waits/logs
     const isTest = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === 'true';
@@ -19,6 +20,11 @@ class GdeltIntegration {
   }
 
   async getSocialEvents(country, startDate, endDate) {
+    // Check if FORCE_MOCKS is enabled for testing
+    if (forceMocksEnabled()) {
+      return this.getMockSocialEvents(country, startDate, endDate);
+    }
+
     // PRAEVISIO ELITE EXPERIENCE: ZERO MOCKS ALLOWED
     // La belleza sin verdad es una ilusión. Los datos sin explicación son ruido.
     // Esta integración siempre intenta obtener datos reales, nunca usa mocks.
@@ -99,6 +105,11 @@ class GdeltIntegration {
 
     } catch (error) {
       console.log(`GDELT API failed for ${country} (${startDate}-${endDate}): ${error.message}.`);
+
+      // Check if FORCE_MOCKS is enabled for fallback in tests
+      if (forceMocksEnabled()) {
+        return this.getMockSocialEvents(country, startDate, endDate);
+      }
 
       // PRAEVISIO ELITE EXPERIENCE: ZERO MOCKS ALLOWED
       // Si falla la API real, propagar el error - no usar mocks

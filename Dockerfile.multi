@@ -1,0 +1,8 @@
+FROM --platform=$BUILDPLATFORM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+CMD ["node", "server/eternal_loop.js"]
+
+# Notes: Use docker buildx build --platform linux/amd64,linux/arm64 -t repo/multi:latest . --push

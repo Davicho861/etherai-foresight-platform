@@ -4,7 +4,7 @@ const express = require('express');
 
 describe('/api/demo routes', () => {
   beforeAll(() => {
-    server.listen();
+    server.listen({ onUnhandledRequest: 'bypass' });
   });
 
   afterAll(() => {
@@ -12,6 +12,7 @@ describe('/api/demo routes', () => {
   });
 
   afterEach(() => {
+    server.resetHandlers();
     jest.resetModules();
     jest.restoreAllMocks();
     delete process.env.FORCE_MOCKS;

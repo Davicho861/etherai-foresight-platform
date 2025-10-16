@@ -57,7 +57,8 @@ class FMIIntegration {
     } catch (error) {
       console.log(`IMF API failed for ${country} (${startYear}-${endYear}): ${error.message}.`);
 
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      const _fm = await import('../lib/force-mocks.js');
+      const forceMocksEnabled = _fm.forceMocksEnabled || _fm.default || _fm;
       if (!forceMocksEnabled()) {
         throw new Error(`FMIIntegration failure: ${error && error.message ? error.message : String(error)}`);
       }

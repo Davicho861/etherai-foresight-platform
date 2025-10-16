@@ -1,0 +1,35 @@
+6433caef41c177e988c664daea1445e4
+"use strict";
+
+// Mock axios
+_getJestObj().mock('axios');
+var _axios = _interopRequireDefault(require("axios"));
+var _SeismicIntegration = require("../../src/services/SeismicIntegration.js");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+function _getJestObj() {
+  const {
+    jest
+  } = require("@jest/globals");
+  _getJestObj = () => jest;
+  return jest;
+}
+describe('SeismicIntegration Service', () => {
+  it('should fetch seismic data successfully', async () => {
+    const mockData = {
+      features: [{
+        id: 'test1'
+      }]
+    };
+    _axios.default.get.mockResolvedValue({
+      data: mockData
+    });
+    const data = await (0, _SeismicIntegration.getSeismicData)();
+    expect(_axios.default.get).toHaveBeenCalledWith('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_day.geojson');
+    expect(data).toEqual(mockData);
+  });
+  it('should throw an error if the API call fails', async () => {
+    _axios.default.get.mockRejectedValue(new Error('Network Error'));
+    await expect((0, _SeismicIntegration.getSeismicData)()).rejects.toThrow('Failed to fetch seismic data.');
+  });
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfZ2V0SmVzdE9iaiIsIm1vY2siLCJfYXhpb3MiLCJfaW50ZXJvcFJlcXVpcmVEZWZhdWx0IiwicmVxdWlyZSIsIl9TZWlzbWljSW50ZWdyYXRpb24iLCJlIiwiX19lc01vZHVsZSIsImRlZmF1bHQiLCJqZXN0IiwiZGVzY3JpYmUiLCJpdCIsIm1vY2tEYXRhIiwiZmVhdHVyZXMiLCJpZCIsImF4aW9zIiwiZ2V0IiwibW9ja1Jlc29sdmVkVmFsdWUiLCJkYXRhIiwiZ2V0U2Vpc21pY0RhdGEiLCJleHBlY3QiLCJ0b0hhdmVCZWVuQ2FsbGVkV2l0aCIsInRvRXF1YWwiLCJtb2NrUmVqZWN0ZWRWYWx1ZSIsIkVycm9yIiwicmVqZWN0cyIsInRvVGhyb3ciXSwic291cmNlcyI6WyJTZWlzbWljSW50ZWdyYXRpb24udGVzdC5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnO1xuaW1wb3J0IHsgZ2V0U2Vpc21pY0RhdGEgfSBmcm9tICcuLi8uLi9zcmMvc2VydmljZXMvU2Vpc21pY0ludGVncmF0aW9uLmpzJztcblxuLy8gTW9jayBheGlvc1xuamVzdC5tb2NrKCdheGlvcycpO1xuXG5kZXNjcmliZSgnU2Vpc21pY0ludGVncmF0aW9uIFNlcnZpY2UnLCAoKSA9PiB7XG4gIGl0KCdzaG91bGQgZmV0Y2ggc2Vpc21pYyBkYXRhIHN1Y2Nlc3NmdWxseScsIGFzeW5jICgpID0+IHtcbiAgICBjb25zdCBtb2NrRGF0YSA9IHsgZmVhdHVyZXM6IFt7IGlkOiAndGVzdDEnIH1dIH07XG4gICAgYXhpb3MuZ2V0Lm1vY2tSZXNvbHZlZFZhbHVlKHsgZGF0YTogbW9ja0RhdGEgfSk7XG5cbiAgICBjb25zdCBkYXRhID0gYXdhaXQgZ2V0U2Vpc21pY0RhdGEoKTtcblxuICAgIGV4cGVjdChheGlvcy5nZXQpLnRvSGF2ZUJlZW5DYWxsZWRXaXRoKCdodHRwczovL2VhcnRocXVha2UudXNncy5nb3YvZWFydGhxdWFrZXMvZmVlZC92MS4wL3N1bW1hcnkvc2lnbmlmaWNhbnRfZGF5Lmdlb2pzb24nKTtcbiAgICBleHBlY3QoZGF0YSkudG9FcXVhbChtb2NrRGF0YSk7XG4gIH0pO1xuXG4gIGl0KCdzaG91bGQgdGhyb3cgYW4gZXJyb3IgaWYgdGhlIEFQSSBjYWxsIGZhaWxzJywgYXN5bmMgKCkgPT4ge1xuICAgIGF4aW9zLmdldC5tb2NrUmVqZWN0ZWRWYWx1ZShuZXcgRXJyb3IoJ05ldHdvcmsgRXJyb3InKSk7XG5cbiAgICBhd2FpdCBleHBlY3QoZ2V0U2Vpc21pY0RhdGEoKSkucmVqZWN0cy50b1Rocm93KCdGYWlsZWQgdG8gZmV0Y2ggc2Vpc21pYyBkYXRhLicpO1xuICB9KTtcbn0pO1xuIl0sIm1hcHBpbmdzIjoiOztBQUdBO0FBQ0FBLFdBQUEsR0FBS0MsSUFBSSxDQUFDLE9BQU8sQ0FBQztBQUpsQixJQUFBQyxNQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7QUFDQSxJQUFBQyxtQkFBQSxHQUFBRCxPQUFBO0FBQTBFLFNBQUFELHVCQUFBRyxDQUFBLFdBQUFBLENBQUEsSUFBQUEsQ0FBQSxDQUFBQyxVQUFBLEdBQUFELENBQUEsS0FBQUUsT0FBQSxFQUFBRixDQUFBO0FBQUEsU0FBQU4sWUFBQTtFQUFBO0lBQUFTO0VBQUEsSUFBQUwsT0FBQTtFQUFBSixXQUFBLEdBQUFBLENBQUEsS0FBQVMsSUFBQTtFQUFBLE9BQUFBLElBQUE7QUFBQTtBQUsxRUMsUUFBUSxDQUFDLDRCQUE0QixFQUFFLE1BQU07RUFDM0NDLEVBQUUsQ0FBQyx3Q0FBd0MsRUFBRSxZQUFZO0lBQ3ZELE1BQU1DLFFBQVEsR0FBRztNQUFFQyxRQUFRLEVBQUUsQ0FBQztRQUFFQyxFQUFFLEVBQUU7TUFBUSxDQUFDO0lBQUUsQ0FBQztJQUNoREMsY0FBSyxDQUFDQyxHQUFHLENBQUNDLGlCQUFpQixDQUFDO01BQUVDLElBQUksRUFBRU47SUFBUyxDQUFDLENBQUM7SUFFL0MsTUFBTU0sSUFBSSxHQUFHLE1BQU0sSUFBQUMsa0NBQWMsRUFBQyxDQUFDO0lBRW5DQyxNQUFNLENBQUNMLGNBQUssQ0FBQ0MsR0FBRyxDQUFDLENBQUNLLG9CQUFvQixDQUFDLG1GQUFtRixDQUFDO0lBQzNIRCxNQUFNLENBQUNGLElBQUksQ0FBQyxDQUFDSSxPQUFPLENBQUNWLFFBQVEsQ0FBQztFQUNoQyxDQUFDLENBQUM7RUFFRkQsRUFBRSxDQUFDLDZDQUE2QyxFQUFFLFlBQVk7SUFDNURJLGNBQUssQ0FBQ0MsR0FBRyxDQUFDTyxpQkFBaUIsQ0FBQyxJQUFJQyxLQUFLLENBQUMsZUFBZSxDQUFDLENBQUM7SUFFdkQsTUFBTUosTUFBTSxDQUFDLElBQUFELGtDQUFjLEVBQUMsQ0FBQyxDQUFDLENBQUNNLE9BQU8sQ0FBQ0MsT0FBTyxDQUFDLCtCQUErQixDQUFDO0VBQ2pGLENBQUMsQ0FBQztBQUNKLENBQUMsQ0FBQyIsImlnbm9yZUxpc3QiOltdfQ==

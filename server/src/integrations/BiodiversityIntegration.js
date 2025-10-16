@@ -14,7 +14,8 @@ class BiodiversityIntegration {
       const mockData = this._generateMockBiodiversityData(regions);
       return mockData;
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
+      const _fm = await import('../lib/force-mocks.js');
+      const forceMocksEnabled = _fm.forceMocksEnabled || _fm.default || _fm;
       if (forceMocksEnabled()) {
         console.error('BiodiversityIntegration: returning FORCE_MOCKS mock for biodiversity data due to error:', error);
         return { error: null, regions, isMock: true, source: 'FORCE_MOCKS:Biodiversity' };
@@ -30,8 +31,9 @@ class BiodiversityIntegration {
       const mockThreatData = this._generateMockThreatData();
       return mockThreatData;
     } catch (error) {
-      const { forceMocksEnabled } = await import('../lib/force-mocks.js');
-      if (forceMocksEnabled()) {
+      const _fm2 = await import('../lib/force-mocks.js');
+      const forceMocksEnabled2 = _fm2.forceMocksEnabled || _fm2.default || _fm2;
+      if (forceMocksEnabled2()) {
         console.error('BiodiversityIntegration: returning FORCE_MOCKS mock for threat data due to error:', error);
         return { error: null, isMock: true, source: 'FORCE_MOCKS:Biodiversity' };
       }

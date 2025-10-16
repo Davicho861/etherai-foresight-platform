@@ -1,0 +1,64 @@
+074584fddcd179e59eac62956d644f11
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+function _express() {
+  const data = _interopRequireDefault(require("express"));
+  _express = function () {
+    return data;
+  };
+  return data;
+}
+function _expressRateLimit() {
+  const data = _interopRequireDefault(require("express-rate-limit"));
+  _expressRateLimit = function () {
+    return data;
+  };
+  return data;
+}
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+// require sseTokenService at request time so tests can mock it
+
+const router = _express().default.Router();
+const tokenLimiter = (0, _expressRateLimit().default)({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: {
+    error: 'Too many token requests, try later'
+  }
+});
+
+// POST /token -> returns { token, expiresAt }
+router.post('/token', tokenLimiter, async (req, res) => {
+  try {
+    const sseTokenService = require('../sseTokenService.js').default || require('../sseTokenService.js');
+    const ttl = Number(req.body && req.body.ttl) || 60; // seconds
+    const {
+      token,
+      expiresAt
+    } = await sseTokenService.generateToken(ttl);
+    // Ensure cookie contains the exact token string returned by the service
+    const cookieOptions = {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: Math.max(1000, expiresAt - Date.now()),
+      sameSite: 'lax',
+      path: '/'
+    };
+    res.cookie('praevisio_sse_token', String(token), cookieOptions);
+    res.json({
+      token,
+      expiresAt
+    });
+  } catch (e) {
+    console.error('Error generating token:', e);
+    res.status(500).json({
+      error: 'Could not generate token'
+    });
+  }
+});
+var _default = exports.default = router;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfZXhwcmVzcyIsImRhdGEiLCJfaW50ZXJvcFJlcXVpcmVEZWZhdWx0IiwicmVxdWlyZSIsIl9leHByZXNzUmF0ZUxpbWl0IiwiZSIsIl9fZXNNb2R1bGUiLCJkZWZhdWx0Iiwicm91dGVyIiwiZXhwcmVzcyIsIlJvdXRlciIsInRva2VuTGltaXRlciIsInJhdGVMaW1pdCIsIndpbmRvd01zIiwibWF4IiwibWVzc2FnZSIsImVycm9yIiwicG9zdCIsInJlcSIsInJlcyIsInNzZVRva2VuU2VydmljZSIsInR0bCIsIk51bWJlciIsImJvZHkiLCJ0b2tlbiIsImV4cGlyZXNBdCIsImdlbmVyYXRlVG9rZW4iLCJjb29raWVPcHRpb25zIiwiaHR0cE9ubHkiLCJzZWN1cmUiLCJwcm9jZXNzIiwiZW52IiwiTk9ERV9FTlYiLCJtYXhBZ2UiLCJNYXRoIiwiRGF0ZSIsIm5vdyIsInNhbWVTaXRlIiwicGF0aCIsImNvb2tpZSIsIlN0cmluZyIsImpzb24iLCJjb25zb2xlIiwic3RhdHVzIiwiX2RlZmF1bHQiLCJleHBvcnRzIl0sInNvdXJjZXMiOlsiZXRlcm5hbFZpZ2lsYW5jZVRva2VuLmpzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBleHByZXNzIGZyb20gJ2V4cHJlc3MnO1xuaW1wb3J0IHJhdGVMaW1pdCBmcm9tICdleHByZXNzLXJhdGUtbGltaXQnO1xuLy8gcmVxdWlyZSBzc2VUb2tlblNlcnZpY2UgYXQgcmVxdWVzdCB0aW1lIHNvIHRlc3RzIGNhbiBtb2NrIGl0XG5cbmNvbnN0IHJvdXRlciA9IGV4cHJlc3MuUm91dGVyKCk7XG5cbmNvbnN0IHRva2VuTGltaXRlciA9IHJhdGVMaW1pdCh7IHdpbmRvd01zOiA2MCAqIDEwMDAsIG1heDogNSwgbWVzc2FnZTogeyBlcnJvcjogJ1RvbyBtYW55IHRva2VuIHJlcXVlc3RzLCB0cnkgbGF0ZXInIH0gfSk7XG5cbi8vIFBPU1QgL3Rva2VuIC0+IHJldHVybnMgeyB0b2tlbiwgZXhwaXJlc0F0IH1cbnJvdXRlci5wb3N0KCcvdG9rZW4nLCB0b2tlbkxpbWl0ZXIsIGFzeW5jIChyZXEsIHJlcykgPT4ge1xuICB0cnkge1xuICAgIGNvbnN0IHNzZVRva2VuU2VydmljZSA9IHJlcXVpcmUoJy4uL3NzZVRva2VuU2VydmljZS5qcycpLmRlZmF1bHQgfHwgcmVxdWlyZSgnLi4vc3NlVG9rZW5TZXJ2aWNlLmpzJyk7XG4gICAgY29uc3QgdHRsID0gTnVtYmVyKHJlcS5ib2R5ICYmIHJlcS5ib2R5LnR0bCkgfHwgNjA7IC8vIHNlY29uZHNcbiAgICBjb25zdCB7IHRva2VuLCBleHBpcmVzQXQgfSA9IGF3YWl0IHNzZVRva2VuU2VydmljZS5nZW5lcmF0ZVRva2VuKHR0bCk7XG4gIC8vIEVuc3VyZSBjb29raWUgY29udGFpbnMgdGhlIGV4YWN0IHRva2VuIHN0cmluZyByZXR1cm5lZCBieSB0aGUgc2VydmljZVxuICBjb25zdCBjb29raWVPcHRpb25zID0geyBodHRwT25seTogZmFsc2UsIHNlY3VyZTogcHJvY2Vzcy5lbnYuTk9ERV9FTlYgPT09ICdwcm9kdWN0aW9uJywgbWF4QWdlOiBNYXRoLm1heCgxMDAwLCBleHBpcmVzQXQgLSBEYXRlLm5vdygpKSwgc2FtZVNpdGU6ICdsYXgnLCBwYXRoOiAnLycgfTtcbiAgcmVzLmNvb2tpZSgncHJhZXZpc2lvX3NzZV90b2tlbicsIFN0cmluZyh0b2tlbiksIGNvb2tpZU9wdGlvbnMpO1xuICAgIHJlcy5qc29uKHsgdG9rZW4sIGV4cGlyZXNBdCB9KTtcbiAgfSBjYXRjaCAoZSkge1xuICAgIGNvbnNvbGUuZXJyb3IoJ0Vycm9yIGdlbmVyYXRpbmcgdG9rZW46JywgZSk7XG4gICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogJ0NvdWxkIG5vdCBnZW5lcmF0ZSB0b2tlbicgfSk7XG4gIH1cbn0pO1xuXG5leHBvcnQgZGVmYXVsdCByb3V0ZXI7XG4iXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBLFNBQUFBLFNBQUE7RUFBQSxNQUFBQyxJQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7RUFBQUgsUUFBQSxZQUFBQSxDQUFBO0lBQUEsT0FBQUMsSUFBQTtFQUFBO0VBQUEsT0FBQUEsSUFBQTtBQUFBO0FBQ0EsU0FBQUcsa0JBQUE7RUFBQSxNQUFBSCxJQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7RUFBQUMsaUJBQUEsWUFBQUEsQ0FBQTtJQUFBLE9BQUFILElBQUE7RUFBQTtFQUFBLE9BQUFBLElBQUE7QUFBQTtBQUEyQyxTQUFBQyx1QkFBQUcsQ0FBQSxXQUFBQSxDQUFBLElBQUFBLENBQUEsQ0FBQUMsVUFBQSxHQUFBRCxDQUFBLEtBQUFFLE9BQUEsRUFBQUYsQ0FBQTtBQUMzQzs7QUFFQSxNQUFNRyxNQUFNLEdBQUdDLGtCQUFPLENBQUNDLE1BQU0sQ0FBQyxDQUFDO0FBRS9CLE1BQU1DLFlBQVksR0FBRyxJQUFBQywyQkFBUyxFQUFDO0VBQUVDLFFBQVEsRUFBRSxFQUFFLEdBQUcsSUFBSTtFQUFFQyxHQUFHLEVBQUUsQ0FBQztFQUFFQyxPQUFPLEVBQUU7SUFBRUMsS0FBSyxFQUFFO0VBQXFDO0FBQUUsQ0FBQyxDQUFDOztBQUV6SDtBQUNBUixNQUFNLENBQUNTLElBQUksQ0FBQyxRQUFRLEVBQUVOLFlBQVksRUFBRSxPQUFPTyxHQUFHLEVBQUVDLEdBQUcsS0FBSztFQUN0RCxJQUFJO0lBQ0YsTUFBTUMsZUFBZSxHQUFHakIsT0FBTyxDQUFDLHVCQUF1QixDQUFDLENBQUNJLE9BQU8sSUFBSUosT0FBTyxDQUFDLHVCQUF1QixDQUFDO0lBQ3BHLE1BQU1rQixHQUFHLEdBQUdDLE1BQU0sQ0FBQ0osR0FBRyxDQUFDSyxJQUFJLElBQUlMLEdBQUcsQ0FBQ0ssSUFBSSxDQUFDRixHQUFHLENBQUMsSUFBSSxFQUFFLENBQUMsQ0FBQztJQUNwRCxNQUFNO01BQUVHLEtBQUs7TUFBRUM7SUFBVSxDQUFDLEdBQUcsTUFBTUwsZUFBZSxDQUFDTSxhQUFhLENBQUNMLEdBQUcsQ0FBQztJQUN2RTtJQUNBLE1BQU1NLGFBQWEsR0FBRztNQUFFQyxRQUFRLEVBQUUsS0FBSztNQUFFQyxNQUFNLEVBQUVDLE9BQU8sQ0FBQ0MsR0FBRyxDQUFDQyxRQUFRLEtBQUssWUFBWTtNQUFFQyxNQUFNLEVBQUVDLElBQUksQ0FBQ3BCLEdBQUcsQ0FBQyxJQUFJLEVBQUVXLFNBQVMsR0FBR1UsSUFBSSxDQUFDQyxHQUFHLENBQUMsQ0FBQyxDQUFDO01BQUVDLFFBQVEsRUFBRSxLQUFLO01BQUVDLElBQUksRUFBRTtJQUFJLENBQUM7SUFDcEtuQixHQUFHLENBQUNvQixNQUFNLENBQUMscUJBQXFCLEVBQUVDLE1BQU0sQ0FBQ2hCLEtBQUssQ0FBQyxFQUFFRyxhQUFhLENBQUM7SUFDN0RSLEdBQUcsQ0FBQ3NCLElBQUksQ0FBQztNQUFFakIsS0FBSztNQUFFQztJQUFVLENBQUMsQ0FBQztFQUNoQyxDQUFDLENBQUMsT0FBT3BCLENBQUMsRUFBRTtJQUNWcUMsT0FBTyxDQUFDMUIsS0FBSyxDQUFDLHlCQUF5QixFQUFFWCxDQUFDLENBQUM7SUFDM0NjLEdBQUcsQ0FBQ3dCLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQ0YsSUFBSSxDQUFDO01BQUV6QixLQUFLLEVBQUU7SUFBMkIsQ0FBQyxDQUFDO0VBQzdEO0FBQ0YsQ0FBQyxDQUFDO0FBQUMsSUFBQTRCLFFBQUEsR0FBQUMsT0FBQSxDQUFBdEMsT0FBQSxHQUVZQyxNQUFNIiwiaWdub3JlTGlzdCI6W119
