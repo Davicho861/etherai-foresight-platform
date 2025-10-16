@@ -37,7 +37,9 @@ async function eternal() {
     cycle++;
     console.log(`[eternal] Ciclo ${cycle} - ejecutando ares3 loop y pruebas`);
 
-    await run('node', ['ares3_loop.js']);
+  const args = [];
+  if (oneCycle) args.push('--one-cycle');
+  await run('node', ['ares3_loop.js', ...args]);
     await run('npm', ['test', '--', '--coverage']);
     await updateCoverageMetric();
 

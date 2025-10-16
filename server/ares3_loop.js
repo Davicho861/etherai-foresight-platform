@@ -111,7 +111,8 @@ async function divineLoop() {
   console.log('🔥 ARES-III: Loop Eterno de Imperio Iniciado 🔥');
 
   let cycle = 0;
-  const maxCycles = 50; // Prevent infinite loops
+  const oneCycle = process.argv.includes('--one-cycle') || process.env.ONE_CYCLE === 'true';
+  const maxCycles = oneCycle ? 1 : 50; // Prevent infinite loops (allow single-cycle mode)
 
   while (cycle < maxCycles) {
     cycle++;
