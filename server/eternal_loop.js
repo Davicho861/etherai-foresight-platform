@@ -30,7 +30,10 @@ async function eternal() {
   startMetricsServer(process.env.METRICS_PORT ? Number(process.env.METRICS_PORT) : 3000);
 
   let cycle = 0;
-  while (true) {
+  const oneCycle = process.argv.includes('--one-cycle') || process.env.ONE_CYCLE === 'true';
+  const maxCycles = oneCycle ? 1 : Infinity;
+
+  while (cycle < maxCycles) {
     cycle++;
     console.log(`[eternal] Ciclo ${cycle} - ejecutando ares3 loop y pruebas`);
 
@@ -57,6 +60,7 @@ async function eternal() {
     }
 
     // Wait a short interval before next cycle (3s default)
+    if (oneCycle) break;
     await new Promise(r => setTimeout(r, 3000));
   }
 }
