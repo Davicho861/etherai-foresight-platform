@@ -51,4 +51,13 @@ export default [
       "no-duplicate-case": "warn"
     },
   },
+  // Overrides: relax noise in scripts, server code, and tests (generated-heavy areas)
+  {
+    files: ["scripts/**", "server/**", "**/__tests__/**", "**/*.test.{js,ts}", "tests/**"],
+    rules: {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-empty": "off"
+    }
+  }
 ];
