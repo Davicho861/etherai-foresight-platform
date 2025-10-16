@@ -72,3 +72,20 @@ Próximos pasos recomendados
 ---
 
 Registrado por el operador de purga el 2025-10-16.
+
+Certificación y artefactos (actualización automática)
+---------------------------------------------------
+
+- Fecha de certificación: 2025-10-16
+- Branch/PR de evidencia: `artifacts/cert-3003` → PR #36 (mergeado)
+- Manifiesto generado: `reports/EMPIRE_CERTIFICATION_MANIFEST_3003.json`
+- Capturas principales: `reports/CERTIFICATION_EMPIRE_DASHBOARD_SCREENSHOT.png`
+- Reporte previo: `reports/EMPIRE_MANIFESTATION_REPORT.md`
+- Estado de servicios al momento de la certificación: frontend (Nginx) en `:3003`, backend en `:4000`, db en `:5433`, neo4j en `:7474`.
+
+Acciones realizadas relacionadas con la certificación:
+
+- Creado y añadido script `scripts/certify-empire-3003.js` que ejecuta Puppeteer contra `http://localhost:3003` para capturar pantalla del dashboard y comprobar conectividad con `/api/live-state`.
+- Generado y subido los artefactos a `main` (PR #36). Las capturas y el manifiesto quedan disponibles en el directorio `reports/` del repositorio.
+
+Siguiente paso recomendado: revisar `reports/EMPIRE_CERTIFICATION_MANIFEST_3003.json` y, si todo está conforme, cerrar este manifiesto como "COMPLETADO" en el changelog del proyecto.
